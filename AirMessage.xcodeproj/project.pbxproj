@@ -16,11 +16,11 @@
 		ED28095725A20332009E7636 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* ViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
+		ED67A8992688EE7A00DB7B95 /* build in Resources */ = {isa = PBXBuildFile; fileRef = ED67A8982688EE7A00DB7B95 /* build */; };
 		ED891A3225A2FF08002230EB /* PasswordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntry.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
 		EDD1514925A3232B00117C0D /* AccountConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnect.swift */; };
-		EDD1515525A327E600117C0D /* connectsite in Resources */ = {isa = PBXBuildFile; fileRef = EDD1515425A327E600117C0D /* connectsite */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +37,7 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
+		ED67A8982688EE7A00DB7B95 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = AirMessage/Authentication/connectsite/build; sourceTree = "<group>"; };
 		ED891A3125A2FF08002230EB /* PasswordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEntry.swift; sourceTree = "<group>"; };
 		ED891A3925A30701002230EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		ED28094825A20332009E7636 = {
 			isa = PBXGroup;
 			children = (
+				ED67A8982688EE7A00DB7B95 /* build */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				ED28095225A20332009E7636 /* Products */,
@@ -140,6 +142,7 @@
 			buildPhases = (
 				ED28094D25A20332009E7636 /* Sources */,
 				ED28094E25A20332009E7636 /* Frameworks */,
+				ED67A8972688D62C00DB7B95 /* Compile Webpack */,
 				ED28094F25A20332009E7636 /* Resources */,
 			);
 			buildRules = (
@@ -198,12 +201,42 @@
 			files = (
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
-				EDD1515525A327E600117C0D /* connectsite in Resources */,
+				ED67A8992688EE7A00DB7B95 /* build in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/package.json",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/package-lock.json",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/secrets.js",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/webpack.config.js",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.js",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.css",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.html",
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/banner.png",
+			);
+			name = "Compile Webpack";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AirMessage/Authentication/connectsite/build",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed.\"\n  exit 1\nfi\n\ncd AirMessage/Authentication/connectsite\nnpm install\nnpm run build\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ED28094D25A20332009E7636 /* Sources */ = {

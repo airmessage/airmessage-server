@@ -33,8 +33,9 @@ class AccountConnect: NSViewController {
 		
 		print(Bundle.main.resourcePath! + "/connectsite")
 		server = HttpServer()
-		server[""] = shareFile(Bundle.main.resourcePath! + "/connectsite/index.html")
-		server["/image/banner.png"] = shareFile(Bundle.main.resourcePath! + "/connectsite/image/banner.png")
+		
+		server["/"] = shareFile(Bundle.main.resourcePath! + "/build/index.html")
+		server["/:path"] = shareFilesFromDirectory(Bundle.main.resourcePath! + "/build")
 		//server[":path"] = { .ok(.htmlBody("You asked for \($0)"))  }
 		try! server.start(0)
 		
