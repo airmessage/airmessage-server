@@ -3,17 +3,33 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EAEE640D3E989A0F8E3F3D4 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE5A17F3D722B28A7B0D4 /* RepeatingTimer.swift */; };
+		2EAEE6F4072AFB2EEE7AA1C5 /* Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE565910966FACC701EC6 /* Blocks.swift */; };
+		2EAEE9A74F72B3F26EB6070C /* TimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE82AF454D6AD5A0A9BD3 /* TimeHelper.swift */; };
+		2EAEEADCDE85A92327C168CA /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEC5EF41D69555EAD1B51 /* HashHelper.swift */; };
+		2EAEEFE6DADAE53880D712BD /* CompressionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE1351E06E5281780A766 /* CompressionHelper.swift */; };
 		ED28095525A20332009E7636 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095425A20332009E7636 /* AppDelegate.swift */; };
 		ED28095725A20332009E7636 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* ViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
+		ED891A3225A2FF08002230EB /* PasswordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntry.swift */; };
+		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
+		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
+		EDD1514925A3232B00117C0D /* AccountConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnect.swift */; };
+		EDD1515525A327E600117C0D /* connectsite in Resources */ = {isa = PBXBuildFile; fileRef = EDD1515425A327E600117C0D /* connectsite */; };
+		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EAEE1351E06E5281780A766 /* CompressionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionHelper.swift; sourceTree = "<group>"; };
+		2EAEE565910966FACC701EC6 /* Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
+		2EAEE5A17F3D722B28A7B0D4 /* RepeatingTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		2EAEE82AF454D6AD5A0A9BD3 /* TimeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeHelper.swift; sourceTree = "<group>"; };
+		2EAEEC5EF41D69555EAD1B51 /* HashHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
 		ED28095125A20332009E7636 /* AirMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED28095425A20332009E7636 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED28095625A20332009E7636 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -21,6 +37,15 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
+		ED891A3125A2FF08002230EB /* PasswordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEntry.swift; sourceTree = "<group>"; };
+		ED891A3925A30701002230EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ED891A3E25A30754002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		ED891A4025A3089D002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		ED891A4225A308C6002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
+		EDD1514825A3232B00117C0D /* AccountConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConnect.swift; sourceTree = "<group>"; };
+		EDD1515425A327E600117C0D /* connectsite */ = {isa = PBXFileReference; lastKnownFileType = folder; path = connectsite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,15 +53,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EAEEE4114A576B7BCE08EBE /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				2EAEE565910966FACC701EC6 /* Blocks.swift */,
+			);
+			path = Blocks;
+			sourceTree = "<group>";
+		};
 		ED28094825A20332009E7636 = {
 			isa = PBXGroup;
 			children = (
+				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				ED28095225A20332009E7636 /* Products */,
 			);
@@ -53,14 +88,47 @@
 		ED28095325A20332009E7636 /* AirMessage */ = {
 			isa = PBXGroup;
 			children = (
+				EDD1514D25A326F400117C0D /* Authentication */,
+				ED891A4625A30BAE002230EB /* Helper */,
 				ED28095425A20332009E7636 /* AppDelegate.swift */,
-				ED28095625A20332009E7636 /* ViewController.swift */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
 				ED28095A25A20333009E7636 /* Main.storyboard */,
 				ED28095D25A20333009E7636 /* Info.plist */,
 				ED28095E25A20333009E7636 /* AirMessage.entitlements */,
+				ED891A4425A30B77002230EB /* Controllers */,
+				2EAEEE4114A576B7BCE08EBE /* Blocks */,
 			);
 			path = AirMessage;
+			sourceTree = "<group>";
+		};
+		ED891A4425A30B77002230EB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				ED28095625A20332009E7636 /* ViewController.swift */,
+				ED891A3125A2FF08002230EB /* PasswordEntry.swift */,
+				EDD1514825A3232B00117C0D /* AccountConnect.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		ED891A4625A30BAE002230EB /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				ED891A4725A30BC6002230EB /* PasswordGrade.swift */,
+				2EAEE1351E06E5281780A766 /* CompressionHelper.swift */,
+				2EAEE82AF454D6AD5A0A9BD3 /* TimeHelper.swift */,
+				2EAEEC5EF41D69555EAD1B51 /* HashHelper.swift */,
+				2EAEE5A17F3D722B28A7B0D4 /* RepeatingTimer.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		EDD1514D25A326F400117C0D /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				EDD1515425A327E600117C0D /* connectsite */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -79,6 +147,9 @@
 			dependencies = (
 			);
 			name = AirMessage;
+			packageProductDependencies = (
+				EDDE47302688C2890029628B /* Swifter */,
+			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
 			productType = "com.apple.product-type.application";
@@ -104,8 +175,13 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
+				ja,
 			);
 			mainGroup = ED28094825A20332009E7636;
+			packageReferences = (
+				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
+			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -121,6 +197,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
+				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
+				EDD1515525A327E600117C0D /* connectsite in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,8 +210,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
 				ED28095725A20332009E7636 /* ViewController.swift in Sources */,
+				ED891A3225A2FF08002230EB /* PasswordEntry.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,
+				EDD1514925A3232B00117C0D /* AccountConnect.swift in Sources */,
+				2EAEE6F4072AFB2EEE7AA1C5 /* Blocks.swift in Sources */,
+				2EAEEFE6DADAE53880D712BD /* CompressionHelper.swift in Sources */,
+				2EAEE9A74F72B3F26EB6070C /* TimeHelper.swift in Sources */,
+				2EAEEADCDE85A92327C168CA /* HashHelper.swift in Sources */,
+				2EAEE640D3E989A0F8E3F3D4 /* RepeatingTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,8 +230,20 @@
 			isa = PBXVariantGroup;
 			children = (
 				ED28095B25A20333009E7636 /* Base */,
+				ED891A4025A3089D002230EB /* fr */,
+				ED891A4225A308C6002230EB /* ja */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		ED891A3A25A30701002230EB /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED891A3925A30701002230EB /* en */,
+				ED891A3C25A30749002230EB /* fr */,
+				ED891A3E25A30754002230EB /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -155,6 +253,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -216,6 +315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -274,12 +374,14 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver.AirMessage;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -293,12 +395,14 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver.AirMessage;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -326,6 +430,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/httpswift/swifter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EDDE47302688C2890029628B /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;
+			productName = Swifter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ED28094925A20332009E7636 /* Project object */;
 }

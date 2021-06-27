@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>AirMessage Connect</title>
+
+		<style>
+			#main {
+				width: 100vw;
+				height: 100vh;
+				
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #FAFAFA;
+			}
+
+			#container {
+				max-width: 400px;
+				margin: 0 auto;
+				
+				text-align: center;
+				padding: 24px;
+			}
+
+			#banner {
+				max-width: 100%;
+			}
+
+			#desc {
+				color: #757575;
+				font-family: sans-serif;
+				margin-bottom: 32px;
+			}
+			
+			@media(prefers-color-scheme: dark) {
+				#main {
+					background-color: #303030;
+				}
+				
+				#desc {
+					color: #E0E0E0;
+				}
+			}
+		</style>
+
+		<!-- Polyfills for Safari -->
+		<script>
+			"use strict";
+
+			function checkES6() {
+				"use strict";
+
+				try {
+					eval("var foo = (x)=>x+1");
+				} catch(e) {
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</head>
+
+	<body style="margin: 0; padding: 0;">
+		<div id="main">
+			<div id="container">
+				 <img id="banner" src="image/banner.png" alt="AirMessage logo" />
+				<p id="desc">Connect your account to set up this Mac</p>
+				<div id="firebaseui-auth-container"></div>
+			</div>
+		</div>
+
+		<!-- Polyfills for Safari -->
+		<script src="https://unpkg.com/core-js-bundle@3.0.1/minified.js"></script>
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+
+		<!-- Add SDKs for Firebase products that you want to use (https://firebase.google.com/docs/web/setup#available-libraries) -->
+		<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-auth.js"></script>
+
+		<!-- Firebase UI -->
+		<script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+		<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+		<script>
+			// Initialize Firebase
+			firebase.initializeApp({
+                apiKey: "AIzaSyDIdCeGYRQHCB-N4tSW-orUOeeUQT9XcRE",
+                authDomain: "airmessage-b2c68.firebaseapp.com",
+                databaseURL: "https://airmessage-b2c68.firebaseio.com",
+                projectId: "airmessage-b2c68",
+                storageBucket: "airmessage-b2c68.appspot.com",
+                messagingSenderId: "557377230163",
+                appId: "1:557377230163:web:f10fb2d6220fb486373da6",
+                measurementId: "G-J2TKK0JTQV"
+            });
+
+			// Initialize the FirebaseUI Widget using Firebase.
+			const ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+			// The start method will wait until the DOM is loaded.
+			ui.start('#firebaseui-auth-container', {
+				callbacks: {
+					signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+						document.getElementById("desc").innerHTML = "Please wait&#8230;"
+						const userID = authResult.user.uid;
+						console.log(authResult);
+
+						// Generate an ID token
+						firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+							// Send back to Mac app
+							window.webkit.messageHandlers.confirmHandler.postMessage({
+								"idToken": idToken,
+								"userID": userID
+							});
+						}).catch(function(error) {
+							// Handle error
+							window.webkit.messageHandlers.confirmHandler.postMessage({
+								"name": error.name,
+								"message": error.message
+							});
+						});
+
+						// Disable automatic redirect
+						return false;
+					}
+				},
+				signInOptions: [
+					// Leave the lines as is for the providers you want to offer your users.
+					{
+						provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+						customParameters: {
+							// Forces account selection even when one account is available.
+							prompt: 'select_account'
+						}
+					}
+					// firebase.auth.EmailAuthProvider.PROVIDER_ID
+				]
+			});
+		</script>
+	</body>
+</html>

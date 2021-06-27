@@ -1,0 +1,13 @@
+/*
+  Localizable.strings
+  AirMessage
+
+  Created by Cole Feuer on 2021-01-04.
+  
+*/
+
+"passwordstrength"="Password Strength: %@";
+"passwordstrength.level1"="Weak";
+"passwordstrength.level2"="Fair";
+"passwordstrength.level3"="Good";
+"passwordstrength.level4"="Excellent";
