@@ -1,16 +1,15 @@
 //
-//  AccountConnect.swift
+//  NativeStorage.swift
 //  AirMessage
 //
 //  Created by Cole Feuer on 2021-01-04.
 //
 
-import Cocoa
+import AppKit
 import WebKit
 import Swifter
-import AppKit
 
-class AccountConnect: NSViewController {
+class AccountConnectViewController: NSViewController {
 	var server: HttpServer!
 	
 	var onAccountConfirm: ((_ idToken: String, _ userID: String) -> Void)?
@@ -31,7 +30,6 @@ class AccountConnect: NSViewController {
 		webView.layer!.borderWidth = 1
 		webView.layer!.borderColor = NSColor.lightGray.cgColor
 		
-		print(Bundle.main.resourcePath! + "/connectsite")
 		server = HttpServer()
 		
 		server["/"] = shareFile(Bundle.main.resourcePath! + "/build/index.html")
@@ -48,7 +46,7 @@ class AccountConnect: NSViewController {
 	}
 }
 
-extension AccountConnect: WKScriptMessageHandler {
+extension AccountConnectViewController: WKScriptMessageHandler {
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 		if message.name == jsFuncConfirm {
 			guard let dict = message.body as? [String: String] else {

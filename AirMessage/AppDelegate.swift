@@ -5,23 +5,46 @@
 //  Created by Cole Feuer on 2021-01-03.
 //
 
-import Cocoa
-import os
+import AppKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	var statusBarItem: NSStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-	private let version = "4.0"
+	private let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 	
-	func applicationDidFinishLaunching(_ aNotification: Notification) {
-		//guard let statusButton = statusBarItem.button else { return }
-		//statusButton.title = "Advanced Clock"
+	@IBOutlet weak var menu: NSMenu!
+	@IBOutlet weak var firstMenuItem: NSMenuItem!
+	
+	var statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+	
+	func applicationDidFinishLaunching(_ notification: Notification) {
+		let statusButton = statusBarItem.button!
+		statusButton.image = NSImage(named:NSImage.Name("StatusBarIcon"))
 		
 		//let defaultLog = Logger()
-		print("Starting AirMessage Server version \(version)")
+		print("Starting AirMessage Server version \(appVersion)")
+		
+		if PreferencesManager.shared.accountType == .unknown {
+			let storyboard = NSStoryboard(name: "Main", bundle: nil)
+			let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
+			windowController.showWindow(nil)
+		}
+		
+		//Start server
+		launchServer()
+		
+		//Start JVM
+		startJVM()
 	}
 	
-	func applicationWillTerminate(_ aNotification: Notification) {
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		if let menu = menu {
+			statusBarItem.menu = menu
+		}
+	}
+	
+	func applicationWillTerminate(_ notification: Notification) {
 		// Insert code here to tear down your application
 	}
 }

@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,xcode,appcode
+# Created by https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode,swiftpackagemanager
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,xcode,appcode,swiftpackagemanager
 
 ### AppCode ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -170,5 +170,12 @@ DerivedData/
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+
+### SwiftPackageManager ###
+Packages
+.build/
+xcuserdata
+DerivedData/
+*.xcodeproj
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode

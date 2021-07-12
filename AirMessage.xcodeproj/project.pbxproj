@@ -7,46 +7,115 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEE327A491386A20EC729 /* PreferencesManager.swift */; };
+		2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF14220907E804086BB9 /* AccountType.swift */; };
+		2EAEE285B0897FCB0A6BB561 /* JNIScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEB0CB7A1662A2C871CAF /* JNIScripting.m */; };
+		2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */; };
 		2EAEE640D3E989A0F8E3F3D4 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE5A17F3D722B28A7B0D4 /* RepeatingTimer.swift */; };
 		2EAEE6F4072AFB2EEE7AA1C5 /* Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE565910966FACC701EC6 /* Blocks.swift */; };
+		2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */; };
+		2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE04E2200019FF3869C09 /* JNIPreferences.m */; };
 		2EAEE9A74F72B3F26EB6070C /* TimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE82AF454D6AD5A0A9BD3 /* TimeHelper.swift */; };
 		2EAEEADCDE85A92327C168CA /* HashHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEC5EF41D69555EAD1B51 /* HashHelper.swift */; };
+		2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */; };
 		2EAEEFE6DADAE53880D712BD /* CompressionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE1351E06E5281780A766 /* CompressionHelper.swift */; };
+		ED1B06542690EBE9006D34DF /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */; };
+		ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5683269A50360019CCD5 /* DraggableAppView.swift */; };
+		ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */; };
+		ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */; };
+		ED267859269132ED001EFCB7 /* JVM.m in Sources */ = {isa = PBXBuildFile; fileRef = ED267858269132ED001EFCB7 /* JVM.m */; };
 		ED28095525A20332009E7636 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095425A20332009E7636 /* AppDelegate.swift */; };
-		ED28095725A20332009E7636 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* ViewController.swift */; };
+		ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* OnboardingViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
-		ED67A8992688EE7A00DB7B95 /* build in Resources */ = {isa = PBXBuildFile; fileRef = ED67A8982688EE7A00DB7B95 /* build */; };
-		ED891A3225A2FF08002230EB /* PasswordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntry.swift */; };
+		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
-		EDD1514925A3232B00117C0D /* AccountConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnect.swift */; };
+		EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC02BF92697CA8D003FA87E /* JNIControl.m */; };
+		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
+		EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */ = {isa = PBXBuildFile; fileRef = EDCAA231269CFE5900327BCD /* airmessage-libs */; };
+		EDCAA235269CFF3300327BCD /* java-runtime in Resources */ = {isa = PBXBuildFile; fileRef = EDCAA232269CFE5E00327BCD /* java-runtime */; };
+		EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */; };
+		EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */ = {isa = PBXBuildFile; fileRef = EDD70D662699F00300E8DC06 /* AppleScriptSource */; };
+		EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */; };
+		EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */; };
+		EDD82F562689313E0069E19E /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = EDD82F552689313E0069E19E /* KeychainAccess */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		ED1E5693269B99A90019CCD5 /* Copy Java Resources */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 15;
+			files = (
+				EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */,
+			);
+			name = "Copy Java Resources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		2EAEE04E2200019FF3869C09 /* JNIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIPreferences.m; sourceTree = "<group>"; };
 		2EAEE1351E06E5281780A766 /* CompressionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionHelper.swift; sourceTree = "<group>"; };
+		2EAEE2E16E83486BABD81E6D /* JVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVM.h; sourceTree = "<group>"; };
 		2EAEE565910966FACC701EC6 /* Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
 		2EAEE5A17F3D722B28A7B0D4 /* RepeatingTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		2EAEE82AF454D6AD5A0A9BD3 /* TimeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeHelper.swift; sourceTree = "<group>"; };
+		2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIStorage.h; sourceTree = "<group>"; };
+		2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIStorage.m; sourceTree = "<group>"; };
+		2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIUserInterface.m; sourceTree = "<group>"; };
+		2EAEEB0CB7A1662A2C871CAF /* JNIScripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIScripting.m; sourceTree = "<group>"; };
+		2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIPreferences.h; sourceTree = "<group>"; };
+		2EAEEB31605CF289419182E3 /* JNIScripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIScripting.h; sourceTree = "<group>"; };
+		2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerState.swift; sourceTree = "<group>"; };
 		2EAEEC5EF41D69555EAD1B51 /* HashHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashHelper.swift; sourceTree = "<group>"; };
+		2EAEED88784206F8146AEC97 /* JNIUserInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUserInterface.h; sourceTree = "<group>"; };
+		2EAEEE327A491386A20EC729 /* PreferencesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
+		2EAEEF14220907E804086BB9 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		ED1E5683269A50360019CCD5 /* DraggableAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableAppView.swift; sourceTree = "<group>"; };
+		ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullDiskAccessViewController.swift; sourceTree = "<group>"; };
+		ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationAccessViewController.swift; sourceTree = "<group>"; };
+		ED267858269132ED001EFCB7 /* JVM.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JVM.m; sourceTree = "<group>"; };
 		ED28095125A20332009E7636 /* AirMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED28095425A20332009E7636 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ED28095625A20332009E7636 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ED28095625A20332009E7636 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		ED28095825A20333009E7636 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
-		ED67A8982688EE7A00DB7B95 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = AirMessage/Authentication/connectsite/build; sourceTree = "<group>"; };
-		ED891A3125A2FF08002230EB /* PasswordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEntry.swift; sourceTree = "<group>"; };
+		ED675FF026890AC100DB7B95 /* airmessage-server */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-server"; sourceTree = "<group>"; };
+		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
+		ED6CDD372689193000EEBE31 /* JavaNativeFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaNativeFoundation.framework; path = System/Library/Frameworks/JavaNativeFoundation.framework; sourceTree = SDKROOT; };
+		ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEntryViewController.swift; sourceTree = "<group>"; };
 		ED891A3925A30701002230EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3E25A30754002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A4025A3089D002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4225A308C6002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
-		EDD1514825A3232B00117C0D /* AccountConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConnect.swift; sourceTree = "<group>"; };
-		EDD1515425A327E600117C0D /* connectsite */ = {isa = PBXFileReference; lastKnownFileType = folder; path = connectsite; sourceTree = "<group>"; };
+		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
+		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
+		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
+		EDC8228C2697B769007A8DF9 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
+		EDC8228D2697B769007A8DF9 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		EDC8228E2697B769007A8DF9 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		EDC8228F2697B769007A8DF9 /* secrets.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = secrets.js; sourceTree = "<group>"; };
+		EDC822902697B769007A8DF9 /* banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner.png; sourceTree = "<group>"; };
+		EDC822912697B769007A8DF9 /* index.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = index.css; sourceTree = "<group>"; };
+		EDC822922697B769007A8DF9 /* webpack.config.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = webpack.config.js; sourceTree = "<group>"; };
+		EDC822932697B769007A8DF9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		EDC822942697B769007A8DF9 /* secrets.default.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = secrets.default.js; sourceTree = "<group>"; };
+		EDC822952697B769007A8DF9 /* package-lock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "package-lock.json"; sourceTree = "<group>"; };
+		EDCAA231269CFE5900327BCD /* airmessage-libs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-libs"; sourceTree = "<group>"; };
+		EDCAA232269CFE5E00327BCD /* java-runtime */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "java-runtime"; sourceTree = "<group>"; };
+		EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConnectViewController.swift; sourceTree = "<group>"; };
+		EDD70D662699F00300E8DC06 /* AppleScriptSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppleScriptSource; sourceTree = "<group>"; };
+		EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptBridge.swift; sourceTree = "<group>"; };
+		EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLaunch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD82F562689313E0069E19E /* KeychainAccess in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EAEE649853E94A70D112B63 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				2EAEEF14220907E804086BB9 /* AccountType.swift */,
+				2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		2EAEEE4114A576B7BCE08EBE /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,13 +148,21 @@
 			path = Blocks;
 			sourceTree = "<group>";
 		};
+		ED1E5685269A52E50019CCD5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED1E5683269A50360019CCD5 /* DraggableAppView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		ED28094825A20332009E7636 = {
 			isa = PBXGroup;
 			children = (
-				ED67A8982688EE7A00DB7B95 /* build */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				ED28095225A20332009E7636 /* Products */,
+				ED6CDD362689193000EEBE31 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,7 +177,11 @@
 		ED28095325A20332009E7636 /* AirMessage */ = {
 			isa = PBXGroup;
 			children = (
-				EDD1514D25A326F400117C0D /* Authentication */,
+				ED1E5685269A52E50019CCD5 /* Views */,
+				EDD70D682699F1AE00E8DC06 /* AppleScript */,
+				EDC8228A2697B75A007A8DF9 /* AuthSite */,
+				ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */,
+				ED67D1182689096300DB7B95 /* JavaBridge */,
 				ED891A4625A30BAE002230EB /* Helper */,
 				ED28095425A20332009E7636 /* AppDelegate.swift */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
@@ -99,16 +190,52 @@
 				ED28095E25A20333009E7636 /* AirMessage.entitlements */,
 				ED891A4425A30B77002230EB /* Controllers */,
 				2EAEEE4114A576B7BCE08EBE /* Blocks */,
+				2EAEEE327A491386A20EC729 /* PreferencesManager.swift */,
+				2EAEE649853E94A70D112B63 /* Constants */,
+				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
 			);
 			path = AirMessage;
+			sourceTree = "<group>";
+		};
+		ED67D1182689096300DB7B95 /* JavaBridge */ = {
+			isa = PBXGroup;
+			children = (
+				EDCAA232269CFE5E00327BCD /* java-runtime */,
+				EDCAA231269CFE5900327BCD /* airmessage-libs */,
+				ED675FF026890AC100DB7B95 /* airmessage-server */,
+				ED267858269132ED001EFCB7 /* JVM.m */,
+				2EAEE04E2200019FF3869C09 /* JNIPreferences.m */,
+				2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */,
+				2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */,
+				2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */,
+				2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */,
+				2EAEED88784206F8146AEC97 /* JNIUserInterface.h */,
+				2EAEE2E16E83486BABD81E6D /* JVM.h */,
+				EDC02BF92697CA8D003FA87E /* JNIControl.m */,
+				EDC02BFB2697CAAF003FA87E /* JNIControl.h */,
+				2EAEEB0CB7A1662A2C871CAF /* JNIScripting.m */,
+				2EAEEB31605CF289419182E3 /* JNIScripting.h */,
+			);
+			path = JavaBridge;
+			sourceTree = "<group>";
+		};
+		ED6CDD362689193000EEBE31 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED6CDD372689193000EEBE31 /* JavaNativeFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		ED891A4425A30B77002230EB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				ED28095625A20332009E7636 /* ViewController.swift */,
-				ED891A3125A2FF08002230EB /* PasswordEntry.swift */,
-				EDD1514825A3232B00117C0D /* AccountConnect.swift */,
+				ED28095625A20332009E7636 /* OnboardingViewController.swift */,
+				ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */,
+				EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */,
+				ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */,
+				ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */,
+				ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -125,12 +252,31 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
-		EDD1514D25A326F400117C0D /* Authentication */ = {
+		EDC8228A2697B75A007A8DF9 /* AuthSite */ = {
 			isa = PBXGroup;
 			children = (
-				EDD1515425A327E600117C0D /* connectsite */,
+				EDC822932697B769007A8DF9 /* .gitignore */,
+				EDC822902697B769007A8DF9 /* banner.png */,
+				EDC8228B2697B769007A8DF9 /* build */,
+				EDC822912697B769007A8DF9 /* index.css */,
+				EDC8228D2697B769007A8DF9 /* index.html */,
+				EDC8228E2697B769007A8DF9 /* index.js */,
+				EDC822952697B769007A8DF9 /* package-lock.json */,
+				EDC8228C2697B769007A8DF9 /* package.json */,
+				EDC822942697B769007A8DF9 /* secrets.default.js */,
+				EDC8228F2697B769007A8DF9 /* secrets.js */,
+				EDC822922697B769007A8DF9 /* webpack.config.js */,
 			);
-			path = Authentication;
+			path = AuthSite;
+			sourceTree = "<group>";
+		};
+		EDD70D682699F1AE00E8DC06 /* AppleScript */ = {
+			isa = PBXGroup;
+			children = (
+				EDD70D662699F00300E8DC06 /* AppleScriptSource */,
+				EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */,
+			);
+			path = AppleScript;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +289,9 @@
 				ED28094D25A20332009E7636 /* Sources */,
 				ED28094E25A20332009E7636 /* Frameworks */,
 				ED67A8972688D62C00DB7B95 /* Compile Webpack */,
+				ED1E568A269B39530019CCD5 /* Compile Java */,
+				ED1E5693269B99A90019CCD5 /* Copy Java Resources */,
+				ED1E5695269B99F70019CCD5 /* Generate JVM */,
 				ED28094F25A20332009E7636 /* Resources */,
 			);
 			buildRules = (
@@ -152,6 +301,7 @@
 			name = AirMessage;
 			packageProductDependencies = (
 				EDDE47302688C2890029628B /* Swifter */,
+				EDD82F552689313E0069E19E /* KeychainAccess */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -164,10 +314,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1230;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					ED28095025A20332009E7636 = {
 						CreatedOnToolsVersion = 12.3;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -184,6 +335,7 @@
 			mainGroup = ED28094825A20332009E7636;
 			packageReferences = (
 				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
+				EDD82F542689313E0069E19E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -199,16 +351,58 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */,
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
+				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
-				ED67A8992688EE7A00DB7B95 /* build in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
+				EDCAA235269CFF3300327BCD /* java-runtime in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		ED1E568A269B39530019CCD5 /* Compile Java */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-server/settings.gradle",
+				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-server/src",
+			);
+			name = "Compile Java";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-libs/airmessage-server.jar",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "pushd AirMessage/JavaBridge/airmessage-server\n./gradlew shadowJar\npopd\n\n#rsync -a --delete AirMessage/JavaBridge/airmessage-server/build/libs/ AirMessage/JavaBridge/airmessage-libs/\ncp $(find AirMessage/JavaBridge/airmessage-server/build/libs/ -name \"*.jar\" | head -n 1) AirMessage/JavaBridge/airmessage-libs/airmessage-server.jar\n";
+		};
+		ED1E5695269B99F70019CCD5 /* Generate JVM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate JVM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/AirMessage/JavaBridge/java-runtime",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find java-runtime -name \"*.dylib\")\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
+		};
 		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -217,14 +411,14 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/package.json",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/package-lock.json",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/secrets.js",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/webpack.config.js",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.js",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.css",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/index.html",
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/banner.png",
+				"$(SRCROOT)/AirMessage/AuthSite/package.json",
+				"$(SRCROOT)/AirMessage/AuthSite/package-lock.json",
+				"$(SRCROOT)/AirMessage/AuthSite/secrets.js",
+				"$(SRCROOT)/AirMessage/AuthSite/webpack.config.js",
+				"$(SRCROOT)/AirMessage/AuthSite/index.js",
+				"$(SRCROOT)/AirMessage/AuthSite/index.css",
+				"$(SRCROOT)/AirMessage/AuthSite/index.html",
+				"$(SRCROOT)/AirMessage/AuthSite/banner.png",
 			);
 			name = "Compile Webpack";
 			outputFileListPaths = (
@@ -234,7 +428,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed.\"\n  exit 1\nfi\n\ncd AirMessage/Authentication/connectsite\nnpm install\nnpm run build\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed.\"\n  exit 1\nfi\n\ncd AirMessage/AuthSite\nnpm install\nnpm run build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -244,15 +438,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
-				ED28095725A20332009E7636 /* ViewController.swift in Sources */,
-				ED891A3225A2FF08002230EB /* PasswordEntry.swift in Sources */,
+				ED267859269132ED001EFCB7 /* JVM.m in Sources */,
+				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
+				EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */,
+				ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */,
+				ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */,
+				ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,
-				EDD1514925A3232B00117C0D /* AccountConnect.swift in Sources */,
+				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
 				2EAEE6F4072AFB2EEE7AA1C5 /* Blocks.swift in Sources */,
 				2EAEEFE6DADAE53880D712BD /* CompressionHelper.swift in Sources */,
 				2EAEE9A74F72B3F26EB6070C /* TimeHelper.swift in Sources */,
 				2EAEEADCDE85A92327C168CA /* HashHelper.swift in Sources */,
 				2EAEE640D3E989A0F8E3F3D4 /* RepeatingTimer.swift in Sources */,
+				2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */,
+				EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */,
+				ED1B06542690EBE9006D34DF /* PreferencesViewController.swift in Sources */,
+				2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */,
+				2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */,
+				ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */,
+				2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */,
+				EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */,
+				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
+				2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */,
+				2EAEE285B0897FCB0A6BB561 /* JNIScripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +543,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -390,7 +599,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -404,18 +613,32 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(JAVA_HOME)/include",
+					"$(JAVA_HOME)/include/darwin",
+				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
+				JAVA_HOME = "";
+				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
+				"JAVA_HOME[arch=i386]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/../Resources/java-runtime/lib/server",
 				);
+				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AirMessage;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirMessage/AirMessage-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -425,18 +648,32 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(JAVA_HOME)/include",
+					"$(JAVA_HOME)/include/darwin",
+				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
+				JAVA_HOME = "";
+				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
+				"JAVA_HOME[arch=i386]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+					"@executable_path/../Resources/java-runtime/lib/server",
 				);
+				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AirMessage;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirMessage/AirMessage-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -465,6 +702,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EDD82F542689313E0069E19E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.2;
+			};
+		};
 		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/httpswift/swifter.git";
@@ -476,6 +721,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EDD82F552689313E0069E19E /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EDD82F542689313E0069E19E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
 		EDDE47302688C2890029628B /* Swifter */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;

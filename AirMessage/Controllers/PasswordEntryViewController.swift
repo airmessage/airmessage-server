@@ -5,9 +5,9 @@
 //  Created by Cole Feuer on 2021-01-04.
 //
 
-import Cocoa
+import AppKit
 
-class PasswordEntry: NSViewController, NSTextFieldDelegate {
+class PasswordEntryViewController: NSViewController {
 	@IBOutlet weak var secureField: NSSecureTextField!
 	@IBOutlet weak var plainField: NSTextField!
 	
@@ -16,7 +16,11 @@ class PasswordEntry: NSViewController, NSTextFieldDelegate {
 	
 	@IBOutlet weak var confirmButton: NSButton!
 	
-	var currentTextField: NSTextField!
+	private var currentTextField: NSTextField!
+	
+	public var isRequired = true
+	public var initialText: String?
+	public var onSubmit: ((String) -> Void)?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -28,11 +32,15 @@ class PasswordEntry: NSViewController, NSTextFieldDelegate {
 		
 		confirmButton.isEnabled = !secureField.stringValue.isEmpty
 		
+		if let initialText = initialText {
+			currentTextField.stringValue = initialText
+		}
+		
 		//Perform initial UI update
 		updateUI()
 	}
 	
-	@IBAction func onPasswordVisibilityClick(_ sender: NSButton) {
+	@IBAction func onClickPasswordVisibility(_ sender: NSButton) {
 		//Toggle password visibility
 		if sender.state == .on {
 			secureField.isHidden = true
@@ -51,21 +59,25 @@ class PasswordEntry: NSViewController, NSTextFieldDelegate {
 		}
 	}
 	
-	func getText() -> String {
-		return currentTextField.stringValue
-	}
-	
 	func updateUI() {
-		//Disable the button if there is no password
-		confirmButton.isEnabled = !getText().isEmpty
+		//Disable the button if there is no password and the password is required
+		confirmButton.isEnabled = !isRequired || !getText().isEmpty
 		
 		//Update the password strength label
 		strengthLabel.stringValue = String(format: NSLocalizedString("passwordstrength", comment: ""), getPasswordStrengthLabel(calculatePasswordStrength(getText())))
 	}
-
 	
+	func getText() -> String { currentTextField.stringValue }
+	
+	@IBAction func onClickConfirm(_ sender: NSButton) {
+		onSubmit?(getText())
+		
+		dismiss(self)
+	}
+}
+
+extension PasswordEntryViewController: NSTextFieldDelegate {
 	func controlTextDidChange(_ obj: Notification) {
-		//let textField = obj.object as! NSTextField
 		updateUI()
 	}
 }
