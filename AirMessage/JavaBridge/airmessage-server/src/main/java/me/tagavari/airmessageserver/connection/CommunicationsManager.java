@@ -799,14 +799,34 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 	}
 	
 	public void sendPushNotification(List<Blocks.MessageInfo> messages, List<Blocks.ModifierInfo> modifiers) {
+		boolean encrypt = !JNIPreferences.getPassword().isBlank();
+		
 		//Serializing the data
+		byte[] data;
 		try(AirPacker packer = AirPacker.get()) {
 			packer.packArrayHeader(messages.size());
 			for(Blocks.MessageInfo item : messages) item.writeObject(packer);
 			packer.packArrayHeader(modifiers.size());
 			for(Blocks.ModifierInfo item : modifiers) item.writeObject(packer);
 			
-			dataProxy.sendPushNotification(1, packer.toByteArray());
+			if(encrypt) {
+				try {
+					data = EncryptionHelper.encrypt(packer.toByteArray());
+				} catch(GeneralSecurityException exception) {
+					Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+					Sentry.captureException(exception);
+					return;
+				}
+			} else {
+				data = packer.toByteArray();
+			}
+		}
+		
+		try(AirPacker packer = AirPacker.get()) {
+			packer.packBoolean(encrypt);
+			packer.packPayload(data);
+			
+			dataProxy.sendPushNotification(2, packer.toByteArray());
 		}
 	}
 }
