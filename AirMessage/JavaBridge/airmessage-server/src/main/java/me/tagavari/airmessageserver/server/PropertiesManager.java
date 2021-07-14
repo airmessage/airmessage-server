@@ -3,7 +3,6 @@ package me.tagavari.airmessageserver.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class PropertiesManager {
 	private static String connectEndpoint;

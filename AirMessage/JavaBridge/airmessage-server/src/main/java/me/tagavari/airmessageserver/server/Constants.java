@@ -2,7 +2,10 @@ package me.tagavari.airmessageserver.server;
 
 import me.tagavari.airmessageserver.jni.JNIStorage;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.DatagramSocket;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -11,8 +14,6 @@ import java.util.Enumeration;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.stream.Stream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public class Constants {
 	//Creating the version values

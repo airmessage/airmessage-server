@@ -1,7 +1,6 @@
 package me.tagavari.airmessageserver.connection.direct;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

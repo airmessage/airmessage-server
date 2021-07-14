@@ -2,13 +2,11 @@ package me.tagavari.airmessageserver.connection.connect;
 
 import io.sentry.Sentry;
 import me.tagavari.airmessageserver.connection.CommConst;
-import me.tagavari.airmessageserver.connection.CommunicationsManager;
 import me.tagavari.airmessageserver.connection.DataProxy;
 import me.tagavari.airmessageserver.connection.EncryptionHelper;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.server.Main;
 import me.tagavari.airmessageserver.server.ServerState;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.framing.CloseFrame;
 
 import java.nio.BufferUnderflowException;
