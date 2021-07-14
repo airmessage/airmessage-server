@@ -3,3 +3,4 @@
 //
 
 #import "JVM.h"
+#import "JNIControl.h"

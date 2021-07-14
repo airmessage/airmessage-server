@@ -28,6 +28,8 @@
 		ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* OnboardingViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
+		ED440E0B269F9CEB00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E0A269F9CEB00BFBEE5 /* Localizable.stringsdict */; };
+		ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */; };
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
@@ -36,6 +38,7 @@
 		EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */ = {isa = PBXBuildFile; fileRef = EDCAA231269CFE5900327BCD /* airmessage-libs */; };
 		EDCAA235269CFF3300327BCD /* java-runtime in Resources */ = {isa = PBXBuildFile; fileRef = EDCAA232269CFE5E00327BCD /* java-runtime */; };
 		EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */; };
+		EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD5E49C269F9957005EB8EE /* NotificationNames.swift */; };
 		EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */ = {isa = PBXBuildFile; fileRef = EDD70D662699F00300E8DC06 /* AppleScriptSource */; };
 		EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */; };
 		EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */; };
@@ -87,6 +90,8 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
+		ED440E0A269F9CEB00BFBEE5 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
+		ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateRecovery.swift; sourceTree = "<group>"; };
 		ED675FF026890AC100DB7B95 /* airmessage-server */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-server"; sourceTree = "<group>"; };
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED6CDD372689193000EEBE31 /* JavaNativeFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaNativeFoundation.framework; path = System/Library/Frameworks/JavaNativeFoundation.framework; sourceTree = SDKROOT; };
@@ -113,6 +118,7 @@
 		EDCAA231269CFE5900327BCD /* airmessage-libs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-libs"; sourceTree = "<group>"; };
 		EDCAA232269CFE5E00327BCD /* java-runtime */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "java-runtime"; sourceTree = "<group>"; };
 		EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConnectViewController.swift; sourceTree = "<group>"; };
+		EDD5E49C269F9957005EB8EE /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		EDD70D662699F00300E8DC06 /* AppleScriptSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppleScriptSource; sourceTree = "<group>"; };
 		EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptBridge.swift; sourceTree = "<group>"; };
 		EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLaunch.swift; sourceTree = "<group>"; };
@@ -136,6 +142,7 @@
 			children = (
 				2EAEEF14220907E804086BB9 /* AccountType.swift */,
 				2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */,
+				ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -159,7 +166,6 @@
 		ED28094825A20332009E7636 = {
 			isa = PBXGroup;
 			children = (
-				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				ED28095225A20332009E7636 /* Products */,
 				ED6CDD362689193000EEBE31 /* Frameworks */,
@@ -193,6 +199,9 @@
 				2EAEEE327A491386A20EC729 /* PreferencesManager.swift */,
 				2EAEE649853E94A70D112B63 /* Constants */,
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
+				EDD5E49C269F9957005EB8EE /* NotificationNames.swift */,
+				ED891A3A25A30701002230EB /* Localizable.strings */,
+				ED440E0A269F9CEB00BFBEE5 /* Localizable.stringsdict */,
 			);
 			path = AirMessage;
 			sourceTree = "<group>";
@@ -203,13 +212,13 @@
 				EDCAA232269CFE5E00327BCD /* java-runtime */,
 				EDCAA231269CFE5900327BCD /* airmessage-libs */,
 				ED675FF026890AC100DB7B95 /* airmessage-server */,
-				ED267858269132ED001EFCB7 /* JVM.m */,
 				2EAEE04E2200019FF3869C09 /* JNIPreferences.m */,
 				2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */,
 				2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */,
 				2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */,
 				2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */,
 				2EAEED88784206F8146AEC97 /* JNIUserInterface.h */,
+				ED267858269132ED001EFCB7 /* JVM.m */,
 				2EAEE2E16E83486BABD81E6D /* JVM.h */,
 				EDC02BF92697CA8D003FA87E /* JNIControl.m */,
 				EDC02BFB2697CAAF003FA87E /* JNIControl.h */,
@@ -357,6 +366,7 @@
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
 				EDCAA235269CFF3300327BCD /* java-runtime in Resources */,
+				ED440E0B269F9CEB00BFBEE5 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,8 +450,10 @@
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
 				ED267859269132ED001EFCB7 /* JVM.m in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
+				EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */,
 				EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */,
 				ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */,
+				ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */,
 				ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */,
 				ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,

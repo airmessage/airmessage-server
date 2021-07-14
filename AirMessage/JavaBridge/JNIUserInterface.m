@@ -4,18 +4,19 @@
 
 #import "JNIUserInterface.h"
 #import "JVM.h"
+#import "AirMessage-Swift.h"
 
 #define CLASSNAME "me/tagavari/airmessageserver/jni/JNIUserInterface"
 
 void updateUIState(JNIEnv *env, jclass thisClass, jint state) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [NSNotificationCenter.defaultCenter postNotificationName:@"updateUIState" object:nil userInfo:@{@"state": @(state)}];
+        [NSNotificationCenter.defaultCenter postNotificationName:[NotificationNames updateUIState] object:nil userInfo:@{[NotificationNames updateUIStateParam]: @(state)}];
     });
 }
 
 void updateConnectionCount(JNIEnv *env, jclass thisClass, jint count) {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[NSNotificationCenter.defaultCenter postNotificationName:@"updateConnectionCount" object:nil userInfo:@{@"count": @(count)}];
+		[NSNotificationCenter.defaultCenter postNotificationName:[NotificationNames updateConnectionCount] object:nil userInfo:@{[NotificationNames updateConnectionCountParam]: @(count)}];
 	});
 }
 

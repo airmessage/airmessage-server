@@ -7,7 +7,12 @@
 
 #import "JVM.h"
 
+#import "JNIPreferences.h"
+#import "JNIStorage.h"
+#import "JNIUserInterface.h"
+
 JavaVM *jvm;
+JNIEnv *defaultEnv;
 
 /**
  * Launches the JVM
@@ -36,8 +41,8 @@ JNIEnv* createJVM(JavaVM **jvm) {
 /**
  * Gets the JNIEnv for the current thread
  */
-JNIEnv* getJNIEnv() {
-    JNIEnv *env = nil;
+JNIEnv* getJNIEnv(void) {
+    /* JNIEnv *env = nil;
     // Check if the current thread is attached to the VM
     jint get_env_result = (*jvm)->GetEnv(jvm, (void**)env, JNI_VERSION_10);
     if(get_env_result == JNI_EDETACHED) {
@@ -50,17 +55,21 @@ JNIEnv* getJNIEnv() {
         // Unsupported JNI version. Throw an exception if you want to.
     }
 
-    return nil;
+    return nil; */
+	
+	return defaultEnv;
 }
 
 /**
  * Starts the JVM and registers native methods
  */
-bool startJVM() {
+bool startJVM(void) {
     //Create JVM
     JNIEnv *env;
     env = createJVM(&jvm);
     if(env == NULL) return false;
+	
+	defaultEnv = env;
 
     //Register native methods
     registerJNIPreferences(env);
@@ -73,4 +82,11 @@ bool startJVM() {
 	(*env)->CallStaticVoidMethod(env, mainClass, mainMethodID, NULL);
 	
     return true;
+}
+
+/**
+ * Cleans up the JVM
+ */
+void stopJVM(void) {
+	(*jvm)->DestroyJavaVM(jvm);
 }

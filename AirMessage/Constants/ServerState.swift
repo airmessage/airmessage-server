@@ -1,11 +1,20 @@
 //
-// Created by Cole Feuer on 2021-07-04.
+//  ServerState.swift
+//  AirMessage
+//
+//  Created by Cole Feuer on 2021-07-04.
 //
 
 import Foundation
 
+fileprivate let typeStatuses: [ServerState] = [.setup, .starting, .connecting, .running, .stopped]
+
+fileprivate let typeRequiresReauth: [ServerState] = [.errorConnValidation, .errorConnToken, .errorConnAccountConflict]
+fileprivate let typeNonRecoverable: [ServerState] = [.errorPermission]
+
 enum ServerState: Int {
-	case initializing = 0
+	case errorPermission = -1
+	
 	case setup = 1
 	case starting = 2
 	case connecting = 3
@@ -25,4 +34,57 @@ enum ServerState: Int {
 	case errorConnToken = 303
 	case errorConnActivation = 304
 	case errorConnAccountConflict = 305
+	
+	var description: String {
+		switch(self) {
+			case .errorPermission:
+				return NSLocalizedString("message.status.permission", comment: "")
+			case .setup:
+				return NSLocalizedString("message.status.setup", comment: "")
+			case .starting:
+				return NSLocalizedString("message.status.permission", comment: "")
+			case .connecting:
+				return NSLocalizedString("message.status.connecting", comment: "")
+			case .running:
+				return NSLocalizedString("message.status.running", comment: "")
+			case .stopped:
+				return NSLocalizedString("message.status.stopped", comment: "")
+			case .errorDatabase:
+				return NSLocalizedString("message.status.error.database", comment: "")
+			case .errorInternal:
+				return NSLocalizedString("message.status.error.internal", comment: "")
+			case .errorExternal:
+				return NSLocalizedString("message.status.error.external", comment: "")
+			case .errorInternet:
+				return NSLocalizedString("message.status.error.internet", comment: "")
+			case .errorTCPPort:
+				return NSLocalizedString("message.status.error.port", comment: "")
+			case .errorConnBadRequest:
+				return NSLocalizedString("message.status.error.bad_request", comment: "")
+			case .errorConnOutdated:
+				return NSLocalizedString("message.status.error.outdated", comment: "")
+			case .errorConnValidation:
+				return NSLocalizedString("message.status.error.account_validation", comment: "")
+			case .errorConnToken:
+				return NSLocalizedString("message.status.error.token_refresh", comment: "")
+			case .errorConnActivation:
+				return NSLocalizedString("message.status.error.no_activation", comment: "")
+			case .errorConnAccountConflict:
+				return NSLocalizedString("message.status.error.account_conflict", comment: "")
+		}
+	}
+	
+	var isError: Bool {
+		!typeStatuses.contains(self)
+	}
+	
+	var recoveryType: ServerStateRecovery {
+		if typeRequiresReauth.contains(self) {
+			return .reauthenticate
+		} else if typeNonRecoverable.contains(self) {
+			return .none
+		} else {
+			return .retry
+		}
+	}
 }

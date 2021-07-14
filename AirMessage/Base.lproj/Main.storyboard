@@ -14,6 +14,8 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AirMessage" customModuleProvider="target">
                     <connections>
                         <outlet property="menu" destination="uQy-DD-JDr" id="kHf-gA-lox"/>
+                        <outlet property="menuItemPrimary" destination="5jL-EB-ghD" id="75B-da-1F8"/>
+                        <outlet property="menuItemSecondary" destination="CpQ-ja-jCe" id="fQm-Zl-b5G"/>
                     </connections>
                 </customObject>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
@@ -29,7 +31,7 @@
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Starting..." enabled="NO" id="5jL-EB-ghD">
+                                        <menuItem title="Starting…" enabled="NO" id="5jL-EB-ghD">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                         <menuItem title="No Clients Connected" enabled="NO" id="CpQ-ja-jCe">
@@ -40,6 +42,9 @@
                                             <connections>
                                                 <segue destination="cGc-zf-mLe" kind="show" id="AQZ-vy-jjO"/>
                                             </connections>
+                                        </menuItem>
+                                        <menuItem title="Check for Updates…" id="gii-7S-Dfv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Quit AirMessage" keyEquivalent="q" id="4sb-4s-VLi">

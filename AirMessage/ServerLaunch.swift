@@ -9,8 +9,15 @@ import Foundation
 import AppKit
 
 func launchServer() {
-	let launchCheck = launchCheck()
-	guard launchCheck else { return }
+	//Check for permissions before launching
+	guard launchCheck() else {
+		NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: ServerState.errorPermission.rawValue])
+		
+		return
+	}
+	
+	//Tell Java to start the server
+	jniStartServer()
 }
 
 fileprivate func launchCheck() -> Bool {

@@ -1,0 +1,35 @@
+/*
+  Localizable.strings
+  AirMessage
+
+  Created by Cole Feuer on 2021-01-04.
+  
+*/
+
+"action.retry"="Retry";
+"action.reauthenticate"="Sign In Again";
+
+"passwordstrength"="Password Strength: %@";
+"passwordstrength.level1"="Weak";
+"passwordstrength.level2"="Fair";
+"passwordstrength.level3"="Good";
+"passwordstrength.level4"="Excellent";
+
+"message.status.permission"="Waiting for Permissions";
+"message.status.setup"="Waiting for Setup";
+"message.status.starting"="Server Starting…";
+"message.status.connecting"="Trying to Connect…";
+"message.status.running"="Server Running";
+"message.status.stopped"="Server Stopped";
+
+"message.status.error.database"="Couldn't Connect to Database";
+"message.status.error.internal"="An Internal Error Occurred";
+"message.status.error.external"="An External Error Occurred";
+"message.status.error.internet"="No Internet Connection";
+"message.status.error.port"="Port is Unavailable";
+"message.status.error.bad_request"="Communications Error";
+"message.status.error.outdated"="App Out Of Date";
+"message.status.error.account_validation"="Account Not Available";
+"message.status.error.token_refresh"="Device Not Registered";
+"message.status.error.no_activation"="Account Not Activated";
+"message.status.error.account_conflict"="Signed In from Another Location";
