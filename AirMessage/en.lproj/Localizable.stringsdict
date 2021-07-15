@@ -5,7 +5,7 @@
 	<key>message.status.connected_count</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@clientCount@ connected</string>
+		<string>%#@clientCount@ Connected</string>
 		<key>clientCount</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>zero</key>
-			<string>No clients</string>
+			<string>No Clients</string>
 			<key>one</key>
-			<string>1 client</string>
+			<string>1 Client</string>
 			<key>other</key>
-			<string>%d clients</string>
+			<string>%d Clients</string>
 		</dict>
 	</dict>
 </dict>

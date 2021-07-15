@@ -33,21 +33,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		statusBarItem.menu = menu
 		let statusButton = statusBarItem.button!
 		statusButton.image = NSImage(named:NSImage.Name("StatusBarIcon"))
+		updateMenu()
 		
 		//Register notification center observers
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateUIState), name: NotificationNames.updateUIState, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateConnectionCount), name: NotificationNames.updateConnectionCount, object: nil)
 		
-		//Show welcome window
-		if PreferencesManager.shared.accountType == .unknown {
-			showWelcome()
-		}
-		
 		//Start JVM
 		startJVM()
 		
-		//Start server
-		launchServer()
+		//Show welcome window
+		if PreferencesManager.shared.accountType == .unknown {
+			showWelcome()
+		} else {
+			//Start server
+			launchServer()
+		}
 	}
 	
 	func applicationWillTerminate(_ notification: Notification) {

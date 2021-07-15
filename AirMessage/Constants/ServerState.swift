@@ -42,7 +42,7 @@ enum ServerState: Int {
 			case .setup:
 				return NSLocalizedString("message.status.setup", comment: "")
 			case .starting:
-				return NSLocalizedString("message.status.permission", comment: "")
+				return NSLocalizedString("message.status.starting", comment: "")
 			case .connecting:
 				return NSLocalizedString("message.status.connecting", comment: "")
 			case .running:
