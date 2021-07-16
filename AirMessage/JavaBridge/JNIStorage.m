@@ -7,9 +7,11 @@
 
 #import <Foundation/Foundation.h>
 #import "JNIStorage.h"
+#import "AirMessage-Swift.h"
 
 jobject getDocumentsDirectory(JNIEnv *env, jclass thisClass) {
-    NSString *documentsPath = [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject.path;
+	NSString *documentsPath = StorageManager.storageDirectory.path;
+    //NSString *documentsPath = [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject.path;
 
     jclass fileClass = (*env)->FindClass(env, "java/io/File");
     jmethodID fileInit = (*env)->GetMethodID(env, fileClass, "<init>", "(Ljava/lang/String;)V");

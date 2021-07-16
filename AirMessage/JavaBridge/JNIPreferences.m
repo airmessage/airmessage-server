@@ -30,8 +30,8 @@ void registerJNIPreferences(JNIEnv *env) {
     JNINativeMethod methods[] = {
 		{"getServerPort", "()I", getServerPort},
 		{"getAccountType", "()I", getAccountType},
-		{"getPassword", "()Ljava.lang.String;", getPassword},
-		{"getInstallationID", "()Ljava.lang.String;", getInstallationID},
+		{"getPassword", "()Ljava/lang/String;", getPassword},
+		{"getInstallationID", "()Ljava/lang/String;", getInstallationID},
 	};
     (*env)->RegisterNatives(env, (*env)->FindClass(env, "me/tagavari/airmessageserver/jni/JNIPreferences"), methods, sizeof(methods) / sizeof(methods[0]));
 }

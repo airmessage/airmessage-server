@@ -30,7 +30,14 @@ class OnboardingViewController: NSViewController {
 				//Save password
 				PreferencesManager.shared.password = password
 				
+				//Mark setup as complete
+				PreferencesManager.shared.accountType = .direct
+				PreferencesManager.shared.serverPort = defaultServerPort
+				
 				//Start server
+				launchServer()
+				
+				//Close window
 				if let self = self {
 					self.view.window!.close()
 				}

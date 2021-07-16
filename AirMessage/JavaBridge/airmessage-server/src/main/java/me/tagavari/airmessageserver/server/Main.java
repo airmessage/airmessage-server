@@ -1,6 +1,7 @@
 package me.tagavari.airmessageserver.server;
 
 import me.tagavari.airmessageserver.connection.ConnectionManager;
+import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.jni.JNIUserInterface;
 
 import java.io.*;
@@ -32,8 +33,6 @@ public class Main {
 	private static ServerState serverState = ServerState.SETUP;
 	
 	public static void main(String[] args) throws IOException {
-		System.out.println("Launched Java!");
-		
 		//Configuring the logger
 		logger = Logger.getGlobal();
 		logger.setLevel(Level.FINEST);
@@ -110,12 +109,16 @@ public class Main {
 	public static void startServer() {
 		//Disconnecting the server if it's currently running
 		ConnectionManager.stop();
+		getLogger().info("1");
 		
 		//Setting the data proxy
 		ConnectionManager.assignDataProxy();
+		getLogger().info("2");
 		
 		//Updating the server state
 		setServerState(ServerState.STARTING);
+		
+		getLogger().info("3");
 		
 		//Loading the credentials
 		//result = SecurityManager.loadCredentials();
@@ -132,6 +135,8 @@ public class Main {
 				return;
 			}
 		}
+		
+		getLogger().info("4");
 		
 		//Starting the server manager
 		ConnectionManager.start();

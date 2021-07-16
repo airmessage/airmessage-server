@@ -33,6 +33,7 @@
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
+		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC02BF92697CA8D003FA87E /* JNIControl.m */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */ = {isa = PBXBuildFile; fileRef = EDCAA231269CFE5900327BCD /* airmessage-libs */; };
@@ -102,6 +103,7 @@
 		ED891A4025A3089D002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4225A308C6002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
+		EDADEB1826A0E3D9001DA84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
 		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				EDD5E49C269F9957005EB8EE /* NotificationNames.swift */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */,
+				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
 			);
 			path = AirMessage;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
 				ED267859269132ED001EFCB7 /* JVM.m in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
+				EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */,
 				EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */,
 				EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */,
 				ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */,

@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@IBOutlet weak var menuItemPrimary: NSMenuItem!
 	@IBOutlet weak var menuItemSecondary: NSMenuItem!
 	
-	private var currentServerState = ServerState.errorPermission
+	private var currentServerState = ServerState.setup
 	private var currentClientCount = 0
 	
 	private func showWelcome() {

@@ -5,6 +5,8 @@
 import Foundation
 import KeychainAccess
 
+let defaultServerPort = 1359
+
 class PreferencesManager: NSObject {
 	private override init() {}
 	
@@ -25,7 +27,7 @@ class PreferencesManager: NSObject {
 	@objc var serverPort: Int {
 		get {
 			let port = UserDefaults.standard.integer(forKey: UDKeys.serverPort.rawValue)
-			return port == 0 ? 1359 : port
+			return port == 0 ? defaultServerPort : port
 		}
 		set(newValue) {
 			UserDefaults.standard.set(newValue, forKey: UDKeys.serverPort.rawValue)

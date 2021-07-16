@@ -15,4 +15,6 @@ void jniStartServer() {
 	jclass class = (*env)->FindClass(env, CLASSNAME);
 	jmethodID methodID = (*env)->GetStaticMethodID(env, class, "onStartServer", "()V");
 	(*env)->CallStaticVoidMethod(env, class, methodID);
+	
+	handleException(env);
 }

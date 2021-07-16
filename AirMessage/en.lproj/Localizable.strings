@@ -15,7 +15,6 @@
 "passwordstrength.level3"="Good";
 "passwordstrength.level4"="Excellent";
 
-"message.status.permission"="Waiting for Permissions";
 "message.status.setup"="Waiting for Setup";
 "message.status.starting"="Server Starting…";
 "message.status.connecting"="Trying to Connect…";

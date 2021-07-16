@@ -10,11 +10,8 @@ import Foundation
 fileprivate let typeStatuses: [ServerState] = [.setup, .starting, .connecting, .running, .stopped]
 
 fileprivate let typeRequiresReauth: [ServerState] = [.errorConnValidation, .errorConnToken, .errorConnAccountConflict]
-fileprivate let typeNonRecoverable: [ServerState] = [.errorPermission]
 
 enum ServerState: Int {
-	case errorPermission = -1
-	
 	case setup = 1
 	case starting = 2
 	case connecting = 3
@@ -37,8 +34,6 @@ enum ServerState: Int {
 	
 	var description: String {
 		switch(self) {
-			case .errorPermission:
-				return NSLocalizedString("message.status.permission", comment: "")
 			case .setup:
 				return NSLocalizedString("message.status.setup", comment: "")
 			case .starting:
@@ -81,8 +76,6 @@ enum ServerState: Int {
 	var recoveryType: ServerStateRecovery {
 		if typeRequiresReauth.contains(self) {
 			return .reauthenticate
-		} else if typeNonRecoverable.contains(self) {
-			return .none
 		} else {
 			return .retry
 		}

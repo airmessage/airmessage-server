@@ -11,7 +11,7 @@ import AppKit
 func launchServer() {
 	//Check for permissions before launching
 	guard launchCheck() else {
-		NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: ServerState.errorPermission.rawValue])
+		NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: ServerState.setup.rawValue])
 		
 		return
 	}

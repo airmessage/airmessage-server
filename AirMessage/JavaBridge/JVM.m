@@ -80,6 +80,7 @@ bool startJVM(void) {
 	jclass mainClass = (*env)->FindClass(env, "me/tagavari/airmessageserver/server/Main");
 	jmethodID mainMethodID = (*env)->GetStaticMethodID(env, mainClass, "main", "([Ljava/lang/String;)V");
 	(*env)->CallStaticVoidMethod(env, mainClass, mainMethodID, NULL);
+	handleException(env);
 	
     return true;
 }
@@ -89,4 +90,22 @@ bool startJVM(void) {
  */
 void stopJVM(void) {
 	(*jvm)->DestroyJavaVM(jvm);
+}
+
+void handleException(JNIEnv *env) {
+	if(!(*env)->ExceptionCheck(env)) return;
+	
+	//Log the error to stderr
+	//(*env)->ExceptionDescribe(env);
+	
+	//Get exception information
+	jthrowable exceptionObject = (*env)->ExceptionOccurred(env);
+	
+	jclass utilClass = (*env)->FindClass(env, "me/tagavari/airmessageserver/jni/JNIUtil");
+	jmethodID utilDescribeMethodID = (*env)->GetStaticMethodID(env, utilClass, "describeThrowable", "(Ljava/lang/Throwable;)Ljava/lang/String;");
+	jstring description = (jstring) (*env)->CallStaticObjectMethod(env, utilClass, utilDescribeMethodID, exceptionObject);
+	const char *descriptionString = (*env)->GetStringUTFChars(env, description, NULL);
+	
+	//Raise an error
+	[NSException raise:@"JavaException" format:@"%@", [NSString stringWithUTF8String:descriptionString]];
 }
