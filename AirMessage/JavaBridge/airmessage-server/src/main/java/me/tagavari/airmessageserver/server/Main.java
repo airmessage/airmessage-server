@@ -109,16 +109,12 @@ public class Main {
 	public static void startServer() {
 		//Disconnecting the server if it's currently running
 		ConnectionManager.stop();
-		getLogger().info("1");
 		
 		//Setting the data proxy
 		ConnectionManager.assignDataProxy();
-		getLogger().info("2");
 		
 		//Updating the server state
 		setServerState(ServerState.STARTING);
-		
-		getLogger().info("3");
 		
 		//Loading the credentials
 		//result = SecurityManager.loadCredentials();
@@ -135,8 +131,6 @@ public class Main {
 				return;
 			}
 		}
-		
-		getLogger().info("4");
 		
 		//Starting the server manager
 		ConnectionManager.start();
