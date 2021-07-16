@@ -1,3 +1,4 @@
+
 # Created by https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode,swiftpackagemanager
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,xcode,appcode,swiftpackagemanager
 
@@ -136,6 +137,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### SwiftPackageManager ###
+Packages
+.build/
+xcuserdata
+DerivedData/
+*.xcodeproj
+
+
 ### Xcode ###
 # Xcode
 #
@@ -150,7 +159,6 @@ xcuserdata/
 
 ## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 build/
-DerivedData/
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -171,11 +179,4 @@ DerivedData/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-### SwiftPackageManager ###
-Packages
-.build/
-xcuserdata
-DerivedData/
-*.xcodeproj
-
-# End of https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode
+# End of https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode,swiftpackagemanager
