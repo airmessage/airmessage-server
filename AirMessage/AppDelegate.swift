@@ -9,13 +9,16 @@ import AppKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+	//Constants
 	private let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 	
+	//Status bar
 	private let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 	@IBOutlet weak var menu: NSMenu!
 	@IBOutlet weak var menuItemPrimary: NSMenuItem!
 	@IBOutlet weak var menuItemSecondary: NSMenuItem!
 	
+	//UI state
 	private var currentServerState = ServerState.setup
 	private var currentClientCount = 0
 	
@@ -49,6 +52,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			//Start server
 			launchServer()
 		}
+		
+		//Prevent system from sleeping
+		lockSystemSleep()
 	}
 	
 	func applicationWillTerminate(_ notification: Notification) {
@@ -57,6 +63,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		
 		//Stop JVM
 		stopJVM()
+		
+		//Allow system to sleep
+		releaseSystemSleep()
 	}
 	
 	@objc private func onUpdateUIState(notification: NSNotification) {
