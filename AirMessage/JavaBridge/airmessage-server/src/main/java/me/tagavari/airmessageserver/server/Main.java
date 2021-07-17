@@ -139,26 +139,6 @@ public class Main {
 		getLogger().info("Initialization complete");
 	}
 	
-	static void reinitializeServer() {
-		//Returning if the database manager isn't running
-		if(DatabaseManager.getInstance() == null) return;
-		
-		//Updating the server state
-		setServerState(ServerState.STARTING);
-		
-		//Disconnecting the server if it's currently running
-		ConnectionManager.stop();
-		
-		//Re-assigning the proxy (to realign with preferences updates)
-		ConnectionManager.assignDataProxy();
-		
-		//Starting the server back up again
-		ConnectionManager.start();
-		
-		//Logging a message
-		getLogger().info("Restart complete");
-	}
-	
 	private static void processArgs(String[] args) {
 		//Iterating over the arguments
 		for(String argument : args) {
@@ -215,10 +195,6 @@ public class Main {
 	public static void setServerState(ServerState value) {
 		serverState = value;
 		JNIUserInterface.updateUIState(value.code);
-	}
-	
-	public static ResourceBundle resources() {
-		return ResourceBundle.getBundle("me.tagavari.airmessageserver.server.Translations");
 	}
 	
 	private static String readDeviceName() {
