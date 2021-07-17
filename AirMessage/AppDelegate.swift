@@ -26,6 +26,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
 		let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
 		windowController.showWindow(nil)
+		
+		NSApp.activate(ignoringOtherApps: true)
 	}
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {

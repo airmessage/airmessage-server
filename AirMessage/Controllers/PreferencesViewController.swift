@@ -21,12 +21,20 @@ class PreferencesViewController: NSViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		//Load control values
 		inputPort.stringValue = String(PreferencesManager.shared.serverPort)
 		inputPort.formatter = PortFormatter()
 		
 		checkboxAutoUpdate.state = PreferencesManager.shared.checkUpdates ? .on : .off
 		
 		checkboxBetaUpdate.state = PreferencesManager.shared.betaUpdates ? .on : .off
+	}
+	
+	override func viewDidAppear() {
+		super.viewDidAppear()
+		
+		//Focus app
+		NSApp.activate(ignoringOtherApps: true)
 	}
 	
 	@IBAction func onClickClose(_sender: NSButton) {
