@@ -498,14 +498,6 @@ public class AppleScriptManager {
 		return true;
 	}
 	
-	public static void showAutomationWarning() {
-		runBasicAS(ASShowAutomationWarning, Main.resources().getString("message.automation_error"), Main.resources().getString("action.ignore"), Main.resources().getString("action.system_preferences"));
-	}
-	
-	public static void showDiskAccessWarning() {
-		runBasicAS(ASShowDiskAccessWarning, Main.resources().getString("message.disk_access_error"), Main.resources().getString("action.ignore"), Main.resources().getString("action.system_preferences"));
-	}
-	
 	private static final List<FileUploadRequest> fileUploadRequests = Collections.synchronizedList(new ArrayList<>());
 	public static void addFileFragment(ClientRegistration connection, short requestID, String chatGUID, String fileName, int index, byte[] compressedBytes, boolean isLast) {
 		//Attempting to find a matching request
