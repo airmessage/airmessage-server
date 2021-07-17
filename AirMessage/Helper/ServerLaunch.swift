@@ -9,8 +9,8 @@ import Foundation
 import AppKit
 
 func launchServer() {
-	//Check for permissions before launching
-	guard launchCheck() else {
+	//Check for setup and permissions before launching
+	guard PreferencesManager.shared.accountType != .unknown && launchCheck() else {
 		NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: ServerState.setup.rawValue])
 		
 		return
