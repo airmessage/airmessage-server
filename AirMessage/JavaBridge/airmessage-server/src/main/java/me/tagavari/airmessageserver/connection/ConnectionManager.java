@@ -21,9 +21,10 @@ public class ConnectionManager {
 	}
 	
 	public static void assignDataProxy() {
-		if(JNIPreferences.getAccountType() == AccountType.accountTypeConnect) {
+		int accountType = JNIPreferences.getAccountType();
+		if(accountType == AccountType.accountTypeConnect) {
 			setDataProxy(new DataProxyConnect(JNIPreferences.getInstallationID()));
-		} else if(JNIPreferences.getAccountType() == AccountType.accountTypeDirect) {
+		} else if(accountType == AccountType.accountTypeDirect) {
 			setDataProxy(new DataProxyTCP(JNIPreferences.getServerPort()));
 		}
 	}

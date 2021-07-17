@@ -3,7 +3,6 @@
 //
 
 import Foundation
-import KeychainAccess
 
 let defaultServerPort = 1359
 
@@ -12,8 +11,6 @@ class PreferencesManager: NSObject {
 	
 	public static let shared = PreferencesManager()
 	@objc class func getShared() -> PreferencesManager { shared }
-	
-	private let keychain = Keychain(service: "AirMessage")
 	
 	// MARK: UserDefaults
 	
@@ -72,23 +69,43 @@ class PreferencesManager: NSObject {
 		case installationID = "airmessage-installation"
 	}
 	
-	@objc var password: String? {
+	private var passwordCache: String?
+	private var installationIDCache: String?
+	
+	@objc var password: String {
 		get {
-			keychain[KeychainKeys.password.rawValue]
+			DispatchQueue.main.sync {
+				if let passwordCache = passwordCache {
+					return passwordCache
+				} else {
+					let keychainValue = try! KeychainManager.getValue(for: KeychainKeys.password.rawValue) ?? ""
+					passwordCache = keychainValue
+					return keychainValue
+				}
+			}
 		}
 		set(newValue) {
-			keychain[KeychainKeys.password.rawValue] = newValue
+			DispatchQueue.main.async {
+				try! KeychainManager.setValue(newValue, for: KeychainKeys.password.rawValue)
+				self.passwordCache = newValue
+			}
 		}
 	}
 	
 	@objc var installationID: String {
 		get {
-			if let existingID = keychain[KeychainKeys.installationID.rawValue] {
-				return existingID
-			} else {
-				let newID = UUID().uuidString
-				keychain[KeychainKeys.installationID.rawValue] = newID
-				return newID
+			DispatchQueue.main.sync {
+				if let installationID = installationIDCache {
+					return installationID
+				} else if let keychainInstallationID = try! KeychainManager.getValue(for: KeychainKeys.installationID.rawValue) {
+					installationIDCache = keychainInstallationID
+					return keychainInstallationID
+				} else {
+					let generatedInstallationID = UUID().uuidString
+					try! KeychainManager.setValue(generatedInstallationID, for: KeychainKeys.installationID.rawValue)
+					installationIDCache = generatedInstallationID
+					return generatedInstallationID
+				}
 			}
 		}
 	}
