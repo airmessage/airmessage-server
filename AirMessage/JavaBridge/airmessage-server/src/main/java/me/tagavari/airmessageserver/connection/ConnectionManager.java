@@ -20,15 +20,6 @@ public class ConnectionManager {
 		Sentry.setTag("protocol_proxy", dataProxy.getDisplayName().toLowerCase());
 	}
 	
-	public static void assignDataProxy() {
-		int accountType = JNIPreferences.getAccountType();
-		if(accountType == AccountType.accountTypeConnect) {
-			setDataProxy(new DataProxyConnect(JNIPreferences.getInstallationID()));
-		} else if(accountType == AccountType.accountTypeDirect) {
-			setDataProxy(new DataProxyTCP(JNIPreferences.getServerPort()));
-		}
-	}
-	
 	public static void start() {
 		//Returning if there is already an active process
 		if(communicationsManager != null && communicationsManager.isRunning()) return;

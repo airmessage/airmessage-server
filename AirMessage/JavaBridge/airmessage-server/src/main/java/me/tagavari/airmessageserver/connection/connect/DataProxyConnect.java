@@ -4,6 +4,7 @@ import io.sentry.Sentry;
 import me.tagavari.airmessageserver.connection.CommConst;
 import me.tagavari.airmessageserver.connection.DataProxy;
 import me.tagavari.airmessageserver.connection.EncryptionHelper;
+import me.tagavari.airmessageserver.jni.JNIControl;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.server.Main;
 import me.tagavari.airmessageserver.server.ServerState;
@@ -28,8 +29,7 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 	private final Map<Integer, ClientSocket> connectionList = Collections.synchronizedMap(new HashMap<>());
 	private ConnectWebSocketClient connectClient;
 	
-	private final String connectUserID;
-	private String connectRegistrationIDToken;
+	private final String installationID;
 	
 	private Timer handshakeTimeoutTimer;
 	
@@ -43,30 +43,8 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 		}
 	};
 	
-	/**
-	 * Assumes that this server is already registered, and connects via user ID
-	 * @param connectUserID The user ID to use
-	 */
-	public DataProxyConnect(String connectUserID) {
-		this.connectUserID = connectUserID;
-		this.connectRegistrationIDToken = null;
-	}
-	
-	/**
-	 * Registers this server first using the ID token, and then uses the user ID on subsequent connections
-	 * @param connectUserID The user ID to use
-	 * @param connectRegistrationIDToken The ID token to use
-	 */
-	public DataProxyConnect(String connectUserID, String connectRegistrationIDToken) {
-		this.connectUserID = connectUserID;
-		this.connectRegistrationIDToken = connectRegistrationIDToken;
-	}
-	
-	/**
-	 * Tells this proxy to use the user ID rather than the registration token on subsequent connections
-	 */
-	public void setRegistered() {
-		connectRegistrationIDToken = null;
+	public DataProxyConnect(String installationID) {
+		this.installationID = installationID;
 	}
 	
 	private void addClient(int connectionID) {
@@ -91,11 +69,12 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 		if(connectClient != null && !connectClient.isClosed()) return;
 		
 		//Getting the client
-		if(connectRegistrationIDToken != null) {
-			connectClient = ConnectWebSocketClient.createInstanceRegister(connectRegistrationIDToken, this);
-		} else {
-			connectClient = ConnectWebSocketClient.createInstanceExisting(connectUserID, this);
+		String idToken = JNIPreferences.getFirebaseIDToken();
+		if(idToken == null) {
+			handleDisconnect(CloseFrame.NEVER_CONNECTED, null);
+			return;
 		}
+		connectClient = ConnectWebSocketClient.createInstance(installationID, idToken, this);
 		
 		//Connecting the client
 		connectClient.connect();
@@ -212,7 +191,7 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 		};
 		
 		//If there was a connection error, just try to reconnect later
-		if(localError == ServerState.ERROR_INTERNET && !Main.isSetupMode()) {
+		if(localError == ServerState.ERROR_INTERNET && Main.getServerState() != ServerState.SETUP) {
 			//Clearing connected clients
 			connectionList.clear();
 			

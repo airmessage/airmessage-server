@@ -180,3 +180,5 @@ build/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,xcode,appcode,swiftpackagemanager
+
+AirMessage/Secrets.xcconfig

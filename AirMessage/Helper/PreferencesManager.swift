@@ -15,10 +15,15 @@ class PreferencesManager: NSObject {
 	// MARK: UserDefaults
 	
 	private enum UDKeys: String, CaseIterable {
+		//Settings
 		case serverPort
 		case checkUpdates
 		case betaUpdates
 		case accountType
+		
+		//Storage
+		case idToken
+		case idTokenExpiry
 	}
 	
 	@objc var serverPort: Int {
@@ -62,48 +67,79 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
+	@objc var idToken: String? {
+		get {
+			UserDefaults.standard.string(forKey: UDKeys.idToken.rawValue)
+		}
+		set(newValue) {
+			UserDefaults.standard.set(newValue, forKey: UDKeys.idToken.rawValue)
+		}
+	}
+	
+	@objc var idTokenExpiry: Int {
+		get {
+			UserDefaults.standard.integer(forKey: UDKeys.idTokenExpiry.rawValue)
+		}
+		set(newValue) {
+			UserDefaults.standard.set(newValue, forKey: UDKeys.idTokenExpiry.rawValue)
+		}
+	}
+	
 	// MARK: Keychain
 	
-	private enum KeychainKeys: String, CaseIterable {
+	private enum KeychainAccount: String, CaseIterable {
 		case password = "airmessage-password"
+		case refreshToken = "refresh-token"
 		case installationID = "airmessage-installation"
 	}
 	
-	private var passwordCache: String?
-	private var installationIDCache: String?
+	private var cacheMap = [String: String]()
+	
+	private func getValue(for account: KeychainAccount) -> String? {
+		runOnMain {
+			if let cacheValue = cacheMap[account.rawValue] {
+				return cacheValue
+			} else {
+				let keychainValue = try! KeychainManager.getValue(for: account.rawValue)
+				cacheMap[account.rawValue] = keychainValue
+				return keychainValue
+			}
+		}
+	}
+	
+	private func setValue(_ value: String, for account: KeychainAccount) {
+		runOnMainAsync {
+			try! KeychainManager.setValue(value, for: account.rawValue)
+			self.cacheMap[account.rawValue] = value
+		}
+	}
 	
 	@objc var password: String {
 		get {
-			DispatchQueue.main.sync {
-				if let passwordCache = passwordCache {
-					return passwordCache
-				} else {
-					let keychainValue = try! KeychainManager.getValue(for: KeychainKeys.password.rawValue) ?? ""
-					passwordCache = keychainValue
-					return keychainValue
-				}
-			}
+			self.getValue(for: KeychainAccount.password) ?? ""
 		}
 		set(newValue) {
-			DispatchQueue.main.async {
-				try! KeychainManager.setValue(newValue, for: KeychainKeys.password.rawValue)
-				self.passwordCache = newValue
-			}
+			setValue(newValue, for: KeychainAccount.password)
+		}
+	}
+	
+	@objc var refreshToken: String {
+		get {
+			self.getValue(for: KeychainAccount.refreshToken) ?? ""
+		}
+		set(newValue) {
+			setValue(newValue, for: KeychainAccount.refreshToken)
 		}
 	}
 	
 	@objc var installationID: String {
 		get {
-			DispatchQueue.main.sync {
-				if let installationID = installationIDCache {
+			runOnMain {
+				if let installationID = getValue(for: KeychainAccount.installationID) {
 					return installationID
-				} else if let keychainInstallationID = try! KeychainManager.getValue(for: KeychainKeys.installationID.rawValue) {
-					installationIDCache = keychainInstallationID
-					return keychainInstallationID
 				} else {
 					let generatedInstallationID = UUID().uuidString
-					try! KeychainManager.setValue(generatedInstallationID, for: KeychainKeys.installationID.rawValue)
-					installationIDCache = generatedInstallationID
+					setValue(generatedInstallationID, for: KeychainAccount.installationID)
 					return generatedInstallationID
 				}
 			}

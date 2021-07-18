@@ -121,16 +121,16 @@ public enum KeychainError: Error, LocalizedError {
 	public var errorDescription: String? {
 		switch self {
 			case .serializationError:
-				return NSLocalizedString("Data serialization error", comment: "")
+				return "Data serialization error"
 			case .deserializationError:
-				return NSLocalizedString("Data deserialization error", comment: "")
+				return "Data deserialization error"
 			case .unhandledError(let message):
-				return NSLocalizedString(message, comment: "")
+				return message
 		}
 	}
 	
 	static func from(status: OSStatus) -> KeychainError {
-		let message = SecCopyErrorMessageString(status, nil) as String? ?? NSLocalizedString("Unhandled error", comment: "")
+		let message = SecCopyErrorMessageString(status, nil) as String? ?? "Unhandled error"
 		return KeychainError.unhandledError(message: message)
 	}
 }

@@ -26,6 +26,8 @@
 		ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */; };
 		ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */; };
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
+		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
+		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
 		ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */; };
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
@@ -85,6 +87,9 @@
 		ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateRecovery.swift; sourceTree = "<group>"; };
 		ED440E0F269FB51F00BFBEE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		ED44738626A387DD006F5F0E /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthHelper.swift; sourceTree = "<group>"; };
+		ED44738A26A46B68006F5F0E /* DispatchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchHelper.swift; sourceTree = "<group>"; };
+		ED44738C26A46F86006F5F0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		ED675FF026890AC100DB7B95 /* airmessage-server */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-server"; sourceTree = "<group>"; };
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED6CDD372689193000EEBE31 /* JavaNativeFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaNativeFoundation.framework; path = System/Library/Frameworks/JavaNativeFoundation.framework; sourceTree = SDKROOT; };
@@ -154,8 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				ED28095325A20332009E7636 /* AirMessage */,
-				ED28095225A20332009E7636 /* Products */,
 				ED6CDD362689193000EEBE31 /* Frameworks */,
+				ED28095225A20332009E7636 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,21 +175,22 @@
 		ED28095325A20332009E7636 /* AirMessage */ = {
 			isa = PBXGroup;
 			children = (
-				ED1E5685269A52E50019CCD5 /* Views */,
-				EDD70D682699F1AE00E8DC06 /* AppleScript */,
-				EDC8228A2697B75A007A8DF9 /* AuthSite */,
+				ED28095E25A20333009E7636 /* AirMessage.entitlements */,
 				ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */,
-				ED67D1182689096300DB7B95 /* JavaBridge */,
-				ED891A4625A30BAE002230EB /* Helper */,
+				ED28095D25A20333009E7636 /* Info.plist */,
 				ED28095425A20332009E7636 /* AppDelegate.swift */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
-				ED28095A25A20333009E7636 /* Main.storyboard */,
-				ED28095D25A20333009E7636 /* Info.plist */,
-				ED28095E25A20333009E7636 /* AirMessage.entitlements */,
-				ED891A4425A30B77002230EB /* Controllers */,
+				EDD70D682699F1AE00E8DC06 /* AppleScript */,
+				EDC8228A2697B75A007A8DF9 /* AuthSite */,
 				2EAEE649853E94A70D112B63 /* Constants */,
+				ED891A4425A30B77002230EB /* Controllers */,
+				ED891A4625A30BAE002230EB /* Helper */,
+				ED67D1182689096300DB7B95 /* JavaBridge */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */,
+				ED28095A25A20333009E7636 /* Main.storyboard */,
+				ED1E5685269A52E50019CCD5 /* Views */,
+				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
 			);
 			path = AirMessage;
 			sourceTree = "<group>";
@@ -241,6 +247,8 @@
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
 				ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */,
 				ED44738626A387DD006F5F0E /* KeychainManager.swift */,
+				ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */,
+				ED44738A26A46B68006F5F0E /* DispatchHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -431,6 +439,7 @@
 			files = (
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
 				ED267859269132ED001EFCB7 /* JVM.m in Sources */,
+				ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */,
 				ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
@@ -440,6 +449,7 @@
 				ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */,
 				ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */,
 				ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */,
+				ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */,
 				ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,
 				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
@@ -493,6 +503,7 @@
 /* Begin XCBuildConfiguration section */
 		ED28095F25A20333009E7636 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED44738C26A46F86006F5F0E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -555,6 +566,7 @@
 		};
 		ED28096025A20333009E7636 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED44738C26A46F86006F5F0E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -617,6 +629,7 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = (
@@ -634,6 +647,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
@@ -652,6 +666,7 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = (
@@ -669,6 +684,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;

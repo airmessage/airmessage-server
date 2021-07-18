@@ -61,7 +61,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		dataProxy.removeMessageListener(this);
 		
 		//Calling the stop procedure
-		onStop(ServerState.STOPPED);
+		onStop(ServerState.SETUP);
 	}
 	
 	public boolean isRunning() {

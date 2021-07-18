@@ -281,7 +281,7 @@
                     </connections>
                 </application>
             </objects>
-            <point key="canvasLocation" x="814" y="-54"/>
+            <point key="canvasLocation" x="-866" y="143"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -341,7 +341,7 @@ DQ
 </string>
                                 </buttonCell>
                                 <connections>
-                                    <segue destination="Y7F-lv-57a" kind="sheet" identifier="AccountEntry" id="Oa8-fk-piq"/>
+                                    <segue destination="Y7F-lv-57a" kind="sheet" identifier="AccountConnect" id="Oa8-fk-piq"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U3d-e9-3Nj">
@@ -550,7 +550,7 @@ Gw
                 </windowController>
                 <customObject id="8aY-nd-ot6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="813" y="250"/>
+            <point key="canvasLocation" x="-866" y="469"/>
         </scene>
         <!--Preferences View Controller-->
         <scene sceneID="CZC-0W-g1Y">
@@ -617,6 +617,9 @@ Gw
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <segue destination="Skp-rU-QjG" kind="sheet" identifier="PasswordEntry" id="aM8-FM-ABJ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <visibilityPriorities>
@@ -827,7 +830,7 @@ DQ
                 </viewController>
                 <customObject id="QKv-tJ-wjm" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1489" y="239"/>
+            <point key="canvasLocation" x="-866" y="902"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="Nwk-a7-L6x">
@@ -1168,6 +1171,9 @@ DQ
             <point key="canvasLocation" x="1459" y="1448"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="aM8-FM-ABJ"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="AppIconResource" width="256" height="256"/>
         <image name="FullDiskAccess" width="1560" height="1398"/>

@@ -1,5 +1,6 @@
 package me.tagavari.airmessageserver.jni;
 
+import me.tagavari.airmessageserver.connection.ConnectionManager;
 import me.tagavari.airmessageserver.server.Main;
 
 /**
@@ -7,9 +8,17 @@ import me.tagavari.airmessageserver.server.Main;
  */
 public class JNIControl {
 	/**
-	 * Starts the server from the "retry" button
+	 * Starts the server
 	 */
 	public static void onStartServer() {
 		Main.startServer();
+	}
+	
+	/**
+	 * Stops the server and puts it back in setup mode
+	 */
+	public static void onStopServer() {
+		//Main.setServerState(ServerState.SETUP);
+		ConnectionManager.stop();
 	}
 }

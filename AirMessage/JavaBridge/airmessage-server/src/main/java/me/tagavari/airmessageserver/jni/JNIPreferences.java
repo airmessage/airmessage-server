@@ -24,4 +24,9 @@ public class JNIPreferences {
 	 * Gets the installation ID of this device
 	 */
 	public static native String getInstallationID();
+	
+	/**
+	 * Gets the ID token of the currently signed-in user
+	 */
+	public static native String getFirebaseIDToken();
 }

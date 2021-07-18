@@ -24,7 +24,7 @@ class AppleScriptBridge: NSObject {
 				error: nil)!
 		
 		var scriptError: NSDictionary?
-		let scriptResult = scriptTestAutomation.executeAndReturnError(&scriptError)
-		return scriptResult != nil
+		scriptTestAutomation.executeAndReturnError(&scriptError)
+		return scriptError == nil
 	}
 }

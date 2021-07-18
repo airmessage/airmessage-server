@@ -19,7 +19,6 @@ class PasswordEntryViewController: NSViewController {
 	private var currentTextField: NSTextField!
 	
 	public var isRequired = true
-	public var initialText: String?
 	public var onSubmit: ((String) -> Void)?
 	
 	override func viewDidLoad() {
@@ -29,12 +28,9 @@ class PasswordEntryViewController: NSViewController {
 		plainField.delegate = self
 		
 		currentTextField = secureField
+		currentTextField.stringValue = PreferencesManager.shared.password
 		
 		confirmButton.isEnabled = !secureField.stringValue.isEmpty
-		
-		if let initialText = initialText {
-			currentTextField.stringValue = initialText
-		}
 		
 		//Perform initial UI update
 		updateUI()

@@ -1,5 +1,5 @@
 //
-//  NativeStorage.swift
+//  AccountConnectViewController.swift
 //  AirMessage
 //
 //  Created by Cole Feuer on 2021-01-04.
@@ -9,13 +9,13 @@ import AppKit
 import WebKit
 import Swifter
 
+private let jsFuncConfirm = "confirmHandler"
+private let jsFuncError = "errorHandler"
+
 class AccountConnectViewController: NSViewController {
-	var server: HttpServer!
+	private var server: HttpServer!
 	
-	var onAccountConfirm: ((_ idToken: String, _ userID: String) -> Void)?
-	
-	private let jsFuncConfirm = "confirmHandler"
-	private let jsFuncError = "errorHandler"
+	public var onAccountConfirm: ((_ refreshToken: String) -> Void)?
 	
 	override func viewDidLoad() {
 		//Initializing the WebView
@@ -34,11 +34,11 @@ class AccountConnectViewController: NSViewController {
 		
 		server["/"] = shareFile(Bundle.main.resourcePath! + "/build/index.html")
 		server["/:path"] = shareFilesFromDirectory(Bundle.main.resourcePath! + "/build")
-		//server[":path"] = { .ok(.htmlBody("You asked for \($0)"))  }
 		try! server.start(0)
+		let port = try! server.port()
 		
-		print("Running local server on http://localhost:\(try! server.port())")
-		webView.load(URLRequest(url: URL(string:"http://localhost:\(try! server.port())")!))
+		print("Running local server on http://localhost:\(port)")
+		webView.load(URLRequest(url: URL(string:"http://localhost:\(port)")!))
 	}
 	
 	override func viewDidDisappear() {
@@ -49,18 +49,12 @@ class AccountConnectViewController: NSViewController {
 extension AccountConnectViewController: WKScriptMessageHandler {
 	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 		if message.name == jsFuncConfirm {
-			guard let dict = message.body as? [String: String] else {
-				return
-			}
+			let dict = message.body as! [String: String]
 			
-			print(dict)
-			
-			onAccountConfirm?(dict["idToken"]!, dict["userID"]!)
+			onAccountConfirm?(dict["refreshToken"]!)
 			dismiss(self)
 		} else if message.name == jsFuncError {
-			guard let dict = message.body as? [String: String] else {
-				return
-			}
+			let dict = message.body as! [String: String]
 			
 			print(dict)
 		}

@@ -57,10 +57,17 @@ class PreferencesViewController: NSViewController {
 			return
 		}
 		
+		let originalPort = PreferencesManager.shared.serverPort
+		
 		//Save changes to disk
 		PreferencesManager.shared.serverPort = inputPortValue
 		PreferencesManager.shared.checkUpdates = checkboxAutoUpdate.state == .on
 		PreferencesManager.shared.betaUpdates = checkboxBetaUpdate.state == .on
+		
+		//Restart the server if the port changed
+		if originalPort != inputPortValue {
+			launchServer()
+		}
 		
 		//Close window
 		view.window!.close()
@@ -73,7 +80,18 @@ class PreferencesViewController: NSViewController {
 		alert.addButton(withTitle: "Switch to Account")
 		alert.addButton(withTitle: "Cancel")
 		alert.beginSheetModal(for: view.window!) { response in
-			print(response)
+			if response != .alertFirstButtonReturn {
+				return
+			}
+			
+			//Reset the server
+			resetServer()
+			
+			//Close the preferences window
+			self.view.window!.close()
+			
+			//Show the onboarding window
+			showOnboarding()
 		}
 	}
 	
@@ -89,6 +107,19 @@ class PreferencesViewController: NSViewController {
 				if response == .alertSecondButtonReturn {
 					sender.state = .off
 				}
+			}
+		}
+	}
+	
+	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+		if segue.identifier == "PasswordEntry" {
+			let passwordEntry = segue.destinationController as! PasswordEntryViewController
+			
+			//Password is required for manual setup, but not for AirMessage Cloud
+			passwordEntry.isRequired = PreferencesManager.shared.accountType == .direct
+			passwordEntry.onSubmit = { password in
+				//Save password
+				PreferencesManager.shared.password = password
 			}
 		}
 	}

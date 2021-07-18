@@ -7,6 +7,12 @@
 
 import AppKit
 
+func showOnboarding() {
+	let storyboard = NSStoryboard(name: "Main", bundle: nil)
+	let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
+	windowController.showWindow(nil)
+}
+
 class OnboardingViewController: NSViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,6 +30,7 @@ class OnboardingViewController: NSViewController {
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
 		if segue.identifier == "PasswordEntry" {
 			let passwordEntry = segue.destinationController as! PasswordEntryViewController
+			
 			//Password is required for manual setup
 			passwordEntry.isRequired = true
 			passwordEntry.onSubmit = { [weak self] password in
@@ -33,6 +40,24 @@ class OnboardingViewController: NSViewController {
 				//Mark setup as complete
 				PreferencesManager.shared.accountType = .direct
 				PreferencesManager.shared.serverPort = defaultServerPort
+				
+				//Start server
+				launchServer()
+				
+				//Close window
+				if let self = self {
+					self.view.window!.close()
+				}
+			}
+		} else if segue.identifier == "AccountConnect" {
+			let accountConnect = segue.destinationController as! AccountConnectViewController
+			
+			accountConnect.onAccountConfirm = { [weak self] refreshToken in
+				//Save refresh token
+				PreferencesManager.shared.refreshToken = refreshToken
+				
+				//Mark setup as complete
+				PreferencesManager.shared.accountType = .connect
 				
 				//Start server
 				launchServer()

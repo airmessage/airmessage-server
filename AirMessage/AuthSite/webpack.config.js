@@ -3,7 +3,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
 	entry: "./index.js",
-	target: "es5",
+	target: ["web", "es5"],
 	mode: "production",
 	output: {
 		path: path.resolve(__dirname, "build"),

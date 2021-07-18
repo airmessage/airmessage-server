@@ -23,35 +23,15 @@ class ConnectWebSocketClient extends WebSocketClient {
 	//Creating the callbacks
 	private final ConnectionListener connectionListener;
 	
-	static ConnectWebSocketClient createInstanceRegister(String idToken, ConnectionListener connectionListener) {
+	static ConnectWebSocketClient createInstance(String installationID, String idToken, ConnectionListener connectionListener) {
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Origin", "app");
 		
 		String query = new QueryBuilder()
 				.with("communications", NHT.commVer)
 				.with("is_server", true)
-				.with("installation_id", JNIPreferences.getInstallationID())
+				.with("installation_id", installationID)
 				.with("id_token", idToken)
-				.toString();
-		
-		try {
-			return new ConnectWebSocketClient(new URI(PropertiesManager.getConnectEndpoint() + "?" + query), headers, connectTimeout, connectionListener);
-		} catch(URISyntaxException exception) {
-			Sentry.captureException(exception);
-			Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
-			return null;
-		}
-	}
-	
-	static ConnectWebSocketClient createInstanceExisting(String userID, ConnectionListener connectionListener) {
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Origin", "app");
-		
-		String query = new QueryBuilder()
-				.with("communications", NHT.commVer)
-				.with("is_server", true)
-				.with("installation_id", JNIPreferences.getInstallationID())
-				.with("user_id", userID)
 				.toString();
 		
 		try {

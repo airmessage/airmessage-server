@@ -22,14 +22,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	private var currentServerState = ServerState.setup
 	private var currentClientCount = 0
 	
-	private func showWelcome() {
-		let storyboard = NSStoryboard(name: "Main", bundle: nil)
-		let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
-		windowController.showWindow(nil)
-		
-		NSApp.activate(ignoringOtherApps: true)
-	}
-	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		print("Starting AirMessage Server version \(appVersion)")
 		//let defaultLog = Logger()
@@ -49,7 +41,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		
 		//Show welcome window
 		if PreferencesManager.shared.accountType == .unknown {
-			showWelcome()
+			showOnboarding()
+			NSApp.activate(ignoringOtherApps: true)
 		} else {
 			//Start server
 			launchServer()

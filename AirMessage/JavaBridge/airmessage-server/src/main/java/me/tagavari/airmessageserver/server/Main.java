@@ -1,6 +1,9 @@
 package me.tagavari.airmessageserver.server;
 
 import me.tagavari.airmessageserver.connection.ConnectionManager;
+import me.tagavari.airmessageserver.connection.connect.DataProxyConnect;
+import me.tagavari.airmessageserver.connection.direct.DataProxyTCP;
+import me.tagavari.airmessageserver.constants.AccountType;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.jni.JNIUserInterface;
 
@@ -21,7 +24,6 @@ public class Main {
 	private static final SecureRandom secureRandom = new SecureRandom();
 	private static final File logFile = new File(Constants.applicationSupportDir, "logs/latest.log");
 	public static final int databaseScanFrequency = 2 * 1000;
-	private static final BlockingQueue<Runnable> runQueue = new LinkedBlockingQueue<>();
 	
 	//Creating the variables
 	private static boolean debugMode = false;
@@ -30,14 +32,14 @@ public class Main {
 	private static String deviceName;
 	
 	private static boolean isSetupMode;
-	private static ServerState serverState = ServerState.SETUP;
+	private static volatile ServerState serverState = ServerState.SETUP;
 	
 	public static void main(String[] args) throws IOException {
 		//Configuring the logger
 		logger = Logger.getGlobal();
 		logger.setLevel(Level.FINEST);
 		if(!logFile.getParentFile().exists()) logFile.getParentFile().mkdir();
-		else if(logFile.exists()) Files.move(logFile.toPath(), Constants.findFreeFile(logFile.getParentFile(), new SimpleDateFormat("YYYY-MM-dd").format(new Date()) + ".log", "-", 1).toPath());
+		else if(logFile.exists()) Files.move(logFile.toPath(), Constants.findFreeFile(logFile.getParentFile(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".log", "-", 1).toPath());
 		
 		for(Handler handler : logger.getParent().getHandlers()) logger.getParent().removeHandler(handler);
 		
@@ -84,15 +86,6 @@ public class Main {
 			//Deleting the uploads directory
 			Constants.recursiveDelete(Constants.uploadDir);
 		}));
-		
-		//Starting the main thread loop
-		/* try {
-			while(true) {
-				runQueue.take().run();
-			}
-		} catch(InterruptedException exception) {
-			exception.printStackTrace();
-		} */
 	}
 	
 	/**
@@ -111,14 +104,15 @@ public class Main {
 		ConnectionManager.stop();
 		
 		//Setting the data proxy
-		ConnectionManager.assignDataProxy();
+		int accountType = JNIPreferences.getAccountType();
+		if(accountType == AccountType.accountTypeConnect) {
+			ConnectionManager.setDataProxy(new DataProxyConnect(JNIPreferences.getInstallationID()));
+		} else if(accountType == AccountType.accountTypeDirect) {
+			ConnectionManager.setDataProxy(new DataProxyTCP(JNIPreferences.getServerPort()));
+		}
 		
 		//Updating the server state
 		setServerState(ServerState.STARTING);
-		
-		//Loading the credentials
-		//result = SecurityManager.loadCredentials();
-		//if(!result) System.exit(1);
 		
 		//Starting the database scanner
 		if(DatabaseManager.getInstance() == null) {
