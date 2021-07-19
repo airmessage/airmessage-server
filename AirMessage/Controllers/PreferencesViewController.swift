@@ -13,6 +13,9 @@ class PreferencesViewController: NSViewController {
 	@IBOutlet weak var checkboxAutoUpdate: NSButton!
 	@IBOutlet weak var checkboxBetaUpdate: NSButton!
 	
+	@IBOutlet weak var buttonSignOut: NSButton!
+	@IBOutlet weak var labelSignOut: NSTextField!
+	
 	override func viewWillAppear() {
 		super.viewWillAppear()
 		preferredContentSize = view.fittingSize
@@ -28,6 +31,15 @@ class PreferencesViewController: NSViewController {
 		checkboxAutoUpdate.state = PreferencesManager.shared.checkUpdates ? .on : .off
 		
 		checkboxBetaUpdate.state = PreferencesManager.shared.betaUpdates ? .on : .off
+		
+		//Update "sign out" button text
+		if PreferencesManager.shared.accountType == .direct {
+			buttonSignOut.title = NSLocalizedString("action.switch_to_account", comment: "")
+			labelSignOut.stringValue = NSLocalizedString("message.preference.account_manual", comment: "")
+		} else if PreferencesManager.shared.accountType == .connect {
+			buttonSignOut.title = NSLocalizedString("action.sign_out", comment: "")
+			labelSignOut.stringValue = String(format: NSLocalizedString("message.preference.account_connect", comment: ""), "hello@example.com")
+		}
 	}
 	
 	override func viewDidAppear() {

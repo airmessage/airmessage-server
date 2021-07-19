@@ -823,9 +823,11 @@ DQ
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="buttonSignOut" destination="Ywt-us-HOW" id="1Ul-x1-G50"/>
                         <outlet property="checkboxAutoUpdate" destination="64v-87-Mw3" id="Coh-fL-oYO"/>
                         <outlet property="checkboxBetaUpdate" destination="7if-Yx-qbX" id="ABN-ED-Lze"/>
                         <outlet property="inputPort" destination="8eS-Rq-H6a" id="8Ic-jr-MJz"/>
+                        <outlet property="labelSignOut" destination="jxh-hs-p0X" id="Ty6-Gy-jbN"/>
                     </connections>
                 </viewController>
                 <customObject id="QKv-tJ-wjm" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
