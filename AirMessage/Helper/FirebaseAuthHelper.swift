@@ -22,7 +22,25 @@ class FirebaseAuthHelper: NSObject {
 	private let cacheSerialQueue = DispatchQueue(label: "FirebaseAuthHelper")
 	private var cachedIDToken: CachedIDToken?
 	
-	@objc func getIDToken() throws -> String {
+	var requestResult: String?
+	var requestError: FirebaseAuthError?
+	@objc func getIDTokenSync() throws -> String {
+		let semaphore = DispatchSemaphore(value: 0)
+		getIDToken { [self] idToken, error in
+			requestResult = idToken
+			requestError = error
+			semaphore.signal()
+		}
+		semaphore.wait()
+		
+		if let error = requestError {
+			throw error
+		}
+		
+		return requestResult!
+	}
+	
+	func getIDToken(callback: @escaping (String?, FirebaseAuthError?) -> Void) {
 		//Checking if we have a cached value that's still valid
 		if let cachedIDToken = runOnMain(execute: { () -> String? in
 			if let cached = self.cachedIDToken, timeSeconds < cached.expiry {
@@ -32,7 +50,7 @@ class FirebaseAuthHelper: NSObject {
 				return nil
 			}
 		}) {
-			return cachedIDToken
+			callback(cachedIDToken, nil)
 		}
 		
 		//Get the refresh token
@@ -40,7 +58,8 @@ class FirebaseAuthHelper: NSObject {
 		
 		//Send the request
 		guard let requestBody = "grant_type=refresh_token&refresh_token=\(refreshToken)".data(using: .utf8) else {
-			throw FirebaseAuthError.serializationError
+			callback(nil, FirebaseAuthError.serializationError)
+			return
 		}
 		
 		let url = URL(string: "https://securetoken.googleapis.com/v1/token?key=\(Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String)")!
@@ -48,62 +67,50 @@ class FirebaseAuthHelper: NSObject {
 		request.httpMethod = "POST"
 		request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 		
-		var requestResult: FirebaseTokenResult?
-		var requestError: FirebaseAuthError?
-		let semaphore = DispatchSemaphore(value: 0)
 		let task = URLSession.shared.uploadTask(with: request, from: requestBody) { data, response, error in
 			if let error = error {
-				requestError = FirebaseAuthError.requestError(cause: error)
+				callback(nil, FirebaseAuthError.requestError(cause: error))
 				return
 			}
 			
 			guard let response = response as? HTTPURLResponse else {
-				requestError = FirebaseAuthError.serverError(code: nil)
+				callback(nil, FirebaseAuthError.serverError(code: nil))
 				return
 			}
 			
 			guard (200...299).contains(response.statusCode) else {
-				requestError = FirebaseAuthError.serverError(code: response.statusCode)
-				
 				if let data = data,
 				   let dataString = String(data: data, encoding: .utf8) {
 					print("Request error: \(dataString)")
 				}
+				
+				callback(nil, FirebaseAuthError.serverError(code: response.statusCode))
 				return
 			}
 			
 			guard let mimeType = response.mimeType,
 				  mimeType == "application/json",
 				  let data = data else {
-				requestError = FirebaseAuthError.responseError
+				callback(nil, FirebaseAuthError.responseError)
 				return
 			}
 			
 			guard let result = try? JSONDecoder().decode(FirebaseTokenResult.self, from: data) else {
-				requestError = FirebaseAuthError.deserializationError
+				callback(nil, FirebaseAuthError.deserializationError)
 				return
 			}
 			
-			requestResult = result
-			semaphore.signal()
-		}
-		//Run request synchronously
-		task.resume()
-		semaphore.wait()
-		
-		if let error = requestError {
-			throw error
-		}
-		
-		//Save the cached value
-		if let expiresIn = Int(requestResult!.expires_in) {
-			runOnMainAsync {
-				self.cachedIDToken = CachedIDToken(idToken: requestResult!.id_token, expiry: timeSeconds + expiresIn)
+			//Save the cached value
+			if let expiresIn = Int(result.expires_in) {
+				runOnMainAsync {
+					self.cachedIDToken = CachedIDToken(idToken: result.id_token, expiry: timeSeconds + expiresIn)
+				}
 			}
+			
+			//Return the result
+			callback(result.id_token, nil)
 		}
-		
-		//Return the ID token
-		return requestResult!.id_token
+		task.resume()
 	}
 }
 

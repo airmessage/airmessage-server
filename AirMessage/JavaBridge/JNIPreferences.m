@@ -28,7 +28,7 @@ jstring getInstallationID(JNIEnv *env, jclass thisClass) {
 
 jstring getFirebaseIDToken(JNIEnv *env, jclass thisClass) {
 	NSError* err = nil;
-	NSString *idToken = [FirebaseAuthHelper.getShared getIDTokenAndReturnError:&err];
+	NSString *idToken = [FirebaseAuthHelper.getShared getIDTokenSyncAndReturnError:&err];
 	
 	if(err != nil) {
 		NSLog(@"%@", err.description);
