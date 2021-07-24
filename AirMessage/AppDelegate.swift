@@ -9,9 +9,6 @@ import AppKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	//Constants
-	private let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-	
 	//Status bar
 	private let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 	@IBOutlet weak var menu: NSMenu!
@@ -23,8 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	private var currentClientCount = 0
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
-		print("Starting AirMessage Server version \(appVersion)")
-		//let defaultLog = Logger()
+		LogManager.shared.log("Starting AirMessage Server version %@", type: .info, Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
 		
 		//Register status bar item
 		statusBarItem.menu = menu

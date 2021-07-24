@@ -10,6 +10,8 @@
 #import "JNIPreferences.h"
 #import "JNIStorage.h"
 #import "JNIUserInterface.h"
+#import "JNIMessage.h"
+#import "JNILogging.h"
 
 JavaVM *jvm;
 JNIEnv *defaultEnv;
@@ -25,7 +27,7 @@ JNIEnv* createJVM(JavaVM **jvm) {
     JavaVMOption options;
     args.version = JNI_VERSION_10;
     args.nOptions = 1;
-	options.optionString = [NSString stringWithFormat:@"%@/%@/%@", @"-Djava.class.path=", NSBundle.mainBundle.resourcePath, @"/Java/airmessage-libs/airmessage-server.jar"].UTF8String;
+	options.optionString = (char *) [NSString stringWithFormat:@"%@/%@/%@", @"-Djava.class.path=", NSBundle.mainBundle.resourcePath, @"/Java/airmessage-libs/airmessage-server.jar"].UTF8String;
     args.options = &options;
     args.ignoreUnrecognized = 0;
     int rv = JNI_CreateJavaVM(jvm, (void**)&env, &args);
@@ -75,6 +77,8 @@ bool startJVM(void) {
     registerJNIPreferences(env);
     registerJNIStorage(env);
     registerJNIUserInterface(env);
+    registerJNIMessage(env);
+	registerJNILogging(env);
 	
 	//Call main method
 	jclass mainClass = (*env)->FindClass(env, "me/tagavari/airmessageserver/server/Main");

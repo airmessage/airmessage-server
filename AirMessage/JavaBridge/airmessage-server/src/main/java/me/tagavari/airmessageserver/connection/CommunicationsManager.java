@@ -5,7 +5,9 @@ import io.sentry.Sentry;
 import me.tagavari.airmessageserver.common.AirPacker;
 import me.tagavari.airmessageserver.common.AirUnpacker;
 import me.tagavari.airmessageserver.common.Blocks;
+import me.tagavari.airmessageserver.exception.AppleScriptException;
 import me.tagavari.airmessageserver.exception.LargeAllocationException;
+import me.tagavari.airmessageserver.jni.JNIMessage;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.jni.JNIUserInterface;
 import me.tagavari.airmessageserver.request.*;
@@ -458,10 +460,14 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		String service = unpacker.unpackString(); //The service of this conversation
 		
 		//Creating the chat
-		Constants.Tuple<Integer, String> result = AppleScriptManager.createChat(chatMembers, service);
-		
-		//Sending a response
-		sendMessageRequestResponse(client, CommConst.nhtCreateChat, requestID, result.item1, result.item2);
+		try {
+			String chatGUID = JNIMessage.createChat(chatMembers, service);
+			
+			sendMessageRequestResponse(client, CommConst.nhtCreateChat, requestID, CommConst.nstCreateChatOK, chatGUID);
+		} catch(AppleScriptException exception) {
+			var details = exception.getCreateChatErrorDetails();
+			sendMessageRequestResponse(client, CommConst.nhtCreateChat, requestID, details.item1, details.item2);
+		}
 	}
 	
 	private void handleMessageSendTextExisting(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
@@ -471,10 +477,14 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		String message = unpacker.unpackString(); //The message to send
 		
 		//Sending the message
-		Constants.Tuple<Integer, String> result = AppleScriptManager.sendExistingMessage(chatGUID, message);
-		
-		//Sending the response
-		sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, result.item1, result.item2);
+		try {
+			JNIMessage.sendExistingMessage(chatGUID, message);
+			
+			sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, CommConst.nstSendResultOK, null);
+		} catch(AppleScriptException exception) {
+			var details = exception.getSendErrorDetails();
+			sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, details.item1, details.item2);
+		}
 	}
 	
 	private void handleMessageSendTextNew(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
@@ -485,11 +495,14 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		String service = unpacker.unpackString(); //The service of the chat
 		String message = unpacker.unpackString(); //The message to send
 		
-		//Sending the message
-		Constants.Tuple<Integer, String> result = AppleScriptManager.sendNewMessage(members, message, service);
-		
-		//Sending the response
-		sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, result.item1, result.item2);
+		try {
+			JNIMessage.sendNewMessage(members, service, message);
+			
+			sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, CommConst.nstSendResultOK, null);
+		} catch(AppleScriptException exception) {
+			var details = exception.getSendErrorDetails();
+			sendMessageRequestResponse(client, CommConst.nhtSendResult, requestID, details.item1, details.item2);
+		}
 	}
 	
 	private void handleMessageSendFileExisting(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
@@ -502,7 +515,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		String fileName = requestIndex == 0 ? unpacker.unpackString() : null; //The name of the file to send
 		
 		//Forwarding the data
-		AppleScriptManager.addFileFragment(client, requestID, chatGUID, fileName, requestIndex, compressedBytes, isLast);
+		UploadHelper.addFileFragment(client, requestID, chatGUID, fileName, requestIndex, compressedBytes, isLast);
 	}
 	
 	private void handleMessageSendFileNew(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
@@ -521,7 +534,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		}
 		
 		//Forwarding the data
-		AppleScriptManager.addFileFragment(client, requestID, members, service, fileName, requestIndex, compressedBytes, isLast);
+		UploadHelper.addFileFragment(client, requestID, members, service, fileName, requestIndex, compressedBytes, isLast);
 	}
 	
 	public void initiateClose(ClientRegistration client) {

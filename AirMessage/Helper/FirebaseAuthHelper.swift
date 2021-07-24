@@ -81,7 +81,7 @@ class FirebaseAuthHelper: NSObject {
 			guard (200...299).contains(response.statusCode) else {
 				if let data = data,
 				   let dataString = String(data: data, encoding: .utf8) {
-					print("Request error: \(dataString)")
+					LogManager.shared.log("Request error: %@", type: .error, dataString)
 				}
 				
 				callback(nil, FirebaseAuthError.serverError(code: response.statusCode))

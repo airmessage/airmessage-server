@@ -4,6 +4,7 @@ import me.tagavari.airmessageserver.connection.ConnectionManager;
 import me.tagavari.airmessageserver.connection.connect.DataProxyConnect;
 import me.tagavari.airmessageserver.connection.direct.DataProxyTCP;
 import me.tagavari.airmessageserver.constants.AccountType;
+import me.tagavari.airmessageserver.jni.JNILogging;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.jni.JNIUserInterface;
 
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 public class Main {
 	//Creating the constants
 	private static final SecureRandom secureRandom = new SecureRandom();
-	private static final File logFile = new File(Constants.applicationSupportDir, "logs/latest.log");
 	public static final int databaseScanFrequency = 2 * 1000;
 	
 	//Creating the variables
@@ -31,41 +31,40 @@ public class Main {
 	private static Logger logger;
 	private static String deviceName;
 	
-	private static boolean isSetupMode;
 	private static volatile ServerState serverState = ServerState.SETUP;
 	
 	public static void main(String[] args) throws IOException {
 		//Configuring the logger
 		logger = Logger.getGlobal();
 		logger.setLevel(Level.FINEST);
-		if(!logFile.getParentFile().exists()) logFile.getParentFile().mkdir();
-		else if(logFile.exists()) Files.move(logFile.toPath(), Constants.findFreeFile(logFile.getParentFile(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".log", "-", 1).toPath());
-		
-		for(Handler handler : logger.getParent().getHandlers()) logger.getParent().removeHandler(handler);
-		
-		{
-			FileHandler handler = new FileHandler(logFile.getPath());
-			handler.setLevel(Level.FINEST);
-			handler.setFormatter(getLoggerFormatter());
-			logger.addHandler(handler);
-		}
-		
-		{
-			ConsoleHandler handler = new ConsoleHandler();
-			handler.setLevel(Level.FINEST);
-			handler.setFormatter(getLoggerFormatter());
-			logger.addHandler(handler);
-		}
+		for(var handler : logger.getHandlers()) logger.removeHandler(handler);
+		for(var handler : logger.getParent().getHandlers()) logger.getParent().removeHandler(handler);
+		logger.addHandler(new Handler() {
+			@Override
+			public void publish(LogRecord record) {
+				LogType logType;
+				int levelValue = record.getLevel().intValue();
+				if(levelValue <= Level.FINE.intValue()) logType = LogType.DEBUG;
+				else if(levelValue <= Level.INFO.intValue()) logType = LogType.INFO;
+				else if(levelValue <= Level.WARNING.intValue()) logType = LogType.NOTICE;
+				else logType = LogType.ERROR;
+				
+				JNILogging.log(logType.code, record.getMessage());
+			}
+			
+			@Override
+			public void flush() {}
+			
+			@Override
+			public void close() throws SecurityException {}
+		});
 		
 		//Reading the device name
 		deviceName = readDeviceName();
 		
 		if(isDebugMode()) {
-			getLogger().log(Level.INFO, "Server running in debug mode");
+			getLogger().info("Server running in debug mode");
 		}
-		
-		//Logging the startup messages
-		getLogger().info("Starting AirMessage Server version " + Constants.SERVER_VERSION);
 		
 		//Initializing properties
 		PropertiesManager.initializeProperties();
@@ -145,23 +144,6 @@ public class Main {
 		return debugMode;
 	}
 	
-	private static Formatter getLoggerFormatter() {
-		return new Formatter() {
-			private final DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-			
-			@Override
-			public String format(LogRecord record) {
-				String stackTrace = "";
-				if(record.getThrown() != null) {
-					StringWriter errors = new StringWriter();
-					record.getThrown().printStackTrace(new PrintWriter(errors));
-					stackTrace = errors.toString();
-				}
-				return dateFormat.format(record.getMillis()) + ' ' + '[' + record.getLevel().toString() + ']' + ' ' + formatMessage(record) + '\n' + stackTrace;
-			}
-		};
-	}
-	
 	public static TimeHelper getTimeHelper() {
 		return timeHelper;
 	}
@@ -172,14 +154,6 @@ public class Main {
 	
 	public static SecureRandom getSecureRandom() {
 		return secureRandom;
-	}
-	
-	public static boolean isSetupMode() {
-		return isSetupMode;
-	}
-	
-	public static void setSetupMode(boolean isSetupMode) {
-		Main.isSetupMode = isSetupMode;
 	}
 	
 	public static ServerState getServerState() {

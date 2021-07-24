@@ -83,7 +83,7 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 	@Override
 	public void stopServer() {
 		//Disconnecting the client
-		connectClient.close();
+		if(connectClient != null) connectClient.close();
 		
 		//Stopping the reconnection timer
 		stopReconnectionTimer();

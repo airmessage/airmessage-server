@@ -41,7 +41,7 @@ fileprivate func launchCheck() -> Bool {
 	do {
 		try FileManager.default.contentsOfDirectory(atPath: NSHomeDirectory() + "/Library/Messages")
 	} catch {
-		print("Failed to read Messages directory: \(error).")
+		LogManager.shared.log("Failed to read Messages directory: %s", type: .notice, error.localizedDescription)
 		
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
 		let windowController = storyboard.instantiateController(withIdentifier: "FullDiskAccess") as! NSWindowController

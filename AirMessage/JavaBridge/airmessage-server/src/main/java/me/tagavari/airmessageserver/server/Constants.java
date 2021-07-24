@@ -35,8 +35,8 @@ public class Constants {
 	static final int[] macOSBigSurVersion = {10, 16};
 	
 	//Creating the AppleScript error values
-	static final int asErrorCodeMessagesUnauthorized = -1743;
-	static final int asErrorCodeMessagesNoChat = -1728;
+	public static final int asErrorCodeMessagesUnauthorized = -1743;
+	public static final int asErrorCodeMessagesNoChat = -1728;
 	
 	//Creating the regex values
 	static final String reExInteger = "^\\d+$";

@@ -10,7 +10,6 @@ import WebKit
 import Swifter
 
 private let jsFuncConfirm = "confirmHandler"
-private let jsFuncError = "errorHandler"
 
 class AccountConnectViewController: NSViewController {
 	private var server: HttpServer!
@@ -25,7 +24,6 @@ class AccountConnectViewController: NSViewController {
 		
 		let contentController = webView.configuration.userContentController
 		contentController.add(self, name: jsFuncConfirm)
-		contentController.add(self, name: jsFuncError)
 		
 		webView.layer!.borderWidth = 1
 		webView.layer!.borderColor = NSColor.lightGray.cgColor
@@ -37,7 +35,7 @@ class AccountConnectViewController: NSViewController {
 		try! server.start(0)
 		let port = try! server.port()
 		
-		print("Running local server on http://localhost:\(port)")
+		LogManager.shared.log("Running local server on http://localhost:%d", type: .info, port)
 		webView.load(URLRequest(url: URL(string:"http://localhost:\(port)")!))
 	}
 	
@@ -53,10 +51,6 @@ extension AccountConnectViewController: WKScriptMessageHandler {
 			
 			onAccountConfirm?(dict["refreshToken"]!)
 			dismiss(self)
-		} else if message.name == jsFuncError {
-			let dict = message.body as! [String: String]
-			
-			print(dict)
 		}
 	}
 }
