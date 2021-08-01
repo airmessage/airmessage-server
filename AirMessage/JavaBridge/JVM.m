@@ -93,6 +93,13 @@ bool startJVM(void) {
  * Cleans up the JVM
  */
 void stopJVM(void) {
+    //Call System.exit
+    JNIEnv *env = getJNIEnv();
+    jclass systemClass = (*env)->FindClass(env, "java/lang/System");
+    jmethodID exitMethod = (*env)->GetStaticMethodID(env, systemClass, "exit", "(I)V");
+    (*env)->CallStaticVoidMethod(env, systemClass, exitMethod, 0);
+
+    //Wait for JVM to exit
 	(*jvm)->DestroyJavaVM(jvm);
 }
 
