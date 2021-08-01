@@ -86,7 +86,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 					menuItemSecondary.isHidden = true
 			}
 		} else {
-			menuItemSecondary.isEnabled = false
+			menuItemSecondary.isEnabled = true
+			menuItemSecondary.action = #selector(onOpenClientList)
 			menuItemSecondary.title = String(format: NSLocalizedString("message.status.connected_count", comment: ""), currentClientCount)
 		}
 	}
@@ -97,5 +98,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	@objc private func onReauthenticate() {
 		
+	}
+	
+	@objc private func onOpenClientList() {
+		let storyboard = NSStoryboard(name: "Main", bundle: nil)
+		let windowController = storyboard.instantiateController(withIdentifier: "ClientList") as! NSWindowController
+		windowController.showWindow(nil)
 	}
 }

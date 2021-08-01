@@ -47,6 +47,9 @@
 		EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */; };
 		EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
+		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
+		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
+		EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -132,6 +135,9 @@
 		EDD70D662699F00300E8DC06 /* AppleScriptSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppleScriptSource; sourceTree = "<group>"; };
 		EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptBridge.swift; sourceTree = "<group>"; };
 		EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLaunch.swift; sourceTree = "<group>"; };
+		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
+		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
+		EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRegistration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EAEE23A4A1E052C316DCD4B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		2EAEE649853E94A70D112B63 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				ED1E5683269A50360019CCD5 /* DraggableAppView.swift */,
+				EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -201,6 +216,7 @@
 				ED28095A25A20333009E7636 /* Main.storyboard */,
 				ED1E5685269A52E50019CCD5 /* Views */,
 				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
+				2EAEE23A4A1E052C316DCD4B /* Data */,
 			);
 			path = AirMessage;
 			sourceTree = "<group>";
@@ -248,6 +264,7 @@
 				ED28095625A20332009E7636 /* OnboardingViewController.swift */,
 				ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */,
 				ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */,
+				EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -458,7 +475,9 @@
 				ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */,
 				ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
+				EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
+				EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */,
 				EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */,
 				EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */,
 				EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */,
@@ -471,6 +490,7 @@
 				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
 				2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */,
 				ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */,
+				EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */,
 				EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */,
 				ED42B4BF26AC921D00409B24 /* JVMHelper.m in Sources */,
 				ED1B06542690EBE9006D34DF /* PreferencesViewController.swift in Sources */,
