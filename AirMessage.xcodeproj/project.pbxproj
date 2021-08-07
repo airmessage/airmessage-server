@@ -679,7 +679,7 @@
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				JAVA_HOME = "";
 				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
-				"JAVA_HOME[arch=i386]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
+				"JAVA_HOME[arch=x86_64]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -716,7 +716,7 @@
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				JAVA_HOME = "";
 				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
-				"JAVA_HOME[arch=i386]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
+				"JAVA_HOME[arch=x86_64]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
