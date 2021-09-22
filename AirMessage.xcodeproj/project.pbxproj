@@ -415,7 +415,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd AirMessage/JavaBridge/airmessage-server\n./gradlew shadowJar\npopd\n\n#rsync -a --delete AirMessage/JavaBridge/airmessage-server/build/libs/ AirMessage/JavaBridge/airmessage-libs/\n\nJARFILE=$SRCROOT/$(find AirMessage/JavaBridge/airmessage-server/build/libs/ -name \"*.jar\" | head -n 1)\n\nrm -r AirMessage/JavaBridge/airmessage-libs\nmkdir -p AirMessage/JavaBridge/airmessage-libs/unpack\npushd AirMessage/JavaBridge/airmessage-libs/unpack\n\njar xf \"$JARFILE\" #Unpack\nfind -E . -regex \".*\\.(dylib|jnilib)\" -print0 | xargs codesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" #Codesign dynamic libraries\njar cmf META-INF/MANIFEST.MF \"../airmessage-server.jar\" ./* #Repack JAR\n\npopd\nrm -r AirMessage/JavaBridge/airmessage-libs/unpack #Clean up\n";
+			shellScript = "if [[ \"$PLATFORM_PREFERRED_ARCH\" == \"x86_64\" ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$PLATFORM_PREFERRED_ARCH\" == \"arm64e\" ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\npushd AirMessage/JavaBridge/airmessage-server\n./gradlew shadowJar\npopd\n\n#rsync -a --delete AirMessage/JavaBridge/airmessage-server/build/libs/ AirMessage/JavaBridge/airmessage-libs/\n\nJARFILE=$SRCROOT/$(find AirMessage/JavaBridge/airmessage-server/build/libs/ -name \"*.jar\" | head -n 1)\n\nrm -r AirMessage/JavaBridge/airmessage-libs\nmkdir -p AirMessage/JavaBridge/airmessage-libs/unpack\npushd AirMessage/JavaBridge/airmessage-libs/unpack\n\njar xf \"$JARFILE\" #Unpack\nfind -E . -regex \".*\\.(dylib|jnilib)\" | xargs codesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" #Codesign dynamic libraries\njar cmf META-INF/MANIFEST.MF \"../airmessage-server.jar\" ./* #Repack JAR\n\npopd\nrm -r AirMessage/JavaBridge/airmessage-libs/unpack #Clean up\n";
 		};
 		ED1E5695269B99F70019CCD5 /* Generate JVM */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -434,7 +434,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find java-runtime -name \"*.dylib\")\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
+			shellScript = "if [[ \"$ARCHS\" == *\"x86_64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$ARCHS\" == *\"arm64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\necho \"Building with JAVA_HOME=$JAVA_HOME\"\njava -version\n\ncd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find java-runtime -name \"*.dylib\")\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
 		};
 		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -678,8 +678,10 @@
 				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				JAVA_HOME = "";
-				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
-				"JAVA_HOME[arch=x86_64]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
+				"JAVA_HOME[arch=arm64]" = "$(JAVA_HOME_ARM)";
+				"JAVA_HOME[arch=x86_64]" = "$(JAVA_HOME_INTEL)";
+				JAVA_HOME_ARM = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
+				JAVA_HOME_INTEL = "/Library/Java/JavaVirtualMachines/temurin-16.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -715,8 +717,10 @@
 				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
 				JAVA_HOME = "";
-				"JAVA_HOME[arch=arm64]" = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
-				"JAVA_HOME[arch=x86_64]" = "/Library/Java/JavaVirtualMachines/aojdk-16.0.1.jdk/Contents/Home";
+				"JAVA_HOME[arch=arm64]" = "$(JAVA_HOME_ARM)";
+				"JAVA_HOME[arch=x86_64]" = "$(JAVA_HOME_INTEL)";
+				JAVA_HOME_ARM = "/Library/Java/JavaVirtualMachines/zulu-16.jdk/Contents/Home";
+				JAVA_HOME_INTEL = "/Library/Java/JavaVirtualMachines/temurin-16.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -725,6 +729,7 @@
 				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 1.0.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
