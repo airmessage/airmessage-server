@@ -434,7 +434,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$ARCHS\" == *\"x86_64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$ARCHS\" == *\"arm64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\necho \"Building with JAVA_HOME=$JAVA_HOME\"\njava -version\n\ncd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find java-runtime -name \"*.dylib\")\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
+			shellScript = "if [[ \"$ARCHS\" == *\"x86_64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$ARCHS\" == *\"arm64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\necho \"Building with JAVA_HOME=$JAVA_HOME\"\njava -version\n\ncd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find . -type f \\( -name \"*.dylib\" -o -perm +111 \\))\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
 		};
 		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
 			isa = PBXShellScriptBuildPhase;
