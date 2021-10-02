@@ -36,6 +36,8 @@ NSMutableArray<ClientRegistration *>* jniGetClients(void) {
     jmethodID methodID = (*env)->GetStaticMethodID(env, class, "getClients", "()[Lme/tagavari/airmessageserver/connection/ClientRegistration;");
     jobjectArray javaClientArray = (*env)->CallObjectMethod(env, class, methodID);
 
+	handleException(env);
+
 	jsize arrayLength = (*env)->GetArrayLength(env, javaClientArray);
 	NSMutableArray<ClientRegistration *>* nsArray = [NSMutableArray arrayWithCapacity:(NSUInteger) arrayLength];
 	for(int i = 0; i < arrayLength; i++) {
