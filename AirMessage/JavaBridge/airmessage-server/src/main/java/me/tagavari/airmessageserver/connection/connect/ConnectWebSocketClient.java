@@ -1,7 +1,6 @@
 package me.tagavari.airmessageserver.connection.connect;
 
 import io.sentry.Sentry;
-import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.server.Main;
 import me.tagavari.airmessageserver.server.PropertiesManager;
 import org.java_websocket.client.WebSocketClient;

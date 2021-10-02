@@ -60,7 +60,7 @@ public class Main {
 		});
 		
 		//Reading the device name
-		deviceName = readDeviceName();
+		deviceName = SystemAccess.readDeviceName();
 		
 		if(isDebugMode()) {
 			getLogger().info("Server running in debug mode");
@@ -132,14 +132,6 @@ public class Main {
 		getLogger().info("Initialization complete");
 	}
 	
-	private static void processArgs(String[] args) {
-		//Iterating over the arguments
-		for(String argument : args) {
-			//Debug
-			if("-debug".equals(argument)) debugMode = true;
-		}
-	}
-	
 	public static boolean isDebugMode() {
 		return debugMode;
 	}
@@ -163,29 +155,6 @@ public class Main {
 	public static void setServerState(ServerState value) {
 		serverState = value;
 		JNIUserInterface.updateUIState(value.code);
-	}
-	
-	private static String readDeviceName() {
-		try {
-			Process process = Runtime.getRuntime().exec(new String[]{"scutil", "--get", "ComputerName"});
-			
-			if(process.waitFor() == 0) {
-				//Reading and returning the input
-				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				return in.lines().collect(Collectors.joining());
-			} else {
-				//Logging the error
-				try(BufferedReader in = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-					String errorOutput = in.lines().collect(Collectors.joining());
-					Main.getLogger().log(Level.WARNING, "Unable to read device name: " + errorOutput);
-				}
-			}
-		} catch(IOException | InterruptedException exception) {
-			//Printing the stack trace
-			Main.getLogger().log(Level.WARNING, exception.getMessage(), exception);
-		}
-		
-		return null;
 	}
 	
 	public static String getDeviceName() {

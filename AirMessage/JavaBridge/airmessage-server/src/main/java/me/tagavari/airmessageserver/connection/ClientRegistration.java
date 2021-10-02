@@ -49,7 +49,7 @@ public class ClientRegistration {
 	private final AtomicBoolean isConnected = new AtomicBoolean(true);
 	
 	//Creating the timer values
-	private Timer handshakeExpiryTimer;
+	private volatile Timer handshakeExpiryTimer;
 	private Timer pingResponseTimer = new Timer();
 	private final Lock pingResponseTimerLock = new ReentrantLock();
 	
@@ -80,8 +80,8 @@ public class ClientRegistration {
 	}
 	
 	public void startHandshakeExpiryTimer(long timeout, Runnable runnable) {
-		handshakeExpiryTimer = new Timer();
-		handshakeExpiryTimer.schedule(new TimerTask() {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				//Invalidating the registration timer
@@ -91,6 +91,7 @@ public class ClientRegistration {
 				runnable.run();
 			}
 		}, timeout);
+		handshakeExpiryTimer = timer;
 	}
 	
 	public void cancelHandshakeExpiryTimer() {

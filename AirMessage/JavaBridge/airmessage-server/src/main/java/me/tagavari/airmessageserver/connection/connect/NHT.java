@@ -77,6 +77,6 @@ class NHT {
 	static final int closeCodeNoCapacity = 4002; //The client's group is at capacity
 	static final int closeCodeAccountValidation = 4003; //This account couldn't be validated
 	static final int closeCodeServerTokenRefresh = 4004; //The server's provided installation ID is out of date; log in again to re-link this device
-	static final int closeCodeNoSubscription = 4005; //This user does not have an active subscription
+	static final int closeCodeNoActivation = 4005; //This user's account is not activated
 	static final int closeCodeOtherLocation = 4006; //Logged in from another location
 }

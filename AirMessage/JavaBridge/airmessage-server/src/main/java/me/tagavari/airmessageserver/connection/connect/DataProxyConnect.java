@@ -4,7 +4,6 @@ import io.sentry.Sentry;
 import me.tagavari.airmessageserver.connection.CommConst;
 import me.tagavari.airmessageserver.connection.DataProxy;
 import me.tagavari.airmessageserver.connection.EncryptionHelper;
-import me.tagavari.airmessageserver.jni.JNIControl;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
 import me.tagavari.airmessageserver.server.Main;
 import me.tagavari.airmessageserver.server.ServerState;
@@ -185,7 +184,7 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 			case NHT.closeCodeIncompatibleProtocol -> ServerState.ERROR_CONN_OUTDATED;
 			case NHT.closeCodeAccountValidation -> ServerState.ERROR_CONN_VALIDATION;
 			case NHT.closeCodeServerTokenRefresh -> ServerState.ERROR_CONN_TOKEN;
-			case NHT.closeCodeNoSubscription -> ServerState.ERROR_CONN_SUBSCRIPTION;
+			case NHT.closeCodeNoActivation -> ServerState.ERROR_CONN_ACTIVATION;
 			case NHT.closeCodeOtherLocation -> ServerState.ERROR_CONN_CONFLICT;
 			default -> ServerState.ERROR_EXTERNAL;
 		};
@@ -241,8 +240,47 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 				case NHT.nhtServerProxy -> {
 					//Reading the data
 					int connectionID = bytes.getInt();
+
+					/*
+					 * App-level encryption was added at a later date,
+					 * so we use a hack by checking the first byte of the message.
+					 *
+					 * All message types will have the first byte as 0 or -1,
+					 * so we can check for other values here.
+					 *
+					 * If we find a match, assume that this was intentional from the client.
+					 * Otherwise, backtrack and assume the client doesn't support encryption.
+					 *
+					 * -100 -> The content is encrypted
+					 * -101 -> The content is not encrypted, but the client has encryption enabled
+					 * -102 -> The client has encryption disabled
+					 * Anything else -> The client does not support encryption
+					 */
+					boolean isSecure, isEncrypted;
+					byte encryptionValue = bytes.get();
+					if(encryptionValue == -100) isSecure = isEncrypted = true;
+					else if(encryptionValue == -101) isSecure = isEncrypted = false;
+					else {
+						isSecure = true;
+						isEncrypted = false;
+						if(encryptionValue != -102) {
+							bytes.position(bytes.position() - 1);
+						}
+					}
+
 					byte[] data = new byte[bytes.remaining()];
 					bytes.get(data);
+
+					//Decrypting the data
+					if(isEncrypted && !JNIPreferences.getPassword().isBlank()) {
+						try {
+							data = EncryptionHelper.decrypt(data);
+						} catch(GeneralSecurityException exception) {
+							Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+							Sentry.captureException(exception);
+							return;
+						}
+					}
 					
 					//Getting the client
 					ClientSocket client = connectionList.get(connectionID);
@@ -254,7 +292,7 @@ public class DataProxyConnect extends DataProxy<ClientSocket> implements Connect
 					}
 					
 					//Notifying the communications manager
-					notifyMessage(client, data, true);
+					notifyMessage(client, data, isSecure);
 				}
 			}
 		} catch(BufferUnderflowException exception) {

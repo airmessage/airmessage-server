@@ -685,17 +685,20 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 			return false;
 		}
 	}
-	
-	public boolean sendFileChunk(ClientRegistration client, short requestID, int requestIndex, long fileLength, boolean isLast, String fileGUID, byte[] chunkData, int chunkDataLength) {
+
+	public boolean sendFileChunk(ClientRegistration client, short requestID, int requestIndex, String updatedFileName, String updatedFileType, long fileLength, boolean isLast, byte[] chunkData, int chunkDataLength) {
 		try(AirPacker packer = AirPacker.get()) {
 			packer.packInt(CommConst.nhtAttachmentReq);
 			
 			packer.packShort(requestID);
 			packer.packInt(requestIndex);
-			if(requestIndex == 0) packer.packLong(fileLength);
+			if(requestIndex == 0) {
+				packer.packNullableString(updatedFileName);
+				packer.packNullableString(updatedFileType);
+				packer.packLong(fileLength);
+			}
 			packer.packBoolean(isLast);
 			
-			packer.packString(fileGUID);
 			packer.packPayload(chunkData, chunkDataLength);
 			
 			dataProxy.sendMessage(client, packer.toByteArray(), true);
@@ -752,28 +755,31 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 			return false;
 		}
 	}
-	
-	public boolean sendMassRetrievalFileChunk(ClientRegistration client, short requestID, int requestIndex, String fileName, boolean isLast, String fileGUID, byte[] chunkData, int chunkDataLength) {
-		try(AirPacker packer = AirPacker.get()) {
-			packer.packInt(CommConst.nhtMassRetrievalFile);
-			
-			packer.packShort(requestID);
-			packer.packInt(requestIndex);
-			if(requestIndex == 0) packer.packString(fileName);
-			packer.packBoolean(isLast);
-			
-			packer.packString(fileGUID);
-			packer.packPayload(chunkData, chunkDataLength);
-			
-			dataProxy.sendMessage(client, packer.toByteArray(), true);
-			
-			return true;
-		} catch(BufferOverflowException exception) {
-			Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
-			Sentry.captureException(exception);
-			
-			return false;
+
+	public boolean sendMassRetrievalFileChunk(ClientRegistration client, short requestID, int requestIndex, String fileName, String downloadFileName, String downloadFileType, boolean isLast, String fileGUID, byte[] chunkData, int chunkDataLength) {		try(AirPacker packer = AirPacker.get()) {
+		packer.packInt(CommConst.nhtMassRetrievalFile);
+
+		packer.packShort(requestID);
+		packer.packInt(requestIndex);
+		if(requestIndex == 0) {
+			packer.packString(fileName);
+			packer.packNullableString(downloadFileName);
+			packer.packNullableString(downloadFileType);
 		}
+		packer.packBoolean(isLast);
+
+		packer.packString(fileGUID);
+		packer.packPayload(chunkData, chunkDataLength);
+
+		dataProxy.sendMessage(client, packer.toByteArray(), true);
+
+		return true;
+	} catch(BufferOverflowException exception) {
+		Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+		Sentry.captureException(exception);
+
+		return false;
+	}
 	}
 	
 	public boolean sendModifierUpdate(ClientRegistration client, Collection<Blocks.ModifierInfo> items) {

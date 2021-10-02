@@ -19,7 +19,7 @@ public enum ServerState {
 	ERROR_CONN_OUTDATED(301, Constants.typeError), //Client out of date
 	ERROR_CONN_VALIDATION(302, Constants.typeError), //Account access not valid
 	ERROR_CONN_TOKEN(303, Constants.typeError), //Token refresh
-	ERROR_CONN_SUBSCRIPTION(304, Constants.typeError), //Not subscribed (not enrolled)
+	ERROR_CONN_ACTIVATION(304, Constants.typeError), //Not subscribed (not enrolled)
 	ERROR_CONN_CONFLICT(305, Constants.typeError); //Logged in from another location
 	
 	public final int code;

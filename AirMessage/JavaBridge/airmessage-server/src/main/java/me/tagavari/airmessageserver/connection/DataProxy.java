@@ -7,18 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class DataProxy<C extends ClientRegistration> {
-	//Error codes
-	//General
-	public static final int createServerResultOK = 0;
-	public static final int createServerResultInternal = 1;
-	public static final int createServerResultExternal = 2;
-	//TCP server
-	public static final int createServerResultServerPort = 100;
-	//Connect relay
-	public static final int createServerResultConnectTokenRefresh = 200;
-	public static final int createServerResultConnectNoSubscription = 201;
-	public static final int createServerResultConnectOtherLocation = 202;
-	
 	private final Set<DataProxyListener<C>> messageListenerSet = new HashSet<>(1);
 	
 	/**

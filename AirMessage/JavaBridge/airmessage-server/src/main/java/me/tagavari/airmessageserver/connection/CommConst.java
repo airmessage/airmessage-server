@@ -3,7 +3,7 @@ package me.tagavari.airmessageserver.connection;
 public class CommConst {
 	//Transmission header values
 	public static final int mmCommunicationsVersion = 5;
-	public static final int mmCommunicationsSubVersion = 3;
+	public static final int mmCommunicationsSubVersion = 4;
 	
 	//NHT - Net header type
 	public static final int nhtClose = 0;
