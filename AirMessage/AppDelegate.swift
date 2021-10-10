@@ -105,4 +105,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		let windowController = storyboard.instantiateController(withIdentifier: "ClientList") as! NSWindowController
 		windowController.showWindow(nil)
 	}
+	
+	@IBAction func onCheckForUpdates(_ sender: Any) {
+		UpdateHelper.shared.checkUpdates(onError: {error in
+			//Show an alert
+			let alert = NSAlert()
+			alert.alertStyle = .critical
+			alert.messageText = error.localizedDescription
+			alert.runModal()
+		}, onUpdate: {updateData in
+			let storyboard = NSStoryboard(name: "Main", bundle: nil)
+			let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
+			let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
+			viewController.updateData = updateData
+			
+			windowController.showWindow(sender)
+		})
+	}
 }

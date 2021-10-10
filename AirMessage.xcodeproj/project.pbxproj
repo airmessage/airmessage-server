@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */; };
+		2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */; };
 		2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEE327A491386A20EC729 /* PreferencesManager.swift */; };
 		2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF14220907E804086BB9 /* AccountType.swift */; };
 		2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */; };
 		2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */; };
 		2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE04E2200019FF3869C09 /* JNIPreferences.m */; };
+		2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */; };
 		2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */; };
+		2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */; };
 		ED15912326AC5484008F5304 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED15912226AC5484008F5304 /* LogManager.swift */; };
 		ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED15912426AC76C2008F5304 /* MessageManager.swift */; };
 		ED1B06542690EBE9006D34DF /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */; };
@@ -35,6 +39,8 @@
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
+		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
+		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC02BF92697CA8D003FA87E /* JNIControl.m */; };
 		EDC2430526ACD235006444FF /* JNILogging.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC2430426ACD235006444FF /* JNILogging.m */; };
@@ -50,6 +56,7 @@
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */; };
+		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,14 +76,18 @@
 /* Begin PBXFileReference section */
 		2EAEE04E2200019FF3869C09 /* JNIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIPreferences.m; sourceTree = "<group>"; };
 		2EAEE2E16E83486BABD81E6D /* JVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVM.h; sourceTree = "<group>"; };
+		2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateStruct.swift; sourceTree = "<group>"; };
 		2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIStorage.h; sourceTree = "<group>"; };
 		2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIStorage.m; sourceTree = "<group>"; };
 		2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIUserInterface.m; sourceTree = "<group>"; };
 		2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIPreferences.h; sourceTree = "<group>"; };
 		2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerState.swift; sourceTree = "<group>"; };
+		2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdateViewController.swift; sourceTree = "<group>"; };
 		2EAEED88784206F8146AEC97 /* JNIUserInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUserInterface.h; sourceTree = "<group>"; };
+		2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdateProgressViewController.swift; sourceTree = "<group>"; };
 		2EAEEE327A491386A20EC729 /* PreferencesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
 		2EAEEF14220907E804086BB9 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateHelper.swift; sourceTree = "<group>"; };
 		ED15912226AC5484008F5304 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		ED15912426AC76C2008F5304 /* MessageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +149,7 @@
 		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRegistration.swift; sourceTree = "<group>"; };
+		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,7 +157,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
+				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */,
+				2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -217,6 +232,7 @@
 				ED1E5685269A52E50019CCD5 /* Views */,
 				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
 				2EAEE23A4A1E052C316DCD4B /* Data */,
+				EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */,
 			);
 			path = AirMessage;
 			sourceTree = "<group>";
@@ -265,6 +281,8 @@
 				ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */,
 				ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */,
 				EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */,
+				2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */,
+				2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -282,6 +300,7 @@
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
 				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
 				ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */,
+				2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -335,6 +354,8 @@
 			name = AirMessage;
 			packageProductDependencies = (
 				EDDE47302688C2890029628B /* Swifter */,
+				ED98B3EE2711D8300029DD09 /* Ink */,
+				ED98B3F12711D84E0029DD09 /* Zip */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -368,6 +389,8 @@
 			mainGroup = ED28094825A20332009E7636;
 			packageReferences = (
 				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
+				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
+				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -383,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */,
 				EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */,
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
 				EDC822962697B781007A8DF9 /* build in Resources */,
@@ -504,6 +528,10 @@
 				ED15912326AC5484008F5304 /* LogManager.swift in Sources */,
 				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
 				2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */,
+				2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */,
+				2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */,
+				2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */,
+				2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,6 +791,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnsundell/ink.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.5.1;
+			};
+		};
+		ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/Zip.git";
+			requirement = {
+				kind = revision;
+				revision = 059e7346082d02de16220cd79df7db18ddeba8c3;
+			};
+		};
 		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/httpswift/swifter.git";
@@ -774,6 +818,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ED98B3EE2711D8300029DD09 /* Ink */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */;
+			productName = Ink;
+		};
+		ED98B3F12711D84E0029DD09 /* Zip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */;
+			productName = Zip;
+		};
 		EDDE47302688C2890029628B /* Swifter */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;

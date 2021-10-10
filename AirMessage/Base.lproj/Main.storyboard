@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19162"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -45,6 +45,9 @@
                                         </menuItem>
                                         <menuItem title="Check for Updates…" id="gii-7S-Dfv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="onCheckForUpdates:" target="Voe-Tx-rLC" id="1F7-Bk-JS0"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Quit AirMessage" keyEquivalent="q" id="4sb-4s-VLi">
@@ -1292,6 +1295,196 @@ DQ
                 <customObject id="bnK-X4-hwq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1459" y="1448"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="BWc-qD-bnd">
+            <objects>
+                <windowController storyboardIdentifier="SoftwareUpdate" showSeguePresentationStyle="single" id="39P-PF-iMd" sceneMemberID="viewController">
+                    <window key="window" title="Software Update" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MOQ-X8-9pb">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="425" y="473" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
+                        <view key="contentView" id="lYz-mY-XaV">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="delegate" destination="39P-PF-iMd" id="C1L-Q5-THS"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="41f-th-T07" kind="relationship" relationship="window.shadowedContentViewController" id="ZDg-cv-U5n"/>
+                    </connections>
+                </windowController>
+                <customObject id="sEx-Yg-yNf" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-889" y="1379"/>
+        </scene>
+        <!--Software Update View Controller-->
+        <scene sceneID="3WM-bE-P2p">
+            <objects>
+                <viewController showSeguePresentationStyle="single" id="41f-th-T07" customClass="SoftwareUpdateViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" misplaced="YES" id="NTk-Kw-POG">
+                        <rect key="frame" x="0.0" y="0.0" width="666" height="345"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Jj-re-55A">
+                                <rect key="frame" x="16" y="259" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="6af-io-9SQ"/>
+                                    <constraint firstAttribute="height" constant="64" id="HxN-YI-CJE"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AppIconResource" id="amC-sT-ATV"/>
+                            </imageView>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qln-JE-dUV">
+                                <rect key="frame" x="96" y="16" width="550" height="307"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0aB-HU-2o1">
+                                        <rect key="frame" x="-2" y="288" width="304" height="19"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="A new version of AirMessage is available!" id="Ne4-95-tzP">
+                                            <font key="font" metaFont="systemBold" size="15"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FhY-C3-Y1U">
+                                        <rect key="frame" x="-2" y="264" width="517" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="AirMessage Server 2.0 is available - you have 1.5. Would you like to download it now?" id="c7E-6N-uOg">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VV2-qy-Mns">
+                                        <rect key="frame" x="-2" y="240" width="101" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Release Notes:" id="gHZ-Jf-doy">
+                                            <font key="font" metaFont="systemBold"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="rSD-50-pXn">
+                                        <rect key="frame" x="0.0" y="32" width="550" height="200"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="XXR-DJ-Qcz"/>
+                                        </constraints>
+                                    </containerView>
+                                    <stackView orientation="horizontal" alignment="centerY" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xsY-uQ-l0m">
+                                        <rect key="frame" x="0.0" y="0.0" width="550" height="24"/>
+                                        <endViews>
+                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aCF-jq-CyX">
+                                                <rect key="frame" x="300" y="-5" width="137" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Remind Me Later" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dMP-ac-Am5">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="onRemindLater:" target="41f-th-T07" id="X2h-Wv-XM6"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l0u-ng-8so">
+                                                <rect key="frame" x="439" y="-5" width="118" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Install Update" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zg0-ne-thA">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="onInstallUpdate:" target="41f-th-T07" id="Q1Z-Hf-Ao1"/>
+                                                </connections>
+                                            </button>
+                                        </endViews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="E03-ah-drB"/>
+                                        </constraints>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="rSD-50-pXn" firstAttribute="leading" secondItem="qln-JE-dUV" secondAttribute="leading" id="Kwm-CT-Xgz"/>
+                                    <constraint firstAttribute="trailing" secondItem="rSD-50-pXn" secondAttribute="trailing" id="dxX-TW-hNc"/>
+                                    <constraint firstAttribute="width" constant="550" id="eDn-HM-gFJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="xsY-uQ-l0m" secondAttribute="trailing" id="jg2-tU-utq"/>
+                                    <constraint firstItem="xsY-uQ-l0m" firstAttribute="leading" secondItem="qln-JE-dUV" secondAttribute="leading" id="rd8-xP-Tnt"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="qln-JE-dUV" firstAttribute="top" secondItem="NTk-Kw-POG" secondAttribute="top" constant="16" id="7eK-MA-Wff"/>
+                            <constraint firstAttribute="bottom" secondItem="qln-JE-dUV" secondAttribute="bottom" constant="16" id="IWv-Po-3Mr"/>
+                            <constraint firstItem="qln-JE-dUV" firstAttribute="leading" secondItem="5Jj-re-55A" secondAttribute="trailing" constant="16" id="Jt2-tT-Xsh"/>
+                            <constraint firstItem="5Jj-re-55A" firstAttribute="top" secondItem="NTk-Kw-POG" secondAttribute="top" constant="16" id="Yj0-Pq-yEc"/>
+                            <constraint firstItem="5Jj-re-55A" firstAttribute="leading" secondItem="NTk-Kw-POG" secondAttribute="leading" constant="16" id="fGn-of-k2o"/>
+                            <constraint firstAttribute="trailing" secondItem="qln-JE-dUV" secondAttribute="trailing" constant="20" symbolic="YES" id="ml1-zo-rd9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="FhY-C3-Y1U" id="0vP-yC-zh0"/>
+                        <outlet property="webViewContainer" destination="rSD-50-pXn" id="bD8-UQ-6YH"/>
+                    </connections>
+                </viewController>
+                <customObject id="Wb5-vP-V9z" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-814" y="1834"/>
+        </scene>
+        <!--Software Installer-->
+        <scene sceneID="Slx-U3-RqD">
+            <objects>
+                <viewController title="Software Installer" storyboardIdentifier="SoftwareUpdateProgress" id="VES-Qk-O5O" customClass="SoftwareUpdateProgressViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="HbS-gH-4iM">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="64"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r03-ln-Lzg">
+                                <rect key="frame" x="18" y="34" width="115" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Installing update…" id="IJf-wZ-OBH">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <progressIndicator fixedFrame="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="RzU-PH-L0b">
+                                <rect key="frame" x="20" y="13" width="410" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="label" destination="r03-ln-Lzg" id="MSi-bo-6xF"/>
+                        <outlet property="progressIndicator" destination="RzU-PH-L0b" id="hgq-7r-FrH"/>
+                    </connections>
+                </viewController>
+                <customObject id="h3D-HD-aVz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-754" y="2410"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -114,7 +114,7 @@ class FirebaseAuthHelper: NSObject {
 	}
 }
 
-private struct FirebaseTokenResult: Codable {
+private struct FirebaseTokenResult: Decodable {
 	let expires_in: String
 	let token_type: String
 	let refresh_token: String

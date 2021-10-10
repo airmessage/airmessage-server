@@ -37,3 +37,5 @@
 
 "message.preference.account_manual"="This server is configured for manual access. Configure AirMessage on your phone to connect using this computer's internet address.";
 "message.preference.account_connect"="This server is configured for %@. Sign in to AirMessage on your smartphone, tablet, or PC to get messaging.";
+
+"message.update"="AirMessage Server %@ is available — you have %@. Would you like to download it now?";
