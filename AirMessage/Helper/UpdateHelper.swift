@@ -3,15 +3,16 @@
 //
 
 import Foundation
+import AppKit
 
 class UpdateHelper: NSObject {
-	public static let shared = UpdateHelper()
-	
 	private static let updateBaseURL = "https://airmessage.org"
 	private static let stableUpdateURL = URL(string: updateBaseURL + "/update/server/3.json")!
 	private static let betaUpdateURL = URL(string: updateBaseURL + "/update/server-beta/3.json")!
+	private static let updateCheckInterval: TimeInterval = 60 * 60 * 24
 	
-	private var pendingUpdate: UpdateStruct?
+	private static var updateTimer: Timer?
+	private static var pendingUpdate: UpdateStruct?
 	
 	/**
 	 Queries the online server for available updates
@@ -19,19 +20,25 @@ class UpdateHelper: NSObject {
 	   - onError: A callback to run if an error occurs
 	   - onUpdate: A callback to run if an update is found. Called with the update data, or nil if the app is up-to-date.
 	 */
-	func checkUpdates(onError: @escaping (UpdateError) -> Void, onUpdate: @escaping (UpdateStruct?) -> Void) {
+	static func checkUpdates(onError: ((UpdateError) -> Void)?, onUpdate: @escaping (UpdateStruct?) -> Void) {
 		//Download update data
 		URLSession.shared.dataTask(with: PreferencesManager.shared.betaUpdates ? UpdateHelper.betaUpdateURL : UpdateHelper.stableUpdateURL) { [self] (data, response, error) in
+			func notifyError(_ error: UpdateError) {
+				if let onError = onError {
+					DispatchQueue.main.async { onError(.networkError(error: error)) }
+				}
+			}
+			
 			if let error = error {
 				LogManager.shared.log("Failed to download updates: %{public}", type: .notice, error.localizedDescription)
-				DispatchQueue.main.async { onError(.networkError(error: error)) }
+				notifyError(.networkError(error: error))
 				return
 			}
 			
 			guard let data = data,
 				  let updateData = try? JSONDecoder().decode(UpdateCheckResult.self, from: data) else {
 				LogManager.shared.log("Failed to parse update data", type: .notice)
-				DispatchQueue.main.async { onError(.parseError) }
+				notifyError(.parseError)
 				return
 			}
 			
@@ -47,7 +54,7 @@ class UpdateHelper: NSObject {
 			for version in updateData.osRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int(version) else {
 					LogManager.shared.log("Failed to parse version int %{public} in %{public}", type: .notice, version, updateData.osRequirement)
-					DispatchQueue.main.async { onError(.parseError) }
+					notifyError(.parseError)
 					return
 				}
 				versionSplit.append(versionInt)
@@ -70,14 +77,14 @@ class UpdateHelper: NSObject {
 			
 			guard ProcessInfo.processInfo.isOperatingSystemAtLeast(minimumVersion) else {
 				LogManager.shared.log("Can't apply update, required OS version is %{public}.%{public}.%{public}", type: .info, minimumVersion.majorVersion, minimumVersion.minorVersion, minimumVersion.patchVersion)
-				DispatchQueue.main.async { onError(.osCompatibilityError(minVersion: minimumVersion)) }
+				notifyError(.osCompatibilityError(minVersion: minimumVersion))
 				return
 			}
 			
 			//Index update notes
 			guard !updateData.notes.isEmpty else {
 				LogManager.shared.log("Can't apply update, no update notes found", type: .notice)
-				DispatchQueue.main.async { onError(.parseError) }
+				notifyError(.parseError)
 				return
 			}
 			
@@ -88,7 +95,7 @@ class UpdateHelper: NSObject {
 			//Find a matching locale
 			let updateNotes: String
 			if let languageCode = Locale.autoupdatingCurrent.languageCode,
-				  let languageNotes = updateNotesDict[languageCode] {
+			   let languageNotes = updateNotesDict[languageCode] {
 				updateNotes = languageNotes
 			} else {
 				//Default to the first locale
@@ -112,7 +119,7 @@ class UpdateHelper: NSObject {
 			
 			guard let downloadURL = downloadURL else {
 				LogManager.shared.log("Can't apply update, no URL available for architecture", type: .notice)
-				DispatchQueue.main.async { onError(.archCompatibilityError) }
+				notifyError(.archCompatibilityError)
 				return
 			}
 			
@@ -128,6 +135,43 @@ class UpdateHelper: NSObject {
 				onUpdate(updateStruct)
 			}
 		}.resume()
+	}
+	
+	/**
+	 Starts background checking of updates
+	 */
+	static func startUpdateTimer() {
+		guard updateTimer == nil else { return }
+		
+		let timer = Timer.scheduledTimer(timeInterval: UpdateHelper.updateCheckInterval, target: self, selector: #selector(updateTimerCheck), userInfo: nil, repeats: true)
+		timer.fire() //Check for updates immediately
+		updateTimer = timer
+	}
+	
+	/**
+	 Stops background checking of updates
+	 */
+	static func stopUpdateTimer() {
+		updateTimer?.invalidate()
+		updateTimer = nil
+	}
+	
+	@objc private static func updateTimerCheck() {
+		//Check for updates, show window
+		checkUpdates(onError: nil, onUpdate: { _ in showUpdateWindow() })
+	}
+	
+	static func showUpdateWindow() {
+		//Get update data
+		guard let updateData = pendingUpdate else { return }
+		
+		//Show window
+		let storyboard = NSStoryboard(name: "Main", bundle: nil)
+		let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
+		let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
+		viewController.updateData = updateData
+		
+		windowController.showWindow(nil)
 	}
 	
 	/**

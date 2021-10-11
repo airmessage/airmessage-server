@@ -46,6 +46,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		
 		//Prevent system from sleeping
 		lockSystemSleep()
+		
+		//Start update timer
+		if PreferencesManager.shared.checkUpdates {
+			UpdateHelper.startUpdateTimer()
+		}
 	}
 	
 	func applicationWillTerminate(_ notification: Notification) {
@@ -107,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@IBAction func onCheckForUpdates(_ sender: Any) {
-		UpdateHelper.shared.checkUpdates(onError: {error in
+		UpdateHelper.checkUpdates(onError: {error in
 			NSApp.activate(ignoringOtherApps: true)
 			
 			//Show an alert
@@ -117,14 +122,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			alert.informativeText = error.localizedDescription
 			alert.runModal()
 		}, onUpdate: {updateData in
-			if let updateData = updateData {
+			if updateData != nil {
 				//Update available, show window
-				let storyboard = NSStoryboard(name: "Main", bundle: nil)
-				let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
-				let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
-				viewController.updateData = updateData
+				UpdateHelper.showUpdateWindow()
 				
-				windowController.showWindow(sender)
 			} else {
 				NSApp.activate(ignoringOtherApps: true)
 				

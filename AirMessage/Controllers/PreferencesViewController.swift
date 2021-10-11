@@ -81,6 +81,13 @@ class PreferencesViewController: NSViewController {
 			launchServer()
 		}
 		
+		//Start or stop update check timer
+		if checkboxAutoUpdate.state == .on {
+			UpdateHelper.startUpdateTimer()
+		} else {
+			UpdateHelper.stopUpdateTimer()
+		}
+		
 		//Close window
 		view.window!.close()
 	}
@@ -106,7 +113,6 @@ class PreferencesViewController: NSViewController {
 			showOnboarding()
 		}
 	}
-	
 	
 	@IBAction func onClickReceiveBetaUpdates(_ sender: NSButton) {
 		if sender.state == .on {
