@@ -13,6 +13,7 @@ class UpdateHelper: NSObject {
 	
 	private static var updateTimer: Timer?
 	private static var pendingUpdate: UpdateStruct?
+	private static var updatePromptWindow: NSWindow?
 	
 	/**
 	 Queries the online server for available updates
@@ -161,7 +162,19 @@ class UpdateHelper: NSObject {
 		checkUpdates(onError: nil, onUpdate: { _ in showUpdateWindow() })
 	}
 	
+	/**
+	 Shows a window that prompts the user to install an update
+	 */
 	static func showUpdateWindow() {
+		if let window = updatePromptWindow {
+			//Focus the window
+			NSApp.activate(ignoringOtherApps: true)
+			window.makeKey()
+			
+			//Don't create a new window
+			return
+		}
+		
 		//Get update data
 		guard let updateData = pendingUpdate else { return }
 		
@@ -170,8 +183,21 @@ class UpdateHelper: NSObject {
 		let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
 		let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
 		viewController.updateData = updateData
-		
 		windowController.showWindow(nil)
+		
+		//Save the window reference for later
+		updatePromptWindow = windowController.window!
+		
+		//Register for updates when the window closes
+		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateWindowClose), name: NSWindow.willCloseNotification, object: nil)
+	}
+	
+	@objc private static func onUpdateWindowClose() {
+		//Clean up references
+		updatePromptWindow = nil
+		
+		//Unregister the observer
+		NotificationCenter.default.removeObserver(self, name: NSWindow.willCloseNotification, object: nil)
 	}
 	
 	/**
