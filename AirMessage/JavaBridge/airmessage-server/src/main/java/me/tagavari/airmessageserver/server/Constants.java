@@ -1,5 +1,6 @@
 package me.tagavari.airmessageserver.server;
 
+import me.tagavari.airmessageserver.jni.JNIEnvironment;
 import me.tagavari.airmessageserver.jni.JNIStorage;
 
 import java.io.File;
@@ -17,13 +18,12 @@ import java.util.stream.Stream;
 
 public class Constants {
 	//Creating the version values
-	public static final String SERVER_VERSION = "3.4.1";
-	public static final int SERVER_VERSION_CODE = 25;
+	public static final String SERVER_VERSION = JNIEnvironment.getAppVersion();
+	public static final int SERVER_VERSION_CODE = JNIEnvironment.getAppVersionCode();
 	
 	//Creating the file values
 	public static final File applicationSupportDir = JNIStorage.getDocumentsDirectory();
 	public static final File uploadDir = new File(applicationSupportDir, "uploads");
-	public static final File updateDir = new File(applicationSupportDir, "update");
 	public static final File convertDir = new File(applicationSupportDir, "convert");
 	
 	//Creating the macOS version values

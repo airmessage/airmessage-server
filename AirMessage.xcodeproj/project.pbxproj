@@ -16,6 +16,7 @@
 		2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE04E2200019FF3869C09 /* JNIPreferences.m */; };
 		2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */; };
 		2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */; };
+		2EAEED0E7DB2A749AD885B21 /* JNIEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */; };
 		2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */; };
 		ED15912326AC5484008F5304 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED15912226AC5484008F5304 /* LogManager.swift */; };
 		ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED15912426AC76C2008F5304 /* MessageManager.swift */; };
@@ -86,8 +87,10 @@
 		2EAEED88784206F8146AEC97 /* JNIUserInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUserInterface.h; sourceTree = "<group>"; };
 		2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdateProgressViewController.swift; sourceTree = "<group>"; };
 		2EAEEE327A491386A20EC729 /* PreferencesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
+		2EAEEE533ACABFADD2316DAD /* JNIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIEnvironment.h; sourceTree = "<group>"; };
 		2EAEEF14220907E804086BB9 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
 		2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateHelper.swift; sourceTree = "<group>"; };
+		2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIEnvironment.m; sourceTree = "<group>"; };
 		ED15912226AC5484008F5304 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		ED15912426AC76C2008F5304 /* MessageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 				ED42B4C026AC923A00409B24 /* JVMHelper.h */,
 				EDC2430326ACD22C006444FF /* JNILogging.h */,
 				EDC2430426ACD235006444FF /* JNILogging.m */,
+				2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */,
+				2EAEEE533ACABFADD2316DAD /* JNIEnvironment.h */,
 			);
 			path = JavaBridge;
 			sourceTree = "<group>";
@@ -388,9 +393,9 @@
 			);
 			mainGroup = ED28094825A20332009E7636;
 			packageReferences = (
-				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
-				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
-				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
+				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter.git" */,
+				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink.git" */,
+				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip.git" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -532,6 +537,7 @@
 				2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */,
 				2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */,
 				2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */,
+				2EAEED0E7DB2A749AD885B21 /* JNIEnvironment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,7 +797,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */ = {
+		ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnsundell/ink.git";
 			requirement = {
@@ -799,7 +805,7 @@
 				minimumVersion = 0.5.1;
 			};
 		};
-		ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */ = {
+		ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/Zip.git";
 			requirement = {
@@ -807,7 +813,7 @@
 				revision = 059e7346082d02de16220cd79df7db18ddeba8c3;
 			};
 		};
-		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
+		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/httpswift/swifter.git";
 			requirement = {
@@ -820,17 +826,17 @@
 /* Begin XCSwiftPackageProductDependency section */
 		ED98B3EE2711D8300029DD09 /* Ink */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */;
+			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink.git" */;
 			productName = Ink;
 		};
 		ED98B3F12711D84E0029DD09 /* Zip */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */;
+			package = ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip.git" */;
 			productName = Zip;
 		};
 		EDDE47302688C2890029628B /* Swifter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;
+			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter.git" */;
 			productName = Swifter;
 		};
 /* End XCSwiftPackageProductDependency section */

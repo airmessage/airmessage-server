@@ -12,6 +12,7 @@
 #import "JNIUserInterface.h"
 #import "JNIMessage.h"
 #import "JNILogging.h"
+#import "JNIEnvironment.h"
 
 JavaVM *jvm;
 JNIEnv *defaultEnv;
@@ -79,7 +80,8 @@ bool startJVM(void) {
     registerJNIUserInterface(env);
     registerJNIMessage(env);
 	registerJNILogging(env);
-	
+	registerJNIEnvironment(env);
+
 	//Call main method
 	jclass mainClass = (*env)->FindClass(env, "me/tagavari/airmessageserver/server/Main");
 	jmethodID mainMethodID = (*env)->GetStaticMethodID(env, mainClass, "main", "([Ljava/lang/String;)V");
