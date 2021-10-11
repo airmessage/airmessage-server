@@ -7,6 +7,7 @@
 
 import Foundation
 import IOKit.pwr_mgt
+import MachO
 
 private var sleepAssertionID: IOPMAssertionID = 0
 
@@ -27,4 +28,12 @@ func isProcessTranslated() -> Bool {
 	var size = MemoryLayout.size(ofValue: ret)
 	sysctlbyname("sysctl.proc_translated", &ret, &size, nil, 0)
 	return ret == 1
+}
+
+/**
+ Gets a string representation of the current computer architecture
+ */
+func getSystemArchitecture() -> String {
+	let info = NXGetLocalArchInfo()
+	return String(utf8String: (info?.pointee.description)!)!
 }

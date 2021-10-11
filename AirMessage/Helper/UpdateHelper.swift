@@ -70,7 +70,7 @@ class UpdateHelper: NSObject {
 			
 			guard ProcessInfo.processInfo.isOperatingSystemAtLeast(minimumVersion) else {
 				LogManager.shared.log("Can't apply update, required OS version is %{public}.%{public}.%{public}", type: .info, minimumVersion.majorVersion, minimumVersion.minorVersion, minimumVersion.patchVersion)
-				DispatchQueue.main.async { onError(.compatibilityError) }
+				DispatchQueue.main.async { onError(.osCompatibilityError(minVersion: minimumVersion)) }
 				return
 			}
 			
@@ -112,7 +112,7 @@ class UpdateHelper: NSObject {
 			
 			guard let downloadURL = downloadURL else {
 				LogManager.shared.log("Can't apply update, no URL available for architecture", type: .notice)
-				DispatchQueue.main.async { onError(.compatibilityError) }
+				DispatchQueue.main.async { onError(.archCompatibilityError) }
 				return
 			}
 			
@@ -169,8 +169,22 @@ private struct UpdateNotes: Decodable {
 	let message: String
 }
 
-enum UpdateError: Error {
+enum UpdateError: Error, LocalizedError {
 	case networkError(error: Error)
 	case parseError
-	case compatibilityError
+	case osCompatibilityError(minVersion: OperatingSystemVersion)
+	case archCompatibilityError
+	
+	var errorDescription: String? {
+		switch self {
+			case .networkError(let error):
+				return error.localizedDescription
+			case .parseError:
+				return NSLocalizedString("message.update.error.parse", comment: "")
+			case .osCompatibilityError(let minVersion):
+				return String(format: NSLocalizedString("message.update.error.oscompat", comment: ""), minVersion.majorVersion, minVersion.minorVersion, minVersion.patchVersion)
+			case .archCompatibilityError:
+				return String(format: NSLocalizedString("message.update.error.archcompat", comment: ""), getSystemArchitecture())
+		}
+	}
 }

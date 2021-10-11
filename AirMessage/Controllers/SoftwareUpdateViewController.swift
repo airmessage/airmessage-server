@@ -48,7 +48,7 @@ class SoftwareUpdateViewController: NSViewController {
 		webView.loadHTMLString(notesHTML, baseURL: nil)
 		
 		//Set the update description
-		descriptionLabel.stringValue = String(format: NSLocalizedString("message.update", comment: ""), updateData.version, Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+		descriptionLabel.stringValue = String(format: NSLocalizedString("message.update.available", comment: ""), updateData.version, Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
 	}
 	
 	override func viewDidAppear() {

@@ -38,6 +38,10 @@
 "message.preference.account_manual"="This server is configured for manual access. Configure AirMessage on your phone to connect using this computer's internet address.";
 "message.preference.account_connect"="This server is configured for %@. Sign in to AirMessage on your smartphone, tablet, or PC to get messaging.";
 
-"message.update"="AirMessage Server %1$@ is available — you have %2$@. Would you like to download it now?";
-"message.noupdate.title"="You’re up to date!";
-"message.noupdate.description"="%1$@ %2$@ is currently the newest version available.";
+"message.update.available"="AirMessage Server %1$@ is available — you have %2$@. Would you like to download it now?";
+"message.update.uptodate.title"="You’re up to date!";
+"message.update.uptodate.description"="%1$@ %2$@ is currently the newest version available.";
+"message.update.error.title"="An error occurred while checking for updates";
+"message.update.error.parse"="Couldn't download update details, please try again later.";
+"message.update.error.oscompat"="Please update to macOS %d.%d.%d and try again.";
+"message.update.error.archcompat"="Your system architecture (%@) isn't supported.";

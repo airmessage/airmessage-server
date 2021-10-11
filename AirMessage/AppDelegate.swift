@@ -108,10 +108,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	@IBAction func onCheckForUpdates(_ sender: Any) {
 		UpdateHelper.shared.checkUpdates(onError: {error in
+			NSApp.activate(ignoringOtherApps: true)
+			
 			//Show an alert
 			let alert = NSAlert()
 			alert.alertStyle = .critical
-			alert.messageText = error.localizedDescription
+			alert.messageText = NSLocalizedString("message.update.error.title", comment: "")
+			alert.informativeText = error.localizedDescription
 			alert.runModal()
 		}, onUpdate: {updateData in
 			if let updateData = updateData {
@@ -128,9 +131,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				//Let the user know no new version is available
 				let alert = NSAlert()
 				alert.alertStyle = .informational
-				alert.messageText = NSLocalizedString("message.noupdate.title", comment: "")
+				alert.messageText = NSLocalizedString("message.update.uptodate.title", comment: "")
 				alert.informativeText = String(
-						format: NSLocalizedString("message.noupdate.description", comment: ""),
+						format: NSLocalizedString("message.update.uptodate.description", comment: ""),
 						Bundle.main.infoDictionary!["CFBundleName"] as! String,
 						Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 				)
