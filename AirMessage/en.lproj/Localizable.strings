@@ -38,4 +38,6 @@
 "message.preference.account_manual"="This server is configured for manual access. Configure AirMessage on your phone to connect using this computer's internet address.";
 "message.preference.account_connect"="This server is configured for %@. Sign in to AirMessage on your smartphone, tablet, or PC to get messaging.";
 
-"message.update"="AirMessage Server %@ is available — you have %@. Would you like to download it now?";
+"message.update"="AirMessage Server %1$@ is available — you have %2$@. Would you like to download it now?";
+"message.noupdate.title"="You’re up to date!";
+"message.noupdate.description"="%1$@ %2$@ is currently the newest version available.";

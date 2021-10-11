@@ -114,12 +114,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			alert.messageText = error.localizedDescription
 			alert.runModal()
 		}, onUpdate: {updateData in
-			let storyboard = NSStoryboard(name: "Main", bundle: nil)
-			let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
-			let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
-			viewController.updateData = updateData
-			
-			windowController.showWindow(sender)
+			if let updateData = updateData {
+				//Update available, show window
+				let storyboard = NSStoryboard(name: "Main", bundle: nil)
+				let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdate") as! NSWindowController
+				let viewController = windowController.window!.contentViewController as! SoftwareUpdateViewController
+				viewController.updateData = updateData
+				
+				windowController.showWindow(sender)
+			} else {
+				NSApp.activate(ignoringOtherApps: true)
+				
+				//Let the user know no new version is available
+				let alert = NSAlert()
+				alert.alertStyle = .informational
+				alert.messageText = NSLocalizedString("message.noupdate.title", comment: "")
+				alert.informativeText = String(
+						format: NSLocalizedString("message.noupdate.description", comment: ""),
+						Bundle.main.infoDictionary!["CFBundleName"] as! String,
+						Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+				)
+				alert.runModal()
+			}
 		})
 	}
 }

@@ -13,7 +13,13 @@ class UpdateHelper: NSObject {
 	
 	private var pendingUpdate: UpdateStruct?
 	
-	func checkUpdates(onError: @escaping (UpdateError) -> Void, onUpdate: @escaping (UpdateStruct) -> Void) {
+	/**
+	 Queries the online server for available updates
+	 - Parameters:
+	   - onError: A callback to run if an error occurs
+	   - onUpdate: A callback to run if an update is found. Called with the update data, or nil if the app is up-to-date.
+	 */
+	func checkUpdates(onError: @escaping (UpdateError) -> Void, onUpdate: @escaping (UpdateStruct?) -> Void) {
 		//Download update data
 		URLSession.shared.dataTask(with: PreferencesManager.shared.betaUpdates ? UpdateHelper.betaUpdateURL : UpdateHelper.stableUpdateURL) { [self] (data, response, error) in
 			if let error = error {
@@ -26,6 +32,13 @@ class UpdateHelper: NSObject {
 				  let updateData = try? JSONDecoder().decode(UpdateCheckResult.self, from: data) else {
 				LogManager.shared.log("Failed to parse update data", type: .notice)
 				DispatchQueue.main.async { onError(.parseError) }
+				return
+			}
+			
+			//Checking if the update is newer
+			guard updateData.versionCode > Int(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)! else {
+				LogManager.shared.log("No newer update available", type: .info)
+				DispatchQueue.main.async { onUpdate(nil) }
 				return
 			}
 			
@@ -87,12 +100,12 @@ class UpdateHelper: NSObject {
 			#if arch(x86_64)
 				if isProcessTranslated() {
 					//Try for Apple Silicon
-					downloadURL = resolveDownloadURL(forAppleSilicon: updateData)
+					downloadURL = UpdateHelper.resolveDownloadURL(forAppleSilicon: updateData)
 				} else {
-					downloadURL = resolveDownloadURL(forIntel: updateData)
+					downloadURL = UpdateHelper.resolveDownloadURL(forIntel: updateData)
 				}
 			#elseif arch(arm64)
-				downloadURL = resolveDownloadURL(forAppleSilicon: updateData)
+				downloadURL = UpdateHelper.resolveDownloadURL(forAppleSilicon: updateData)
 			#else
 				downloadURL = nil
 			#endif
@@ -116,22 +129,28 @@ class UpdateHelper: NSObject {
 			}
 		}.resume()
 	}
-}
-
-private func resolveDownloadURL(forIntel updateData: UpdateCheckResult) -> URL? {
-	if let urlIntelString = updateData.urlIntel, let urlIntel = URL(string: urlIntelString) {
-		return urlIntel
-	} else {
-		return nil
+	
+	/**
+	 Gets the download URL from an update check result for Intel devices
+	 */
+	private static func resolveDownloadURL(forIntel updateData: UpdateCheckResult) -> URL? {
+		if let urlIntelString = updateData.urlIntel, let urlIntel = URL(string: urlIntelString) {
+			return urlIntel
+		} else {
+			return nil
+		}
 	}
-}
-
-private func resolveDownloadURL(forAppleSilicon updateData: UpdateCheckResult) -> URL? {
-	if let urlAppleSiliconString = updateData.urlAppleSilicon, let urlAppleSilicon = URL(string: urlAppleSiliconString) {
-		return urlAppleSilicon
-	} else {
-		//Fall back to Intel
-		return resolveDownloadURL(forIntel: updateData)
+	
+	/**
+	 Gets the download URL from an update check result for Apple Silicon devices
+	 */
+	private static func resolveDownloadURL(forAppleSilicon updateData: UpdateCheckResult) -> URL? {
+		if let urlAppleSiliconString = updateData.urlAppleSilicon, let urlAppleSilicon = URL(string: urlAppleSiliconString) {
+			return urlAppleSilicon
+		} else {
+			//Fall back to Intel
+			return UpdateHelper.resolveDownloadURL(forIntel: updateData)
+		}
 	}
 }
 
