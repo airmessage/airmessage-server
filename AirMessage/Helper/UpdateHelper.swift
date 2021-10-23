@@ -14,14 +14,17 @@ class UpdateHelper: NSObject {
 	private static var updateTimer: Timer?
 	private static var pendingUpdate: UpdateStruct?
 	private static var updatePromptWindow: NSWindow?
+	private static var nextUpdateID = 0
 	
 	/**
 	 Queries the online server for available updates
 	 - Parameters:
 	   - onError: A callback to run if an error occurs
-	   - onUpdate: A callback to run if an update is found. Called with the update data, or nil if the app is up-to-date.
+	   - onUpdate: A callback to run if an update is found.
+	    		   Called with the update data, or nil if the app is up-to-date,
+	    		   and a boolean that represents whether this update is new information.
 	 */
-	static func checkUpdates(onError: ((UpdateError) -> Void)?, onUpdate: @escaping (UpdateStruct?) -> Void) {
+	static func checkUpdates(onError: ((UpdateError) -> Void)?, onUpdate: @escaping (UpdateStruct?, Bool) -> Void) {
 		//Download update data
 		URLSession.shared.dataTask(with: PreferencesManager.shared.betaUpdates ? UpdateHelper.betaUpdateURL : UpdateHelper.stableUpdateURL) { [self] (data, response, error) in
 			func notifyError(_ error: UpdateError) {
@@ -46,7 +49,11 @@ class UpdateHelper: NSObject {
 			//Checking if the update is newer
 			guard updateData.versionCode > Int(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)! else {
 				LogManager.shared.log("No newer update available", type: .info)
-				DispatchQueue.main.async { onUpdate(nil) }
+				DispatchQueue.main.async {
+					let updateNew = pendingUpdate != nil
+					pendingUpdate = nil
+					onUpdate(nil, updateNew)
+				}
 				return
 			}
 			
@@ -124,16 +131,29 @@ class UpdateHelper: NSObject {
 				return
 			}
 			
-			//Setting the pending update
-			let updateStruct = UpdateStruct(
-					version: updateData.versionName,
-					notes: updateNotes,
-					downloadURL: downloadURL,
-					downloadExternal: updateData.externalDownload
-			)
 			DispatchQueue.main.async {
-				pendingUpdate = updateStruct
-				onUpdate(updateStruct)
+				//Checking if this update is the same as the pending update
+				if let pendingUpdate = pendingUpdate,
+				   pendingUpdate.versionCode == updateData.versionCode,
+				   pendingUpdate.versionName == updateData.versionName,
+				   pendingUpdate.downloadURL == downloadURL,
+				   pendingUpdate.downloadExternal == updateData.externalDownload {
+					onUpdate(pendingUpdate, false)
+				} else {
+					//Setting the pending update
+					let updateStruct = UpdateStruct(
+							id: nextUpdateID,
+							versionCode: updateData.versionCode,
+							versionName: updateData.versionName,
+							notes: updateNotes,
+							downloadURL: downloadURL,
+							downloadExternal: updateData.externalDownload
+					)
+					nextUpdateID += 1
+					
+					pendingUpdate = updateStruct
+					onUpdate(updateStruct, true)
+				}
 			}
 		}.resume()
 	}
@@ -159,20 +179,38 @@ class UpdateHelper: NSObject {
 	
 	@objc private static func updateTimerCheck() {
 		//Check for updates, show window
-		checkUpdates(onError: nil, onUpdate: { _ in showUpdateWindow() })
+		checkUpdates(onError: nil, onUpdate: { update, isNew in
+			showUpdateWindow(for: update, isNew: isNew, backgroundMode: true)
+		})
 	}
 	
 	/**
-	 Shows a window that prompts the user to install an update
+	 Handles the display of a window that prompts the user to update.
+	 If no update is available, the window is closed.
+	 
+	 - Parameters:
+	   - update: The update to display, or nil if there is no update
+	   - isNew: If the update changed from the previous time this window was shown
+	   - backgroundMode: Whether to pass up focus to this window
 	 */
-	static func showUpdateWindow() {
+	static func showUpdateWindow(for update: UpdateStruct?, isNew: Bool, backgroundMode: Bool) {
 		if let window = updatePromptWindow {
-			//Focus the window
-			NSApp.activate(ignoringOtherApps: true)
-			window.makeKey()
-			
-			//Don't create a new window
-			return
+			//If this is a new update or no update is available, close the window
+			if isNew || update == nil {
+				window.close()
+				updatePromptWindow = nil
+			}
+			//If this is not a new update, re-focus the window
+			else if update != nil {
+				if !backgroundMode {
+					//Focus the window
+					NSApp.activate(ignoringOtherApps: true)
+					window.makeKey()
+				}
+				
+				//Don't create a new window
+				return
+			}
 		}
 		
 		//Get update data

@@ -121,15 +121,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			alert.messageText = NSLocalizedString("message.update.error.title", comment: "")
 			alert.informativeText = error.localizedDescription
 			alert.runModal()
-		}, onUpdate: {updateData in
-			if updateData != nil {
-				//Update available, show window
-				UpdateHelper.showUpdateWindow()
-				
-			} else {
+		}, onUpdate: {update, isNew in
+			//Show the window in the foreground
+			UpdateHelper.showUpdateWindow(for: update, isNew: isNew, backgroundMode: false)
+			
+			//Show an alert if there's no new version
+			if update == nil {
 				NSApp.activate(ignoringOtherApps: true)
 				
-				//Let the user know no new version is available
 				let alert = NSAlert()
 				alert.alertStyle = .informational
 				alert.messageText = NSLocalizedString("message.update.uptodate.title", comment: "")

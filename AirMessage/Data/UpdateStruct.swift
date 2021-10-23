@@ -5,7 +5,9 @@
 import Foundation
 
 struct UpdateStruct {
-	var version: String
+	var id: Int
+	var versionCode: Int
+	var versionName: String
 	var notes: String
 	var downloadURL: URL
 	var downloadExternal: Bool
