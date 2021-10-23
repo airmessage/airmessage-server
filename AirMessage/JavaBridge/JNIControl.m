@@ -33,7 +33,7 @@ void jniStopServer(void) {
 NSMutableArray<ClientRegistration *>* jniGetClients(void) {
     JNIEnv *env = getJNIEnv();
     jclass class = (*env)->FindClass(env, CLASSNAME);
-    jmethodID methodID = (*env)->GetStaticMethodID(env, class, "getClients", "()[Lme/tagavari/airmessageserver/connection/ClientRegistration;");
+    jmethodID methodID = (*env)->GetStaticMethodID(env, class, "getClients", "()[Lme/tagavari/airmessageserver/jni/record/JNIClientRegistration;");
     jobjectArray javaClientArray = (*env)->CallObjectMethod(env, class, methodID);
 
 	handleException(env);
@@ -44,9 +44,9 @@ NSMutableArray<ClientRegistration *>* jniGetClients(void) {
 		jobject javaClient = (*env)->GetObjectArrayElement(env, javaClientArray, i);
 
 		jclass javaClientClass = (*env)->GetObjectClass(env, javaClient);
-		jmethodID mInstallationID = (*env)->GetMethodID(env, javaClientClass, "getInstallationID", "()Ljava/lang/String;");
-		jmethodID mClientName = (*env)->GetMethodID(env, javaClientClass, "getClientName", "()Ljava/lang/String;");
-		jmethodID mPlatformID = (*env)->GetMethodID(env, javaClientClass, "getPlatformID", "()Ljava/lang/String;");
+		jmethodID mInstallationID = (*env)->GetMethodID(env, javaClientClass, "installationID", "()Ljava/lang/String;");
+		jmethodID mClientName = (*env)->GetMethodID(env, javaClientClass, "clientName", "()Ljava/lang/String;");
+		jmethodID mPlatformID = (*env)->GetMethodID(env, javaClientClass, "platformID", "()Ljava/lang/String;");
 
 		[nsArray addObject:[[ClientRegistration alloc]
 				initWithInstallationID:javaStringToNSString(env, (*env)->CallObjectMethod(env, javaClient, mInstallationID))

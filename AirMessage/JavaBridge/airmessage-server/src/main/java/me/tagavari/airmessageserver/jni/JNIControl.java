@@ -2,6 +2,7 @@ package me.tagavari.airmessageserver.jni;
 
 import me.tagavari.airmessageserver.connection.ClientRegistration;
 import me.tagavari.airmessageserver.connection.ConnectionManager;
+import me.tagavari.airmessageserver.jni.record.JNIClientRegistration;
 import me.tagavari.airmessageserver.server.Main;
 
 /**
@@ -26,8 +27,10 @@ public class JNIControl {
 	/**
 	 * Gets an array of connected clients
 	 */
-	public static ClientRegistration[] getClients() {
+	public static JNIClientRegistration[] getClients() {
 		return ConnectionManager.getCommunicationsManager().getDataProxy().getConnections()
-			.toArray(new ClientRegistration[0]);
+				.stream()
+				.map((client) -> new JNIClientRegistration(client.getInstallationID(), client.getClientName(), client.getPlatformID()))
+				.toArray(JNIClientRegistration[]::new);
 	}
 }
