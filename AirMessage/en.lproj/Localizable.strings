@@ -43,5 +43,8 @@
 "message.update.uptodate.description"="%1$@ %2$@ is currently the newest version available.";
 "message.update.error.title"="An error occurred while checking for updates";
 "message.update.error.parse"="Couldn't download update details, please try again later.";
-"message.update.error.oscompat"="Please update to macOS %d.%d.%d and try again.";
-"message.update.error.archcompat"="Your system architecture (%@) isn't supported.";
+"message.update.error.download"="Couldn't download update file";
+"message.update.error.invalid_package"="An invalid update package was received";
+"message.update.error.internal"="An internal error occurred while processing this update";
+"message.update.error.os_compat"="Please update to macOS %d.%d.%d and try again.";
+"message.update.error.arch_compat"="Your system architecture (%@) isn't supported.";

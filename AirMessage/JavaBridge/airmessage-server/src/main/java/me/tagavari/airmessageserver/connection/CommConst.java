@@ -36,6 +36,9 @@ public class CommConst {
 	public static final int nhtSendFileNew = 404;
 	public static final int nhtCreateChat = 405;
 	
+	public static final int nhtUpdateListing = 500;
+	public static final int nhtUpdateInstall = 501;
+	
 	public static final String hashAlgorithm = "MD5";
 	
 	//NST - Net subtype

@@ -35,5 +35,5 @@ jint throwNSError(JNIEnv *env, NSError *error) {
 jobject boxJavaInteger(JNIEnv* env, int value) {
 	jclass intClass = (*env)->FindClass(env, "java/lang/Integer");
 	jmethodID intConstructor = (*env)->GetMethodID(env, intClass, "<init>", "(I)V");
-	return (*env)->NewObject(intClass, intConstructor, value);
+	return (*env)->NewObject(env, intClass, intConstructor, value);
 }

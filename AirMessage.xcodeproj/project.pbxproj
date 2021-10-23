@@ -12,6 +12,8 @@
 		2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEE327A491386A20EC729 /* PreferencesManager.swift */; };
 		2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF14220907E804086BB9 /* AccountType.swift */; };
 		2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */; };
+		2EAEE55F794F5BA615333AEF /* UpdateErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */; };
+		2EAEE5D81D6451CA6DCA3361 /* JNIUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE0A15D515D80070BB923 /* JNIUpdate.m */; };
 		2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */; };
 		2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE04E2200019FF3869C09 /* JNIPreferences.m */; };
 		2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */; };
@@ -76,7 +78,10 @@
 
 /* Begin PBXFileReference section */
 		2EAEE04E2200019FF3869C09 /* JNIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIPreferences.m; sourceTree = "<group>"; };
+		2EAEE0A15D515D80070BB923 /* JNIUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIUpdate.m; sourceTree = "<group>"; };
 		2EAEE2E16E83486BABD81E6D /* JVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVM.h; sourceTree = "<group>"; };
+		2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateErrorCode.swift; sourceTree = "<group>"; };
+		2EAEE83BAD7327E559A33AFC /* JNIUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUpdate.h; sourceTree = "<group>"; };
 		2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateStruct.swift; sourceTree = "<group>"; };
 		2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIStorage.h; sourceTree = "<group>"; };
 		2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIStorage.m; sourceTree = "<group>"; };
@@ -174,6 +179,7 @@
 			children = (
 				EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */,
 				2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */,
+				2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -264,6 +270,8 @@
 				EDC2430426ACD235006444FF /* JNILogging.m */,
 				2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */,
 				2EAEEE533ACABFADD2316DAD /* JNIEnvironment.h */,
+				2EAEE0A15D515D80070BB923 /* JNIUpdate.m */,
+				2EAEE83BAD7327E559A33AFC /* JNIUpdate.h */,
 			);
 			path = JavaBridge;
 			sourceTree = "<group>";
@@ -538,6 +546,8 @@
 				2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */,
 				2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */,
 				2EAEED0E7DB2A749AD885B21 /* JNIEnvironment.m in Sources */,
+				2EAEE5D81D6451CA6DCA3361 /* JNIUpdate.m in Sources */,
+				2EAEE55F794F5BA615333AEF /* UpdateErrorCode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

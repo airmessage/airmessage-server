@@ -16,17 +16,11 @@ class SoftwareUpdateViewController: NSViewController {
 	//Parameters
 	public var updateData: UpdateStruct!
 	
-	//Data
-	private var urlSession: URLSession!
-	
 	//State
 	private var sheetController: SoftwareUpdateProgressViewController?
 	
 	override func viewWillAppear() {
 		super.viewWillAppear()
-		
-		//Initialize URL session
-		urlSession = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
 		
 		//Create the WebView
 		let webView = WKWebView()
@@ -58,12 +52,6 @@ class SoftwareUpdateViewController: NSViewController {
 		NSApp.activate(ignoringOtherApps: true)
 	}
 	
-	override func viewDidDisappear() {
-		super.viewDidDisappear()
-		
-		urlSession.invalidateAndCancel()
-	}
-	
 	@IBAction func onRemindLater(_ sender: Any) {
 		//Close window
 		view.window!.close()
@@ -77,130 +65,60 @@ class SoftwareUpdateViewController: NSViewController {
 			//Close the window
 			view.window!.close()
 		} else {
-			//Show a progress popup
-			let storyboard = NSStoryboard(name: "Main", bundle: nil)
-			let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdateProgress") as! SoftwareUpdateProgressViewController
-			presentAsSheet(windowController)
-			sheetController = windowController
-			
-			//Download the file
-			let task = urlSession.downloadTask(with: updateData.downloadURL)
-			task.resume()
-		}
-	}
-}
-
-extension SoftwareUpdateViewController: URLSessionDownloadDelegate {
-	private func showError(message: String) {
-		DispatchQueue.main.async { [self] in
-			//Dismiss the sheet
-			if let theSheetController = sheetController {
-				dismiss(theSheetController)
-				sheetController = nil
-			}
-			
-			//Show an alert
-			let alert = NSAlert()
-			alert.alertStyle = .critical
-			alert.messageText = message
-			alert.beginSheetModal(for: view.window!)
-		}
-	}
-	
-	public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-		if let error = downloadTask.error {
-			LogManager.shared.log("Can't apply update, download error: %{public}", type: .notice, error.localizedDescription)
-			showError(message: error.localizedDescription)
-			return
-		}
-		
-		guard let httpResponse = downloadTask.response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-			LogManager.shared.log("Can't apply update, HTTP response error", type: .notice)
-			showError(message: "Failed to download update")
-			return
-		}
-		
-		do {
-			//Get Applications directory
-			let destinationFolder = try FileManager.default.url(for: .applicationDirectory, in: .localDomainMask, appropriateFor: nil, create: false)
-			
-			//Get the temporary directory
-			let temporaryDirectory = try FileManager.default.url(
-					for: .itemReplacementDirectory,
-					in: .userDomainMask,
-					appropriateFor: destinationFolder,
-					create: true
+			//Start installing the update
+			let updateStarted = UpdateHelper.install(
+					update: updateData,
+					onProgress: { [weak self] progress in
+						if let sheetController = self?.sheetController {
+							//Update the progress bar
+							sheetController.progressIndicator.doubleValue = progress
+						}
+					},
+					onSuccess: { [weak self] in
+						guard let self = self else { return }
+						
+						//Dismiss the sheet
+						if let theSheetController = self.sheetController {
+							self.dismiss(theSheetController)
+							self.sheetController = nil
+						}
+						
+						//Close the window
+						self.view.window!.close()
+					},
+					onError: { [weak self] code, description in
+						guard let self = self else { return }
+						
+						//Dismiss the sheet
+						if let theSheetController = self.sheetController {
+							self.dismiss(theSheetController)
+							self.sheetController = nil
+						}
+						
+						//Show an alert
+						let alertMessage: String
+						switch code {
+							case .download:
+								alertMessage = NSLocalizedString("message.update.error.download", comment: "")
+							case .badPackage:
+								alertMessage = NSLocalizedString("message.update.error.invalid_package", comment: "")
+							case .internalError:
+								alertMessage = NSLocalizedString("message.update.error.internal", comment: "")
+						}
+						
+						let alert = NSAlert()
+						alert.alertStyle = .critical
+						alert.messageText = alertMessage
+						alert.beginSheetModal(for: self.view.window!)
+					}
 			)
 			
-			//Get the download targets
-			let zippedFile = temporaryDirectory.appendingPathComponent(UUID().uuidString + ".zip", isDirectory: false)
-			let unzippedFolder = temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-			
-			//Move the downloaded file to a temporary location, and append the .zip extension
-			try FileManager.default.moveItem(at: location, to: zippedFile)
-			LogManager.shared.log("Downloaded and moved update file to %@", type: .info, zippedFile.path)
-			
-			//Unzip file
-			try Zip.unzipFile(zippedFile, destination: unzippedFolder, overwrite: true, password: nil)
-			LogManager.shared.log("Decompressed update file to %@", type: .info, unzippedFolder.path)
-			
-			//Find app file
-			guard let updateAppFile = try FileManager.default.contentsOfDirectory(at: unzippedFolder, includingPropertiesForKeys: nil).filter({ $0.pathExtension == "app" }).first else {
-				LogManager.shared.log("Can't apply update, can't find app file in update archive", type: .notice)
-				showError(message: "Invalid update package received; please try again later")
-				return
-			}
-			
-			//Get target file in Applications
-			let targetAppFile = destinationFolder.appendingPathComponent(updateAppFile.lastPathComponent, isDirectory: false)
-			LogManager.shared.log("Targeting update location %@", type: .info, targetAppFile.path)
-			
-			//Delete old zip file
-			try FileManager.default.removeItem(at: zippedFile)
-			
-			//Load the update script
-			let updateScript = try! String(contentsOf: Bundle.main.url(forResource: "SoftwareUpdate", withExtension: "sh")!)
-			
-			//Start the update process
-			let process = Process()
-			process.arguments = ["-c", updateScript, String(ProcessInfo.processInfo.processIdentifier), updateAppFile.path, targetAppFile.path]
-			if #available(macOS 10.13, *) {
-				process.executableURL = URL(fileURLWithPath: "/bin/sh")
-				try process.run()
-			} else {
-				process.launchPath = "/bin/sh"
-				process.launch()
-			}
-			
-			LogManager.shared.log("Started update process", type: .info)
-			
-			DispatchQueue.main.async { [self] in
-				//Dismiss the sheet
-				if let theSheetController = sheetController {
-					dismiss(theSheetController)
-					sheetController = nil
-				}
-				
-				//Close the window
-				view.window!.close()
-				
-				//Quit the app
-				NSApplication.shared.terminate(self)
-			}
-		} catch {
-			//Log the error
-			LogManager.shared.log("Failed to download update: %s", type: .notice, error.localizedDescription)
-			
-			//Show an error
-			showError(message: error.localizedDescription)
-		}
-	}
-	
-	public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-		DispatchQueue.main.async { [self] in
-			if let sheetController = sheetController {
-				//Update the progress bar
-				sheetController.progressIndicator.doubleValue = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite) * 100
+			if updateStarted {
+				//Show a progress popup
+				let storyboard = NSStoryboard(name: "Main", bundle: nil)
+				let windowController = storyboard.instantiateController(withIdentifier: "SoftwareUpdateProgress") as! SoftwareUpdateProgressViewController
+				presentAsSheet(windowController)
+				sheetController = windowController
 			}
 		}
 	}
