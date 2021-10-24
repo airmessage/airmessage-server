@@ -9,5 +9,6 @@
 
 NSString* javaStringToNSString(JNIEnv *env, jstring javaString);
 NSArray<NSString *>* javaStringArrayToNSArray(JNIEnv *env, jobjectArray javaStringArray);
+jintArray nsArrayToJavaIntArray(JNIEnv *env, NSArray<NSNumber *> *array);
 jint throwNSError(JNIEnv *env, NSError *error);
 jobject boxJavaInteger(JNIEnv* env, int value);

@@ -71,7 +71,7 @@ class UpdateHelper: NSObject {
 			var versionSplit: [Int] = []
 			for version in updateData.osRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int(version) else {
-					LogManager.shared.log("Failed to parse version int %{public} in %{public}", type: .notice, version, updateData.osRequirement)
+					LogManager.shared.log("Failed to parse OS version int %{public} in %{public}", type: .notice, version, updateData.osRequirement)
 					notifyError(.parseError)
 					return
 				}
@@ -99,7 +99,18 @@ class UpdateHelper: NSObject {
 				return
 			}
 			
-			//Index update notes
+			//Parsing the protocol requirement
+			var protocolSplit: [Int] = []
+			for version in updateData.protocolRequirement.components(separatedBy: ".") {
+				guard let versionInt = Int(version) else {
+					LogManager.shared.log("Failed to parse protocol version int %{public} in %{public}", type: .notice, version, updateData.protocolRequirement)
+					notifyError(.parseError)
+					return
+				}
+				protocolSplit.append(versionInt)
+			}
+			
+			//Indexing update notes
 			guard !updateData.notes.isEmpty else {
 				LogManager.shared.log("Can't apply update, no update notes found", type: .notice)
 				notifyError(.parseError)
@@ -153,6 +164,7 @@ class UpdateHelper: NSObject {
 					//Setting the pending update
 					let updateStruct = UpdateStruct(
 							id: nextUpdateID,
+							protocolRequirement: protocolSplit,
 							versionCode: updateData.versionCode,
 							versionName: updateData.versionName,
 							notes: updateNotes,
@@ -257,7 +269,7 @@ class UpdateHelper: NSObject {
 	   - onError: A callback called when an error occurs, with an error code and description
 	 - Returns: Whether the update was scheduled to be installed. If this function returns false, no callbacks will be invoked.
 	 */
-	public static func install(update: UpdateStruct, onProgress: ((Double) -> ())?, onSuccess: (() -> ())?, onError: ((UpdateErrorCode, String) -> ())?) -> Bool {
+	@objc public static func install(update: UpdateStruct, onProgress: ((Double) -> ())?, onSuccess: (() -> ())?, onError: ((UpdateErrorCode, String) -> ())?) -> Bool {
 		LogManager.shared.log("Installing update...", type: .info)
 		
 		//Ignore if we're already installing an update
@@ -320,6 +332,7 @@ private struct UpdateCheckResult: Decodable {
 	let versionCode: Int
 	let versionName: String
 	let osRequirement: String
+	let protocolRequirement: String
 	let notes: [UpdateNotes]
 	let urlIntel: String?
 	let urlAppleSilicon: String?

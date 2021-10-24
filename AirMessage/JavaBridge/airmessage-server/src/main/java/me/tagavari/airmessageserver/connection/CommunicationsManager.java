@@ -9,7 +9,10 @@ import me.tagavari.airmessageserver.exception.AppleScriptException;
 import me.tagavari.airmessageserver.exception.LargeAllocationException;
 import me.tagavari.airmessageserver.jni.JNIMessage;
 import me.tagavari.airmessageserver.jni.JNIPreferences;
+import me.tagavari.airmessageserver.jni.JNIUpdate;
 import me.tagavari.airmessageserver.jni.JNIUserInterface;
+import me.tagavari.airmessageserver.jni.record.JNIUpdateData;
+import me.tagavari.airmessageserver.jni.record.JNIUpdateError;
 import me.tagavari.airmessageserver.request.*;
 import me.tagavari.airmessageserver.server.*;
 import org.jooq.impl.DSL;
@@ -245,6 +248,10 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 			case CommConst.nhtSendTextNew -> handleMessageSendTextNew(client, unpacker);
 			case CommConst.nhtSendFileExisting -> handleMessageSendFileExisting(client, unpacker);
 			case CommConst.nhtSendFileNew -> handleMessageSendFileNew(client, unpacker);
+			
+			case CommConst.nhtUpdateListing -> handleMessageGetUpdate(client, unpacker);
+			case CommConst.nhtUpdateInstall -> handleMessageInstallUpdate(client, unpacker);
+			
 			default -> {
 				return false;
 			}
@@ -537,6 +544,28 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		UploadHelper.addFileFragment(client, requestID, members, service, fileName, requestIndex, compressedBytes, isLast);
 	}
 	
+	private void handleMessageGetUpdate(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
+		//Send the current update
+		JNIUpdateData update = JNIUpdate.getUpdate();
+		sendMessageUpdateData(client, update);
+	}
+	
+	private void handleMessageInstallUpdate(ClientRegistration client, AirUnpacker unpacker) throws BufferUnderflowException, LargeAllocationException {
+		//Getting the update ID
+		int updateID = unpacker.unpackInt();
+		
+		//Installing the update
+		boolean installRequested = JNIUpdate.installUpdate(updateID);
+		
+		//Sending a reply
+		try(AirPacker packer = AirPacker.get()) {
+			packer.packInt(CommConst.nhtUpdateInstall);
+			packer.packBoolean(installRequested);
+			
+			dataProxy.sendMessage(client, packer.toByteArray(), true);
+		}
+	}
+	
 	public void initiateClose(ClientRegistration client) {
 		try(AirPacker packer = AirPacker.get()) {
 			packer.packInt(CommConst.nhtClose);
@@ -805,6 +834,52 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 			packer.packInt(CommConst.nhtIDUpdate);
 			
 			packer.packLong(id);
+			
+			dataProxy.sendMessage(client, packer.toByteArray(), true);
+			
+			return true;
+		} catch(BufferOverflowException exception) {
+			Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+			Sentry.captureException(exception);
+			
+			return false;
+		}
+	}
+	
+	public boolean sendMessageUpdateData(ClientRegistration client, JNIUpdateData updateData) {
+		try(AirPacker packer = AirPacker.get()) {
+			packer.packInt(CommConst.nhtUpdateListing);
+			
+			if(updateData == null) {
+				packer.packBoolean(false);
+			} else {
+				packer.packBoolean(true);
+				packer.packInt(updateData.id());
+				packer.packArrayHeader(updateData.protocolRequirement().length);
+				for(int version : updateData.protocolRequirement()) {
+					packer.packInt(version);
+				}
+				packer.packString(updateData.version());
+				packer.packString(updateData.notes());
+				packer.packBoolean(updateData.remoteInstallable());
+			}
+			
+			dataProxy.sendMessage(client, packer.toByteArray(), true);
+			
+			return true;
+		} catch(BufferOverflowException exception) {
+			Main.getLogger().log(Level.SEVERE, exception.getMessage(), exception);
+			Sentry.captureException(exception);
+			
+			return false;
+		}
+	}
+	
+	public boolean sendMessageUpdateError(ClientRegistration client, JNIUpdateError updateError) {
+		try(AirPacker packer = AirPacker.get()) {
+			packer.packInt(CommConst.nhtUpdateError);
+			packer.packInt(updateError.code());
+			packer.packString(updateError.message());
 			
 			dataProxy.sendMessage(client, packer.toByteArray(), true);
 			

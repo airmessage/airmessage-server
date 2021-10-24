@@ -38,6 +38,7 @@ public class CommConst {
 	
 	public static final int nhtUpdateListing = 500;
 	public static final int nhtUpdateInstall = 501;
+	public static final int nhtUpdateError = 502;
 	
 	public static final String hashAlgorithm = "MD5";
 	
