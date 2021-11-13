@@ -4,4 +4,4 @@
 
 #import "JVM.h"
 #import "JNIControl.h"
-#include <jni.h>
+#include "ZLIBInterop.h"
