@@ -3,7 +3,7 @@ package me.tagavari.airmessageserver.connection;
 public class CommConst {
 	//Transmission header values
 	public static final int mmCommunicationsVersion = 5;
-	public static final int mmCommunicationsSubVersion = 4;
+	public static final int mmCommunicationsSubVersion = 5;
 	
 	//NHT - Net header type
 	public static final int nhtClose = 0;
@@ -36,9 +36,9 @@ public class CommConst {
 	public static final int nhtSendFileNew = 404;
 	public static final int nhtCreateChat = 405;
 	
-	public static final int nhtUpdateListing = 500;
-	public static final int nhtUpdateInstall = 501;
-	public static final int nhtUpdateError = 502;
+	public static final int nhtSoftwareUpdateListing = 500;
+	public static final int nhtSoftwareUpdateInstall = 501;
+	public static final int nhtSoftwareUpdateError = 502;
 	
 	public static final String hashAlgorithm = "MD5";
 	

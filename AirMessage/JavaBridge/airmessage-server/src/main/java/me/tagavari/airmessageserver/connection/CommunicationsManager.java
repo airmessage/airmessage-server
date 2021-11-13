@@ -249,8 +249,8 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 			case CommConst.nhtSendFileExisting -> handleMessageSendFileExisting(client, unpacker);
 			case CommConst.nhtSendFileNew -> handleMessageSendFileNew(client, unpacker);
 			
-			case CommConst.nhtUpdateListing -> handleMessageGetUpdate(client, unpacker);
-			case CommConst.nhtUpdateInstall -> handleMessageInstallUpdate(client, unpacker);
+			case CommConst.nhtSoftwareUpdateListing -> handleMessageGetUpdate(client, unpacker);
+			case CommConst.nhtSoftwareUpdateInstall -> handleMessageInstallUpdate(client, unpacker);
 			
 			default -> {
 				return false;
@@ -559,7 +559,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 		
 		//Sending a reply
 		try(AirPacker packer = AirPacker.get()) {
-			packer.packInt(CommConst.nhtUpdateInstall);
+			packer.packInt(CommConst.nhtSoftwareUpdateInstall);
 			packer.packBoolean(installRequested);
 			
 			dataProxy.sendMessage(client, packer.toByteArray(), true);
@@ -848,7 +848,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 	
 	public boolean sendMessageUpdateData(ClientRegistration client, JNIUpdateData updateData) {
 		try(AirPacker packer = AirPacker.get()) {
-			packer.packInt(CommConst.nhtUpdateListing);
+			packer.packInt(CommConst.nhtSoftwareUpdateListing);
 			
 			if(updateData == null) {
 				packer.packBoolean(false);
@@ -877,7 +877,7 @@ public class CommunicationsManager implements DataProxyListener<ClientRegistrati
 	
 	public boolean sendMessageUpdateError(ClientRegistration client, JNIUpdateError updateError) {
 		try(AirPacker packer = AirPacker.get()) {
-			packer.packInt(CommConst.nhtUpdateError);
+			packer.packInt(CommConst.nhtSoftwareUpdateError);
 			packer.packInt(updateError.code());
 			packer.packString(updateError.message());
 			
