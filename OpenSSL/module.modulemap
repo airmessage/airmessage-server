@@ -1,0 +1,5 @@
+module OpenSSLSwift [system] {
+    header "shim.h"
+    link "openssl"
+    export *
+}

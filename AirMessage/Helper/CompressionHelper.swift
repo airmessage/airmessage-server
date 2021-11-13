@@ -22,10 +22,10 @@ func compressData(_ dataIn: inout Data) -> Data? {
 	var dataOut = Data(capacity: dataIn.count)
 	let deflateError = dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) -> Int32 in
 		dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
-			stream.next_in = ptrIn.baseAddress?.bindMemory(to: Bytef.self, capacity: ptrIn.count)
+			stream.next_in = ptrIn.baseAddress!.bindMemory(to: Bytef.self, capacity: ptrIn.count)
 			stream.avail_in = uInt(ptrIn.count)
 			
-			stream.next_out = ptrOut.baseAddress?.bindMemory(to: Bytef.self, capacity: ptrOut.count)
+			stream.next_out = ptrOut.baseAddress!.bindMemory(to: Bytef.self, capacity: ptrOut.count)
 			stream.avail_out = uInt(ptrOut.count)
 			
 			return deflate(&stream, Z_FINISH)
