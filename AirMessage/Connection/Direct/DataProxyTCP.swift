@@ -14,8 +14,9 @@ class DataProxyTCP: DataProxy {
 	let requiresPersistence = false
 	private(set) var connections: Set<C> = []
 	
-	private let synchronizationQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.synchronization", qos: .utility)
-	private let connectionQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.connection", qos: .utility, attributes: .concurrent)
+	private let synchronizationQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.synchronization", qos: .utility) //Synchronize access to connections set
+	private let connectionQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.connection", qos: .utility, attributes: .concurrent) //Long-running operations for connections
+	private let writeQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.write", qos: .utility) //Write requests
 	
 	private var serverRunning = false
 	private var serverSocketFD: Int32?
@@ -85,7 +86,7 @@ class DataProxyTCP: DataProxy {
 				let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
 				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, delegate: self)
 				self.synchronizationQueue.sync {
-					self.connections.insert(client)
+					_ = self.connections.insert(client)
 				}
 				
 				//Start the client process
@@ -120,21 +121,53 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	func send(message data: Data, to client: C, encrypt: Bool, onSent: (() -> ())? = nil) {
+		writeQueue.async {
+			//Encrypting the data
+			let preparedData: Data
+			if encrypt {
+				do {
+					preparedData = try networkEncrypt(data: data)
+				} catch {
+					LogManager.shared.log("Failed to encrypt network message: %{public}", type: .error, error.localizedDescription)
+					return
+				}
+			} else {
+				preparedData = data
+			}
+			
+			//Sending the data to the client
+			client.write(data: preparedData, isEncrypted: encrypt)
+		}
 	}
 	
 	func send(pushNotification data: Data, version: Int) {
+		//Not supported
 	}
 	
 	func disconnect(client: C) {
+		client.stop(cleanup: true)
 	}
 }
 
 extension DataProxyTCP: ClientConnectionTCPDelegate {
 	func clientConnectionTCP(_ client: ClientConnectionTCP, didReceive data: Data, isEncrypted: Bool) {
-		//Call the delegate
 		guard let delegate = delegate else { return }
 		
-		delegate.dataProxy(didReceive: data, from: client, wasEncrypted: isEncrypted)
+		//Decrypt the data if it's encrypted
+		let decryptedData: Data
+		if isEncrypted {
+			do {
+				decryptedData = try networkDecrypt(data: data)
+			} catch {
+				LogManager.shared.log("Failed to decrypt network message: %{public}", type: .error, error.localizedDescription)
+				return
+			}
+		} else {
+			decryptedData = data
+		}
+		
+		//Call the delegate
+		delegate.dataProxy(didReceive: decryptedData, from: client, wasEncrypted: isEncrypted)
 	}
 	
 	func clientConnectionTCPDidInvalidate(_ client: ClientConnectionTCP) {
