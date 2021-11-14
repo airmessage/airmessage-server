@@ -13,6 +13,7 @@ class ClientConnectionTCP: ClientConnection {
 	weak var delegate: ClientConnectionTCPDelegate?
 	
 	//State
+	private let stateLock = NSLock()
 	private var isRunning = false
 	
 	init(id: Int32, handle: FileHandle, delegate: ClientConnectionTCPDelegate? = nil) {
@@ -22,7 +23,12 @@ class ClientConnectionTCP: ClientConnection {
 	}
 	
 	func start(on queue: DispatchQueue) {
-		guard !isRunning else { return }
+		do {
+			stateLock.lock()
+			defer { stateLock.unlock() }
+			
+			guard !isRunning else { return }
+		}
 		
 		//Start reader task
 		queue.async { [weak self] in
@@ -61,8 +67,13 @@ class ClientConnectionTCP: ClientConnection {
 	}
 	
 	func stop(cleanup: Bool) {
-		guard isRunning else { return }
-		isRunning = false
+		do {
+			stateLock.lock()
+			defer { stateLock.unlock() }
+			
+			guard isRunning else { return }
+			isRunning = false
+		}
 		
 		//Close the file handle
 		if #available(macOS 10.15, *) {
