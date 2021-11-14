@@ -28,6 +28,7 @@ class ClientConnectionTCP: ClientConnection {
 			defer { stateLock.unlock() }
 			
 			guard !isRunning else { return }
+			isRunning = true
 		}
 		
 		//Start reader task
