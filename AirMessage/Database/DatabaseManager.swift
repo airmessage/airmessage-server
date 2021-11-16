@@ -312,12 +312,18 @@ class DatabaseManager {
 		}
 	}
 	
+	struct AttachmentFile {
+		let url: URL
+		let type: String?
+		let name: String
+	}
+	
 	/**
 	 Fetches the path to the file of the attachment of GUID guid
 	 */
-	public func fetchFile(fromAttachmentGUID guid: String) throws -> URL? {
+	public func fetchFile(fromAttachmentGUID guid: String) throws -> AttachmentFile? {
 		//Run the query
-		let stmt = try dbConnection.prepare("SELECT filename FROM attachment WHERE guid = ? LIMIT 1", guid)
+		let stmt = try dbConnection.prepare("SELECT filename, mime_type, transfer_name FROM attachment WHERE guid = ? LIMIT 1", guid)
 		
 		//Return nil if there are no results
 		guard let row = stmt.next() else {
@@ -326,6 +332,8 @@ class DatabaseManager {
 		
 		//Return the file
 		let filename = row[0] as! String
-		return DatabaseConverter.createURL(dbPath: filename)
+		let type = row[1] as? String
+		let name = row[2] as! String
+		return AttachmentFile(url: DatabaseConverter.createURL(dbPath: filename), type: type, name: name)
 	}
 }

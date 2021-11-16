@@ -337,9 +337,9 @@ class ConnectionManager {
 		}
 		
 		//Get the file from the database
-		let fileURL: URL?
+		let fileDetails: DatabaseManager.AttachmentFile?
 		do {
-			fileURL = try DatabaseManager.shared.fetchFile(fromAttachmentGUID: attachmentGUID)
+			fileDetails = try DatabaseManager.shared.fetchFile(fromAttachmentGUID: attachmentGUID)
 		} catch {
 			LogManager.shared.log("Failed to get file path for attachment GUID %{public}: %{public}", type: .notice, attachmentGUID, error.localizedDescription)
 			
@@ -350,7 +350,7 @@ class ConnectionManager {
 		}
 		
 		//Check if the entry was found
-		guard let fileURL = fileURL else {
+		guard let fileDetails = fileDetails else {
 			//Send a response (not found)
 			guard let dataProxy = dataProxy else { return }
 			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .notFound)
@@ -358,14 +358,111 @@ class ConnectionManager {
 		}
 		
 		//Check if the file exists
-		guard FileManager.default.fileExists(atPath: fileURL.path) else {
+		guard FileManager.default.fileExists(atPath: fileDetails.url.path) else {
 			//Send a response (not saved)
 			guard let dataProxy = dataProxy else { return }
 			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .notSaved)
 			return
 		}
 		
-		//TODO: convert the file with FileNormalizationHelper
+		//Try to normalize the file
+		let fileURL: URL
+		let fileType: String?
+		let fileName: String
+		let fileNeedsCleanup: Bool
+		if let normalizedDetails = normalizeFile(url: fileDetails.url, ext: fileDetails.url.pathExtension) {
+			fileURL = normalizedDetails.url
+			fileType = normalizedDetails.type
+			fileName = normalizedDetails.name
+			fileNeedsCleanup = true
+		} else {
+			fileURL = fileDetails.url
+			fileType = fileDetails.type
+			fileName = fileDetails.name
+			fileNeedsCleanup = false
+		}
+		
+		//Clean up
+		defer {
+			if fileNeedsCleanup {
+				try? FileManager.default.removeItem(at: fileURL)
+			}
+		}
+		
+		//Check to make sure the client is still connected
+		guard client.isConnected.value else { return }
+		
+		//Get the file size
+		let fileSize: Int64
+		do {
+			let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
+			fileSize = Int64(resourceValues.fileSize!)
+		} catch {
+			LogManager.shared.log("Failed to get file size for attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachmentGUID, error.localizedDescription)
+			
+			//Send a response (I/O)
+			guard let dataProxy = dataProxy else { return }
+			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .io)
+			return
+		}
+		
+		//Read the file
+		var responseIndex: Int32 = 0
+		do {
+			let compressionPipe = try CompressionPipe()
+			
+			let fileHandle = try FileHandle(forReadingFrom: fileURL)
+			
+			var doBreak: Bool
+			repeat {
+				doBreak = try autoreleasepool {
+					//Read data
+					var data = try fileHandle.readCompat(upToCount: Int(chunkSize))
+					let isEOF = data.count == 0
+					
+					//Compress the data
+					let dataOut = try compressionPipe.pipe(data: &data, isLast: isEOF)
+					
+					//Make sure the client is still connected
+					guard client.isConnected.value else { return true }
+					
+					//Build and send the request
+					do {
+						var packer = AirPacker()
+						packer.pack(int: NHT.attachmentReq.rawValue)
+						
+						packer.pack(short: requestID)
+						packer.pack(int: responseIndex)
+						
+						//Include extra information with the initial response
+						if responseIndex == 0 {
+							packer.pack(optionalString: fileName)
+							packer.pack(optionalString: fileType)
+							packer.pack(long: fileSize)
+						}
+						
+						packer.pack(bool: isEOF) //Is last message
+						
+						packer.pack(payload: dataOut)
+					}
+					
+					responseIndex += 1
+					
+					//Break if we reached the end of the file
+					return isEOF
+				}
+			} while !doBreak
+		} catch {
+			LogManager.shared.log("Failed to read / compress data for attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachmentGUID, error.localizedDescription)
+			
+			//Make sure the client is still connected
+			guard client.isConnected.value else { return }
+			
+			//Send an error
+			guard let dataProxy = dataProxy else { return }
+			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .io)
+			return
+		}
 	}
 	
 	//MARK: Process message

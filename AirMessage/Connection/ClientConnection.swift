@@ -39,7 +39,7 @@ class ClientConnection {
 	var transmissionCheck: Data?
 	
 	//Whether this client is connected. Set to false when the client disconnects.
-	var isConnected: Bool = true
+	var isConnected = AtomicBool(initialValue: false)
 	
 	init(id: Int32) {
 		self.id = id

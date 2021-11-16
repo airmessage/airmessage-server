@@ -4,7 +4,7 @@
 
 import Foundation
 import CommonCrypto
-import OpenSSLSwift
+import OpenSSL
 
 private let blockSize = 128 / 8 //128 bits
 private let saltLen = 8 //8 bytes
@@ -23,7 +23,7 @@ private var encryptionPassword: String {
  - Throws: An error if random data failed to generate
  */
 func generateSecureData(count: Int) throws -> Data {
-	var data = Data(capacity: saltLen)
+	var data = Data(count: saltLen)
 	let secResult = SecRandomCopyBytes(kSecRandomDefault, data.count, &data)
 	guard secResult == errSecSuccess else {
 		throw EncryptionError.randomError
@@ -42,10 +42,10 @@ private func deriveKey(password: String, salt: Data) throws -> Data {
 			CCKeyDerivationPBKDF(
 					CCPBKDFAlgorithm(kCCPBKDF2),
 					password, password.data(using: .utf8)!.count,
-					saltBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: salt.count), salt.count,
+					saltBytes.baseAddress!.assumingMemoryBound(to: UInt8.self), salt.count,
 					CCPseudoRandomAlgorithm(CCPBKDFAlgorithm(kCCPRFHmacAlgSHA256)),
 					keyIterationCount,
-					derivedKeyBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: keyLength), keyLength)
+					derivedKeyBytes.baseAddress!.assumingMemoryBound(to: UInt8.self), keyLength)
 		}
 	}
 	
@@ -82,8 +82,8 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		iv.withUnsafeBytes { (ivBytes: UnsafeRawBufferPointer) in
 			EVP_CipherInit(ctx,
 						   EVP_aes_128_gcm(),
-						   keyBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: keyBytes.count),
-						   ivBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: ivBytes.count),
+						   keyBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+						   ivBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 						   operation.rawValue
 			)
 		}
@@ -96,15 +96,15 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 	//Encrypt the data
 	//For most ciphers and modes, the amount of data written can be anything from zero bytes to (inl + cipher_block_size - 1) bytes
 	let outputCapacity = input.count + blockSize - 1
-	var output = Data(capacity: outputCapacity)
+	var output = Data(count: outputCapacity)
 	var outputLen: Int32 = 0
 	
 	let resultUpdate = input.withUnsafeBytes { (inputBytes: UnsafeRawBufferPointer) in
 		output.withUnsafeMutableBytes { (outputBytes: UnsafeMutableRawBufferPointer) in
 			EVP_CipherUpdate(ctx,
-							 outputBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: outputCapacity),
+							 outputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 							 &outputLen,
-							 inputBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: inputBytes.count),
+							 inputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 							 Int32(input.count))
 		}
 	}
@@ -118,12 +118,12 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 	
 	//Finish the encryption
 	let finalOutputCapacity = blockSize
-	var finalOutput = Data(capacity: finalOutputCapacity)
+	var finalOutput = Data(count: finalOutputCapacity)
 	var finalOutputLen: Int32 = 0
 	
 	let resultFinal = finalOutput.withUnsafeMutableBytes { (finalOutputBytes: UnsafeMutableRawBufferPointer) in
 		EVP_CipherFinal(ctx,
-						finalOutputBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: finalOutputCapacity),
+						finalOutputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 						&finalOutputLen)
 	}
 	guard resultFinal == 1 else {

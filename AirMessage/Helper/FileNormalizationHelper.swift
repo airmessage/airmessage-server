@@ -7,16 +7,22 @@
 
 import Foundation
 
+struct NormalizedFile {
+	let url: URL
+	let type: String
+	let name: String
+}
+
 /**
  Converts a file from Apple-specific formats to formats that are readable by non-Apple devices.
  The resulting file is stored in a temporary location, and should be cleaned up after it is finished being used.
  This function does not modify or remove the input file.
  - Parameters:
    - inputFile: The file to process
-   - type: The MIME type of the file
+   - extension: The extension type of the file
  - Returns: A tuple with the updated file path and string, or NIL if the file was not converted
  */
-func normalizeFile(url inputFile: URL, type: String) -> (path: URL, type: String)? {
+func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 	/*
 	 These conversions are only available on macOS 10.13+,
 	 but older versions have these files converted before they
@@ -24,7 +30,7 @@ func normalizeFile(url inputFile: URL, type: String) -> (path: URL, type: String
 	 */
 	guard #available(macOS 10.13, *) else { return nil }
 	
-	if type == "image/heic" {
+	if ext == "heic" {
 		LogManager.shared.log("Converting file %{public} from HEIC", type: .info, inputFile.path)
 		
 		//Get a temporary file
@@ -43,8 +49,11 @@ func normalizeFile(url inputFile: URL, type: String) -> (path: URL, type: String
 			return nil
 		}
 		
-		return (tempFile, "image/jpeg")
-	} else if type == "audio/caf" {
+		//Build the new file name
+		let newFileName = inputFile.deletingPathExtension().lastPathComponent + ".jpeg"
+		
+		return NormalizedFile(url: tempFile, type: "image/jpeg", name: newFileName)
+	} else if ext == "caf" {
 		LogManager.shared.log("Converting file %{public} from CAF", type: .info, inputFile.path)
 		
 		//Get a temporary file
@@ -63,7 +72,10 @@ func normalizeFile(url inputFile: URL, type: String) -> (path: URL, type: String
 			return nil
 		}
 		
-		return (tempFile, "audio/mp4")
+		//Build the new file name
+		let newFileName = inputFile.deletingPathExtension().lastPathComponent + ".mp4"
+		
+		return NormalizedFile(url: tempFile, type: "audio/mp4", name: newFileName)
 	} else {
 		return nil
 	}
@@ -96,15 +108,8 @@ private func runProcessLogError(_ process: Process) -> Bool {
 	guard process.terminationStatus == 0 else {
 		let errorFileHandle = errorPipe.fileHandleForReading
 		
-		let data: Data?
-		if #available(macOS 10.15.4, *) {
-			data = try? errorFileHandle.readToEnd()
-		} else {
-			data = errorFileHandle.readDataToEndOfFile()
-		}
-		
 		let errorMessage: String?
-		if let data = data {
+		if let data = try? errorFileHandle.readToEndCompat(), !data.isEmpty {
 			errorMessage = String(data: data, encoding: .utf8)
 		} else {
 			errorMessage = nil
