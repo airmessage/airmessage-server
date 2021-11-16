@@ -5,16 +5,15 @@
 import Foundation
 
 class DataProxyTCP: DataProxy {
-	typealias C = ClientConnectionTCP
-	
 	weak var delegate: DataProxyDelegate?
 	
 	let name = "Direct"
 	let requiresAuthentication = true
-	let requiresPersistence = false
-	private(set) var connections: Set<C> = []
+	let requiresPersistence = true
+	let supportsPushNotifications = false
+	private(set) var connections: Set<ClientConnection> = []
+	let connectionsLock = NSLock()
 	
-	private let synchronizationQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.synchronization", qos: .utility) //Synchronize access to connections set
 	private let connectionQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.connection", qos: .utility, attributes: .concurrent) //Long-running operations for connections
 	private let writeQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.write", qos: .utility) //Write requests
 	
@@ -85,18 +84,26 @@ class DataProxyTCP: DataProxy {
 				guard let self = self else { break }
 				let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
 				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, delegate: self)
-				self.synchronizationQueue.sync {
-					_ = self.connections.insert(client)
+				let connectionCount: Int
+				do {
+					self.connectionsLock.lock()
+					defer { self.connectionsLock.unlock() }
+					
+					self.connections.insert(client)
+					connectionCount = self.connections.count
 				}
 				
 				//Start the client process
 				client.start(on: self.connectionQueue)
+				
+				//Notify the delegate
+				self.delegate?.dataProxy(self, didConnectClient: client, totalCount: connectionCount)
 			}
 		}
 		
 		serverSocketFD = socketFD
 		serverRunning = true
-		delegate?.dataProxyDidStart()
+		delegate?.dataProxyDidStart(self)
 	}
 	
 	func stopServer() {
@@ -105,14 +112,14 @@ class DataProxyTCP: DataProxy {
 		
 		//Disconnect clients
 		for client in connections {
-			client.stop(cleanup: false)
+			(client as! ClientConnectionTCP).stop(cleanup: false)
 		}
 		
 		//Close the file handle
 		close(serverSocketFD)
 		
 		serverRunning = false
-		delegate?.dataProxy(didStopWithState: .stopped)
+		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 	}
 	
 	deinit {
@@ -120,7 +127,7 @@ class DataProxyTCP: DataProxy {
 		stopServer()
 	}
 	
-	func send(message data: Data, to client: C, encrypt: Bool, onSent: (() -> ())? = nil) {
+	func send(message data: Data, to client: ClientConnection?, encrypt: Bool, onSent: (() -> ())?) {
 		writeQueue.async {
 			//Encrypting the data
 			let preparedData: Data
@@ -136,7 +143,7 @@ class DataProxyTCP: DataProxy {
 			}
 			
 			//Sending the data to the client
-			client.write(data: preparedData, isEncrypted: encrypt)
+			(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
 		}
 	}
 	
@@ -144,8 +151,8 @@ class DataProxyTCP: DataProxy {
 		//Not supported
 	}
 	
-	func disconnect(client: C) {
-		client.stop(cleanup: true)
+	func disconnect(client: ClientConnection) {
+		(client as! ClientConnectionTCP).stop(cleanup: true)
 	}
 }
 
@@ -167,14 +174,21 @@ extension DataProxyTCP: ClientConnectionTCPDelegate {
 		}
 		
 		//Call the delegate
-		delegate.dataProxy(didReceive: decryptedData, from: client, wasEncrypted: isEncrypted)
+		delegate.dataProxy(self, didReceive: decryptedData, from: client, wasEncrypted: isEncrypted)
 	}
 	
 	func clientConnectionTCPDidInvalidate(_ client: ClientConnectionTCP) {
 		//Remove the client from the list
-		connections.remove(client)
+		let connectionCount: Int
+		do {
+			connectionsLock.lock()
+			defer { connectionsLock.unlock() }
+			
+			connections.remove(client)
+			connectionCount = connections.count
+		}
 		
 		//Call the delegate
-		delegate?.dataProxy(didDisconnectClient: client)
+		delegate?.dataProxy(self, didDisconnectClient: client, totalCount: connectionCount)
 	}
 }

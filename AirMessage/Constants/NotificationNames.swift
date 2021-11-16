@@ -15,4 +15,13 @@ class NotificationNames: NSObject {
 	@objc public static let updateConnectionCountParam = "count"
 	
 	@objc public static let signOut = NSNotification.Name("signOut")
+	
+	/**
+	 Posts the UI state update to `NotificationCenter` in a thread-safe manner
+	 */
+	static func postUpdateUIState(_ state: ServerState) {
+		runOnMainAsync {
+			NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: state.rawValue])
+		}
+	}
 }

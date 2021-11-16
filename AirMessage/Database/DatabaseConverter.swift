@@ -13,6 +13,62 @@ class DatabaseConverter {
 		case chatLeave = 3
 	}
 	
+	/**
+	 Groups an array of message rows to messages and loose modifiers.
+	 The array must have modifiers ordered after their associated message.
+	 - Parameters:
+	   - rows: The rows to group
+	 - Returns: A tuple containing conversation items and loose modifiers
+	 - Throws: SQL execution errors
+	 */
+	static func groupMessageRows(_ rows: [DatabaseMessageRow?]) -> DBFetchGrouping {
+		var conversationItemArray: [ConversationItem] = []
+		//Modifiers that couldn't be attached to a conversation,
+		//and should be sent separately to clients
+		var looseModifiers: [ModifierInfo] = []
+		
+		for row in rows {
+			switch row {
+				case .message(let message):
+					conversationItemArray.append(message)
+					break
+				case .modifier(let modifier):
+					//Find the associated message
+					if let conversationItemIndex = conversationItemArray.lastIndex(where: { $0.guid == modifier.messageGUID }) {
+						let conversationItem = conversationItemArray[conversationItemIndex]
+						
+						//Make sure the conversation item is a message
+						guard var message = conversationItem as? MessageInfo else { continue }
+						
+						//Add the modifier to the message
+						if let tapback = modifier as? TapbackModifierInfo {
+							message.tapbacks.append(tapback)
+						} else if let sticker = modifier as? StickerModifierInfo {
+							message.stickers.append(sticker)
+						}
+						conversationItemArray[conversationItemIndex] = message
+					} else {
+						looseModifiers.append(modifier)
+					}
+					
+					break
+				case .none:
+					break
+			}
+		}
+		
+		return DBFetchGrouping(conversationItems: conversationItemArray, looseModifiers: looseModifiers)
+	}
+	
+	/**
+	 Processes a row database row of common columns into a `DatabaseMessageRow`
+	 - Parameters:
+	   - row: The row to process
+	   - indices: The index dict to use to reference row columns
+	   - db: The database to use for subsequent queries
+	 - Returns: A `DatabaseMessageRow` that represents the information held in this row, or `nil` if the conversion failed
+	 - Throws: SQL execution errors
+	 */
 	static func processMessageRow(_ row: Statement.Element, withIndices indices: [String: Int], ofDB db: Connection) throws -> DatabaseMessageRow? {
 		//Common message parameters
 		let rowID = row[indices["message.ROWID"]!] as! Int64
@@ -157,6 +213,37 @@ class DatabaseConverter {
 	}
 	
 	/**
+	 Processes a message database row into an `ActivityStatusModifierInfo`
+	 - Parameters:
+	   - row: The row to process
+	   - indices: The index dict to use to reference row columns
+	 - Returns: A `ActivityStatusModifierInfo` to represent the message row
+	 */
+	static func processActivityStatusRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> ActivityStatusModifierInfo {
+		//Read the row data
+		let messageGUID = row[indices["message.guid"]!] as! String
+		let state = DatabaseConverter.mapMessageStateCode(
+				isSent: row[indices["message.is_sent"]!] as! Bool,
+				isDelivered: row[indices["message.is_delivered"]!] as! Bool,
+				isRead: row[indices["message.is_read"]!] as! Bool
+		)
+		let dateRead = row[indices["message.date_read"]!] as! Int64
+		
+		return ActivityStatusModifierInfo(messageGUID: messageGUID, state: state, dateRead: dateRead)
+	}
+	
+	/**
+	 Converts a string array to a dictionary that maps the string value to its index
+	*/
+	static func makeColumnIndexDict(_ columnNames: [String]) -> [String: Int] {
+		columnNames.enumerated().reduce(into: [String: Int]()) { dict, element in
+			dict[element.element] = element.offset
+		}
+	}
+	
+	//MARK: Fetch data
+	
+	/**
 	 Fetches an array of attachments for a certain message
 	 - Parameters:
 	   - ofMessage: The ID of the message to fetch attachments for
@@ -204,7 +291,7 @@ class DatabaseConverter {
 			let path = row[indices["attachment.filename"]!] as? String
 			let checksum: Data?
 			if withChecksum, let path = path {
-				checksum = md5HashFile(url: URL(fileURLWithPath: path))
+				checksum = md5HashFile(url: createURL(dbPath: path))
 			} else {
 				checksum = nil
 			}
@@ -247,8 +334,8 @@ class DatabaseConverter {
                                   """, messageID)
 		let indices = makeColumnIndexDict(stmt.columnNames)
 		guard let row = stmt.next(),
-			  let filePath = row[indices["attachment.filename"]!],
-			  var fileData = try? Data(contentsOf: URL(fileURLWithPath: filePath as! String)),
+			  let filePath = row[indices["attachment.filename"]!] as? String,
+			  var fileData = try? Data(contentsOf: createURL(dbPath: filePath)),
 			  let fileDataCompressed = compressData(&fileData) else {
 			return nil
 		}
@@ -263,14 +350,7 @@ class DatabaseConverter {
 		)
 	}
 	
-	/**
- 	 Converts a string array to a dictionary that maps the string value to its index
- 	*/
-	public static func makeColumnIndexDict(_ columnNames: [String]) -> [String: Int] {
-		columnNames.enumerated().reduce(into: [String: Int]()) { dict, element in
-			dict[element.element] = element.offset
-		}
-	}
+	//MARK: Map Codes
 	
 	/**
 	 Maps a series of boolean values from the database to a `MessageInfo.State`
@@ -308,6 +388,15 @@ class DatabaseConverter {
 			case 1: return .leave
 			default: return .unknown
 		}
+	}
+	
+	//MARK: Helpers
+	
+	/**
+	 Creats a URL from a filename path found in the database
+	 */
+	static func createURL(dbPath: String) -> URL {
+		URL(fileURLWithPath: NSString(string: dbPath).expandingTildeInPath)
 	}
 }
 

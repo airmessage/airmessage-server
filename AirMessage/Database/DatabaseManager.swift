@@ -9,6 +9,9 @@ import Foundation
 import SQLite
 
 class DatabaseManager {
+	//Instance
+	public static let shared = DatabaseManager()
+	
 	//Constants
 	private static let databaseLocation = NSHomeDirectory() + "/Library/Messages/chat.db"
 	
@@ -20,19 +23,24 @@ class DatabaseManager {
 	private var timerScanner: DispatchSourceTimer?
 	
 	//Database state
-	private let dbConnection: Connection
+	private let initTime: Int64 //Time initialized in DB time
+	private var dbConnection: Connection!
 	
 	//Query state
-	private let initTime: Int64 //Time initialized in DB time
-	private var lastScannedMessageID: Int64? = nil
+	private let lastScannedMessageIDLock = NSLock()
+	private var _lastScannedMessageID: Int64? = nil
+	public var lastScannedMessageID: Int64? {
+		lastScannedMessageIDLock.lock()
+		defer { lastScannedMessageIDLock.unlock() }
+		return _lastScannedMessageID
+	}
 	private struct MessageTrackingState: Equatable {
 		let id: Int64
 		let state: MessageInfo.State
 	}
 	private var messageStateDict: [Int64: MessageTrackingState] = [:] //chat ID : message state
 	
-	init() throws {
-		dbConnection = try Connection(DatabaseManager.databaseLocation)
+	init() {
 		initTime = getDBTime()
 	}
 	
@@ -41,7 +49,10 @@ class DatabaseManager {
 		cancel()
 	}
 	
-	func resume() {
+	func resume() throws {
+		//Connect to the database
+		dbConnection = try Connection(DatabaseManager.databaseLocation, readonly: true)
+		
 		//Start the scanner timer
 		let timer = DispatchSource.makeTimerSource(queue: queueScanner)
 		timer.schedule(deadline: .now(), repeating: .seconds(2))
@@ -53,72 +64,158 @@ class DatabaseManager {
 	}
 	
 	func cancel() {
+		//Disconnect from the database
+		dbConnection = nil
+		
+		//Stop the scanner timer
 		timerScanner?.cancel()
 		timerScanner = nil
 	}
 	
-	func runScan() {
+	//MARK: Scanner
+	
+	private func runScan() {
 		do {
 			//Build the WHERE clause and fetch messages
 			let whereClause: String
-			if let id = lastScannedMessageID {
-				//If we've scanned previously, only search for messages with a higher ID than last time
-				whereClause = "message.ROWID > \(id)"
-			} else {
-				//If we have no previous scan data, search for messages added since we first started scanning
-				whereClause = "message.date > \(initTime)"
+			do {
+				if let id = lastScannedMessageID {
+					//If we've scanned previously, only search for messages with a higher ID than last time
+					whereClause = "message.ROWID > \(id)"
+				} else {
+					//If we have no previous scan data, search for messages added since we first started scanning
+					whereClause = "message.date > \(initTime)"
+				}
 			}
 			let stmt = try fetchMessages(using: dbConnection, where: whereClause)
 			let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
-			
-			//Collect new additions
-			var conversationItemArray: [ConversationItem] = []
-			//Modifiers that couldn't be attached to a conversation,
-			//and should be sent separately to clients
-			var looseModifiers: [ModifierInfo] = []
-			for row in stmt {
-				switch try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection) {
-					case .message(let message):
-						conversationItemArray.append(message)
-						break
-					case .modifier(let modifier):
-						//Find the associated message
-						if let conversationItemIndex = conversationItemArray.lastIndex(where: { $0.guid == modifier.messageGUID }) {
-							let conversationItem = conversationItemArray[conversationItemIndex]
-							
-							//Make sure the conversation item is a message
-							guard var message = conversationItem as? MessageInfo else { continue }
-							
-							//Add the modifier to the message
-							if let tapback = modifier as? TapbackModifierInfo {
-								message.tapbacks.append(tapback)
-							} else if let sticker = modifier as? StickerModifierInfo {
-								message.stickers.append(sticker)
-							}
-							conversationItemArray[conversationItemIndex] = message
-						} else {
-							looseModifiers.append(modifier)
-						}
-						
-						break
-					case .none:
-						break
-				}
+			let rows = try stmt.map { row in
+				try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
 			}
 			
+			//Collect new additions
+			let (conversationItems, looseModifiers) = DatabaseConverter.groupMessageRows(rows).destructured
+			
+			//Set to the latest message ID, only we hit a new max
+			let updatedMessageID: Int64?
+			
 			//Update the latest message ID
-			if !conversationItemArray.isEmpty {
-				lastScannedMessageID = conversationItemArray.reduce(0) { lastID, item in
+			if conversationItems.isEmpty {
+				updatedMessageID = nil
+			} else {
+				lastScannedMessageIDLock.lock()
+				defer { lastScannedMessageIDLock.unlock() }
+				
+				let maxID = conversationItems.reduce(Int64.min) { lastID, item in
 					max(lastID, item.serverID)
+				}
+				
+				if _lastScannedMessageID == nil || maxID > _lastScannedMessageID! {
+					_lastScannedMessageID = maxID
+					updatedMessageID = maxID
+				} else {
+					updatedMessageID = nil
 				}
 			}
 			
 			//Check for updated message states
-			let messageStateUpdates = try updateMessageStates(using: dbConnection)
+			let messageStateUpdates = try updateMessageStates()
+			
+			//Send message updates
+			if !conversationItems.isEmpty {
+				ConnectionManager.shared.send(messageUpdate: conversationItems)
+			}
+			
+			//Send modifier updates
+			let combinedModifiers = looseModifiers + messageStateUpdates
+			if !combinedModifiers.isEmpty {
+				ConnectionManager.shared.send(modifierUpdate: combinedModifiers)
+			}
+			
+			//Send push notifications
+			ConnectionManager.shared.sendPushNotification(
+				messages: conversationItems.compactMap { conversationItem in
+					//Only notify incoming messages
+					if let message = conversationItem as? MessageInfo, message.sender != nil {
+						return message
+					} else {
+						return nil
+					}
+				},
+				modifiers: looseModifiers.filter { modifier in
+					//Only notify incoming tapbacks
+					if let tapback = modifier as? TapbackModifierInfo, tapback.sender != nil {
+						return true
+					} else {
+						return false
+					}
+				}
+			)
+			
+			//Notify clients of the latest message ID
+			if let id = updatedMessageID {
+				ConnectionManager.shared.send(idUpdate: id, to: nil)
+			}
 		} catch {
 			LogManager.shared.log("Error fetching scan data: %{public}", type: .notice, error.localizedDescription)
 		}
 	}
+	
+	/**
+	 Runs a check for any updated message states
+	 - Parameter db: The connection to query
+	 - Returns: An array of activity status updates
+	 - Throws: SQL execution errors
+	 */
+	private func updateMessageStates() throws -> [ActivityStatusModifierInfo] {
+		//Create the result array
+		var resultArray: [ActivityStatusModifierInfo] = []
+		
+		//Get the most recent outgoing message for each conversation
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql")!)
+		let query = String(format: template, "") //Don't add any special WHERE clauses
+		let stmt = try dbConnection.prepare(query)
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		//Keep track of chats that don't show up in our query, so we can remove them from our tracking dict
+		var untrackedChats: Set<Int64> = Set(messageStateDict.keys)
+		for row in stmt {
+			//Read the row data
+			let chatID = row[indices["chat.ROWID"]!] as! Int64
+			let messageID = row[indices["message.ROWID"]!] as! Int64
+			let modifier = DatabaseConverter.processActivityStatusRow(row, withIndices: indices)
+			
+			//Remove this chat from the untracked chats
+			untrackedChats.remove(chatID)
+			
+			//Create an entry for this update
+			let newUpdate = MessageTrackingState(id: messageID, state: modifier.state)
+			
+			//Compare against the existing update
+			if let existingUpdate = messageStateDict[chatID] {
+				if existingUpdate != newUpdate {
+					//Create an update
+					resultArray.append(modifier)
+					
+					//Update the dictionary entry
+					messageStateDict[chatID] = newUpdate
+				}
+			} else {
+				//Add this update to the dictionary
+				messageStateDict[chatID] = newUpdate
+			}
+		}
+		
+		//Remove all untracked chats from the tracking dict
+		for chatID in untrackedChats {
+			messageStateDict[chatID] = nil
+		}
+		
+		//Return the results
+		return resultArray
+	}
+	
+	//MARK: Fetch
 	
 	/**
 	 Fetches a standard set of fields for messages
@@ -128,7 +225,7 @@ class DatabaseManager {
 	 - Returns: The executed statement
 	 - Throws: SQL execution errors
 	 */
-	func fetchMessages(using db: Connection, where queryWhere: String? = nil) throws -> Statement {
+	private func fetchMessages(using db: Connection, where queryWhere: String? = nil) throws -> Statement {
 		var rows: [String] = [
 			"message.ROWID",
 			"message.guid",
@@ -168,62 +265,67 @@ class DatabaseManager {
 		return try db.prepare(query)
 	}
 	
+	//MARK: Requests
+	
 	/**
-	 Runs a check for any updated message states
-	 - Parameter db: The connection to query
-	 - Returns: An array of activity status updates
-	 - Throws: SQL execution errors
+	 Fetches grouped messages from a specified time range
 	 */
-	func updateMessageStates(using db: Connection) throws -> [ActivityStatusModifierInfo] {
-		//Create the result array
-		var resultArray: [ActivityStatusModifierInfo] = []
+	public func fetchGrouping(fromTime timeLowerUNIX: Int64, to timeUpperUNIX: Int64) throws -> DBFetchGrouping {
+		//Convert the times to database times
+		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+		let timeUpper = convertDBTime(fromUNIX: timeUpperUNIX)
 		
-		//Get the most recent outgoing message for each conversation
-		let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql")!)
-		let stmt = try db.prepare(query)
+		let stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower) AND message.date < \(timeUpper)")
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		let rows = try stmt.map { row in
+			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+		}
+		return DatabaseConverter.groupMessageRows(rows)
+	}
+	
+	/**
+	 Fetches messages since a specified ID (exclusive)
+	 */
+	public func fetchGrouping(fromID idLower: Int64) throws -> DBFetchGrouping {
+		let stmt = try fetchMessages(using: dbConnection, where: "message.ROWID > \(idLower)")
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		let rows = try stmt.map { row in
+			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+		}
+		return DatabaseConverter.groupMessageRows(rows)
+	}
+	
+	/**
+	 Fetches an array of updated `ActivityStatusModifierInfo` after a certain time
+	 */
+	public func fetchActivityStatus(fromTime timeLowerUNIX: Int64) throws -> [ActivityStatusModifierInfo] {
+		//Convert the time to database time
+		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+		
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql")!)
+		let query = String(format: template, "AND (message.date_delivered > \(timeLower) OR message.date_read > \(timeLower))")
+		let stmt = try dbConnection.prepare(query)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
-		//Keep track of chats that don't show up in our query, so we can remove them from our tracking dict
-		var untrackedChats: Set<Int64> = Set(messageStateDict.keys)
-		for row in stmt {
-			//Read the row data
-			let chatID = row[indices["chat.ROWID"]!] as! Int64
-			let messageID = row[indices["message.ROWID"]!] as! Int64
-			let messageGUID = row[indices["message.guid"]!] as! String
-			let state = DatabaseConverter.mapMessageStateCode(
-					isSent: row[indices["message.is_sent"]!] as! Bool,
-					isDelivered: row[indices["message.is_delivered"]!] as! Bool,
-					isRead: row[indices["message.is_read"]!] as! Bool
-			)
-			let dateRead = row[indices["message.date_read"]!] as! Int64
-			
-			//Remove this chat from the untracked chats
-			untrackedChats.remove(chatID)
-			
-			//Create an entry for this update
-			let newUpdate = MessageTrackingState(id: messageID, state: state)
-			
-			//Compare against the existing update
-			if let existingUpdate = messageStateDict[chatID] {
-				if existingUpdate != newUpdate {
-					//Create an update
-					resultArray.append(ActivityStatusModifierInfo(messageGUID: messageGUID, state: state, dateRead: dateRead))
-					
-					//Update the dictionary entry
-					messageStateDict[chatID] = newUpdate
-				}
-			} else {
-				//Add this update to the dictionary
-				messageStateDict[chatID] = newUpdate
-			}
+		return stmt.map { row in
+			DatabaseConverter.processActivityStatusRow(row, withIndices: indices)
+		}
+	}
+	
+	/**
+	 Fetches the path to the file of the attachment of GUID guid
+	 */
+	public func fetchFile(fromAttachmentGUID guid: String) throws -> URL? {
+		//Run the query
+		let stmt = try dbConnection.prepare("SELECT filename FROM attachment WHERE guid = ? LIMIT 1", guid)
+		
+		//Return nil if there are no results
+		guard let row = stmt.next() else {
+			return nil
 		}
 		
-		//Remove all untracked chats from the tracking dict
-		for chatID in untrackedChats {
-			messageStateDict[chatID] = nil
-		}
-		
-		//Return the results
-		return resultArray
+		//Return the file
+		let filename = row[0] as! String
+		return DatabaseConverter.createURL(dbPath: filename)
 	}
 }

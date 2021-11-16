@@ -10,34 +10,24 @@ protocol DataProxyDelegate: AnyObject {
 	/**
 	 Called when the proxy is started successfully
 	 */
-	func dataProxyDidStart()
-	
-	/**
-	 Called when the proxy is paused
-	 This happens when a temporary, automatically recoverable error occurs in the proxy,
-	 such as a dropped connection. No user input is required to solve these problems,
-	 but this updates the UI so the user at least knows what's going on.
-	 *
-	 This method cannot be called while the server is in setup mode, and should instead
-	 redirect to `onStop`
-	 */
-	func dataProxy(didPauseWithState: ServerState)
+	func dataProxyDidStart(_ dataProxy: DataProxy)
 	
 	/**
 	 Called when the proxy is stopped
-	 (either as directed or due to an exception)
+	 If isRecoverable is true, the proxy will continue trying to reconnect in the background,
+	 and call `dataProxyDidStart` when the connection is resolved.
 	 */
-	func dataProxy(didStopWithState: ServerState)
+	func dataProxy(_ dataProxy: DataProxy, didStopWithState state: ServerState, isRecoverable: Bool)
 	
 	/**
 	 Called when a new client is connected
 	 */
-	func dataProxy(didConnectClient: C)
+	func dataProxy(_ dataProxy: DataProxy, didConnectClient client: C, totalCount: Int)
 	
 	/**
 	 Called when a client is disconnected
 	 */
-	func dataProxy(didDisconnectClient: C)
+	func dataProxy(_ dataProxy: DataProxy, didDisconnectClient client: C, totalCount: Int)
 	
 	/**
 	 Called when a message is received
@@ -46,5 +36,5 @@ protocol DataProxyDelegate: AnyObject {
 	   - client: The client that sent the message
 	   - wasEncrypted: True if this message was encrypted during transit (and probably contains sensitive content)
 	 */
-	func dataProxy(didReceive data: Data, from client: C, wasEncrypted: Bool)
+	func dataProxy(_ dataProxy: DataProxy, didReceive data: Data, from client: C, wasEncrypted: Bool)
 }

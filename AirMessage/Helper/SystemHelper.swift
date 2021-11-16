@@ -35,5 +35,12 @@ func isProcessTranslated() -> Bool {
  */
 func getSystemArchitecture() -> String {
 	let info = NXGetLocalArchInfo()
-	return String(utf8String: (info?.pointee.description)!)!
+	return String(utf8String: (info!.pointee.description)!)!
+}
+
+/**
+ Gets the name of the computer
+ */
+func getComputerName() -> String? {
+	return Host.current().localizedName
 }

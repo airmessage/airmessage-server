@@ -4,19 +4,31 @@
 
 import Foundation
 
-protocol WritableBlock {
-	func write()
-}
-
-struct ConversationInfo {
+struct ConversationInfo: Packable {
 	let guid: String
-	let available: Bool
 	let service: String
 	let name: String?
 	let members: [String]
+	
+	func pack(to packer: inout AirPacker) {
+		packer.pack(string: guid)
+		packer.pack(bool: true) //Conversation available
+		packer.pack(string: service)
+		packer.pack(optionalString: name)
+		packer.pack(stringArray: members)
+	}
 }
 
-struct LiteConversationInfo {
+struct UnavailableConversationInfo: Packable {
+	let guid: String
+	
+	func pack(to packer: inout AirPacker) {
+		packer.pack(string: guid)
+		packer.pack(bool: false) //Conversation unavailable
+	}
+}
+
+struct LiteConversationInfo: Packable {
 	let guid: String
 	let service: String
 	let name: String?
@@ -27,22 +39,49 @@ struct LiteConversationInfo {
 	let previewText: String?
 	let previewSendStyle: String?
 	let previewAttachments: [String]
+	
+	func pack(to packer: inout AirPacker) {
+		packer.pack(string: guid)
+		packer.pack(string: service)
+		packer.pack(optionalString: name)
+		packer.pack(stringArray: members)
+		
+		packer.pack(long: previewDate)
+		packer.pack(optionalString: previewSender)
+		packer.pack(optionalString: previewText)
+		packer.pack(optionalString: previewSendStyle)
+		packer.pack(stringArray: previewAttachments)
+	}
 }
 
-protocol ConversationItem {
-	var serverID: Int64 {get}
-	var guid: String {get}
-	var chatGUID: String {get}
-	var date: Int64 {get}
+protocol ConversationItem: Packable {
+	static var itemType: Int32 {get}
+	
+	var serverID: Int64 { get }
+	var guid: String { get }
+	var chatGUID: String { get }
+	var date: Int64 { get }
+}
+
+extension ConversationItem {
+	func packBase(to packer: inout AirPacker) {
+		packer.pack(int: Self.itemType)
+		
+		packer.pack(long: serverID)
+		packer.pack(string: guid)
+		packer.pack(string: chatGUID)
+		packer.pack(long: date)
+	}
 }
 
 struct MessageInfo: ConversationItem {
+	static let itemType: Int32 = 0
+	
 	let serverID: Int64
 	let guid: String
 	let chatGUID: String
 	let date: Int64
 	
-	static let itemType: Int32 = 0
 	enum State: Int32 {
 		case idle = 0
 		case sent = 1
@@ -66,15 +105,31 @@ struct MessageInfo: ConversationItem {
 	let state: State
 	let error: Error
 	let dateRead: Int64
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(optionalString: text)
+		packer.pack(optionalString: subject)
+		packer.pack(optionalString: sender)
+		packer.pack(packableArray: attachments)
+		packer.pack(packableArray: stickers)
+		packer.pack(packableArray: tapbacks)
+		packer.pack(optionalString: sendEffect)
+		packer.pack(int: state.rawValue)
+		packer.pack(int: error.rawValue)
+		packer.pack(long: dateRead)
+	}
 }
 
 struct GroupActionInfo: ConversationItem {
+	static let itemType: Int32 = 1
+	
 	let serverID: Int64
 	let guid: String
 	let chatGUID: String
 	let date: Int64
 	
-	static let itemType: Int32 = 1
 	enum Subtype: Int32 {
 		case unknown = 0
 		case join = 1
@@ -84,32 +139,63 @@ struct GroupActionInfo: ConversationItem {
 	let agent: String?
 	let other: String?
 	let subtype: Subtype
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(optionalString: agent)
+		packer.pack(optionalString: other)
+		packer.pack(int: subtype.rawValue)
+	}
 }
 
 struct ChatRenameActionInfo: ConversationItem {
+	static let itemType: Int32 = 2
+	
 	let serverID: Int64
 	let guid: String
 	let chatGUID: String
 	let date: Int64
 	
-	static let itemType: Int32 = 2
-	
 	let agent: String?
 	let updatedName: String?
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(optionalString: agent)
+		packer.pack(optionalString: updatedName)
+	}
 }
 
-struct AttachmentInfo {
+struct AttachmentInfo: Packable {
 	let guid: String
 	let name: String
 	let type: String?
 	let size: Int64
 	let checksum: Data?
 	let sort: Int64
+	
+	func pack(to packer: inout AirPacker) {
+		packer.pack(string: guid)
+		packer.pack(string: name)
+		packer.pack(optionalString: type)
+		packer.pack(long: size)
+		packer.pack(optionalPayload: checksum)
+		packer.pack(long: sort)
+	}
 }
 
-protocol ModifierInfo {
-	static var itemType: Int32 {get}
-	var messageGUID: String {get}
+protocol ModifierInfo: Packable {
+	static var itemType: Int32 { get }
+	var messageGUID: String { get }
+}
+
+extension ModifierInfo {
+	func packBase(to packer: inout AirPacker) {
+		packer.pack(int: Self.itemType)
+		packer.pack(string: messageGUID)
+	}
 }
 
 struct ActivityStatusModifierInfo: ModifierInfo {
@@ -118,6 +204,13 @@ struct ActivityStatusModifierInfo: ModifierInfo {
 	
 	let state: MessageInfo.State
 	let dateRead: Int64
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(int: state.rawValue)
+		packer.pack(long: dateRead)
+	}
 }
 
 struct StickerModifierInfo: ModifierInfo {
@@ -130,6 +223,17 @@ struct StickerModifierInfo: ModifierInfo {
 	let date: Int64
 	let data: Data
 	let type: String
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(int: messageIndex)
+		packer.pack(string: fileGUID)
+		packer.pack(optionalString: sender)
+		packer.pack(long: date)
+		packer.pack(payload: data)
+		packer.pack(string: type)
+	}
 }
 
 struct TapbackModifierInfo: ModifierInfo {
@@ -140,4 +244,13 @@ struct TapbackModifierInfo: ModifierInfo {
 	let sender: String?
 	let isAddition: Bool
 	let tapbackType: Int32
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(int: messageIndex)
+		packer.pack(optionalString: sender)
+		packer.pack(bool: isAddition)
+		packer.pack(int: tapbackType)
+	}
 }

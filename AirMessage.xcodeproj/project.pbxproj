@@ -72,12 +72,15 @@
 		EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */ = {isa = PBXBuildFile; fileRef = EDD70D662699F00300E8DC06 /* AppleScriptSource */; };
 		EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */; };
 		EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */; };
+		EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */; };
+		EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 		EDEDF9C4274068DA00C85506 /* OpenSSLSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EDEDF9C3274068DA00C85506 /* OpenSSLSwift */; };
+		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -190,10 +193,13 @@
 		EDD70D662699F00300E8DC06 /* AppleScriptSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppleScriptSource; sourceTree = "<group>"; };
 		EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptBridge.swift; sourceTree = "<group>"; };
 		EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLaunch.swift; sourceTree = "<group>"; };
+		EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFetchGrouping.swift; sourceTree = "<group>"; };
+		EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNormalizationHelper.swift; sourceTree = "<group>"; };
 		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRegistration.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
+		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +225,7 @@
 				2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */,
 				2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */,
 				2EAEE54358769BD24B8AA900 /* MessageTypes.swift */,
+				EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -247,9 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				2EAEE1798DD4556D5CC8247C /* DatabaseManager.swift */,
-				2EAEE027B256CC2BFB3C76CC /* SQL */,
-				2EAEEB9731EC0559ADB1DC43 /* DatabaseTimeConverter.swift */,
 				2EAEE5AB48D97DEE4DD37D94 /* DatabaseConverter.swift */,
+				2EAEEB9731EC0559ADB1DC43 /* DatabaseTimeConverter.swift */,
+				2EAEE027B256CC2BFB3C76CC /* SQL */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -275,9 +282,9 @@
 		ED28094825A20332009E7636 = {
 			isa = PBXGroup;
 			children = (
-				ED3B760A274060AA005B2593 /* OpenSSL */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				ED6CDD362689193000EEBE31 /* Frameworks */,
+				ED3B760A274060AA005B2593 /* OpenSSL */,
 				ED28095225A20332009E7636 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -328,6 +335,7 @@
 				2EAEE7BEDAA5FF7A348C4277 /* DataProxyDelegate.swift */,
 				2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */,
 				2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */,
+				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -402,6 +410,7 @@
 				2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */,
 				2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */,
 				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
+				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -619,6 +628,7 @@
 				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
 				2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */,
 				ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */,
+				EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */,
 				EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */,
 				EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */,
 				ED42B4BF26AC921D00409B24 /* JVMHelper.m in Sources */,
@@ -633,6 +643,7 @@
 				ED15912326AC5484008F5304 /* LogManager.swift in Sources */,
 				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
 				2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */,
+				EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */,
 				2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */,
 				2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */,
 				2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */,
@@ -655,6 +666,7 @@
 				2EAEEBEF65B8A843FC0162FD /* ClientConnectionTCP.swift in Sources */,
 				2EAEEADDCBE7124BBDB9CDF4 /* CommConst.swift in Sources */,
 				2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */,
+				EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,7 +4,7 @@
 
 import Foundation
 
-class ClientConnection: Hashable {
+class ClientConnection {
 	var id: Int32
 	
 	struct Registration {
@@ -45,6 +45,68 @@ class ClientConnection: Hashable {
 		self.id = id
 	}
 	
+	deinit {
+		//Ensure timers are cleaned up
+		cancelAllTimers()
+	}
+	
+	//MARK: Timers
+	
+	enum TimerType {
+		case handshakeExpiry
+		case pingExpiry
+	}
+	
+	struct RunningTimer {
+		let timer: Timer
+		let callback: (ClientConnection) -> Void
+	}
+	
+	private var timerDict: [TimerType: RunningTimer] = [:]
+	
+	/**
+	 Cancels all pending expiry timers
+	 */
+	func cancelAllTimers() {
+		for (_, runningTimer) in timerDict {
+			runningTimer.timer.invalidate()
+		}
+		timerDict.removeAll()
+	}
+	
+	/**
+	 Cancels the expiry timer of the specified type
+	 */
+	func cancelTimer(ofType type: TimerType) {
+		timerDict[type]?.timer.invalidate()
+		timerDict[type] = nil
+	}
+	
+	/**
+	 Schedules a timer of the specified type after interval to run the callback
+	 If a timer was previously scheduled of this type, that timer is cancelled and replaced with this one
+	 */
+	func startTimer(ofType type: TimerType, interval: TimeInterval, callback: @escaping (ClientConnection) -> Void) {
+		//Cancel existing timers
+		cancelTimer(ofType: type)
+		
+		//Create and start the timer
+		let timer = Timer(timeInterval: interval, target: self, selector: #selector(onTimerExpire), userInfo: type, repeats: false)
+		RunLoop.main.add(timer, forMode: .common)
+		timerDict[type] = RunningTimer(timer: timer, callback: callback)
+	}
+	
+	@objc private func onTimerExpire(timer: Timer) {
+		//Invoke the callback of the specified type
+		let type = timer.userInfo as! TimerType
+		timerDict[type]?.callback(self)
+		timerDict[type] = nil
+	}
+}
+
+//MARK: Hashable
+
+extension ClientConnection: Hashable {
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(id)
 	}

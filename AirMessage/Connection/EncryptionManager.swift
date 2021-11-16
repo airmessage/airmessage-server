@@ -22,7 +22,7 @@ private var encryptionPassword: String {
  - Returns: Randomly generated data
  - Throws: An error if random data failed to generate
  */
-private func generateSecureData(count: Int) throws -> Data {
+func generateSecureData(count: Int) throws -> Data {
 	var data = Data(capacity: saltLen)
 	let secResult = SecRandomCopyBytes(kSecRandomDefault, data.count, &data)
 	guard secResult == errSecSuccess else {

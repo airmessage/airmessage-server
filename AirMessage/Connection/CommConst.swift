@@ -9,9 +9,9 @@ class CommConst {
 	static let subVersion: Int32 = 5
 	
 	//Timeouts
-	static let handshakeTimeout = 10 * 1000 //10 seconds
-	static let pingTimeout = 30 * 1000 //30 seconds
-	static let keepAliveMillis = 30 * 60 * 1000 //30 minutes
+	static let handshakeTimeout: TimeInterval = 10 //10 seconds
+	static let pingTimeout: TimeInterval = 30 //30 seconds
+	static let keepAliveMillis: TimeInterval = 30 * 60 //30 minutes
 	
 	static let maxPacketAllocation = 50 * 1024 * 1024 //50 MB
 	
@@ -73,7 +73,7 @@ enum NSTSendResult: Int32 {
 
 enum NSTAttachmentRequest: Int32 {
 	case notFound = 1 //File GUID not found
-	case motSaved = 2 //File (on disk) not found
+	case notSaved = 2 //File (on disk) not found
 	case unreadable = 3 //No access to file
 	case io = 4 //IO error
 }
