@@ -336,4 +336,33 @@ class DatabaseManager {
 		let name = row[2] as! String
 		return AttachmentFile(url: DatabaseConverter.createURL(dbPath: filename), type: type, name: name)
 	}
+	
+	/**
+	 Fetches an array of conversations from their GUID, returning an array of mixed available and unavailable conversations
+	 */
+	public func fetchConversationArray(from guidArray: [String]) throws -> [BaseConversationInfo] {
+		let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryChatDetails", withExtension: "sql")!)
+		let stmt = try dbConnection.prepare(query, guidArray)
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		//Fetch available conversations and map them to ConverationInfos
+		let availableArray = stmt.map { row -> ConversationInfo in
+			let guid = row[indices["chat.guid"]!] as! String
+			let name = row[indices["chat.display_name"]!] as! String?
+			let service = row[indices["chat.service"]!] as! String
+			let members: [String] = (row[indices["chat.member_list"]!] as! String?)
+				.map { $0.components(separatedBy: ",") } ?? []
+			
+			return ConversationInfo(guid: guid, service: service, name: name, members: members)
+		}
+		
+		//Fill in conversations that weren't found in the database as UnavailableConversationInfos
+		let unavailableArray = guidArray.filter { guid in
+			!availableArray.contains { availableConversation in
+				availableConversation.guid == guid
+			}
+		}.map { guid in UnavailableConversationInfo(guid: guid) }
+		
+		return availableArray + unavailableArray
+	}
 }

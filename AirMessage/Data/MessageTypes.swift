@@ -4,7 +4,11 @@
 
 import Foundation
 
-struct ConversationInfo: Packable {
+protocol BaseConversationInfo: Packable {
+	var guid: String { get }
+}
+
+struct ConversationInfo: BaseConversationInfo {
 	let guid: String
 	let service: String
 	let name: String?
@@ -19,7 +23,7 @@ struct ConversationInfo: Packable {
 	}
 }
 
-struct UnavailableConversationInfo: Packable {
+struct UnavailableConversationInfo: BaseConversationInfo {
 	let guid: String
 	
 	func pack(to packer: inout AirPacker) {

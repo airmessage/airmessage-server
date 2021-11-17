@@ -318,6 +318,25 @@ class ConnectionManager {
 	}
 	
 	private func handleMessageConversationUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
+		let chatGUIDArray = try messagePacker.unpackStringArray()
+		
+		//Fetch conversations from the database
+		let resultConversations: [BaseConversationInfo]
+		do {
+			resultConversations = try DatabaseManager.shared.fetchConversationArray(from: chatGUIDArray)
+		} catch {
+			LogManager.shared.log("Failed to read conversations from database: %{public}", type: .error, error.localizedDescription)
+			return
+		}
+		
+		//Send a response
+		guard let dataProxy = dataProxy else { return }
+		
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.conversationUpdate.rawValue)
+		responsePacker.pack(packableArray: resultConversations)
+		
+		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 	}
 	
 	private func handleMessageAttachmentRequest(packer messagePacker: inout AirPacker, from client: C) throws {
