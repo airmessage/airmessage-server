@@ -233,6 +233,19 @@ class DatabaseConverter {
 	}
 	
 	/**
+	 Processes a chat database row into a `ConversationInfo`
+	 */
+	static func processConversationRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> ConversationInfo {
+		let guid = row[indices["chat.guid"]!] as! String
+		let name = row[indices["chat.display_name"]!] as! String?
+		let service = row[indices["chat.service"]!] as! String
+		let members: [String] = (row[indices["member_list"]!] as! String?)
+			.map { $0.components(separatedBy: ",") } ?? []
+		
+		return ConversationInfo(guid: guid, service: service, name: name, members: members)
+	}
+	
+	/**
 	 Converts a string array to a dictionary that maps the string value to its index
 	*/
 	static func makeColumnIndexDict(_ columnNames: [String]) -> [String: Int] {

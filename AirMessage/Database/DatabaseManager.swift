@@ -340,21 +340,13 @@ class DatabaseManager {
 	/**
 	 Fetches an array of conversations from their GUID, returning an array of mixed available and unavailable conversations
 	 */
-	public func fetchConversationArray(from guidArray: [String]) throws -> [BaseConversationInfo] {
-		let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryChatDetails", withExtension: "sql")!)
+	public func fetchConversationArray(in guidArray: [String]) throws -> [BaseConversationInfo] {
+		let query = try! String(contentsOf: Bundle.main.url(forResource: "QuerySpecificChatDetails", withExtension: "sql")!)
 		let stmt = try dbConnection.prepare(query, guidArray)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
 		//Fetch available conversations and map them to ConverationInfos
-		let availableArray = stmt.map { row -> ConversationInfo in
-			let guid = row[indices["chat.guid"]!] as! String
-			let name = row[indices["chat.display_name"]!] as! String?
-			let service = row[indices["chat.service"]!] as! String
-			let members: [String] = (row[indices["chat.member_list"]!] as! String?)
-				.map { $0.components(separatedBy: ",") } ?? []
-			
-			return ConversationInfo(guid: guid, service: service, name: name, members: members)
-		}
+		let availableArray = stmt.map { DatabaseConverter.processConversationRow($0, withIndices: indices) }
 		
 		//Fill in conversations that weren't found in the database as UnavailableConversationInfos
 		let unavailableArray = guidArray.filter { guid in
@@ -364,5 +356,37 @@ class DatabaseManager {
 		}.map { guid in UnavailableConversationInfo(guid: guid) }
 		
 		return availableArray + unavailableArray
+	}
+	
+	/**
+	 Fetches an array of conversations, optionally that have had activity since a certain time
+	 */
+	public func fetchConversationArray(since timeLowerUNIX: Int64? = nil) throws -> [ConversationInfo] {
+		let stmt: Statement
+		if let timeLowerUNIX = timeLowerUNIX {
+			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+			
+			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetailsSince", withExtension: "sql")!)
+			stmt = try dbConnection.prepare(query, timeLower)
+		} else {
+			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetails", withExtension: "sql")!)
+			stmt = try dbConnection.prepare(query)
+		}
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		return stmt.map { DatabaseConverter.processConversationRow($0, withIndices: indices) }
+	}
+	
+	/**
+	 Counts the number of message rows, optionally since a certain time
+	 */
+	public func countMessages(since timeLowerUNIX: Int64? = nil) throws -> Int {
+		if let timeLowerUNIX = timeLowerUNIX {
+			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+			
+			return try dbConnection.scalar("SELECT count(*) FROM message WHERE message.date > ?", timeLower) as! Int
+		} else {
+			return try dbConnection.scalar("SELECT count(*) FROM message") as! Int
+		}
 	}
 }

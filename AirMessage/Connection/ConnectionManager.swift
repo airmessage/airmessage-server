@@ -315,6 +315,38 @@ class ConnectionManager {
 			let attachmentsBlacklist = try messagePacker.unpackStringArray() //If it's on the blacklist, skip it
 			let attachmentsDownloadOther = try messagePacker.unpackBool() //If it's on neither list, download if if this value is true
 		}
+		
+		//Fetch conversations from the database
+		let resultConversations: [BaseConversationInfo]
+		let messageCount: Int
+		do {
+			resultConversations = try DatabaseManager.shared.fetchConversationArray(since: timeSinceMessages)
+			messageCount = try DatabaseManager.shared.countMessages(since: timeSinceMessages)
+		} catch {
+			LogManager.shared.log("Failed to read conversations from database: %{public}", type: .error, error.localizedDescription)
+			return
+		}
+		
+		//Make sure the client is still connected
+		guard client.isConnected.value else { return }
+		
+		//Send the initial mass retrieval info
+		do {
+			guard let dataProxy = dataProxy else { return }
+			
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.massRetrieval.rawValue)
+			
+			responsePacker.pack(short: requestID)
+			responsePacker.pack(int: 0) //Request index
+			
+			responsePacker.pack(packableArray: resultConversations)
+			responsePacker.pack(int: Int32(messageCount))
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//TODO: stream messages and attachments
 	}
 	
 	private func handleMessageConversationUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
@@ -323,7 +355,7 @@ class ConnectionManager {
 		//Fetch conversations from the database
 		let resultConversations: [BaseConversationInfo]
 		do {
-			resultConversations = try DatabaseManager.shared.fetchConversationArray(from: chatGUIDArray)
+			resultConversations = try DatabaseManager.shared.fetchConversationArray(in: chatGUIDArray)
 		} catch {
 			LogManager.shared.log("Failed to read conversations from database: %{public}", type: .error, error.localizedDescription)
 			return
