@@ -360,9 +360,14 @@ class ConnectionManager {
 		let messageStream = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages)
 		var messageResponseIndex: Int32 = 1
 		var previousLooseModifiers: [ModifierInfo] = []
-		repeat {
+		while true {
 			//Get next 20 results
 			let groupArray: [DatabaseManager.FailableDatabaseMessageRow] = Array(messageStream.prefix(20))
+			
+			//Break if we're done
+			if groupArray.isEmpty {
+				break
+			}
 			
 			//Check for errors
 			guard !groupArray.contains(where: { $0.isError }) else {
@@ -506,7 +511,11 @@ class ConnectionManager {
 			
 				messageResponseIndex += 1
 			}
-		} while true
+		}
+		
+		//Send a success message
+		guard let dataProxy = dataProxy else { return }
+		ConnectionManager.sendMessageHeaderOnly(dataProxy, to: client, ofType: NHT.massRetrievalFinish, encrypt: true)
 	}
 	
 	private func handleMessageConversationUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
