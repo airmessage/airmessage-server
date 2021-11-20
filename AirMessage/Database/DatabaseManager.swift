@@ -225,7 +225,7 @@ class DatabaseManager {
 	 - Returns: The executed statement
 	 - Throws: SQL execution errors
 	 */
-	private func fetchMessages(using db: Connection, where queryWhere: String? = nil) throws -> Statement {
+	private func fetchMessages(using db: Connection, where queryWhere: String? = nil, sort querySort: String? = nil, limit queryLimit: Int? = nil) throws -> Statement {
 		var rows: [String] = [
 			"message.ROWID",
 			"message.guid",
@@ -257,10 +257,21 @@ class DatabaseManager {
 			]
 		}
 		
+		var extraClauses: [String] = []
+		if let queryWhere = queryWhere {
+			extraClauses.append("WHERE \(queryWhere)")
+		}
+		if let querySort = querySort {
+			extraClauses.append("ORDER BY \(querySort)")
+		}
+		if let queryLimit = queryLimit {
+			extraClauses.append("LIMIT \(queryLimit)")
+		}
+		
 		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryMessageChatHandle", withExtension: "sql")!)
 		let query = String(format: template,
 				rows.joined(separator: ", "),
-				queryWhere != nil ? "WHERE \(queryWhere!)" : ""
+				extraClauses.joined(separator: " ")
 		)
 		return try db.prepare(query)
 	}
@@ -415,6 +426,9 @@ class DatabaseManager {
 		}
 	}
 	
+	/**
+	 Returns a lazy iterator over a sequence of `FailableDatabaseMessageRow`
+	 */
 	public func fetchMessagesLazy(since timeLowerUNIX: Int64? = nil) throws -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow> {
 		//Fetch the messages
 		let stmt: Statement
@@ -443,6 +457,50 @@ class DatabaseManager {
 			
 			//Return the row
 			return .row(message)
+		}
+	}
+	
+	/**
+	 Fetches all `LiteConversationInfo` from the database
+	 */
+	public func fetchLiteConversations() throws -> [LiteConversationInfo] {
+		let extraRows: [String]
+		if #available(macOS 10.12, *) {
+			extraRows = ["message.expressive_send_style_id"]
+		} else {
+			extraRows = []
+		}
+		
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatSummary", withExtension: "sql")!)
+		let query = String(format: template, extraRows.isEmpty ? "" : ", " + extraRows.joined(separator: ", "))
+		let stmt = try dbConnection.prepare(query)
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		return stmt.map { row in DatabaseConverter.processLiteConversationRow(row, withIndices: indices) }
+	}
+	
+	/**
+	 Fetches a small collection of messages from newest to oldest.
+	 For pagination, `before` should be passed.
+	 */
+	public func fetchLiteThread(chatGUID: String, before: Int64?) throws -> [ConversationItem] {
+		let stmt = try fetchMessages(
+			using: dbConnection,
+			where: before.map { "message.ROWID < \($0)" },
+			sort: "message.ROWID DESC"
+		)
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		return try stmt.map { row in
+			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+		}.compactMap { row -> ConversationItem? in
+			switch row {
+				case .message(let conversationItem):
+					return conversationItem
+				default:
+					//Discard modifiers
+					return nil
+			}
 		}
 	}
 }

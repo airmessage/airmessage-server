@@ -248,6 +248,44 @@ class DatabaseConverter {
 	}
 	
 	/**
+	 Processes a chat database row into a `LiteConversationInfo`
+	 */
+	static func processLiteConversationRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> LiteConversationInfo {
+		let guid = row[indices["chat.guid"]!] as! String
+		let service = row[indices["chat.service"]!] as! String
+		let name = row[indices["chat.display_name"]!] as! String?
+		let members = (row[indices["member_list"]!] as! String)
+			.components(separatedBy: ",")
+		
+		let lastMessageDate = row[indices["message.date"]!] as! Int64
+		var lastMessageText: String? = row[indices["message.text"]!] as! String?
+		if let text = lastMessageText, text.isEmpty {
+			lastMessageText = nil
+		}
+		let lastMessageSendStyle: String?
+		if #available(macOS 10.12, *) {
+			lastMessageSendStyle = row[indices["message.expressive_send_style_id"]!] as! String?
+		} else {
+			lastMessageSendStyle = nil
+		}
+		let lastMessageSender = row[indices["handle.id"]!] as! String?
+		let lastMessageAttachments = (row[indices["attachment_list"]!] as! String?)
+			.map { $0.components(separatedBy: ",") } ?? []
+		
+		return LiteConversationInfo(
+			guid: guid,
+			service: service,
+			name: name,
+			members: members,
+			previewDate: lastMessageDate,
+			previewSender: lastMessageSender,
+			previewText: lastMessageText,
+			previewSendStyle: lastMessageSendStyle,
+			previewAttachments: lastMessageAttachments
+		)
+	}
+	
+	/**
 	 Converts a string array to a dictionary that maps the string value to its index
 	*/
 	static func makeColumnIndexDict(_ columnNames: [String]) -> [String: Int] {

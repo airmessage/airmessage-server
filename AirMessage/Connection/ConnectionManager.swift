@@ -685,6 +685,53 @@ class ConnectionManager {
 		}
 	}
 	
+	private func handleMessageLiteConversationRetrieval(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Fetch the conversations
+		let conversations: [LiteConversationInfo]
+		do {
+			conversations = try DatabaseManager.shared.fetchLiteConversations()
+		} catch {
+			LogManager.shared.log("Failed to fetch lite conversation summary: %{public}", type: .error, error.localizedDescription)
+			return
+		}
+		
+		guard let dataProxy = dataProxy else { return }
+		
+		//Send the response
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.liteConversationRetrieval.rawValue)
+		responsePacker.pack(packableArray: conversations)
+		
+		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+	}
+	
+	private func handleMessageLiteThreadRetrieval(packer messagePacker: inout AirPacker, from client: C) throws {
+		let chatGUID = try messagePacker.unpackString()
+		let firstMessageID: Int64? = try messagePacker.unpackBool() ? try messagePacker.unpackLong() : nil
+		
+		let messages: [ConversationItem]
+		do {
+			messages = try DatabaseManager.shared.fetchLiteThread(chatGUID: chatGUID, before: firstMessageID)
+		} catch {
+			LogManager.shared.log("Failed to fetch lite thread messages for %{public} before %{public}: %{public}", type: .error, chatGUID, firstMessageID ?? "nil", error.localizedDescription)
+			return
+		}
+		
+		guard let dataProxy = dataProxy else { return }
+		
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.liteThreadRetrieval.rawValue)
+		if let firstMessageID = firstMessageID {
+			responsePacker.pack(bool: true)
+			responsePacker.pack(long: firstMessageID)
+		} else {
+			responsePacker.pack(bool: false)
+		}
+		responsePacker.pack(packableArray: messages)
+		
+		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+	}
+	
 	//MARK: Process message
 	
 	@discardableResult
@@ -721,6 +768,9 @@ class ConnectionManager {
 			case .massRetrieval: try handleMessageMassRetrieval(packer: &packer, from: client)
 			case .conversationUpdate: try handleMessageConversationUpdate(packer: &packer, from: client)
 			case .attachmentReq: try handleMessageAttachmentRequest(packer: &packer, from: client)
+				
+			case .liteConversationRetrieval: try handleMessageLiteConversationRetrieval(packer: &packer, from: client)
+			case .liteThreadRetrieval: try handleMessageLiteThreadRetrieval(packer: &packer, from: client)
 			default: return false
 		}
 		
