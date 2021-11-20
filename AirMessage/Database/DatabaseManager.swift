@@ -40,7 +40,7 @@ class DatabaseManager {
 	}
 	private var messageStateDict: [Int64: MessageTrackingState] = [:] //chat ID : message state
 	
-	init() {
+	private init() {
 		initTime = getDBTime()
 	}
 	
@@ -387,6 +387,62 @@ class DatabaseManager {
 			return try dbConnection.scalar("SELECT count(*) FROM message WHERE message.date > ?", timeLower) as! Int
 		} else {
 			return try dbConnection.scalar("SELECT count(*) FROM message") as! Int
+		}
+	}
+	
+	enum FailableDatabaseMessageRow {
+		case deallocError
+		case sqlError(Error)
+		case dataError
+		case row(DatabaseMessageRow?)
+
+		var isError: Bool {
+			switch self {
+				case .row:
+					return false
+				default:
+					return true
+			}
+		}
+		
+		var row: DatabaseMessageRow? {
+			switch self {
+				case .row(let row):
+					return row
+				default:
+					return nil
+			}
+		}
+	}
+	
+	public func fetchMessagesLazy(since timeLowerUNIX: Int64? = nil) throws -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow> {
+		//Fetch the messages
+		let stmt: Statement
+		if let timeLowerUNIX = timeLowerUNIX {
+			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+			
+			stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower)")
+		} else {
+			stmt = try fetchMessages(using: dbConnection)
+		}
+		
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		return stmt.lazy.compactMap { [dbConnection] row -> FailableDatabaseMessageRow in
+			//Make sure we still have a reference to the database
+			guard let db = dbConnection else {
+				return .deallocError
+			}
+			
+			//Fetch the row
+			let message: DatabaseMessageRow?
+			do {
+				message = try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: db)
+			} catch {
+				return .sqlError(error)
+			}
+			
+			//Return the row
+			return .row(message)
 		}
 	}
 }

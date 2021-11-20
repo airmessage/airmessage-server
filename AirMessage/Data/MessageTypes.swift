@@ -179,6 +179,7 @@ struct AttachmentInfo: Packable {
 	let size: Int64
 	let checksum: Data?
 	let sort: Int64
+	let localURL: URL?
 	
 	func pack(to packer: inout AirPacker) {
 		packer.pack(string: guid)

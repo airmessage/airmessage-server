@@ -8,6 +8,8 @@ class CommConst {
 	static let version: Int32 = 5
 	static let subVersion: Int32 = 5
 	
+	static let defaultFileChunkSize: Int64 = 1024 * 1024 //1 MB
+	
 	//Timeouts
 	static let handshakeTimeout: TimeInterval = 10 //10 seconds
 	static let pingTimeout: TimeInterval = 30 //30 seconds

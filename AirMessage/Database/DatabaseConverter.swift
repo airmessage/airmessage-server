@@ -13,6 +13,8 @@ class DatabaseConverter {
 		case chatLeave = 3
 	}
 	
+	private init() {}
+	
 	/**
 	 Groups an array of message rows to messages and loose modifiers.
 	 The array must have modifiers ordered after their associated message.
@@ -301,10 +303,10 @@ class DatabaseConverter {
 			let name = row[indices["attachment.transfer_name"]!] as! String
 			let type = row[indices["attachment.mime_type"]!] as! String
 			let size = row[indices["attachment.total_bytes"]!] as! Int64
-			let path = row[indices["attachment.filename"]!] as? String
+			let url = (row[indices["attachment.filename"]!] as? String).map { createURL(dbPath: $0) }
 			let checksum: Data?
-			if withChecksum, let path = path {
-				checksum = md5HashFile(url: createURL(dbPath: path))
+			if withChecksum, let url = url {
+				checksum = md5HashFile(url: url)
 			} else {
 				checksum = nil
 			}
@@ -316,7 +318,8 @@ class DatabaseConverter {
 					type: type,
 					size: size,
 					checksum: checksum,
-					sort: row
+					sort: row,
+					localURL: url
 			)
 		}
 		return attachments

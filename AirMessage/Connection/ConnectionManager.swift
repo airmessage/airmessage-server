@@ -303,6 +303,7 @@ class ConnectionManager {
 		
 		//Should we download attachments?
 		let downloadAttachments = try messagePacker.unpackBool()
+		let attachmentsFilter: AdvancedAttachmentsFilter?
 		if downloadAttachments {
 			//Should we filter attachments by date?
 			let timeSinceAttachments: Int64? = try messagePacker.unpackBool() ? messagePacker.unpackLong() : nil
@@ -314,6 +315,16 @@ class ConnectionManager {
 			let attachmentsWhitelist = try messagePacker.unpackStringArray() //If it's on the whitelist, download it
 			let attachmentsBlacklist = try messagePacker.unpackStringArray() //If it's on the blacklist, skip it
 			let attachmentsDownloadOther = try messagePacker.unpackBool() //If it's on neither list, download if if this value is true
+			
+			attachmentsFilter = AdvancedAttachmentsFilter(
+				timeSince: timeSinceAttachments,
+				maxSize: sizeLimitAttachments,
+				whitelist: attachmentsWhitelist,
+				blacklist: attachmentsBlacklist,
+				downloadExceptions: attachmentsDownloadOther
+			)
+		} else {
+			attachmentsFilter = nil
 		}
 		
 		//Fetch conversations from the database
@@ -338,7 +349,7 @@ class ConnectionManager {
 			responsePacker.pack(int: NHT.massRetrieval.rawValue)
 			
 			responsePacker.pack(short: requestID)
-			responsePacker.pack(int: 0) //Request index
+			responsePacker.pack(int: 0) //Response index
 			
 			responsePacker.pack(packableArray: resultConversations)
 			responsePacker.pack(int: Int32(messageCount))
@@ -346,7 +357,156 @@ class ConnectionManager {
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
 		
-		//TODO: stream messages and attachments
+		let messageStream = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages)
+		var messageResponseIndex: Int32 = 1
+		var previousLooseModifiers: [ModifierInfo] = []
+		repeat {
+			//Get next 20 results
+			let groupArray: [DatabaseManager.FailableDatabaseMessageRow] = Array(messageStream.prefix(20))
+			
+			//Check for errors
+			guard !groupArray.contains(where: { $0.isError }) else {
+				return
+			}
+			
+			//Group the results
+			var (conversationItems, looseModifiers) = DatabaseConverter.groupMessageRows(groupArray.map { $0.row }).destructured
+			
+			//Apply loose modifiers from prevous groups
+			for (i, modifier) in previousLooseModifiers.enumerated().reversed() {
+				if let conversationItemIndex = conversationItems.lastIndex(where: { $0.guid == modifier.messageGUID }) {
+					let conversationItem = conversationItems[conversationItemIndex]
+					
+					//Make sure the conversation item is a message
+					guard var message = conversationItem as? MessageInfo else { continue }
+					
+					//Add the modifier to the message
+					if let tapback = modifier as? TapbackModifierInfo {
+						message.tapbacks.append(tapback)
+					} else if let sticker = modifier as? StickerModifierInfo {
+						message.stickers.append(sticker)
+					}
+					conversationItems[conversationItemIndex] = message
+					
+					//Remove the modifier from the array
+					previousLooseModifiers.remove(at: i)
+				}
+			}
+			
+			//Keep track of all new loose modifiers
+			previousLooseModifiers += looseModifiers
+			
+			//Make sure we're still connected
+			guard client.isConnected.value,
+				  let dataProxy = dataProxy else { return }
+			
+			//Send the results
+			do {
+				var packer = AirPacker()
+				packer.pack(int: NHT.massRetrieval.rawValue)
+				
+				packer.pack(short: requestID)
+				packer.pack(int: messageResponseIndex)
+				
+				packer.pack(packableArray: conversationItems)
+				
+				dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
+			}
+			
+			//Assemble and filter attachments
+			let messageAttachments = conversationItems
+				.compactMap { $0 as? MessageInfo }
+				.flatMap { message in
+					message.attachments.filter { attachment in
+						attachmentsFilter?.apply(to: attachment, ofDate: message.date) ?? true
+					}
+				}
+			for attachment in messageAttachments {
+				//Make sure the file exists
+				guard let attachmentURL = attachment.localURL,
+					  FileManager.default.fileExists(atPath: attachmentURL.path) else {
+					continue
+				}
+				
+				//Try to normalize the file
+				let fileURL: URL
+				let fileType: String?
+				let fileName: String
+				let fileNeedsCleanup: Bool
+				if let normalizedDetails = normalizeFile(url: attachmentURL, ext: attachmentURL.pathExtension) {
+					fileURL = normalizedDetails.url
+					fileType = normalizedDetails.type
+					fileName = normalizedDetails.name
+					fileNeedsCleanup = true
+				} else {
+					fileURL = attachmentURL
+					fileType = attachment.type
+					fileName = attachment.name
+					fileNeedsCleanup = false
+				}
+				
+				//Clean up
+				defer {
+					if fileNeedsCleanup {
+						try? FileManager.default.removeItem(at: fileURL)
+					}
+				}
+				
+				//Read the file
+				var fileResponseIndex: Int32 = 0
+				do {
+					let compressionPipe = try CompressionPipe()
+					
+					let fileHandle = try FileHandle(forReadingFrom: fileURL)
+					
+					var doBreak: Bool
+					repeat {
+						doBreak = try autoreleasepool {
+							//Read data
+							var data = try fileHandle.readCompat(upToCount: Int(CommConst.defaultFileChunkSize))
+							let isEOF = data.count == 0
+							
+							//Compress the data
+							let dataOut = try compressionPipe.pipe(data: &data, isLast: isEOF)
+							
+							//Make sure the client is still connected
+							guard client.isConnected.value else { return true }
+							
+							//Build and send the request
+							do {
+								var packer = AirPacker()
+								packer.pack(int: NHT.massRetrievalFile.rawValue)
+								
+								packer.pack(short: requestID)
+								packer.pack(int: fileResponseIndex)
+								
+								//Include extra information with the initial response
+								if fileResponseIndex == 0 {
+									packer.pack(string: attachment.name) //Original file name
+									packer.pack(optionalString: fileName) //Converted file name
+									packer.pack(optionalString: fileType) //Converted file type
+								}
+								
+								packer.pack(bool: isEOF) //Is last message
+								
+								packer.pack(string: attachment.guid) //Attachment GUID
+								packer.pack(payload: dataOut) //Data
+							}
+							
+							fileResponseIndex += 1
+							
+							//Break if we reached the end of the file
+							return isEOF
+						}
+					} while !doBreak
+				} catch {
+					LogManager.shared.log("Failed to read / compress data for mass retrieval attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachment.guid, error.localizedDescription)
+					return
+				}
+			
+				messageResponseIndex += 1
+			}
+		} while true
 	}
 	
 	private func handleMessageConversationUpdate(packer messagePacker: inout AirPacker, from client: C) throws {

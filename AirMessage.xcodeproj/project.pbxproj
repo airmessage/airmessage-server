@@ -63,6 +63,8 @@
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
+		ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */; };
+		ED8F3A75274950770069F25D /* ContentTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A74274950770069F25D /* ContentTypeHelper.swift */; };
 		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
 		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
@@ -177,6 +179,8 @@
 		ED891A4025A3089D002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4225A308C6002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
+		ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAttachmentsFilter.swift; sourceTree = "<group>"; };
+		ED8F3A74274950770069F25D /* ContentTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeHelper.swift; sourceTree = "<group>"; };
 		EDADEB1826A0E3D9001DA84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
 		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */,
 				2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */,
 				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
+				ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
 				ED853E062744218900DCF446 /* ReadWriteLock.swift */,
 				ED853E08274422DA00DCF446 /* AtomicBool.swift */,
+				ED8F3A74274950770069F25D /* ContentTypeHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -643,6 +649,7 @@
 				ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */,
 				ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */,
 				ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */,
+				ED8F3A75274950770069F25D /* ContentTypeHelper.swift in Sources */,
 				ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,
 				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
@@ -677,6 +684,7 @@
 				2EAEECB041864D4AB6212611 /* DatabaseTimeConverter.swift in Sources */,
 				2EAEEEF57714B69D56E8415A /* DatabaseConverter.swift in Sources */,
 				ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */,
+				ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */,
 				2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */,
 				ED853E09274422DA00DCF446 /* AtomicBool.swift in Sources */,
 				2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */,
