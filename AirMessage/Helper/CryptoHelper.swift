@@ -47,7 +47,7 @@ func md5HashFile(url: URL) -> Data? {
 		
 		return digest
 	} catch {
-		LogManager.shared.log("Failed to calculate MD5 hash: %{public}", type: .error, error.localizedDescription)
+		LogManager.log("Failed to calculate MD5 hash: \(error)", level: .error)
 		return nil
 	}
 }

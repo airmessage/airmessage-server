@@ -1,10 +1,10 @@
 SELECT
-	chat.guid,
-	chat.display_name,
-	chat.service_name,
-	message.text,
-	message.date,
-	handle.id,
+	chat.guid AS "chat.guid",
+	chat.display_name AS "chat.display_name",
+	chat.service_name AS "chat.service_name",
+	message.text AS "message.text",
+	message.date AS "message.date",
+	handle.id AS "handle.id",
 	sub2.member_list AS member_list,
 	GROUP_CONCAT(attachment.mime_type) AS attachment_list
 	%1$@ /* Extra fields, leading comma will be inserted */

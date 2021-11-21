@@ -8,64 +8,18 @@
 import Foundation
 import os
 
-private let standardDateFormatter: DateFormatter = {
-	let dateFormatter = DateFormatter()
-	dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-	dateFormatter.dateFormat = "yyyy-MM-dd HH-mm-ss"
-	return dateFormatter
-}()
-
-private struct FileLogger: TextOutputStream {
-	var file: URL
+enum LogLevel {
+	case debug
+	case info
+	case notice
+	case error
+	case fault
 	
-	func write(_ string: String) {
-		let data = string.data(using: .utf8)!
-		
-		if let fileHandle = FileHandle(forWritingAtPath: file.path) {
-			defer {
-				fileHandle.closeFile()
-			}
-			fileHandle.seekToEndOfFile()
-			fileHandle.write(data)
-		} else {
-			try! data.write(to: file, options: .atomic)
-		}
-	}
-}
-
-class LogManager: NSObject {
-	private var fileLogger: FileLogger
-	
-	@available(macOS 10.12, *)
-	private lazy var osLogMain = OSLog.init(subsystem: Bundle.main.bundleIdentifier!, category: "main")
-	@available(macOS 10.12, *)
-	private lazy var osLogJava = OSLog.init(subsystem: Bundle.main.bundleIdentifier!, category: "java")
-	
-	@objc public static let shared = LogManager()
-	
-	private override init() {
-		//Use file logger
-		fileLogger = FileLogger(file: LogManager.prepareLogFile())
-	}
-	
-	@available(macOS 10.12, *)
-	private static func mapLogTypeOS(_ type: LogType) -> OSLogType {
-		switch type {
-			case .debug:
-				return .debug
-			case .info:
-				return .info
-			case .notice:
-				return .default
-			case .error:
-				return .error
-			case .fault:
-				return .fault
-		}
-	}
-	
-	private static func mapLogTypeDisplay(_ type: LogType) -> String {
-		switch type {
+	/**
+	 Gets this log level as a display string
+	 */
+	var label: String {
+		switch self {
 			case .debug:
 				return "debug"
 			case .info:
@@ -79,15 +33,51 @@ class LogManager: NSObject {
 		}
 	}
 	
-	private static func prepareLogFile() -> URL {
+	/**
+	 Gets this log level as an `OSLogType`
+	 */
+	@available(macOS 10.12, *)
+	var osLogType: OSLogType {
+		switch self {
+			case .debug:
+				return .debug
+			case .info:
+				return .info
+			case .notice:
+				return .default
+			case .error:
+				return .error
+			case .fault:
+				return .fault
+		}
+	}
+}
+
+private let standardDateFormatter: DateFormatter = {
+	let dateFormatter = DateFormatter()
+	dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+	dateFormatter.dateFormat = "yyyy-MM-dd HH-mm-ss"
+	return dateFormatter
+}()
+
+private struct FileLogger: TextOutputStream {
+	var file: URL
+	
+	func write(_ string: String) {
+		let fileHandle = try! FileHandle(forWritingTo: file)
+		try! fileHandle.writeCompat(contentsOf: string.data(using: .utf8)!)
+	}
+}
+
+class LogManager {
+	private static var fileLogger: FileLogger = {
 		//Create the log directory
 		let logDirectory = StorageManager.storageDirectory.appendingPathComponent("logs", isDirectory: true)
-		
 		if !FileManager.default.fileExists(atPath: logDirectory.path) {
 			try! FileManager.default.createDirectory(at: logDirectory, withIntermediateDirectories: false, attributes: nil)
 		}
 		
-		//Moving the log file
+		//Move the previous log file
 		let logFile = logDirectory.appendingPathComponent("latest.log", isDirectory: false)
 		if FileManager.default.fileExists(atPath: logFile.path) {
 			let dateFormatter = DateFormatter()
@@ -100,72 +90,36 @@ class LogManager: NSObject {
 			try! FileManager.default.moveItem(at: logFile, to: targetFile)
 		}
 		
-		return logFile
-	}
+		guard FileManager.default.createFile(atPath: logFile.path, contents: nil) else {
+			print("Failed to create log file at \(logFile.path), exiting")
+			exit(0)
+		}
+		
+		//Create the file logger
+		return FileLogger(file: logFile)
+	}()
 	
-	public func log(_ message: StaticString, type: LogType, _ args: CVarArg...) {
-		let typeLabel = LogManager.mapLogTypeDisplay(type)
+	@available(macOS 11.0, *)
+	private static var loggerMain = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "main")
+	@available(macOS 10.12, *)
+	private static var osLogMain = OSLog.init(subsystem: Bundle.main.bundleIdentifier!, category: "main")
+	
+	public static func log(_ message: String, level: LogLevel) {
 		let timestamp = standardDateFormatter.string(from: Date())
+		let typeLabel = level.label
 		
 		//Log to file
-		let stringMessage = message.withUTF8Buffer {
-			String(decoding: $0, as: UTF8.self)
-		}
-		fileLogger.write("\(timestamp) [\(typeLabel)] \(String(format: stringMessage, arguments: args))\n")
+		fileLogger.write("\(timestamp) [\(typeLabel)] \(message)\n")
 		
-		if #available(macOS 10.12, *) {
+		if #available(macOS 11.0, *) {
+			//Log to Logger
+			loggerMain.log(level: level.osLogType, "\(message, privacy: .public)")
+		} else if #available(macOS 10.12, *) {
 			//Log to os_log
-			let osLogType = LogManager.mapLogTypeOS(type)
-			
-			switch args.count {
-				case 1:
-					os_log(message, log: osLogMain, type: osLogType, args[0])
-				case 2:
-					os_log(message, log: osLogMain, type: osLogType, args[0], args[1])
-				case 3:
-					os_log(message, log: osLogMain, type: osLogType, args[0], args[1], args[2])
-				default:
-					os_log(message, log: osLogMain, type: osLogType)
-			}
+			os_log("%{public}@", log: osLogMain, type: level.osLogType, message)
 		} else {
 			//Log to standard output
-			let typePrefix = "[\(typeLabel)] "
-			switch args.count {
-				case 1:
-					NSLog(typePrefix + stringMessage, args[0])
-				case 2:
-					NSLog(typePrefix + stringMessage, args[0], args[1])
-				case 3:
-					NSLog(typePrefix + stringMessage, args[0], args[1], args[2])
-				default:
-					NSLog(typePrefix + stringMessage)
-			}
+			NSLog("[\(typeLabel)] \(message)")
 		}
 	}
-	
-	@objc public func javaLog(_ message: String, type: LogType) {
-		let typeLabel = LogManager.mapLogTypeDisplay(type)
-		let timestamp = standardDateFormatter.string(from: Date())
-		
-		//Log to file
-		fileLogger.write("\(timestamp) [java] [\(typeLabel)] \(message)\n")
-		
-		//Log to os_log
-		if #available(macOS 10.12, *) {
-			let osLogType = LogManager.mapLogTypeOS(type)
-			
-			os_log("%@", log: osLogJava, type: osLogType, message)
-		} else {
-			//Log to standard output
-			NSLog("[java] [\(typeLabel)] \(message)")
-		}
-	}
-}
-
-@objc enum LogType: Int {
-	case debug = 0
-	case info = 1
-	case notice = 2
-	case error = 3
-	case fault = 4
 }

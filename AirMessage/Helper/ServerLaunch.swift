@@ -22,7 +22,7 @@ func launchServer() {
 	do {
 		try DatabaseManager.shared.resume()
 	} catch {
-		LogManager.shared.log("Failed to start database: %{public}", type: .notice, error.localizedDescription)
+		LogManager.log("Failed to start database: \(error)", level: .notice)
 		NotificationNames.postUpdateUIState(.errorDatabase)
 		return
 	}
@@ -50,7 +50,7 @@ fileprivate func launchCheck() -> Bool {
 	do {
 		try FileManager.default.contentsOfDirectory(atPath: NSHomeDirectory() + "/Library/Messages")
 	} catch {
-		LogManager.shared.log("Failed to read Messages directory: %s", type: .notice, error.localizedDescription)
+		LogManager.log("Failed to read Messages directory: \(error)", level: .info)
 		
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
 		let windowController = storyboard.instantiateController(withIdentifier: "FullDiskAccess") as! NSWindowController

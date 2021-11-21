@@ -89,7 +89,7 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		}
 	}
 	guard resultInit == 1 else {
-		LogManager.shared.log("Failed to crypt: init error", type: .error)
+		LogManager.log("Failed to crypt: init error", level: .error)
 		throw EncryptionError.cryptoError
 	}
 	
@@ -109,7 +109,7 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		}
 	}
 	guard resultUpdate == 1 else {
-		LogManager.shared.log("Failed to crypt: update error", type: .error)
+		LogManager.log("Failed to crypt: update error", level: .error)
 		throw EncryptionError.cryptoError
 	}
 	
@@ -127,7 +127,7 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 						&finalOutputLen)
 	}
 	guard resultFinal == 1 else {
-		LogManager.shared.log("Failed to crypt: final error", type: .error)
+		LogManager.log("Failed to crypt: final error", level: .error)
 		throw EncryptionError.cryptoError
 	}
 	

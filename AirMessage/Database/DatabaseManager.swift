@@ -156,7 +156,7 @@ class DatabaseManager {
 				ConnectionManager.shared.send(idUpdate: id, to: nil)
 			}
 		} catch {
-			LogManager.shared.log("Error fetching scan data: %{public}", type: .notice, error.localizedDescription)
+			LogManager.log("Error fetching scan data: \(error)", level: .error)
 		}
 	}
 	
@@ -171,7 +171,7 @@ class DatabaseManager {
 		var resultArray: [ActivityStatusModifierInfo] = []
 		
 		//Get the most recent outgoing message for each conversation
-		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql")!)
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql", subdirectory: "SQL")!)
 		let query = String(format: template, "") //Don't add any special WHERE clauses
 		let stmt = try dbConnection.prepare(query)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
@@ -267,10 +267,10 @@ class DatabaseManager {
 			extraClauses.append("LIMIT \(queryLimit)")
 		}
 		
-		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryMessageChatHandle", withExtension: "sql")!)
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryMessageChatHandle", withExtension: "sql", subdirectory: "SQL")!)
 		let query = String(format: template,
-				rows.joined(separator: ", "),
-				extraClauses.joined(separator: " ")
+						   rows.map { "\($0) AS \"\($0)\"" }.joined(separator: ", "),
+						   extraClauses.joined(separator: " ")
 		)
 		return try db.prepare(query)
 	}
@@ -312,7 +312,7 @@ class DatabaseManager {
 		//Convert the time to database time
 		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 		
-		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql")!)
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryOutgoingMessages", withExtension: "sql", subdirectory: "SQL")!)
 		let query = String(format: template, "AND (message.date_delivered > \(timeLower) OR message.date_read > \(timeLower))")
 		let stmt = try dbConnection.prepare(query)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
@@ -351,7 +351,7 @@ class DatabaseManager {
 	 Fetches an array of conversations from their GUID, returning an array of mixed available and unavailable conversations
 	 */
 	public func fetchConversationArray(in guidArray: [String]) throws -> [BaseConversationInfo] {
-		let query = try! String(contentsOf: Bundle.main.url(forResource: "QuerySpecificChatDetails", withExtension: "sql")!)
+		let query = try! String(contentsOf: Bundle.main.url(forResource: "QuerySpecificChatDetails", withExtension: "sql", subdirectory: "SQL")!)
 		let stmt = try dbConnection.prepare(query, guidArray)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
@@ -376,10 +376,10 @@ class DatabaseManager {
 		if let timeLowerUNIX = timeLowerUNIX {
 			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 			
-			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetailsSince", withExtension: "sql")!)
+			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetailsSince", withExtension: "sql", subdirectory: "SQL")!)
 			stmt = try dbConnection.prepare(query, timeLower)
 		} else {
-			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetails", withExtension: "sql")!)
+			let query = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatDetails", withExtension: "sql", subdirectory: "SQL")!)
 			stmt = try dbConnection.prepare(query)
 		}
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
@@ -390,13 +390,13 @@ class DatabaseManager {
 	/**
 	 Counts the number of message rows, optionally since a certain time
 	 */
-	public func countMessages(since timeLowerUNIX: Int64? = nil) throws -> Int {
+	public func countMessages(since timeLowerUNIX: Int64? = nil) throws -> Int64 {
 		if let timeLowerUNIX = timeLowerUNIX {
 			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 			
-			return try dbConnection.scalar("SELECT count(*) FROM message WHERE message.date > ?", timeLower) as! Int
+			return try dbConnection.scalar("SELECT count(*) FROM message WHERE message.date > ?", timeLower) as! Int64
 		} else {
-			return try dbConnection.scalar("SELECT count(*) FROM message") as! Int
+			return try dbConnection.scalar("SELECT count(*) FROM message") as! Int64
 		}
 	}
 	
@@ -470,8 +470,8 @@ class DatabaseManager {
 			extraRows = []
 		}
 		
-		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatSummary", withExtension: "sql")!)
-		let query = String(format: template, extraRows.isEmpty ? "" : ", " + extraRows.joined(separator: ", "))
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatSummary", withExtension: "sql", subdirectory: "SQL")!)
+		let query = String(format: template, extraRows.isEmpty ? "" : ", " + extraRows.map { "\($0) AS \"\($0)\"" }.joined(separator: ", "))
 		let stmt = try dbConnection.prepare(query)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		

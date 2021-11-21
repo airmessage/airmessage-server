@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	private var currentClientCount = 0
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
-		LogManager.shared.log("Starting AirMessage Server version %@", type: .info, Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+		LogManager.log("Starting AirMessage Server version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)", level: .info)
 		
 		//Register status bar item
 		statusBarItem.menu = menu

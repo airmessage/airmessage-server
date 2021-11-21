@@ -7,8 +7,12 @@
 
 import Foundation
 
-class StorageManager: NSObject {
-	@objc public static var storageDirectory: URL = {
+class StorageManager {
+	/**
+	 Gets the application storage directory
+	 This call will create the directory if it doesn't exist
+	 */
+	static var storageDirectory: URL = {
 		let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 		let appDir = applicationSupport.appendingPathComponent("AirMessage")
 		try! FileManager.default.createDirectory(at: appDir, withIntermediateDirectories: true, attributes: nil)

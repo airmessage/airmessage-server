@@ -6,11 +6,10 @@ import Foundation
 
 let defaultServerPort = 1359
 
-class PreferencesManager: NSObject {
-	private override init() {}
-	
+class PreferencesManager {
 	public static let shared = PreferencesManager()
-	@objc class func getShared() -> PreferencesManager { shared }
+	
+	private init() {}
 	
 	// MARK: UserDefaults
 	
@@ -26,7 +25,7 @@ class PreferencesManager: NSObject {
 		case idTokenExpiry
 	}
 	
-	@objc var serverPort: Int {
+	var serverPort: Int {
 		get {
 			let port = UserDefaults.standard.integer(forKey: UDKeys.serverPort.rawValue)
 			return port == 0 ? defaultServerPort : port
@@ -54,7 +53,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var accountType: AccountType {
+	var accountType: AccountType {
 		get {
 			if UserDefaults.standard.object(forKey: UDKeys.accountType.rawValue) != nil {
 				return AccountType.init(rawValue: UserDefaults.standard.integer(forKey: UDKeys.accountType.rawValue)) ?? AccountType.unknown
@@ -67,7 +66,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var idToken: String? {
+	var idToken: String? {
 		get {
 			UserDefaults.standard.string(forKey: UDKeys.idToken.rawValue)
 		}
@@ -76,7 +75,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var idTokenExpiry: Int {
+	var idTokenExpiry: Int {
 		get {
 			UserDefaults.standard.integer(forKey: UDKeys.idTokenExpiry.rawValue)
 		}
@@ -114,7 +113,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var password: String {
+	var password: String {
 		get {
 			self.getValue(for: KeychainAccount.password) ?? ""
 		}
@@ -123,7 +122,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var refreshToken: String {
+	var refreshToken: String {
 		get {
 			self.getValue(for: KeychainAccount.refreshToken) ?? ""
 		}
@@ -132,7 +131,7 @@ class PreferencesManager: NSObject {
 		}
 	}
 	
-	@objc var installationID: String {
+	var installationID: String {
 		get {
 			runOnMain {
 				if let installationID = getValue(for: KeychainAccount.installationID) {

@@ -15,16 +15,15 @@ private var timeSeconds: Int {
 	}
 }
 
-class FirebaseAuthHelper: NSObject {
-	public static let shared = FirebaseAuthHelper()
-	@objc class func getShared() -> FirebaseAuthHelper { shared }
+class FirebaseAuthHelper {
+	static let shared = FirebaseAuthHelper()
 	
 	private let cacheSerialQueue = DispatchQueue(label: "FirebaseAuthHelper")
 	private var cachedIDToken: CachedIDToken?
 	
 	var requestResult: String?
 	var requestError: FirebaseAuthError?
-	@objc func getIDTokenSync() throws -> String {
+	func getIDTokenSync() throws -> String {
 		let semaphore = DispatchSemaphore(value: 0)
 		getIDToken { [self] idToken, error in
 			requestResult = idToken
@@ -81,7 +80,7 @@ class FirebaseAuthHelper: NSObject {
 			guard (200...299).contains(response.statusCode) else {
 				if let data = data,
 				   let dataString = String(data: data, encoding: .utf8) {
-					LogManager.shared.log("Request error: %@", type: .error, dataString)
+					LogManager.log("Request error: \(dataString)", level: .error)
 				}
 				
 				callback(nil, FirebaseAuthError.serverError(code: response.statusCode))

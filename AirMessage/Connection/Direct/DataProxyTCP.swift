@@ -1,5 +1,8 @@
 //
-// Created by Cole Feuer on 2021-11-12.
+//  AppDelegate.swift
+//  AirMessage
+//
+//  Created by Cole Feuer on 2021-11-12.
 //
 
 import Foundation
@@ -30,39 +33,34 @@ class DataProxyTCP: DataProxy {
 		//Create the socket
 		let socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
 		guard socketFD != -1 else {
-			LogManager.shared.log("Failed to create socket: %{public}", type: .error, errno)
+			LogManager.log("Failed to create socket: \(errno)", level: .error)
 			
 			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
-		//Get address info
-		var hints = addrinfo(
-				ai_flags: AI_PASSIVE,
-				ai_family: AF_UNSPEC,
-				ai_socktype: SOCK_STREAM,
-				ai_protocol: 0,
-				ai_addrlen: 0,
-				ai_canonname: nil,
-				ai_addr: nil,
-				ai_next: nil)
-		var servinfo: UnsafeMutablePointer<addrinfo>? = nil
-		let addrInfoResult = getaddrinfo(
-				nil, //Any interface
-				String(port), //The port on which will be listened
-				&hints, //Protocol configuration as per above
-				&servinfo)
-		guard addrInfoResult == 0 else {
-			LogManager.shared.log("Failed to get address info: %{public}", type: .error, addrInfoResult)
+		//Configure the socket
+		var opt: Int32 = -1
+		let setOptResult = setsockopt(socketFD, SOL_SOCKET, SO_REUSEADDR, &opt, socklen_t(MemoryLayout<Int32>.size))
+		guard setOptResult == 0 else {
+			LogManager.log("Failed to set socket opt: \(errno)", level: .error)
 			
 			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
 		//Bind the socket
-		let bindResult = bind(socketFD, servinfo!.pointee.ai_addr, socklen_t(servinfo!.pointee.ai_addrlen))
+		var address = sockaddr_in()
+		address.sin_family = sa_family_t(AF_INET)
+		address.sin_addr.s_addr = INADDR_ANY
+		address.sin_port = in_port_t(Int16(port).bigEndian)
+		let bindResult = withUnsafePointer(to: address) { ptr in
+			ptr.withMemoryRebound(to: sockaddr.self, capacity: MemoryLayout<sockaddr_in>.size) { ptr in
+				bind(socketFD, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
+			}
+		}
 		guard bindResult == 0 else {
-			LogManager.shared.log("Failed to bind socket: %{public}", type: .error, errno)
+			LogManager.log("Failed to bind socket: \(errno) on port \(port)", level: .error)
 			
 			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
@@ -71,7 +69,7 @@ class DataProxyTCP: DataProxy {
 		//Set the socket to passive mode
 		let listenResult = listen(socketFD, 8)
 		guard listenResult == 0 else {
-			LogManager.shared.log("Failed to listen socket: %{public}", type: .error, errno)
+			LogManager.log("Failed to listen socket: \(errno)", level: .error)
 			
 			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
@@ -88,7 +86,7 @@ class DataProxyTCP: DataProxy {
 					
 					if self.serverRunning {
 						//If the user hasn't stopped the server, report the error
-						LogManager.shared.log("Failed to accept new client: %{public}", type: .notice, errno)
+						LogManager.log("Failed to accept new client: \(errno)", level: .notice)
 						self.delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 					}
 					break
@@ -149,7 +147,7 @@ class DataProxyTCP: DataProxy {
 				do {
 					preparedData = try networkEncrypt(data: data)
 				} catch {
-					LogManager.shared.log("Failed to encrypt network message: %{public}", type: .error, error.localizedDescription)
+					LogManager.log("Failed to encrypt network message: \(error)", level: .error)
 					return
 				}
 			} else {
@@ -180,7 +178,7 @@ extension DataProxyTCP: ClientConnectionTCPDelegate {
 			do {
 				decryptedData = try networkDecrypt(data: data)
 			} catch {
-				LogManager.shared.log("Failed to decrypt network message: %{public}", type: .error, error.localizedDescription)
+				LogManager.log("Failed to decrypt network message: \(error)", level: .error)
 				return
 			}
 		} else {

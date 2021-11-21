@@ -15,7 +15,7 @@ func compressData(_ dataIn: inout Data) -> Data? {
 	var stream = z_stream()
 	let initError = zlibInitializeDeflate(&stream)
 	guard initError == Z_OK else {
-		LogManager.shared.log("Failed to initialize zlib stream: error code %{public}", type: .error, initError)
+		LogManager.log("Failed to initialize zlib stream: error code \(initError)", level: .error)
 		return nil
 	}
 	defer {
@@ -38,7 +38,7 @@ func compressData(_ dataIn: inout Data) -> Data? {
 	
 	//Check for errors
 	guard deflateError == Z_STREAM_END else {
-		LogManager.shared.log("Failed to deflate zlib: error code %{public}", type: .error, deflateError)
+		LogManager.log("Failed to deflate zlib: error code \(deflateError)", level: .error)
 		return nil
 	}
 	

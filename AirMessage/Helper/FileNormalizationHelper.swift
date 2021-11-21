@@ -31,7 +31,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 	guard #available(macOS 10.13, *) else { return nil }
 	
 	if ext == "heic" {
-		LogManager.shared.log("Converting file %{public} from HEIC", type: .info, inputFile.path)
+		LogManager.log("Converting file \(inputFile.path) from HEIC", level: .info)
 		
 		//Get a temporary file
 		let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString + ".jpeg")
@@ -44,7 +44,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		
 		//Check the process result
 		guard processResult else {
-			LogManager.shared.log("Failed to convert file %{public} from HEIC to JPEG: %{public}", type: .info, inputFile.path)
+			LogManager.log("Failed to convert file \(inputFile.path) from HEIC to JPEG", level: .info)
 			try? FileManager.default.removeItem(at: tempFile) //Clean up immediately
 			return nil
 		}
@@ -54,7 +54,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		
 		return NormalizedFile(url: tempFile, type: "image/jpeg", name: newFileName)
 	} else if ext == "caf" {
-		LogManager.shared.log("Converting file %{public} from CAF", type: .info, inputFile.path)
+		LogManager.log("Converting file \(inputFile.path) from CAF", level: .info)
 		
 		//Get a temporary file
 		let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString + ".mp4")
@@ -67,7 +67,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		
 		//Check the process result
 		guard processResult else {
-			LogManager.shared.log("Failed to convert file %{public} from CAF to MP4: %{public}", type: .info, inputFile.path)
+			LogManager.log("Failed to convert file \(inputFile.path) from CAF to MP4", level: .info)
 			try? FileManager.default.removeItem(at: tempFile) //Clean up immediately
 			return nil
 		}
@@ -97,7 +97,7 @@ private func runProcessLogError(_ process: Process) -> Bool {
 	do {
 		try process.run()
 	} catch {
-		LogManager.shared.log("An error occurred while running process: %{public}", type: .info, error.localizedDescription)
+		LogManager.log("An error occurred while running process: \(error)", level: .info)
 		return false
 	}
 	
@@ -115,7 +115,7 @@ private func runProcessLogError(_ process: Process) -> Bool {
 			errorMessage = nil
 		}
 		
-		LogManager.shared.log("An error occurred while running process: %{public}", type: .info, errorMessage ?? "Unknown error")
+		LogManager.log("An error occurred while running process: \(errorMessage ?? "Unknown error")", level: .info)
 		return false
 	}
 	

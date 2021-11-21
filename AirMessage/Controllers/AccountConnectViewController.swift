@@ -35,7 +35,7 @@ class AccountConnectViewController: NSViewController {
 		try! server.start(0)
 		let port = try! server.port()
 		
-		LogManager.shared.log("Running local server on http://localhost:%d", type: .info, port)
+		LogManager.log("Running local server on http://localhost:\(port)", level: .info)
 		webView.load(URLRequest(url: URL(string:"http://localhost:\(port)")!))
 	}
 	

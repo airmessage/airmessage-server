@@ -161,7 +161,7 @@ class ConnectionManager {
 			do {
 				payload = try networkEncrypt(data: securePacker.data)
 			} catch {
-				LogManager.shared.log("Failed to encrypt data for push notification: %{public}", type: .error, error.localizedDescription)
+				LogManager.log("Failed to encrypt data for push notification: \(error)", level: .error)
 				return
 			}
 		} else {
@@ -207,7 +207,7 @@ class ConnectionManager {
 				clientRegistration = ClientConnection.Registration(installationID: installationID, clientName: clientName, platformID: platformID)
 			} catch {
 				//Logging the error
-				LogManager.shared.log("Failed to decrypt authentication payload: %{public}", type: .info, error.localizedDescription)
+				LogManager.log("Failed to decrypt authentication payload: \(error)", level: .info)
 				
 				//Sending a message and closing the connection
 				rejectAuthorization(with: .unauthorized)
@@ -269,7 +269,7 @@ class ConnectionManager {
 			resultGrouping = try DatabaseManager.shared.fetchGrouping(fromTime: timeLower, to: timeUpper)
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
 		} catch {
-			LogManager.shared.log("Failed to fetch messages for time range %{public} - %{public}: %{public}", type: .notice, timeLower, timeUpper, error.localizedDescription)
+			LogManager.log("Failed to fetch messages for time range \(timeLower) - \(timeUpper): \(error)", level: .notice)
 			return
 		}
 		
@@ -296,7 +296,7 @@ class ConnectionManager {
 			resultGrouping = try DatabaseManager.shared.fetchGrouping(fromID: idLower)
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
 		} catch {
-			LogManager.shared.log("Failed to fetch messages for ID range >%{public}: %{public}", type: .notice, idLower, error.localizedDescription)
+			LogManager.log("Failed to fetch messages for ID range >\(idLower): \(error)", level: .notice)
 			return
 		}
 		
@@ -349,9 +349,9 @@ class ConnectionManager {
 		let messageCount: Int
 		do {
 			resultConversations = try DatabaseManager.shared.fetchConversationArray(since: timeSinceMessages)
-			messageCount = try DatabaseManager.shared.countMessages(since: timeSinceMessages)
+			messageCount = Int(try DatabaseManager.shared.countMessages(since: timeSinceMessages))
 		} catch {
-			LogManager.shared.log("Failed to read conversations from database: %{public}", type: .error, error.localizedDescription)
+			LogManager.log("Failed to read conversations from database: \(error)", level: .error)
 			return
 		}
 		
@@ -522,7 +522,7 @@ class ConnectionManager {
 						}
 					} while !doBreak
 				} catch {
-					LogManager.shared.log("Failed to read / compress data for mass retrieval attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachment.guid, error.localizedDescription)
+					LogManager.log("Failed to read / compress data for mass retrieval attachment file \(fileURL.path) (\(attachment.guid)): \(error)", level: .notice)
 					return
 				}
 			
@@ -543,7 +543,7 @@ class ConnectionManager {
 		do {
 			resultConversations = try DatabaseManager.shared.fetchConversationArray(in: chatGUIDArray)
 		} catch {
-			LogManager.shared.log("Failed to read conversations from database: %{public}", type: .error, error.localizedDescription)
+			LogManager.log("Failed to read conversations from database: \(error)", level: .error)
 			return
 		}
 		
@@ -578,7 +578,7 @@ class ConnectionManager {
 		do {
 			fileDetails = try DatabaseManager.shared.fetchFile(fromAttachmentGUID: attachmentGUID)
 		} catch {
-			LogManager.shared.log("Failed to get file path for attachment GUID %{public}: %{public}", type: .notice, attachmentGUID, error.localizedDescription)
+			LogManager.log("Failed to get file path for attachment GUID \(attachmentGUID)): \(error)", level: .notice)
 			
 			//Send a response (I/O error)
 			guard let dataProxy = dataProxy else { return }
@@ -635,7 +635,7 @@ class ConnectionManager {
 			let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
 			fileSize = Int64(resourceValues.fileSize!)
 		} catch {
-			LogManager.shared.log("Failed to get file size for attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachmentGUID, error.localizedDescription)
+			LogManager.log("Failed to get file size for attachment file \(fileURL.path) (\(attachmentGUID)): \(error)", level: .notice)
 			
 			//Send a response (I/O)
 			guard let dataProxy = dataProxy else { return }
@@ -690,7 +690,7 @@ class ConnectionManager {
 				}
 			} while !doBreak
 		} catch {
-			LogManager.shared.log("Failed to read / compress data for attachment file %{public} (%{public}): %{public}", type: .notice, fileURL.path, attachmentGUID, error.localizedDescription)
+			LogManager.log("Failed to read / compress data for attachment file \(fileURL.path) (\(attachmentGUID)): \(error)", level: .notice)
 			
 			//Make sure the client is still connected
 			guard client.isConnected.value else { return }
@@ -708,7 +708,7 @@ class ConnectionManager {
 		do {
 			conversations = try DatabaseManager.shared.fetchLiteConversations()
 		} catch {
-			LogManager.shared.log("Failed to fetch lite conversation summary: %{public}", type: .error, error.localizedDescription)
+			LogManager.log("Failed to fetch lite conversation summary: \(error)", level: .error)
 			return
 		}
 		
@@ -731,7 +731,7 @@ class ConnectionManager {
 		do {
 			messages = try DatabaseManager.shared.fetchLiteThread(chatGUID: chatGUID, before: firstMessageID)
 		} catch {
-			LogManager.shared.log("Failed to fetch lite thread messages for %{public} before %{public}: %{public}", type: .error, chatGUID, firstMessageID ?? "nil", error.localizedDescription)
+			LogManager.log("Failed to fetch lite thread messages for \(chatGUID) before \(firstMessageID.map{ String($0) } ?? "nil"): \(error)", level: .error)
 			return
 		}
 		
@@ -872,7 +872,7 @@ class ConnectionManager {
 				do {
 					try downloadRequest.append(&fileData)
 				} catch {
-					LogManager.shared.log("Failed to write download request initial file data: %{public}", type: .notice, error.localizedDescription)
+					LogManager.log("Failed to write download request initial file data: \(error)", level: .notice)
 					send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to write initial file data: \(error.localizedDescription)", to: client)
 					return
 				}
@@ -898,7 +898,7 @@ class ConnectionManager {
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Request ID \(requestID) already exists", to: client)
 				return
 			} catch DownloadRequestCreateError.createError(let createError) {
-				LogManager.shared.log("Failed to create file download request: %{public}", type: .error, createError.localizedDescription)
+				LogManager.log("Failed to create file download request: \(createError)", level: .error)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to create file download request: \(createError.localizedDescription)", to: client)
 				return
 			}
@@ -914,14 +914,14 @@ class ConnectionManager {
 			
 			//Make sure we can still accept new data
 			guard !downloadRequest.isDataComplete else {
-				LogManager.shared.log("Received additional data for file download request %{public}-%{public}, even though data is already complete", type: .notice, requestID, packetIndex)
+				LogManager.log("Received additional data for file download request \(requestID)-\(packetIndex), even though data is already complete", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Data is already complete", to: client)
 				return
 			}
 			
 			//Make sure we're on the right packet index
 			guard downloadRequest.packetsWritten == packetIndex else {
-				LogManager.shared.log("Received invalid packet order for file download request %{public}-%{public}; expected %{public}", type: .notice, requestID, packetIndex, downloadRequest.packetsWritten)
+				LogManager.log("Received invalid packet order for file download request \(requestID)-\(packetIndex); expected \(downloadRequest.packetsWritten)", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Received invalid packet order for file download request \(requestID)-\(packetIndex); expected \(downloadRequest.packetsWritten)", to: client)
 				return
 			}
@@ -930,7 +930,7 @@ class ConnectionManager {
 			do {
 				try downloadRequest.append(&fileData)
 			} catch {
-				LogManager.shared.log("Failed to write download request file data for request %{public}-%{public}: %{public}", type: .notice, requestID, packetIndex, error.localizedDescription)
+				LogManager.log("Failed to write download request file data for request \(requestID)-\(packetIndex): \(error)", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to write file data for packet index \(packetIndex): \(error.localizedDescription)", to: client)
 				return
 			}
@@ -945,7 +945,7 @@ class ConnectionManager {
 		
 		//Make sure we have complete data
 		guard downloadRequest.isDataComplete else {
-			LogManager.shared.log("Data for file download request %{public}-%{public} is not complete, but client stopped sending data", type: .notice, requestID, packetIndex)
+			LogManager.log("Data for file download request \(requestID)-\(packetIndex) is not complete, but client declared as such", level: .notice)
 			send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Data is not complete, but client stopped sending data", to: client)
 			return
 		}
@@ -1055,7 +1055,7 @@ extension ConnectionManager: DataProxyDelegate {
 			keepaliveTimer = timer
 		}
 		
-		LogManager.shared.log("Server started", type: .info)
+		LogManager.log("Server started", level: .info)
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didStopWithState state: ServerState, isRecoverable: Bool) {
@@ -1067,9 +1067,9 @@ extension ConnectionManager: DataProxyDelegate {
 		keepaliveTimer = nil
 		
 		if isRecoverable {
-			LogManager.shared.log("Server paused", type: .info)
+			LogManager.log("Server paused", level: .info)
 		} else {
-			LogManager.shared.log("Server stopped", type: .info)
+			LogManager.log("Server stopped", level: .info)
 		}
 	}
 	
@@ -1087,7 +1087,7 @@ extension ConnectionManager: DataProxyDelegate {
 			do {
 				transmissionCheck = try generateSecureData(count: CommConst.transmissionCheckLength)
 			} catch {
-				LogManager.shared.log("Failed to generate transmission check: %{public}", type: .error, error.localizedDescription)
+				LogManager.log("Failed to generate transmission check: \(error)", level: .error)
 				dataProxy.disconnect(client: client)
 				return
 			}
@@ -1121,13 +1121,13 @@ extension ConnectionManager: DataProxyDelegate {
 		do {
 			messageTypeRaw = try packer.unpackInt()
 		} catch {
-			LogManager.shared.log("Failed to unpack received message header: %{public}", type: .error, error.localizedDescription)
+			LogManager.log("Failed to unpack received message header: \(error)", level: .error)
 			return
 		}
 		
 		//Mapping the message type
 		guard let messageType = NHT(rawValue: messageTypeRaw) else {
-			LogManager.shared.log("Received unknown NHT %{public}", type: .notice, messageTypeRaw)
+			LogManager.log("Received unknown NHT \(messageTypeRaw)", level: .notice)
 			return
 		}
 		
@@ -1138,7 +1138,7 @@ extension ConnectionManager: DataProxyDelegate {
 				try processMessageStandard(dataProxy: dataProxy, packer: &packer, from: client, type: messageType)
 			}
 		} catch {
-			LogManager.shared.log("Failed to handle message of type %{public}", type: .error, messageType.rawValue)
+			LogManager.log("Failed to handle message of type \(messageType.rawValue): \(error)", level: .notice)
 		}
 	}
 }

@@ -80,7 +80,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = AppleScriptBridge.runScript(scriptCreateChat, params: params, error: &executeError)
 		if let error = executeError {
-			LogManager.shared.log("Failed to create chat with %@: %@", type: .error, addresses, error)
+			LogManager.log("Failed to create chat with \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		} else {
 			return result.stringValue!
@@ -99,7 +99,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		AppleScriptBridge.runScript(scriptSendMessageExisting, params: params, error: &executeError)
 		if let error = executeError {
-			LogManager.shared.log("Failed to send message to chat %{public}: %{public}", type: .error, chatID, error)
+			LogManager.log("Failed to send message to chat \(chatID): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		}
 	}
@@ -117,7 +117,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		AppleScriptBridge.runScript(scriptSendMessageDirect, params: params, error: &executeError)
 		if let error = executeError {
-			LogManager.shared.log("Failed to send direct message to %{public}: %{public}", type: .error, message, error)
+			LogManager.log("Failed to send direct message to \(address): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		}
 	}
@@ -140,7 +140,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		AppleScriptBridge.runScript(scriptSendMessageNew, params: params, error: &executeError)
 		if let error = executeError {
-			LogManager.shared.log("Failed to send message to new chat %{public}: %{public}", type: .error, addresses, error)
+			LogManager.log("Failed to send message to new chat \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		}
 	}

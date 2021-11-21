@@ -78,15 +78,15 @@ class DatabaseConverter {
 		let chatGUID = row[indices["chat.guid"]!] as! String
 		let date = row[indices["message.date"]!] as! Int64
 		
-		let sender = (row[indices["message.is_from_me"]!] as! Bool) ? nil : (row[indices["sender_handle.id"]!] as! String)
-		let itemType = MessageItemType(rawValue: row[indices["message.item_type"]!] as! Int)
+		let sender = (row[indices["message.is_from_me"]!] as! Int64 != 0) ? nil : (row[indices["sender_handle.id"]!] as! String)
+		let itemType = MessageItemType(rawValue: Int(row[indices["message.item_type"]!] as! Int64))
 		
 		if itemType == .message {
 			if #available(macOS 10.12, *) {
 				//Getting the association info
 				let associatedMessage = row[indices["message.associated_message_guid"]!] as! String
-				let associationType = row[indices["message.associated_message_type"]!] as! Int
-				let associationIndex = row[indices["message.associated_message_range_location"]!] as! Int
+				let associationType = row[indices["message.associated_message_type"]!] as! Int64
+				let associationIndex = row[indices["message.associated_message_range_location"]!] as! Int64
 				
 				//Checking if there is an association
 				if associationType != 0 {
@@ -106,7 +106,7 @@ class DatabaseConverter {
 						associatedMessageGUID = String(part[part.firstIndex(of: "/")!...])
 					} else {
 						//Unknown type
-						LogManager.shared.log("Encountered unexpected association data: %{public}", type: .error, associatedMessage)
+						LogManager.log("Encountered unexpected association data: \(associatedMessage)", level: .error)
 						return nil
 					}
 					
@@ -161,11 +161,11 @@ class DatabaseConverter {
 				sendEffect = nil
 			}
 			let state = mapMessageStateCode(
-					isSent: row[indices["message.is_sent"]!] as! Bool,
-					isDelivered: row[indices["message.is_delivered"]!] as! Bool,
-					isRead: row[indices["message.is_read"]!] as! Bool
+					isSent: row[indices["message.is_sent"]!] as! Int64 != 0,
+					isDelivered: row[indices["message.is_delivered"]!] as! Int64 != 0,
+					isRead: row[indices["message.is_read"]!] as! Int64 != 0
 			)
-			let error = mapMessageErrorCode(row[indices["message.error"]!] as! Int)
+			let error = mapMessageErrorCode(Int(row[indices["message.error"]!] as! Int64))
 			let dateRead = row[indices["message.date_read"]!] as! Int64
 			let attachments = try fetchAttachments(ofMessage: rowID, withChecksum: sender != nil, ofDB: db)
 			
@@ -187,7 +187,7 @@ class DatabaseConverter {
 			))
 		} else if itemType == .groupAction {
 			let other = row[indices["other_handle.id"]!] as! String?
-			let actionType = mapGroupActionType(row[indices["message.group_action_type"]!] as! Int)
+			let actionType = mapGroupActionType(Int(row[indices["message.group_action_type"]!] as! Int64))
 			
 			return .message(GroupActionInfo(
 					serverID: rowID,
@@ -225,9 +225,9 @@ class DatabaseConverter {
 		//Read the row data
 		let messageGUID = row[indices["message.guid"]!] as! String
 		let state = DatabaseConverter.mapMessageStateCode(
-				isSent: row[indices["message.is_sent"]!] as! Bool,
-				isDelivered: row[indices["message.is_delivered"]!] as! Bool,
-				isRead: row[indices["message.is_read"]!] as! Bool
+				isSent: row[indices["message.is_sent"]!] as! Int64 != 0,
+				isDelivered: row[indices["message.is_delivered"]!] as! Int64 != 0,
+				isRead: row[indices["message.is_read"]!] as! Int64 != 0
 		)
 		let dateRead = row[indices["message.date_read"]!] as! Int64
 		
@@ -328,7 +328,7 @@ class DatabaseConverter {
 		let indices = makeColumnIndexDict(stmt.columnNames)
 		let attachments = stmt.compactMap { row -> AttachmentInfo? in
 			//Ignore hidden attachments
-			if #available(macOS 10.12, *), row[indices["attachment.hide_attachment"]!] as! Bool {
+			if #available(macOS 10.12, *), row[indices["attachment.hide_attachment"]!] as! Int64 != 0 {
 				return nil
 			}
 			

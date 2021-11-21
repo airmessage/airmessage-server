@@ -4,22 +4,12 @@
 
 import Foundation
 
-class UpdateStruct: NSObject {
-	@objc let id: Int
-	@objc let protocolRequirement: [Int]
-	@objc let versionCode: Int
-	@objc let versionName: String
-	@objc let notes: String
-	@objc let downloadURL: URL
-	@objc let downloadExternal: Bool
-	
-	init(id: Int, protocolRequirement: [Int], versionCode: Int, versionName: String, notes: String, downloadURL: URL, downloadExternal: Bool) {
-		self.id = id
-		self.protocolRequirement = protocolRequirement
-		self.versionCode = versionCode
-		self.versionName = versionName
-		self.notes = notes
-		self.downloadURL = downloadURL
-		self.downloadExternal = downloadExternal
-	}
+struct UpdateStruct {
+	let id: Int
+	let protocolRequirement: [Int]
+	let versionCode: Int
+	let versionName: String
+	let notes: String
+	let downloadURL: URL
+	let downloadExternal: Bool
 }

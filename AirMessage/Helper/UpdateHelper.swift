@@ -6,7 +6,7 @@ import Foundation
 import AppKit
 import Zip
 
-class UpdateHelper: NSObject {
+class UpdateHelper {
 	//Constants
 	private static let updateBaseURL = "http://localhost:4000"
 	private static let stableUpdateURL = URL(string: updateBaseURL + "/update/server/3.json")!
@@ -14,7 +14,7 @@ class UpdateHelper: NSObject {
 	private static let updateCheckInterval: TimeInterval = 60 * 60 * 24
 	
 	//Pending and installing update state
-	@objc private(set) static var pendingUpdate: UpdateStruct?
+	private(set) static var pendingUpdate: UpdateStruct?
 	private static var isInstallingUpdate = false
 	
 	//Timer for periodic update checks
@@ -44,21 +44,21 @@ class UpdateHelper: NSObject {
 			}
 			
 			if let error = error {
-				LogManager.shared.log("Failed to download updates: %{public}", type: .notice, error.localizedDescription)
+				LogManager.log("Failed to download updates: \(error)", level: .notice)
 				notifyError(.networkError(error: error))
 				return
 			}
 			
 			guard let data = data,
 				  let updateData = try? JSONDecoder().decode(UpdateCheckResult.self, from: data) else {
-				LogManager.shared.log("Failed to parse update data", type: .notice)
+				LogManager.log("Failed to parse update data", level: .notice)
 				notifyError(.parseError)
 				return
 			}
 			
 			//Checking if the update is newer
 			guard updateData.versionCode > Int(Bundle.main.infoDictionary!["CFBundleVersion"] as! String)! else {
-				LogManager.shared.log("No newer update available", type: .info)
+				LogManager.log("No newer update available", level: .info)
 				DispatchQueue.main.async {
 					let updateNew = pendingUpdate != nil
 					pendingUpdate = nil
@@ -71,7 +71,7 @@ class UpdateHelper: NSObject {
 			var versionSplit: [Int] = []
 			for version in updateData.osRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int(version) else {
-					LogManager.shared.log("Failed to parse OS version int %{public} in %{public}", type: .notice, version, updateData.osRequirement)
+					LogManager.log("Failed to parse OS version int \(version) in \(updateData.osRequirement)", level: .notice)
 					notifyError(.parseError)
 					return
 				}
@@ -94,7 +94,7 @@ class UpdateHelper: NSObject {
 			}
 			
 			guard ProcessInfo.processInfo.isOperatingSystemAtLeast(minimumVersion) else {
-				LogManager.shared.log("Can't apply update, required OS version is %{public}.%{public}.%{public}", type: .info, minimumVersion.majorVersion, minimumVersion.minorVersion, minimumVersion.patchVersion)
+				LogManager.log("Can't apply update, required OS version is \(minimumVersion.majorVersion).\(minimumVersion.minorVersion).\(minimumVersion.patchVersion)", level: .info)
 				notifyError(.osCompatibilityError(minVersion: minimumVersion))
 				return
 			}
@@ -103,7 +103,7 @@ class UpdateHelper: NSObject {
 			var protocolSplit: [Int] = []
 			for version in updateData.protocolRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int(version) else {
-					LogManager.shared.log("Failed to parse protocol version int %{public} in %{public}", type: .notice, version, updateData.protocolRequirement)
+					LogManager.log("Failed to parse protocol version int \(version) in \(updateData.protocolRequirement)", level: .notice)
 					notifyError(.parseError)
 					return
 				}
@@ -112,7 +112,7 @@ class UpdateHelper: NSObject {
 			
 			//Indexing update notes
 			guard !updateData.notes.isEmpty else {
-				LogManager.shared.log("Can't apply update, no update notes found", type: .notice)
+				LogManager.log("Can't apply update, no update notes found", level: .notice)
 				notifyError(.parseError)
 				return
 			}
@@ -147,7 +147,7 @@ class UpdateHelper: NSObject {
 			#endif
 			
 			guard let downloadURL = downloadURL else {
-				LogManager.shared.log("Can't apply update, no URL available for architecture", type: .notice)
+				LogManager.log("Can't apply update, no URL available for architecture", level: .notice)
 				notifyError(.archCompatibilityError)
 				return
 			}
@@ -269,8 +269,8 @@ class UpdateHelper: NSObject {
 	   - onError: A callback called when an error occurs, with an error code and description
 	 - Returns: Whether the update was scheduled to be installed. If this function returns false, no callbacks will be invoked.
 	 */
-	@objc public static func install(update: UpdateStruct, onProgress: ((Double) -> ())?, onSuccess: (() -> ())?, onError: ((UpdateErrorCode, String) -> ())?) -> Bool {
-		LogManager.shared.log("Installing update...", type: .info)
+	public static func install(update: UpdateStruct, onProgress: ((Double) -> ())?, onSuccess: (() -> ())?, onError: ((UpdateErrorCode, String) -> ())?) -> Bool {
+		LogManager.log("Installing update...", level: .info)
 		
 		//Ignore if we're already installing an update
 		guard !isInstallingUpdate else { return false }
@@ -376,13 +376,13 @@ private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
 	
 	public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 		if let error = downloadTask.error {
-			LogManager.shared.log("Can't apply update, download error: %{public}", type: .notice, error.localizedDescription)
+			LogManager.log("Can't apply update, download error: \(error)", level: .notice)
 			notifyError(code: UpdateErrorCode.download, message: error.localizedDescription)
 			return
 		}
 		
 		guard let httpResponse = downloadTask.response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-			LogManager.shared.log("Can't apply update, HTTP response error", type: .notice)
+			LogManager.log("Can't apply update, HTTP response error", level: .notice)
 			notifyError(code: UpdateErrorCode.download, message: "HTTP response error")
 			return
 		}
@@ -405,22 +405,22 @@ private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
 			
 			//Move the downloaded file to a temporary location, and append the .zip extension
 			try FileManager.default.moveItem(at: location, to: zippedFile)
-			LogManager.shared.log("Downloaded and moved update file to %@", type: .info, zippedFile.path)
+			LogManager.log("Downloaded and moved update file to \(zippedFile.path)", level: .info)
 			
 			//Unzip file
 			try Zip.unzipFile(zippedFile, destination: unzippedFolder, overwrite: true, password: nil)
-			LogManager.shared.log("Decompressed update file to %@", type: .info, unzippedFolder.path)
+			LogManager.log("Decompressed update file to \(unzippedFolder.path)", level: .info)
 			
 			//Find app file
 			guard let updateAppFile = try FileManager.default.contentsOfDirectory(at: unzippedFolder, includingPropertiesForKeys: nil).filter({ $0.pathExtension == "app" }).first else {
-				LogManager.shared.log("Can't apply update, can't find app file in update archive", type: .notice)
+				LogManager.log("Can't apply update, can't find app file in update archive", level: .notice)
 				notifyError(code: UpdateErrorCode.badPackage, message: "Can't find app file in update archive")
 				return
 			}
 			
 			//Get target file in Applications
 			let targetAppFile = destinationFolder.appendingPathComponent(updateAppFile.lastPathComponent, isDirectory: false)
-			LogManager.shared.log("Targeting update location %@", type: .info, targetAppFile.path)
+			LogManager.log("Targeting update location \(targetAppFile.path)", level: .info)
 			
 			//Delete old zip file
 			try FileManager.default.removeItem(at: zippedFile)
@@ -439,7 +439,7 @@ private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
 				process.launch()
 			}
 			
-			LogManager.shared.log("Started update process", type: .info)
+			LogManager.log("Started update process", level: .info)
 			
 			DispatchQueue.main.async { [self] in
 				//Call the success callback
@@ -450,7 +450,7 @@ private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
 			}
 		} catch {
 			//Log the error
-			LogManager.shared.log("Failed to download update: %s", type: .notice, error.localizedDescription)
+			LogManager.log("Failed to download update: \(error)", level: .notice)
 			
 			//Show an error
 			notifyError(code: UpdateErrorCode.internalError, message: error.localizedDescription)

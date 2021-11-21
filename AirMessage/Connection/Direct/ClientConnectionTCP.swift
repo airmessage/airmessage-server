@@ -49,7 +49,7 @@ class ClientConnectionTCP: ClientConnection {
 					//Check if the content length is greater than the maximum packet allocation
 					guard contentLen < CommConst.maxPacketAllocation else {
 						//Log and disconnect
-						LogManager.shared.log("Rejecting large packet (size %{public})", type: .notice, contentLen)
+						LogManager.log("Rejecting large packet (size \(contentLen)", level: .notice)
 						
 						self.stop(cleanup: true)
 						break
@@ -61,7 +61,7 @@ class ClientConnectionTCP: ClientConnection {
 				}
 			} catch {
 				//Log and disconnect
-				LogManager.shared.log("An error occurred while reading client data: %{public}", type: .notice, error.localizedDescription)
+				LogManager.log("An error occurred while reading client data: \(error)", level: .notice)
 				self?.stop(cleanup: false)
 			}
 		}
@@ -84,7 +84,7 @@ class ClientConnectionTCP: ClientConnection {
 		do {
 			try handle.closeCompat()
 		} catch {
-			LogManager.shared.log("An error occurred while closing a client handle: %{public}", type: .notice, error.localizedDescription)
+			LogManager.log("An error occurred while closing a client handle: \(error)", level: .notice)
 		}
 		
 		//Call the delegate
