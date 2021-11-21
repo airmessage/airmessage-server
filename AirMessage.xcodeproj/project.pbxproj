@@ -15,21 +15,16 @@
 		2EAEE225BB82417444D48EAE /* DataProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEED65BEC9AAC9A444C18F /* DataProxy.swift */; };
 		2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF14220907E804086BB9 /* AccountType.swift */; };
 		2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */; };
-		2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */; };
 		2EAEE55F794F5BA615333AEF /* UpdateErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */; };
-		2EAEE5D81D6451CA6DCA3361 /* JNIUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE0A15D515D80070BB923 /* JNIUpdate.m */; };
 		2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */; };
 		2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */; };
 		2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE54358769BD24B8AA900 /* MessageTypes.swift */; };
 		2EAEE884082FC5161893DBBF /* DataProxyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE7BEDAA5FF7A348C4277 /* DataProxyDelegate.swift */; };
-		2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE04E2200019FF3869C09 /* JNIPreferences.m */; };
 		2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */; };
 		2EAEEADDCBE7124BBDB9CDF4 /* CommConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */; };
 		2EAEEB68DD2F52A48268E94A /* SQL in Resources */ = {isa = PBXBuildFile; fileRef = 2EAEE027B256CC2BFB3C76CC /* SQL */; };
 		2EAEEBEF65B8A843FC0162FD /* ClientConnectionTCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE1D06A8C16D02D734925 /* ClientConnectionTCP.swift */; };
-		2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */; };
 		2EAEECB041864D4AB6212611 /* DatabaseTimeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEB9731EC0559ADB1DC43 /* DatabaseTimeConverter.swift */; };
-		2EAEED0E7DB2A749AD885B21 /* JNIEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */; };
 		2EAEEDFC55048362F2150A81 /* DataProxyTCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE94B0A247777A71528B0 /* DataProxyTCP.swift */; };
 		2EAEEE829B3030FF1028C15A /* ClientConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE24A8F9E40DCED942CF6 /* ClientConnection.swift */; };
 		2EAEEE9E15E91097BC939BF0 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAEE1798DD4556D5CC8247C /* DatabaseManager.swift */; };
@@ -41,13 +36,10 @@
 		ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5683269A50360019CCD5 /* DraggableAppView.swift */; };
 		ED1E5687269B14290019CCD5 /* FullDiskAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */; };
 		ED1E5689269B1C7B0019CCD5 /* AutomationAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */; };
-		ED267859269132ED001EFCB7 /* JVM.m in Sources */ = {isa = PBXBuildFile; fileRef = ED267858269132ED001EFCB7 /* JVM.m */; };
 		ED28095525A20332009E7636 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095425A20332009E7636 /* AppDelegate.swift */; };
 		ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* OnboardingViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
-		ED42B4BD26AC7C9800409B24 /* JNIMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = ED42B4BC26AC7C9800409B24 /* JNIMessage.m */; };
-		ED42B4BF26AC921D00409B24 /* JVMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = ED42B4BE26AC921D00409B24 /* JVMHelper.m */; };
 		ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */; };
 		ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */; };
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
@@ -65,15 +57,14 @@
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
 		ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */; };
 		ED8F3A75274950770069F25D /* ContentTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A74274950770069F25D /* ContentTypeHelper.swift */; };
+		ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A782749A05D0069F25D /* MessageError.swift */; };
+		ED8F3A7E2749A3D50069F25D /* AppleScriptCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */; };
+		ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */; };
 		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
 		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = EDB04DBD273DDFDA00673AE4 /* SQLite */; };
-		EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC02BF92697CA8D003FA87E /* JNIControl.m */; };
-		EDC2430526ACD235006444FF /* JNILogging.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC2430426ACD235006444FF /* JNILogging.m */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
-		EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */ = {isa = PBXBuildFile; fileRef = EDCAA231269CFE5900327BCD /* airmessage-libs */; };
-		EDCAA235269CFF3300327BCD /* java-runtime in Resources */ = {isa = PBXBuildFile; fileRef = EDCAA232269CFE5E00327BCD /* java-runtime */; };
 		EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */; };
 		EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD5E49C269F9957005EB8EE /* NotificationNames.swift */; };
 		EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */ = {isa = PBXBuildFile; fileRef = EDD70D662699F00300E8DC06 /* AppleScriptSource */; };
@@ -84,24 +75,9 @@
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
-		EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		ED1E5693269B99A90019CCD5 /* Copy Java Resources */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 15;
-			files = (
-				EDCAA234269CFE6B00327BCD /* airmessage-libs in Copy Java Resources */,
-			);
-			name = "Copy Java Resources";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2EAEE027B256CC2BFB3C76CC /* SQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SQL; sourceTree = "<group>"; };
@@ -181,6 +157,9 @@
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
 		ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAttachmentsFilter.swift; sourceTree = "<group>"; };
 		ED8F3A74274950770069F25D /* ContentTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeHelper.swift; sourceTree = "<group>"; };
+		ED8F3A782749A05D0069F25D /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
+		ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptCodes.swift; sourceTree = "<group>"; };
+		ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadRequest.swift; sourceTree = "<group>"; };
 		EDADEB1826A0E3D9001DA84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
 		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
@@ -208,7 +187,6 @@
 		EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNormalizationHelper.swift; sourceTree = "<group>"; };
 		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
-		EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientRegistration.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
 		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -233,7 +211,6 @@
 		2EAEE23A4A1E052C316DCD4B /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				EDE4F2AF26B6C1590017D684 /* ClientRegistration.swift */,
 				2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */,
 				2EAEE6899BEF8166AF312E24 /* UpdateErrorCode.swift */,
 				2EAEE54358769BD24B8AA900 /* MessageTypes.swift */,
@@ -262,6 +239,15 @@
 				2EAEE027B256CC2BFB3C76CC /* SQL */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		2EAEEACDB56ABC3A7FDFAC48 /* MessageInterop */ = {
+			isa = PBXGroup;
+			children = (
+				ED15912426AC76C2008F5304 /* MessageManager.swift */,
+				ED8F3A782749A05D0069F25D /* MessageError.swift */,
+			);
+			path = MessageInterop;
 			sourceTree = "<group>";
 		};
 		2EAEEDE17614B8D22BDBD1B1 /* Direct */ = {
@@ -303,13 +289,13 @@
 		ED28095325A20332009E7636 /* AirMessage */ = {
 			isa = PBXGroup;
 			children = (
-				ED853E0E27442BCF00DCF446 /* Compat */,
 				ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */,
 				ED28095E25A20333009E7636 /* AirMessage.entitlements */,
 				ED28095425A20332009E7636 /* AppDelegate.swift */,
 				EDD70D682699F1AE00E8DC06 /* AppleScript */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
 				EDC8228A2697B75A007A8DF9 /* AuthSite */,
+				ED853E0E27442BCF00DCF446 /* Compat */,
 				ED3781F7273F399A00310EAD /* Connection */,
 				2EAEE649853E94A70D112B63 /* Constants */,
 				ED891A4425A30B77002230EB /* Controllers */,
@@ -321,6 +307,7 @@
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */,
 				ED28095A25A20333009E7636 /* Main.storyboard */,
+				2EAEEACDB56ABC3A7FDFAC48 /* MessageInterop */,
 				ED853E0A274428F300DCF446 /* ObjC */,
 				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
 				EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */,
@@ -341,6 +328,7 @@
 				2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */,
 				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
 				ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */,
+				ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -423,7 +411,6 @@
 				ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */,
 				ED44738626A387DD006F5F0E /* KeychainManager.swift */,
 				ED15912226AC5484008F5304 /* LogManager.swift */,
-				ED15912426AC76C2008F5304 /* MessageManager.swift */,
 				ED891A4725A30BC6002230EB /* PasswordGrade.swift */,
 				2EAEEE327A491386A20EC729 /* PreferencesManager.swift */,
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
@@ -462,6 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				EDD70D692699F1BC00E8DC06 /* AppleScriptBridge.swift */,
+				ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */,
 				EDD70D662699F00300E8DC06 /* AppleScriptSource */,
 			);
 			path = AppleScript;
@@ -477,9 +465,6 @@
 				ED28094D25A20332009E7636 /* Sources */,
 				ED28094E25A20332009E7636 /* Frameworks */,
 				ED67A8972688D62C00DB7B95 /* Compile Webpack */,
-				ED1E568A269B39530019CCD5 /* Compile Java */,
-				ED1E5693269B99A90019CCD5 /* Copy Java Resources */,
-				ED1E5695269B99F70019CCD5 /* Generate JVM */,
 				ED28094F25A20332009E7636 /* Resources */,
 			);
 			buildRules = (
@@ -551,7 +536,6 @@
 				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
-				EDCAA235269CFF3300327BCD /* java-runtime in Resources */,
 				ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */,
 				2EAEEB68DD2F52A48268E94A /* SQL in Resources */,
 			);
@@ -560,46 +544,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		ED1E568A269B39530019CCD5 /* Compile Java */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-server/settings.gradle",
-				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-server/src",
-			);
-			name = "Compile Java";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/AirMessage/JavaBridge/airmessage-libs/airmessage-server.jar",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$ARCHS\" == *\"x86_64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$ARCHS\" == *\"arm64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\necho \"Generating JVM with JAVA_HOME=$JAVA_HOME\"\n\npushd AirMessage/JavaBridge/airmessage-server\n./gradlew shadowJar\npopd\n\n#rsync -a --delete AirMessage/JavaBridge/airmessage-server/build/libs/ AirMessage/JavaBridge/airmessage-libs/\n\nJARFILE=$SRCROOT/$(find AirMessage/JavaBridge/airmessage-server/build/libs/ -name \"*.jar\" | head -n 1)\n\nrm -r AirMessage/JavaBridge/airmessage-libs\nmkdir -p AirMessage/JavaBridge/airmessage-libs/unpack\npushd AirMessage/JavaBridge/airmessage-libs/unpack\n\njar xf \"$JARFILE\" #Unpack\nfind -E . -regex \".*\\.(dylib|jnilib)\" | xargs codesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" #Codesign dynamic libraries\njar cmf META-INF/MANIFEST.MF \"../airmessage-server.jar\" ./* #Repack JAR\n\npopd\nrm -r AirMessage/JavaBridge/airmessage-libs/unpack #Clean up\n";
-		};
-		ED1E5695269B99F70019CCD5 /* Generate JVM */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Generate JVM";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/AirMessage/JavaBridge/java-runtime",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$ARCHS\" == *\"x86_64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_INTEL\"\nelif [[ \"$ARCHS\" == *\"arm64\"* ]]\nthen\nexport JAVA_HOME=\"$JAVA_HOME_ARM\"\nfi\n\necho \"Compiling Java with JAVA_HOME=$JAVA_HOME\"\njava -version\n\ncd AirMessage/JavaBridge\nJDEPS=java.base,java.compiler,java.datatransfer,java.desktop,java.logging,java.sql,java.xml\n\nrm -rf \"java-runtime\" \njlink --no-header-files --no-man-pages --strip-debug --compress=2 --add-modules=\"$JDEPS\" --output \"java-runtime\"\n\nfor f in $(find . -type f \\( -name \"*.dylib\" -o -perm +111 \\))\ndo\n\tcodesign --force --verbose --sign \"$EXPANDED_CODE_SIGN_IDENTITY_NAME\" $f\ndone\n";
-		};
 		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -635,11 +579,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
-				ED267859269132ED001EFCB7 /* JVM.m in Sources */,
 				ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */,
 				ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
-				EDE4F2B026B6C1590017D684 /* ClientRegistration.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
 				EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */,
 				EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */,
@@ -657,32 +599,26 @@
 				ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */,
 				EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */,
 				EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */,
+				ED8F3A7E2749A3D50069F25D /* AppleScriptCodes.swift in Sources */,
 				EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */,
-				ED42B4BF26AC921D00409B24 /* JVMHelper.m in Sources */,
 				ED1B06542690EBE9006D34DF /* PreferencesViewController.swift in Sources */,
 				2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */,
-				2EAEE9735E50EBB20C7CB5F7 /* JNIPreferences.m in Sources */,
 				ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */,
-				2EAEE523C0FEEE575C1182E2 /* JNIStorage.m in Sources */,
+				ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */,
 				ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */,
-				EDC2430526ACD235006444FF /* JNILogging.m in Sources */,
-				EDC02BFA2697CA8D003FA87E /* JNIControl.m in Sources */,
-				ED42B4BD26AC7C9800409B24 /* JNIMessage.m in Sources */,
 				ED15912326AC5484008F5304 /* LogManager.swift in Sources */,
 				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
 				ED853E0C2744291400DCF446 /* ObjC.m in Sources */,
-				2EAEEC031BCB343B9FE97C4C /* JNIUserInterface.m in Sources */,
 				EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */,
 				2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */,
 				2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */,
 				2EAEE16123FD5FC556CD1DFC /* SoftwareUpdateViewController.swift in Sources */,
 				2EAEEF53337EE0F4840300E2 /* SoftwareUpdateProgressViewController.swift in Sources */,
-				2EAEED0E7DB2A749AD885B21 /* JNIEnvironment.m in Sources */,
-				2EAEE5D81D6451CA6DCA3361 /* JNIUpdate.m in Sources */,
 				2EAEE55F794F5BA615333AEF /* UpdateErrorCode.swift in Sources */,
 				2EAEEE9E15E91097BC939BF0 /* DatabaseManager.swift in Sources */,
 				2EAEECB041864D4AB6212611 /* DatabaseTimeConverter.swift in Sources */,
 				2EAEEEF57714B69D56E8415A /* DatabaseConverter.swift in Sources */,
+				ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */,
 				ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */,
 				ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */,
 				2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */,
@@ -769,7 +705,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -831,7 +766,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -864,22 +798,12 @@
 				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(JAVA_HOME)/include",
-					"$(JAVA_HOME)/include/darwin",
-				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
-				JAVA_HOME = "";
-				"JAVA_HOME[arch=arm64]" = "$(JAVA_HOME_ARM)";
-				"JAVA_HOME[arch=x86_64]" = "$(JAVA_HOME_INTEL)";
-				JAVA_HOME_ARM = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home";
-				JAVA_HOME_INTEL = "/Library/Java/JavaVirtualMachines/temurin-17-x64.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../Resources/java-runtime/lib/server",
 				);
-				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.0.0;
 				OTHER_LDFLAGS = "-ljvm";
@@ -903,22 +827,12 @@
 				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(JAVA_HOME)/include",
-					"$(JAVA_HOME)/include/darwin",
-				);
 				INFOPLIST_FILE = AirMessage/Info.plist;
-				JAVA_HOME = "";
-				"JAVA_HOME[arch=arm64]" = "$(JAVA_HOME_ARM)";
-				"JAVA_HOME[arch=x86_64]" = "$(JAVA_HOME_INTEL)";
-				JAVA_HOME_ARM = "/Library/Java/JavaVirtualMachines/jdk-17.0.1.jdk/Contents/Home";
-				JAVA_HOME_INTEL = "/Library/Java/JavaVirtualMachines/temurin-17-x64.jdk/Contents/Home";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@executable_path/../Resources/java-runtime/lib/server",
 				);
-				LIBRARY_SEARCH_PATHS = "$(JAVA_HOME)/lib/server";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.0.0;
 				ONLY_ACTIVE_ARCH = YES;
