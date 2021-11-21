@@ -29,8 +29,10 @@ class DataProxyTCP: DataProxy {
 		
 		//Create the socket
 		let socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
-		if socketFD == -1 {
+		guard socketFD != -1 else {
 			LogManager.shared.log("Failed to create socket: %{public}", type: .error, errno)
+			
+			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
@@ -50,22 +52,28 @@ class DataProxyTCP: DataProxy {
 				String(port), //The port on which will be listened
 				&hints, //Protocol configuration as per above
 				&servinfo)
-		if addrInfoResult != 0 {
+		guard addrInfoResult == 0 else {
 			LogManager.shared.log("Failed to get address info: %{public}", type: .error, addrInfoResult)
+			
+			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
 		//Bind the socket
 		let bindResult = bind(socketFD, servinfo!.pointee.ai_addr, socklen_t(servinfo!.pointee.ai_addrlen))
-		if bindResult != 0 {
+		guard bindResult == 0 else {
 			LogManager.shared.log("Failed to bind socket: %{public}", type: .error, errno)
+			
+			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
 		//Set the socket to passive mode
 		let listenResult = listen(socketFD, 8)
-		if listenResult != 0 {
+		guard listenResult == 0 else {
 			LogManager.shared.log("Failed to listen socket: %{public}", type: .error, errno)
+			
+			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
 		}
 		
@@ -76,7 +84,13 @@ class DataProxyTCP: DataProxy {
 				var addrLen: socklen_t = 0
 				let clientFD = accept(socketFD, &addr, &addrLen)
 				guard clientFD != -1 else {
-					LogManager.shared.log("Failed to accept new client, aborting", type: .info)
+					guard let self = self else { break }
+					
+					if self.serverRunning {
+						//If the user hasn't stopped the server, report the error
+						LogManager.shared.log("Failed to accept new client: %{public}", type: .notice, errno)
+						self.delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
+					}
 					break
 				}
 				

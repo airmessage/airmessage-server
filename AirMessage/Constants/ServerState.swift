@@ -18,19 +18,19 @@ enum ServerState: Int {
 	case running = 4
 	case stopped = 5
 	
-	case errorDatabase = 100
-	case errorInternal = 101
-	case errorExternal = 102
-	case errorInternet = 103
+	case errorDatabase = 100 //Couldn't connect to database
+	case errorInternal = 101 //Internal error
+	case errorExternal = 102 //External error
+	case errorInternet = 103 //No internet connection
 	
-	case errorTCPPort = 200
+	case errorTCPPort = 200 //Port unavailable
 	
-	case errorConnBadRequest = 300
-	case errorConnOutdated = 301
-	case errorConnValidation = 302
-	case errorConnToken = 303
-	case errorConnActivation = 304
-	case errorConnAccountConflict = 305
+	case errorConnBadRequest = 300 //Bad request
+	case errorConnOutdated = 301 //Client out of date
+	case errorConnValidation = 302 //Account access not valid
+	case errorConnToken = 303 //Token refresh
+	case errorConnActivation = 304 //Not subscribed (not enrolled)
+	case errorConnAccountConflict = 305 //Logged in from another location
 	
 	var description: String {
 		switch(self) {

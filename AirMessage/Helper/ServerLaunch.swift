@@ -14,8 +14,16 @@ import AppKit
 func launchServer() {
 	//Check for setup and permissions before launching
 	guard PreferencesManager.shared.accountType != .unknown && launchCheck() else {
-		NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: ServerState.setup.rawValue])
-		
+		NotificationNames.postUpdateUIState(.setup)
+		return
+	}
+	
+	//Connect to the database
+	do {
+		try DatabaseManager.shared.resume()
+	} catch {
+		LogManager.shared.log("Failed to start database: %{public}", type: .notice, error.localizedDescription)
+		NotificationNames.postUpdateUIState(.errorDatabase)
 		return
 	}
 	
@@ -59,5 +67,6 @@ fileprivate func launchCheck() -> Bool {
 */
 func resetServer() {
 	ConnectionManager.shared.stop()
+	DatabaseManager.shared.cancel()
 	PreferencesManager.shared.accountType = .unknown
 }
