@@ -7,14 +7,14 @@
 
 import Foundation
 
-class NotificationNames: NSObject {
-	@objc public static let updateUIState = NSNotification.Name("updateUIState")
-	@objc public static let updateUIStateParam = "state"
+class NotificationNames {
+	static let updateUIState = NSNotification.Name("updateUIState")
+	static let updateUIStateParam = "state"
 	
-	@objc public static let updateConnectionCount = NSNotification.Name("updateConnectionCount")
-	@objc public static let updateConnectionCountParam = "count"
+	static let updateConnectionCount = NSNotification.Name("updateConnectionCount")
+	static let updateConnectionCountParam = "count"
 	
-	@objc public static let signOut = NSNotification.Name("signOut")
+	static let signOut = NSNotification.Name("signOut")
 	
 	/**
 	 Posts the UI state update to `NotificationCenter` in a thread-safe manner
