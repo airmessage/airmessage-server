@@ -45,8 +45,6 @@
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
-		ED853E032743FB6C00DCF446 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = ED853E022743FB6C00DCF446 /* OpenSSL */; };
-		ED853E052743FB6C00DCF446 /* Zlib in Frameworks */ = {isa = PBXBuildFile; productRef = ED853E042743FB6C00DCF446 /* Zlib */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
 		ED853E09274422DA00DCF446 /* AtomicBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E08274422DA00DCF446 /* AtomicBool.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
@@ -73,6 +71,8 @@
 		EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */; };
 		EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
+		EDE3C801274A9E4500011351 /* Zlib in Frameworks */ = {isa = PBXBuildFile; productRef = EDE3C800274A9E4500011351 /* Zlib */; };
+		EDE3C803274A9E6100011351 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = EDE3C802274A9E6100011351 /* OpenSSL */; };
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
@@ -196,10 +196,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED853E032743FB6C00DCF446 /* OpenSSL in Frameworks */,
-				ED853E052743FB6C00DCF446 /* Zlib in Frameworks */,
+				EDE3C801274A9E4500011351 /* Zlib in Frameworks */,
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
 				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
+				EDE3C803274A9E6100011351 /* OpenSSL in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
 			);
@@ -477,8 +477,8 @@
 				ED98B3EE2711D8300029DD09 /* Ink */,
 				ED98B3F12711D84E0029DD09 /* Zip */,
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
-				ED853E022743FB6C00DCF446 /* OpenSSL */,
-				ED853E042743FB6C00DCF446 /* Zlib */,
+				EDE3C800274A9E4500011351 /* Zlib */,
+				EDE3C802274A9E6100011351 /* OpenSSL */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -902,14 +902,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		ED853E022743FB6C00DCF446 /* OpenSSL */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OpenSSL;
-		};
-		ED853E042743FB6C00DCF446 /* Zlib */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Zlib;
-		};
 		ED98B3EE2711D8300029DD09 /* Ink */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */;
@@ -929,6 +921,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;
 			productName = Swifter;
+		};
+		EDE3C800274A9E4500011351 /* Zlib */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Zlib;
+		};
+		EDE3C802274A9E6100011351 /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenSSL;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
