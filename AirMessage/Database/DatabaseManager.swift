@@ -17,7 +17,6 @@ class DatabaseManager {
 	
 	//Dispatch queues
 	private let queueScanner = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".database.scanner", qos: .utility)
-	private let queueRequests = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".database.request", qos: .userInitiated)
 	
 	//Timers
 	private var timerScanner: DispatchSourceTimer?

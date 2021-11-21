@@ -32,9 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateUIState), name: NotificationNames.updateUIState, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateConnectionCount), name: NotificationNames.updateConnectionCount, object: nil)
 		
-		//Start JVM
-		startJVM()
-		
 		//Show welcome window
 		if PreferencesManager.shared.accountType == .unknown {
 			showOnboarding()
@@ -56,9 +53,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationWillTerminate(_ notification: Notification) {
 		//Remove notification center observers
 		NotificationCenter.default.removeObserver(self)
-		
-		//Stop JVM
-		stopJVM()
 		
 		//Allow system to sleep
 		releaseSystemSleep()

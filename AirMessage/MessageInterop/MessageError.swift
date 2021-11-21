@@ -24,7 +24,7 @@ struct AppleScriptExecutionError: Error, LocalizedError {
 	}
 	
 	public var errorDescription: String {
-		"AppleScript code \(code): \(description)"
+		"AppleScript error \(code): \(message)"
 	}
 }
 

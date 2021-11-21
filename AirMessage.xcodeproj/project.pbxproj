@@ -806,7 +806,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.0.0;
-				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -836,7 +835,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.0.0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ljvm";
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
 				PROVISIONING_PROFILE_SPECIFIER = "";

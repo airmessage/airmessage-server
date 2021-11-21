@@ -19,8 +19,9 @@ func launchServer() {
 		return
 	}
 	
-	//Tell Java to start the server
-	jniStartServer()
+	//Start the server
+	let proxy: DataProxy = DataProxyTCP()
+	ConnectionManager.shared.start(proxy: proxy)
 }
 
 /**
@@ -57,6 +58,6 @@ fileprivate func launchCheck() -> Bool {
 * Stops the server and resets the state to setup
 */
 func resetServer() {
-	jniStopServer()
+	ConnectionManager.shared.stop()
 	PreferencesManager.shared.accountType = .unknown
 }

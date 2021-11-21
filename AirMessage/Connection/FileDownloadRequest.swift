@@ -50,7 +50,7 @@ class FileDownloadRequest {
 			fileHandle = try FileHandle(forWritingTo: fileURL)
 		} catch {
 			//Clean up and rethrow
-			try? cleanUp()
+			try? FileManager.default.removeItem(at: fileDirURL)
 			throw error
 		}
 	}

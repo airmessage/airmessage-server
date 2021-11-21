@@ -25,5 +25,5 @@ int zlibInitializeInflate(z_stream *stream) {
 	stream->avail_in = 0;
 	stream->next_in = Z_NULL;
 
-	return inflateInit(stream, Z_DEFAULT_COMPRESSION);
+	return inflateInit(stream);
 }
