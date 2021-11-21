@@ -844,18 +844,9 @@ class ConnectionManager {
 		case createError(Error)
 	}
 	
-	private func handleMessageSendFileExisting(packer messagePacker: inout AirPacker, from client: C) throws {
-		//Read the request
-		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
-		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
-		let isLast = try messagePacker.unpackBool() //Is this the last packet?
-		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
-		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
-		
+	private func handleMessageFileDownloadCommon(client: C, requestID: Int16, packetIndex: Int32, fileName: String?, fileData: inout Data, isLast: Bool, customData: Any, onComplete: (FileDownloadRequest) throws -> Void) throws {
 		let downloadRequest: FileDownloadRequest
 		if packetIndex == 0 {
-			let fileName = try messagePacker.unpackString() //The name of the file to send
-			
 			do {
 				downloadRequest = try fileDownloadRequestMapLock.withWriteLock { () throws -> FileDownloadRequest in
 					//Make sure we don't have a matching request
@@ -866,7 +857,7 @@ class ConnectionManager {
 					//Create a new request
 					let downloadRequest: FileDownloadRequest
 					do {
-						downloadRequest = try FileDownloadRequest(fileName: fileName, requestID: requestID, customData: chatGUID)
+						downloadRequest = try FileDownloadRequest(fileName: fileName!, requestID: requestID, customData: customData)
 					} catch {
 						throw DownloadRequestCreateError.createError(error)
 					}
@@ -959,14 +950,42 @@ class ConnectionManager {
 			return
 		}
 		
-		//Send the file
-		handleMessageSendCommon(requestID: requestID, client: client) {
-			try MessageManager.send(file: downloadRequest.fileURL, toExistingChat: chatGUID)
+		//Handle the data
+		try onComplete(downloadRequest)
+	}
+	
+	private func handleMessageSendFileExisting(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
+		let isLast = try messagePacker.unpackBool() //Is this the last packet?
+		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
+		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
+		let fileName = packetIndex == 0 ? try messagePacker.unpackString() : nil //The name of the file to download and send
+		
+		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: chatGUID) { downloadRequest in
+			handleMessageSendCommon(requestID: requestID, client: client) {
+				try MessageManager.send(file: downloadRequest.fileURL, toExistingChat: downloadRequest.customData as! String)
+			}
 		}
 	}
 	
 	private func handleMessageSendFileNew(packer messagePacker: inout AirPacker, from client: C) throws {
-		//TODO: implement similar to handleMessageSendFileExisting
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
+		let isLast = try messagePacker.unpackBool() //Is this the last packet?
+		let members = try messagePacker.unpackStringArray() //The members of the chat to send the message to
+		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
+		let fileName = packetIndex == 0 ? try messagePacker.unpackString() : nil //The name of the file to download and send
+		let service = packetIndex == 0 ? try messagePacker.unpackString() : nil //The service of the conversation
+		
+		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: (members, service)) { downloadRequest in
+			handleMessageSendCommon(requestID: requestID, client: client) {
+				let (members, service) = downloadRequest.customData as! ([String], String)
+				try MessageManager.send(file: downloadRequest.fileURL, toNewChat: members, onService: service)
+			}
+		}
 	}
 	
 	//MARK: Process message
