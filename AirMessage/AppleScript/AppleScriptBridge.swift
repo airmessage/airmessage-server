@@ -70,7 +70,7 @@ class AppleScriptBridge {
 	func createChat(withAddresses addresses: [String], service: String) throws -> String {
 		if #available(macOS 11.0, *) {
 			//Not supported
-			throw AppleScriptSupportError(noSupportVer: "11.0")
+			throw ForwardsSupportError(noSupportVer: "11.0")
 		}
 		
 		let params = NSAppleEventDescriptor.list()
@@ -128,7 +128,7 @@ class AppleScriptBridge {
 	func sendMessage(toNewChat addresses: [String], service: String, message: String, isFile: Bool) throws {
 		if #available(macOS 11.0, *) {
 			//Not supported
-			throw AppleScriptSupportError(noSupportVer: "11.0")
+			throw ForwardsSupportError(noSupportVer: "11.0")
 		}
 		
 		let params = NSAppleEventDescriptor.list()
@@ -143,41 +143,5 @@ class AppleScriptBridge {
 			LogManager.shared.log("Failed to send message to new chat %{public}: %{public}", type: .error, addresses, error)
 			throw AppleScriptExecutionError(error: error)
 		}
-	}
-}
-
-class AppleScriptExecutionError: NSObject, LocalizedError, CustomNSError {
-	@objc static var errorDomain: String = "me.tagavari.airmessageserver.applescriptexecutionerror"
-	
-	let errorDict: [String: Any]
-	init(error: NSDictionary) {
-		errorDict = error as! [String: Any]
-	}
-	
-	var errorCode: Int {
-		(errorDict[NSAppleScript.errorNumber] as? Int) ?? 0
-	}
-	var errorUserInfo: [String: Any] {
-		errorDict
-	}
-	public var errorDescription: String {
-		(errorDict[NSAppleScript.errorMessage] as? String) ?? "AppleScript execution error"
-	}
-}
-
-class AppleScriptSupportError: NSObject, LocalizedError, CustomNSError {
-	@objc static var errorDomain: String = "me.tagavari.airmessageserver.applescriptsupporterror"
-	@objc static let userInfoVersion = "version"
-	
-	let noSupportVer: String
-	init(noSupportVer: String) {
-		self.noSupportVer = noSupportVer
-	}
-	
-	var errorUserInfo: [String: Any] {
-		[AppleScriptSupportError.userInfoVersion: noSupportVer]
-	}
-	public var errorDescription: String {
-		"Not supported beyond macOS \(noSupportVer) (running \(ProcessInfo.processInfo.operatingSystemVersionString))"
 	}
 }

@@ -9,6 +9,8 @@ class ConnectionManager {
 	
 	private var dataProxy: DataProxy?
 	private var keepaliveTimer: Timer?
+	private let fileDownloadRequestMapLock = ReadWriteLock()
+	private var fileDownloadRequestMap: [Int16: FileDownloadRequest] = [:]
 	
 	func start(proxy: DataProxy) {
 		//Emit an update
@@ -117,6 +119,21 @@ class ConnectionManager {
 		var packer = AirPacker()
 		packer.pack(int: NHT.modifierUpdate.rawValue)
 		packer.pack(packableArray: modifiers)
+		
+		dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
+	}
+	
+	/**
+	 Sends a common response message to a client
+	 */
+	public func send(basicResponseOfCode code: NHT, requestID: Int16, resultCode: Int32, details: String? = nil, to client: C) {
+		guard let dataProxy = dataProxy else { return }
+		
+		var packer = AirPacker()
+		packer.pack(int: code.rawValue)
+		packer.pack(short: requestID)
+		packer.pack(int: resultCode)
+		packer.pack(optionalString: details)
 		
 		dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 	}
@@ -460,7 +477,7 @@ class ConnectionManager {
 				//Read the file
 				var fileResponseIndex: Int32 = 0
 				do {
-					let compressionPipe = try CompressionPipe()
+					let compressionPipe = try CompressionPipeDeflate()
 					
 					let fileHandle = try FileHandle(forReadingFrom: fileURL)
 					
@@ -629,7 +646,7 @@ class ConnectionManager {
 		//Read the file
 		var responseIndex: Int32 = 0
 		do {
-			let compressionPipe = try CompressionPipe()
+			let compressionPipe = try CompressionPipeDeflate()
 			
 			let fileHandle = try FileHandle(forReadingFrom: fileURL)
 			
@@ -706,9 +723,10 @@ class ConnectionManager {
 	}
 	
 	private func handleMessageLiteThreadRetrieval(packer messagePacker: inout AirPacker, from client: C) throws {
-		let chatGUID = try messagePacker.unpackString()
-		let firstMessageID: Int64? = try messagePacker.unpackBool() ? try messagePacker.unpackLong() : nil
+		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to query
+		let firstMessageID: Int64? = try messagePacker.unpackBool() ? try messagePacker.unpackLong() : nil //The last message ID the client has, send messages earlier than this
 		
+		//Fetch messages from the database
 		let messages: [ConversationItem]
 		do {
 			messages = try DatabaseManager.shared.fetchLiteThread(chatGUID: chatGUID, before: firstMessageID)
@@ -719,6 +737,7 @@ class ConnectionManager {
 		
 		guard let dataProxy = dataProxy else { return }
 		
+		//Send a response
 		var responsePacker = AirPacker()
 		responsePacker.pack(int: NHT.liteThreadRetrieval.rawValue)
 		if let firstMessageID = firstMessageID {
@@ -730,6 +749,224 @@ class ConnectionManager {
 		responsePacker.pack(packableArray: messages)
 		
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+	}
+	
+	private func handleMessageCreateChat(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let chatMembers = try messagePacker.unpackStringArray() //The members of this conversation
+		let chatService = try messagePacker.unpackString() //The service of this conversation
+		
+		//Create the chat
+		let chatID: String
+		do {
+			chatID = try MessageManager.createChat(withAddresses: chatMembers, service: chatService)
+		} catch {
+			if let error = error as? AppleScriptExecutionError {
+				let nstCode: NSTCreateChat
+				switch error.code {
+					case AppleScriptCodes.errorUnauthorized:
+						nstCode = .unauthorized
+					default:
+						nstCode = .scriptError
+				}
+				
+				send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: nstCode.rawValue, details: error.message, to: client)
+			} else if let error = error as? ForwardsSupportError {
+				send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: NSTCreateChat.scriptError.rawValue, details: error.errorDescription, to: client)
+			}
+			
+			return
+		}
+		
+		//Send a response
+		send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: NSTCreateChat.ok.rawValue, details: chatID, to: client)
+	}
+	
+	/**
+	 Handles the common case of running a failable operation in response to an outgoing message request
+	 */
+	private func handleMessageSendCommon(requestID: Int16, client: C, action: () throws -> Void) {
+		//Send the message
+		do {
+			try action()
+		} catch {
+			if let error = error as? AppleScriptExecutionError {
+				let nstCode: NSTSendResult
+				switch error.code {
+					case AppleScriptCodes.errorUnauthorized:
+						nstCode = .unauthorized
+					case AppleScriptCodes.errorNoChat:
+						nstCode = .noConversation
+					default:
+						nstCode = .scriptError
+				}
+				
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: nstCode.rawValue, details: error.message, to: client)
+			} else if let error = error as? ForwardsSupportError {
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.scriptError.rawValue, details: error.errorDescription, to: client)
+			}
+			
+			return
+		}
+		
+		//Send a response
+		send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.ok.rawValue, details: nil, to: client)
+	}
+	
+	private func handleMessageSendTextExisting(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send a message to
+		let message = try messagePacker.unpackString() //The message to send
+		
+		//Send the message
+		handleMessageSendCommon(requestID: requestID, client: client) {
+			try MessageManager.send(message: message, toExistingChat: chatGUID)
+		}
+	}
+	
+	private func handleMessageSendTextNew(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let members = try messagePacker.unpackStringArray() //The members of the chat to send the message to
+		let service = try messagePacker.unpackString(); //The service of the chat
+		let message = try messagePacker.unpackString() //The message to send
+		
+		//Send the message
+		handleMessageSendCommon(requestID: requestID, client: client) {
+			try MessageManager.send(message: message, toNewChat: members, onService: service)
+		}
+	}
+	
+	private enum DownloadRequestCreateError: Error {
+		case alreadyExists
+		case createError(Error)
+	}
+	
+	private func handleMessageSendFileExisting(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Read the request
+		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
+		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
+		let isLast = try messagePacker.unpackBool() //Is this the last packet?
+		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
+		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
+		
+		let downloadRequest: FileDownloadRequest
+		if packetIndex == 0 {
+			let fileName = try messagePacker.unpackString() //The name of the file to send
+			
+			do {
+				downloadRequest = try fileDownloadRequestMapLock.withWriteLock { () throws -> FileDownloadRequest in
+					//Make sure we don't have a matching request
+					guard fileDownloadRequestMap[requestID] == nil else {
+						throw DownloadRequestCreateError.alreadyExists
+					}
+					
+					//Create a new request
+					let downloadRequest: FileDownloadRequest
+					do {
+						downloadRequest = try FileDownloadRequest(fileName: fileName, requestID: requestID, customData: chatGUID)
+					} catch {
+						throw DownloadRequestCreateError.createError(error)
+					}
+					
+					//Set the request
+					fileDownloadRequestMap[requestID] = downloadRequest
+					
+					return downloadRequest
+				}
+				
+				//Add the data
+				do {
+					try downloadRequest.append(&fileData)
+				} catch {
+					LogManager.shared.log("Failed to write download request initial file data: %{public}", type: .notice, error.localizedDescription)
+					send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to write initial file data: \(error.localizedDescription)", to: client)
+					return
+				}
+				
+				//Set the timer callback
+				downloadRequest.timeoutCallback = { [weak self, weak client] in
+					DispatchQueue.global(qos: .default).async { [weak self, weak client] in
+						//Clean up leftover files
+						try? downloadRequest.cleanUp()
+						
+						//Clean up task reference
+						guard let self = self else { return }
+						self.fileDownloadRequestMapLock.withWriteLock {
+							self.fileDownloadRequestMap[requestID] = nil
+						}
+						
+						//Send a message to the client
+						guard let client = client, client.isConnected.value else { return }
+						self.send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.requestTimeout.rawValue, details: nil, to: client)
+					}
+				}
+			} catch DownloadRequestCreateError.alreadyExists {
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Request ID \(requestID) already exists", to: client)
+				return
+			} catch DownloadRequestCreateError.createError(let createError) {
+				LogManager.shared.log("Failed to create file download request: %{public}", type: .error, createError.localizedDescription)
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to create file download request: \(createError.localizedDescription)", to: client)
+				return
+			}
+		} else {
+			//Find the request
+			guard let downloadRequestFromMap = fileDownloadRequestMapLock.withReadLock({ fileDownloadRequestMap[requestID] }) else {
+				return
+			}
+			downloadRequest = downloadRequestFromMap
+			
+			//Stop the timeout timer
+			downloadRequest.stopTimeoutTimer()
+			
+			//Make sure we can still accept new data
+			guard !downloadRequest.isDataComplete else {
+				LogManager.shared.log("Received additional data for file download request %{public}-%{public}, even though data is already complete", type: .notice, requestID, packetIndex)
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Data is already complete", to: client)
+				return
+			}
+			
+			//Make sure we're on the right packet index
+			guard downloadRequest.packetsWritten == packetIndex else {
+				LogManager.shared.log("Received invalid packet order for file download request %{public}-%{public}; expected %{public}", type: .notice, requestID, packetIndex, downloadRequest.packetsWritten)
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Received invalid packet order for file download request \(requestID)-\(packetIndex); expected \(downloadRequest.packetsWritten)", to: client)
+				return
+			}
+			
+			//Add the data
+			do {
+				try downloadRequest.append(&fileData)
+			} catch {
+				LogManager.shared.log("Failed to write download request file data for request %{public}-%{public}: %{public}", type: .notice, requestID, packetIndex, error.localizedDescription)
+				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to write file data for packet index \(packetIndex): \(error.localizedDescription)", to: client)
+				return
+			}
+		}
+		
+		//Check if there are still more packets to come
+		if !isLast {
+			//Start the timeout timer
+			downloadRequest.startTimeoutTimer()
+			return
+		}
+		
+		//Make sure we have complete data
+		guard downloadRequest.isDataComplete else {
+			LogManager.shared.log("Data for file download request %{public}-%{public} is not complete, but client stopped sending data", type: .notice, requestID, packetIndex)
+			send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Data is not complete, but client stopped sending data", to: client)
+			return
+		}
+		
+		//Send the file
+		handleMessageSendCommon(requestID: requestID, client: client) {
+			try MessageManager.send(file: downloadRequest.fileURL, toExistingChat: chatGUID)
+		}
+	}
+	
+	private func handleMessageSendFileNew(packer messagePacker: inout AirPacker, from client: C) throws {
+		//TODO: implement similar to handleMessageSendFileExisting
 	}
 	
 	//MARK: Process message
@@ -771,6 +1008,13 @@ class ConnectionManager {
 				
 			case .liteConversationRetrieval: try handleMessageLiteConversationRetrieval(packer: &packer, from: client)
 			case .liteThreadRetrieval: try handleMessageLiteThreadRetrieval(packer: &packer, from: client)
+			
+			case .createChat: try handleMessageCreateChat(packer: &packer, from: client)
+			case .sendTextExisting: try handleMessageSendTextExisting(packer: &packer, from: client)
+			case .sendTextNew: try handleMessageSendTextNew(packer: &packer, from: client)
+			case .sendFileExisting: try handleMessageSendFileExisting(packer: &packer, from: client)
+			case .sendFileNew: try handleMessageSendFileNew(packer: &packer, from: client)
+			
 			default: return false
 		}
 		

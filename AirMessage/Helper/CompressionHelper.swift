@@ -49,8 +49,8 @@ func compressData(_ dataIn: inout Data) -> Data? {
 /**
  Pipes data through zlib deflate
  */
-class CompressionPipe {
-	var stream: z_stream
+class CompressionPipeDeflate {
+	private var stream: z_stream
 	
 	init() throws {
 		stream = z_stream()
@@ -103,6 +103,74 @@ class CompressionPipe {
 	}
 }
 
+/**
+ Pipes data through zlib inflate
+ */
+class CompressionPipeInflate {
+	private var stream: z_stream
+	private(set) var isFinished = false
+	
+	init() throws {
+		stream = z_stream()
+		let initError = zlibInitializeInflate(&stream)
+		guard initError == Z_OK else {
+			throw CompressionError.zlibError(initError)
+		}
+	}
+	
+	deinit {
+		inflateEnd(&stream)
+	}
+	
+	/**
+	 Pipes data through zlib to produce decompressed output
+	 - Parameters:
+	   - dataIn: The data to compress
+	 */
+	func pipe(data dataIn: inout Data) throws -> Data {
+		//If the stream is already finished, don't allow the input of any more data
+		guard !isFinished else {
+			throw CompressionError.streamFinished
+		}
+		
+		var dataReturn = Data()
+		
+		var inflateResult: Int32
+		repeat {
+			var dataOut = Data(count: dataIn.count)
+			
+			//Run inflate
+			inflateResult = dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) in
+				dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
+					stream.next_in = ptrIn.baseAddress!.assumingMemoryBound(to: Bytef.self)
+					stream.avail_in = uInt(ptrIn.count)
+					
+					stream.next_out = ptrOut.baseAddress!.assumingMemoryBound(to: Bytef.self)
+					stream.avail_out = uInt(ptrOut.count)
+					
+					return inflate(&stream, Z_NO_FLUSH)
+				}
+			}
+			
+			//Check the return code
+			guard ![Z_STREAM_ERROR, Z_NEED_DICT, Z_DATA_ERROR, Z_MEM_ERROR].contains(inflateResult) else {
+				throw CompressionError.zlibError(inflateResult)
+			}
+			
+			//Set the finished flag if we reached the end of the stream
+			if inflateResult == Z_STREAM_END {
+				isFinished = true
+			}
+			
+			//Append the decompressed data
+			dataReturn += dataOut.dropLast(Int(stream.avail_out))
+		} while stream.avail_out == 0
+		
+		return dataReturn
+	}
+}
+
 enum CompressionError: Error {
 	case zlibError(Int32)
+	case streamFinished
 }

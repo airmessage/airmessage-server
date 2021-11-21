@@ -13,13 +13,14 @@ class ClientListViewController: NSViewController {
 	
 	@IBOutlet weak var tableView: NSTableView!
 	
-	private var clients: [ClientRegistration]!
+	private var clients: [ClientConnection.Registration]!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		//Load data
-		clients = (jniGetClients() as! [ClientRegistration])
+		//clients = (jniGetClients() as! [ClientRegistration])
+		clients = []
 		
 		//Set table delegate
 		tableView.delegate = self

@@ -71,6 +71,7 @@ enum NSTSendResult: Int32 {
 	case unauthorized = 3 //System rejected request to send message
 	case noConversation = 4 //A valid conversation wasn't found
 	case requestTimeout = 5 //File data blocks stopped being received
+	case internalError = 6 //An internal error occurred
 }
 
 enum NSTAttachmentRequest: Int32 {
