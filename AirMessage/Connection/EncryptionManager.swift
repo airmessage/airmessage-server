@@ -11,6 +11,7 @@ private let saltLen = 8 //8 bytes
 private let ivLen = 12 //12 bytes (instead of 16 because of GCM)
 private let keyIterationCount: UInt32 = 10000
 private let keyLength = 128 / 8 //128 bits
+private let tagLength = 128 / 8 //128 bits
 
 private var encryptionPassword: String {
 	PreferencesManager.shared.password
@@ -23,8 +24,10 @@ private var encryptionPassword: String {
  - Throws: An error if random data failed to generate
  */
 func generateSecureData(count: Int) throws -> Data {
-	var data = Data(count: saltLen)
-	let secResult = SecRandomCopyBytes(kSecRandomDefault, data.count, &data)
+	var data = Data(count: count)
+	let secResult = data.withUnsafeMutableBytes { (ptr: UnsafeMutableRawBufferPointer) in
+		SecRandomCopyBytes(kSecRandomDefault, count, ptr.baseAddress!)
+	}
 	guard secResult == errSecSuccess else {
 		throw EncryptionError.randomError
 	}
@@ -71,69 +74,105 @@ private enum CipherOperation: Int32 {
  - Throws: Encryption errors
  */
 private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOperation operation: CipherOperation) throws -> Data {
-	//Initialize the encryption context
-	let ctx = EVP_CIPHER_CTX_new()
-	defer {
-		EVP_CIPHER_CTX_free(ctx)
-	}
-	
-	//Initialize the encryption session
-	let resultInit = key.withUnsafeBytes { (keyBytes: UnsafeRawBufferPointer) in
-		iv.withUnsafeBytes { (ivBytes: UnsafeRawBufferPointer) in
-			EVP_CipherInit_ex(ctx,
+	try key.withUnsafeBytes { (keyBytes: UnsafeRawBufferPointer) in
+		try iv.withUnsafeBytes { (ivBytes: UnsafeRawBufferPointer) in
+			//Initialize the encryption context
+			let ctx = EVP_CIPHER_CTX_new()
+			defer { EVP_CIPHER_CTX_free(ctx) }
+			
+			//Initialize the encryption session
+			let resultInit = EVP_CipherInit_ex(ctx,
 							  EVP_aes_128_gcm(),
 							  nil,
 							  keyBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 							  ivBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 							  operation.rawValue
 			)
+			guard resultInit == 1 else {
+				LogManager.log("Cipher failed: init error", level: .error)
+				throw EncryptionError.cryptoError
+			}
+			
+			//Disable padding
+			//EVP_CIPHER_CTX_set_padding(ctx, 0)
+			
+			let inputCipher: Data
+			var inputTag: UnsafeMutableRawBufferPointer?
+			defer { inputTag?.deallocate() }
+			if operation == .encrypt {
+				//Encrypt the entire input
+				inputCipher = input
+			} else {
+				//Java and Web Crypto append the key to the end of the output, so we have to extract it
+				inputCipher = input.dropLast(tagLength)
+				
+				let tagPointer = UnsafeMutableRawBufferPointer.allocate(byteCount: tagLength, alignment: 1)
+				input.copyBytes(to: tagPointer, from: input.index(input.endIndex, offsetBy: -tagLength)..<input.endIndex)
+				inputTag = tagPointer
+				
+				//Set the tag
+				let resultCtrl = EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, Int32(tagLength), tagPointer.baseAddress!)
+				guard resultCtrl == 1 else {
+					LogManager.log("Cipher failed: ctrl set tag error", level: .error)
+					throw EncryptionError.cryptoError
+				}
+			}
+			
+			//Cipher the data
+			//For most ciphers and modes, the amount of data written can be anything from zero bytes to (inl + cipher_block_size - 1) bytes
+			let outputCapacity = inputCipher.count + blockSize - 1
+			var output = Data(count: outputCapacity)
+			var outputLen: Int32 = 0
+			
+			let resultUpdate = inputCipher.withUnsafeBytes { (inputBytes: UnsafeRawBufferPointer) in
+				output.withUnsafeMutableBytes { (outputBytes: UnsafeMutableRawBufferPointer) in
+					EVP_CipherUpdate(ctx,
+									 outputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+									 &outputLen,
+									 inputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+									 Int32(inputCipher.count))
+				}
+			}
+			guard resultUpdate == 1 else {
+				LogManager.log("Cipher failed: update error", level: .error)
+				throw EncryptionError.cryptoError
+			}
+			
+			//Finish the cipher
+			let finalOutputCapacity = blockSize
+			var finalOutput = Data(count: finalOutputCapacity)
+			var finalOutputLen: Int32 = 0
+			
+			let resultFinal = finalOutput.withUnsafeMutableBytes { (finalOutputBytes: UnsafeMutableRawBufferPointer) in
+				EVP_CipherFinal_ex(ctx,
+								finalOutputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+								&finalOutputLen)
+			}
+			guard resultFinal == 1 else {
+				LogManager.log("Cipher failed: final error", level: .error)
+				throw EncryptionError.cryptoError
+			}
+			
+			//Join the output and final output
+			let result = output.prefix(Int(outputLen)) + finalOutput.prefix(Int(finalOutputLen))
+			if operation == .encrypt {
+				//Java and Web Crypto append the key to the end of the output, so we'll match that functionality
+				var tag = Data(count: tagLength)
+				let resultCtrl = tag.withUnsafeMutableBytes { (ptr: UnsafeMutableRawBufferPointer) -> Int32 in
+					EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, Int32(tagLength), ptr.baseAddress!)
+				}
+				guard resultCtrl == 1 else {
+					LogManager.log("Cipher failed: ctrl get tag error", level: .error)
+					throw EncryptionError.cryptoError
+				}
+				
+				return result + tag
+			} else {
+				//Return the joined output and final output
+				return result
+			}
 		}
 	}
-	guard resultInit == 1 else {
-		LogManager.log("Failed to crypt: init error", level: .error)
-		throw EncryptionError.cryptoError
-	}
-	
-	//Disable padding
-	//EVP_CIPHER_CTX_set_padding(ctx, 0)
-	
-	//Encrypt the data
-	//For most ciphers and modes, the amount of data written can be anything from zero bytes to (inl + cipher_block_size - 1) bytes
-	let outputCapacity = input.count + blockSize - 1
-	var output = Data(count: outputCapacity)
-	var outputLen: Int32 = 0
-	
-	let resultUpdate = input.withUnsafeBytes { (inputBytes: UnsafeRawBufferPointer) in
-		output.withUnsafeMutableBytes { (outputBytes: UnsafeMutableRawBufferPointer) in
-			EVP_CipherUpdate(ctx,
-							 outputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
-							 &outputLen,
-							 inputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
-							 Int32(input.count))
-		}
-	}
-	guard resultUpdate == 1 else {
-		LogManager.log("Failed to crypt: update error", level: .error)
-		throw EncryptionError.cryptoError
-	}
-	
-	//Finish the encryption
-	let finalOutputCapacity = blockSize
-	var finalOutput = Data(count: finalOutputCapacity)
-	var finalOutputLen: Int32 = 0
-	
-	let resultFinal = finalOutput.withUnsafeMutableBytes { (finalOutputBytes: UnsafeMutableRawBufferPointer) in
-		EVP_CipherFinal_ex(ctx,
-						finalOutputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
-						&finalOutputLen)
-	}
-	guard resultFinal == 1 else {
-		LogManager.log("Failed to crypt: final error", level: .error)
-		throw EncryptionError.cryptoError
-	}
-	
-	//Return the joined output and final output
-	return output.prefix(Int(outputLen)) + finalOutput.prefix(Int(finalOutputLen))
 }
 
 /**

@@ -108,9 +108,8 @@ struct AirPacker {
 	 Deserializes the data into the primitive at offset
 	 */
 	private func deserializePrimitive<T>(fromByteOffset offset: Int, as type: T.Type) -> T {
-		return data.withUnsafeBytes { ptr in
-			ptr.load(fromByteOffset: offset, as: type)
-		}
+		return data.subdata(in: offset..<offset + MemoryLayout<T>.size)
+			.withUnsafeBytes { $0.load(as: type) }
 	}
 	
 	mutating func unpackBool() throws -> Bool {
