@@ -55,7 +55,7 @@ class DataProxyTCP: DataProxy {
 		address.sin_addr.s_addr = INADDR_ANY
 		address.sin_port = in_port_t(Int16(port).bigEndian)
 		let bindResult = withUnsafePointer(to: address) { ptr in
-			ptr.withMemoryRebound(to: sockaddr.self, capacity: MemoryLayout<sockaddr_in>.size) { ptr in
+			ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
 				bind(socketFD, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
 			}
 		}
@@ -79,23 +79,58 @@ class DataProxyTCP: DataProxy {
 		connectionQueue.async { [weak self] in
 			while true {
 				var addr = sockaddr()
-				var addrLen: socklen_t = 0
+				var addrLen: socklen_t = socklen_t(MemoryLayout<sockaddr_in>.size)
 				let clientFD = accept(socketFD, &addr, &addrLen)
 				guard clientFD != -1 else {
-					guard let self = self else { break }
+					guard let self = self else { return }
 					
 					if self.serverRunning {
 						//If the user hasn't stopped the server, report the error
 						LogManager.log("Failed to accept new client: \(errno)", level: .notice)
 						self.delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 					}
-					break
+					return
 				}
+				
+				//Get the client address
+				let clientAddress: String
+				switch Int32(addr.sa_family) {
+					case AF_INET:
+						var addrIPV4 = unsafeBitCast(addr, to: sockaddr_in.self)
+						
+						let resultPtr = UnsafeMutablePointer<CChar>.allocate(capacity: Int(INET_ADDRSTRLEN))
+						defer { resultPtr.deallocate() }
+						
+						inet_ntop(AF_INET, &(addrIPV4.sin_addr), resultPtr, socklen_t(INET_ADDRSTRLEN))
+						
+						clientAddress = String(cString: resultPtr)
+						
+						break
+					case AF_INET6:
+						var addrIPV6 = unsafeBitCast(addr, to: sockaddr_in6.self)
+						
+						let resultPtr = UnsafeMutablePointer<CChar>.allocate(capacity: Int(INET6_ADDRSTRLEN))
+						defer { resultPtr.deallocate() }
+						
+						inet_ntop(AF_INET, &(addrIPV6.sin6_addr), resultPtr, socklen_t(INET6_ADDRSTRLEN))
+						
+						clientAddress = String(cString: resultPtr)
+						
+						break
+					default:
+						LogManager.log("Client connected with unknown address family \(addr.sa_family)", level: .error)
+						
+						guard let self = self else { return }
+						self.delegate?.dataProxy(self, didStopWithState: .errorTCPInternal, isRecoverable: false)
+						return
+				}
+				
+				LogManager.log("Client connected from \(clientAddress)", level: .info)
 				
 				//Add the client to the list
 				guard let self = self else { break }
 				let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
-				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, delegate: self)
+				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, address: clientAddress, delegate: self)
 				let connectionCount: Int
 				do {
 					self.connectionsLock.lock()
@@ -140,7 +175,7 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	func send(message data: Data, to client: ClientConnection?, encrypt: Bool, onSent: (() -> ())?) {
-		writeQueue.async {
+		writeQueue.async { [weak self] in
 			//Encrypting the data
 			let preparedData: Data
 			if encrypt {
@@ -154,8 +189,25 @@ class DataProxyTCP: DataProxy {
 				preparedData = data
 			}
 			
-			//Sending the data to the client
-			(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
+			if let client = client {
+				//Sending the data to the client
+				(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
+			} else {
+				//Copy the connections set
+				let connections: Set<ClientConnection>
+				do {
+					guard let self = self else { return }
+					
+					self.connectionsLock.lock()
+					defer { self.connectionsLock.unlock() }
+					connections = self.connections
+				}
+				
+				//Send the data to all clients
+				for client in connections {
+					(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
+				}
+			}
 		}
 	}
 	

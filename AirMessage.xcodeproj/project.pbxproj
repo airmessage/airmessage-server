@@ -319,15 +319,15 @@
 		ED3781F7273F399A00310EAD /* Connection */ = {
 			isa = PBXGroup;
 			children = (
+				ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */,
+				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
+				2EAEE24A8F9E40DCED942CF6 /* ClientConnection.swift */,
+				2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */,
 				2EAEE19B93FDBB406A990E05 /* ConnectionManager.swift */,
 				2EAEED65BEC9AAC9A444C18F /* DataProxy.swift */,
-				2EAEE24A8F9E40DCED942CF6 /* ClientConnection.swift */,
-				2EAEEDE17614B8D22BDBD1B1 /* Direct */,
 				2EAEE7BEDAA5FF7A348C4277 /* DataProxyDelegate.swift */,
-				2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */,
+				2EAEEDE17614B8D22BDBD1B1 /* Direct */,
 				2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */,
-				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
-				ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */,
 				ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */,
 			);
 			path = Connection;

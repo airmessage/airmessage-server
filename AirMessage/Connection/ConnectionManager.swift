@@ -219,6 +219,7 @@ class ConnectionManager {
 				rejectAuthorization(with: .unauthorized)
 				return
 			}
+			client.transmissionCheck = nil
 		} else {
 			//Reading the data plainly
 			let installationID = try messagePacker.unpackString()
@@ -1104,6 +1105,7 @@ extension ConnectionManager: DataProxyDelegate {
 		
 		//Start the expiry timer
 		client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout) { [weak self] client in
+			LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
 			self?.dataProxy?.disconnect(client: client)
 		}
 	}

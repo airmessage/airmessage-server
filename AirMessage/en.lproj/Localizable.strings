@@ -27,7 +27,8 @@
 "message.status.error.internal"="An Internal Error Occurred";
 "message.status.error.external"="An External Error Occurred";
 "message.status.error.internet"="No Internet Connection";
-"message.status.error.port"="Port is Unavailable";
+"message.status.error.port_unavailable"="Port Already In Use";
+"message.status.error.port_error"="Failed to Prepare Port";
 "message.status.error.bad_request"="Communications Error";
 "message.status.error.outdated"="App Out Of Date";
 "message.status.error.account_validation"="Account Not Available";

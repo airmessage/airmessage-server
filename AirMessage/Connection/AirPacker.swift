@@ -165,7 +165,7 @@ struct AirPacker {
 			throw PackingError.rangeError
 		}
 		
-		let payload = data[currentIndex..<currentIndex + length]
+		let payload = data.subdata(in: currentIndex..<currentIndex + length)
 		currentIndex += length
 		return payload
 	}

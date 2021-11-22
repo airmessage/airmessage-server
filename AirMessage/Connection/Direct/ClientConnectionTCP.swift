@@ -9,15 +9,19 @@ class ClientConnectionTCP: ClientConnection {
 	private static let headerLen = MemoryLayout<Int32>.size + MemoryLayout<Bool>.size
 	
 	//Parameters
-	let handle: FileHandle
-	weak var delegate: ClientConnectionTCPDelegate?
+	private let handle: FileHandle
+	private let address: String
+	private weak var delegate: ClientConnectionTCPDelegate?
+	
+	override var readableID: String { address }
 	
 	//State
 	private var isRunning = AtomicBool()
 	
-	init(id: Int32, handle: FileHandle, delegate: ClientConnectionTCPDelegate? = nil) {
+	init(id: Int32, handle: FileHandle, address: String, delegate: ClientConnectionTCPDelegate? = nil) {
 		self.handle = handle
 		self.delegate = delegate
+		self.address = address
 		super.init(id: id)
 	}
 	
@@ -25,10 +29,11 @@ class ClientConnectionTCP: ClientConnection {
 		//Return if we're already running
 		guard !isRunning.with({ value in
 			//If we're not running, change the property to running
-			if !value {
+			let originalValue = value
+			if !originalValue {
 				value = true
 			}
-			return value
+			return originalValue
 		}) else { return }
 		
 		//Start reader task
@@ -41,15 +46,15 @@ class ClientConnectionTCP: ClientConnection {
 					let packetHeader = try ClientConnectionTCP.read(handle: self.handle, exactCount: ClientConnectionTCP.headerLen)
 					let (contentLen, isEncrypted) = packetHeader.withUnsafeBytes { ptr in
 						(
-								ptr.load(fromByteOffset: 0, as: Int32.self),
-								ptr.load(fromByteOffset: MemoryLayout<Int32>.size, as: Bool.self)
+							Int32(bigEndian: ptr.load(fromByteOffset: 0, as: Int32.self)),
+							ptr.load(fromByteOffset: MemoryLayout<Int32>.size, as: Bool.self)
 						)
 					}
 					
 					//Check if the content length is greater than the maximum packet allocation
 					guard contentLen < CommConst.maxPacketAllocation else {
 						//Log and disconnect
-						LogManager.log("Rejecting large packet (size \(contentLen)", level: .notice)
+						LogManager.log("Rejecting large packet (size \(contentLen))", level: .notice)
 						
 						self.stop(cleanup: true)
 						break
@@ -64,6 +69,10 @@ class ClientConnectionTCP: ClientConnection {
 				LogManager.log("An error occurred while reading client data: \(error)", level: .notice)
 				self?.stop(cleanup: false)
 			}
+			
+			if let self = self {
+				LogManager.log("Client disconnected from \(self.address)", level: .info)
+			}
 		}
 	}
 	
@@ -71,10 +80,11 @@ class ClientConnectionTCP: ClientConnection {
 		//Return if we're not running
 		guard isRunning.with({ value in
 			//If we're running, change the property to not running
-			if value {
+			let originalValue = value
+			if originalValue {
 				value = false
 			}
-			return value
+			return originalValue
 		}) else { return }
 		
 		//Update the connected property
@@ -101,7 +111,7 @@ class ClientConnectionTCP: ClientConnection {
 	func write(data: Data, isEncrypted: Bool) -> Bool {
 		//Create the packet structure
 		var output = Data(capacity: MemoryLayout<Int32>.size + MemoryLayout<Bool>.size + data.count)
-		withUnsafeBytes(of: data.count.bigEndian) { output.append(contentsOf: $0) }
+		withUnsafeBytes(of: Int32(data.count).bigEndian) { output.append(contentsOf: $0) }
 		output.append(isEncrypted ? 1 : 0)
 		output.append(data)
 		
@@ -159,7 +169,7 @@ class ClientConnectionTCP: ClientConnection {
 		var exactData = Data(capacity: count)
 		
 		repeat {
-			let data = try read(handle: handle, upToCount: exactData.count - count)
+			let data = try read(handle: handle, upToCount: count - exactData.count)
 			exactData.append(data)
 		} while exactData.count < count
 		

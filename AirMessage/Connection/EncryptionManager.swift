@@ -80,11 +80,12 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 	//Initialize the encryption session
 	let resultInit = key.withUnsafeBytes { (keyBytes: UnsafeRawBufferPointer) in
 		iv.withUnsafeBytes { (ivBytes: UnsafeRawBufferPointer) in
-			EVP_CipherInit(ctx,
-						   EVP_aes_128_gcm(),
-						   keyBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
-						   ivBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
-						   operation.rawValue
+			EVP_CipherInit_ex(ctx,
+							  EVP_aes_128_gcm(),
+							  nil,
+							  keyBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+							  ivBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
+							  operation.rawValue
 			)
 		}
 	}
@@ -92,6 +93,9 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		LogManager.log("Failed to crypt: init error", level: .error)
 		throw EncryptionError.cryptoError
 	}
+	
+	//Disable padding
+	//EVP_CIPHER_CTX_set_padding(ctx, 0)
 	
 	//Encrypt the data
 	//For most ciphers and modes, the amount of data written can be anything from zero bytes to (inl + cipher_block_size - 1) bytes
@@ -113,16 +117,13 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		throw EncryptionError.cryptoError
 	}
 	
-	//Resize the data to match the size written
-	output = output.dropLast(outputCapacity - Int(outputLen))
-	
 	//Finish the encryption
 	let finalOutputCapacity = blockSize
 	var finalOutput = Data(count: finalOutputCapacity)
 	var finalOutputLen: Int32 = 0
 	
 	let resultFinal = finalOutput.withUnsafeMutableBytes { (finalOutputBytes: UnsafeMutableRawBufferPointer) in
-		EVP_CipherFinal(ctx,
+		EVP_CipherFinal_ex(ctx,
 						finalOutputBytes.baseAddress!.assumingMemoryBound(to: UInt8.self),
 						&finalOutputLen)
 	}
@@ -131,9 +132,8 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 		throw EncryptionError.cryptoError
 	}
 	
-	//Return the joined output and final output, minus unused memory
-	return output.dropLast(outputCapacity - Int(outputLen)) +
-			finalOutput.dropLast(finalOutputCapacity - Int(finalOutputLen))
+	//Return the joined output and final output
+	return output.prefix(Int(outputLen)) + finalOutput.prefix(Int(finalOutputLen))
 }
 
 /**
@@ -158,10 +158,15 @@ func networkEncrypt(data: Data) throws -> Data {
  Decrypts data from network transmission
  */
 func networkDecrypt(data: Data) throws -> Data {
+	//Make sure the input data is long enough
+	guard data.count >= saltLen + ivLen else {
+		throw EncryptionError.inputError
+	}
+	
 	//Get the input data
-	let salt = data[0..<saltLen]
-	let iv = data[saltLen..<ivLen+saltLen]
-	let encryptedData = data[ivLen+saltLen..<data.count]
+	let salt = data.subdata(in: 0..<saltLen)
+	let iv = data.subdata(in: saltLen..<saltLen+ivLen)
+	let encryptedData = data.subdata(in: saltLen+ivLen..<data.count)
 	
 	//Get the key
 	let key = try deriveKey(password: encryptionPassword, salt: salt)
@@ -177,4 +182,5 @@ enum EncryptionError: Error {
 	case randomError
 	case derivationError
 	case cryptoError
+	case inputError
 }

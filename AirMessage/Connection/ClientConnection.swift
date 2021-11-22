@@ -7,6 +7,9 @@ import Foundation
 class ClientConnection {
 	var id: Int32
 	
+	//Overridable by subclasses
+	var readableID: String { String(id) }
+	
 	struct Registration {
 		/**
 		 * The installation ID of this instance

@@ -24,6 +24,7 @@ enum ServerState: Int {
 	case errorInternet = 103 //No internet connection
 	
 	case errorTCPPort = 200 //Port unavailable
+	case errorTCPInternal = 201 //Internal TCP error
 	
 	case errorConnBadRequest = 300 //Bad request
 	case errorConnOutdated = 301 //Client out of date
@@ -53,7 +54,9 @@ enum ServerState: Int {
 			case .errorInternet:
 				return NSLocalizedString("message.status.error.internet", comment: "")
 			case .errorTCPPort:
-				return NSLocalizedString("message.status.error.port", comment: "")
+				return NSLocalizedString("message.status.error.port_unavailable", comment: "")
+			case .errorTCPInternal:
+				return NSLocalizedString("message.status.error.port_error", comment: "")
 			case .errorConnBadRequest:
 				return NSLocalizedString("message.status.error.bad_request", comment: "")
 			case .errorConnOutdated:
