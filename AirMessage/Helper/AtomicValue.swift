@@ -1,5 +1,5 @@
 //
-//  AtomicBool.swift
+//  AtomicValue.swift
 //  AirMessage
 //
 //  Created by Cole Feuer on 2021-11-16.
@@ -8,12 +8,12 @@
 import Foundation
 
 /**
- A simple wrapper for a thread-safe boolean protected by a read-write lock
+ A simple wrapper for a thread-safe value protected by a read-write lock
  */
-class AtomicBool {
+class AtomicValue<Value> {
 	private let lock = ReadWriteLock()
-	private var _value: Bool
-	public var value: Bool {
+	private var _value: Value
+	public var value: Value {
 		get {
 			lock.withReadLock {
 				return _value
@@ -26,7 +26,7 @@ class AtomicBool {
 		}
 	}
 	
-	init(initialValue: Bool = false) {
+	init(initialValue: Value) {
 		_value = initialValue
 	}
 	
@@ -34,9 +34,11 @@ class AtomicBool {
 	 Helper function that returns an inout for more advanced operations
 	 */
 	@discardableResult
-	public func with<Result>(_ body: (inout Bool) throws -> Result) rethrows -> Result {
+	public func with<Result>(_ body: (inout Value) throws -> Result) rethrows -> Result {
 		try lock.withWriteLock {
 			try body(&_value)
 		}
 	}
 }
+
+typealias AtomicBool = AtomicValue<Bool>

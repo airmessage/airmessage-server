@@ -16,7 +16,7 @@ class ClientConnectionTCP: ClientConnection {
 	override var readableID: String { address }
 	
 	//State
-	private var isRunning = AtomicBool()
+	private var isRunning = AtomicBool(initialValue: false)
 	
 	init(id: Int32, handle: FileHandle, address: String, delegate: ClientConnectionTCPDelegate? = nil) {
 		self.handle = handle
