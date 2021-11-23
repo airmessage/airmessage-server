@@ -385,7 +385,7 @@ class DatabaseConverter {
 	static func fetchStickerData(ofMessage messageID: Int64, ofDB db: Connection) throws -> StickerData? {
 		let stmt: Statement
 		stmt = try db.prepare("""
-                                  SELECT attachment.guid, attachment.filename, attachment.mime_type
+                                  SELECT attachment.guid AS "attachment.guid", attachment.filename AS "attachment.filename", attachment.mime_type AS "attachment.mime_type"
                                   FROM message_attachment_join
                                   JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
                                   WHERE message_attachment_join.message_id = ?
