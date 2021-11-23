@@ -84,12 +84,17 @@ class DatabaseConverter {
 		if itemType == .message {
 			if #available(macOS 10.12, *) {
 				//Getting the association info
-				let associatedMessage = row[indices["message.associated_message_guid"]!] as! String
+				let associatedMessage = row[indices["message.associated_message_guid"]!] as! String?
 				let associationType = row[indices["message.associated_message_type"]!] as! Int64
 				let associationIndex = row[indices["message.associated_message_range_location"]!] as! Int64
 				
 				//Checking if there is an association
 				if associationType != 0 {
+					guard let associatedMessage = associatedMessage else {
+						LogManager.log("Expected an associated message GUID for message \(guid), none found", level: .error)
+						return nil
+					}
+					
 					//Example association string: p:0/69C164B2-2A14-4462-87FA-3D79094CFD83
 					//Splitting the association between the protocol and GUID
 					let associationData = associatedMessage.components(separatedBy: ":")
@@ -153,7 +158,7 @@ class DatabaseConverter {
 					//Replace some characters that can magically appear in messages
 					.replacingOccurrences(of: "\u{FFFC}", with: "")
 					.replacingOccurrences(of: "\u{FFFD}", with: "")
-			let subject = row[indices["message.text"]!] as! String?
+			let subject = row[indices["message.subject"]!] as! String?
 			let sendEffect: String?
 			if #available(macOS 10.12, *) {
 				sendEffect = row[indices["message.expressive_send_style_id"]!] as! String?
@@ -231,7 +236,7 @@ class DatabaseConverter {
 		)
 		let dateRead = row[indices["message.date_read"]!] as! Int64
 		
-		return ActivityStatusModifierInfo(messageGUID: messageGUID, state: state, dateRead: dateRead)
+		return ActivityStatusModifierInfo(messageGUID: messageGUID, state: state, dateRead: convertDBTime(fromDB: dateRead))
 	}
 	
 	/**
@@ -240,7 +245,7 @@ class DatabaseConverter {
 	static func processConversationRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> ConversationInfo {
 		let guid = row[indices["chat.guid"]!] as! String
 		let name = row[indices["chat.display_name"]!] as! String?
-		let service = row[indices["chat.service"]!] as! String
+		let service = row[indices["chat.service_name"]!] as! String
 		let members: [String] = (row[indices["member_list"]!] as! String?)
 			.map { $0.components(separatedBy: ",") } ?? []
 		
@@ -319,11 +324,11 @@ class DatabaseConverter {
 		}
 		
 		let stmt = try db.prepare("""
-								  SELECT \(fields.joined(separator: ", "))
-								  FROM message_attachment_join
-								  JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
-								  WHERE message_attachment_join.message_id = ?
-								  """, messageID)
+		  SELECT \(fields.map { "\($0) AS \"\($0)\"" }.joined(separator: ", "))
+		  FROM message_attachment_join
+		  JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
+		  WHERE message_attachment_join.message_id = ?
+		  """, messageID)
 		
 		let indices = makeColumnIndexDict(stmt.columnNames)
 		let attachments = stmt.compactMap { row -> AttachmentInfo? in
@@ -410,12 +415,12 @@ class DatabaseConverter {
 	 Maps a series of boolean values from the database to a `MessageInfo.State`
 	 */
 	static func mapMessageStateCode(isSent: Bool, isDelivered: Bool, isRead: Bool) -> MessageInfo.State {
-		if isSent {
-			return .sent
+		if isRead {
+			return .read
 		} else if isDelivered {
 			return .delivered
-		} else if isRead {
-			return .read
+		} else if isSent {
+			return .sent
 		} else {
 			return .idle
 		}

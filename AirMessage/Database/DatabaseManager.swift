@@ -37,7 +37,7 @@ class DatabaseManager {
 		let id: Int64
 		let state: MessageInfo.State
 	}
-	private var messageStateDict: [Int64: MessageTrackingState] = [:] //chat ID : message state
+	private var messageStateDict: [Int64: MessageTrackingState] = [:] //chat ID: message state
 	
 	private init() {
 		initTime = getDBTime()
@@ -193,8 +193,12 @@ class DatabaseManager {
 			//Compare against the existing update
 			if let existingUpdate = messageStateDict[chatID] {
 				if existingUpdate != newUpdate {
+					print("Discovered activity status update for message \(modifier.messageGUID): \(existingUpdate) -> \(newUpdate)")
+					
 					//Create an update
-					resultArray.append(modifier)
+					if newUpdate.state != .idle && newUpdate.state != .sent {
+						resultArray.append(modifier)
+					}
 					
 					//Update the dictionary entry
 					messageStateDict[chatID] = newUpdate

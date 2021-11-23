@@ -5,6 +5,8 @@
 import Foundation
 import Zlib
 
+private let minChunkSize = 1024
+
 /**
  Compresses the data with zlib
  - Parameter dataIn: The data to compress
@@ -51,13 +53,24 @@ func compressData(_ dataIn: inout Data) -> Data? {
  */
 class CompressionPipeDeflate {
 	private var stream: z_stream
+	private let chunkSize: Int?
 	
-	init() throws {
+	/**
+	 Creates a new zlib deflate pipe.
+	 
+	 Setting the chunk size to the chunk size of each block of input is recommended,
+	 though it can be set to nil to automatically determine this value
+	 */
+	init(chunkSize: Int? = nil) throws {
 		stream = z_stream()
-		let initError = zlibInitializeDeflate(&stream)
+		let initError = withUnsafeMutablePointer(to: &stream) { streamPtr in
+			zlibInitializeDeflate(streamPtr)
+		}
 		guard initError == Z_OK else {
 			throw CompressionError.zlibError(initError)
 		}
+		
+		self.chunkSize = chunkSize
 	}
 	
 	deinit {
@@ -71,35 +84,42 @@ class CompressionPipeDeflate {
 	   - isLast: Whether this is the last data block
 	 */
 	func pipe(data dataIn: inout Data, isLast: Bool) throws -> Data {
-		var dataReturn = Data()
-		
-		var deflateResult: Int32
-		repeat {
-			var dataOut = Data(count: dataIn.count)
+		return try dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) in
+			//Set the input data
+			stream.next_in = ptrIn.baseAddress!.assumingMemoryBound(to: Bytef.self)
+			stream.avail_in = uInt(ptrIn.count)
 			
-			//Run deflate
-			deflateResult = dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) in
-				dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
-					stream.next_in = ptrIn.baseAddress!.assumingMemoryBound(to: Bytef.self)
-					stream.avail_in = uInt(ptrIn.count)
-					
+			//Create the result data collector
+			var dataReturn = Data()
+			
+			repeat {
+				//Initialize the output data
+				var dataOut: Data
+				if let chunkSize = chunkSize {
+					dataOut = Data(count: chunkSize)
+				} else {
+					dataOut = Data(count: max(ptrIn.count, minChunkSize))
+				}
+				
+				//Run deflate
+				let deflateResult = dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
 					stream.next_out = ptrOut.baseAddress!.assumingMemoryBound(to: Bytef.self)
 					stream.avail_out = uInt(ptrOut.count)
 					
 					return deflate(&stream, isLast ? Z_FINISH : Z_NO_FLUSH)
 				}
-			}
+				
+				//Check the return code
+				guard deflateResult != Z_STREAM_ERROR else {
+					throw CompressionError.zlibError(deflateResult)
+				}
+				
+				//Append the compressed data
+				dataReturn.append(dataOut.dropLast(Int(stream.avail_out)))
+			} while stream.avail_out == 0
 			
-			//Check the return code
-			guard deflateResult != Z_STREAM_ERROR else {
-				throw CompressionError.zlibError(deflateResult)
-			}
-			
-			//Append the compressed data
-			dataReturn += dataOut.dropLast(Int(stream.avail_out))
-		} while stream.avail_out == 0
-		
-		return dataReturn
+			return dataReturn
+		}
 	}
 }
 
@@ -109,13 +129,21 @@ class CompressionPipeDeflate {
 class CompressionPipeInflate {
 	private var stream: z_stream
 	private(set) var isFinished = false
+	private let chunkSize: Int?
 	
-	init() throws {
+	/**
+	 Creates a new zlib inflate pipe.
+	 
+	 Setting the chunk size to the chunk size of each block of input is recommended,
+	 though it can be set to nil to automatically determine this value
+	 */
+	init(chunkSize: Int? = nil) throws {
 		stream = z_stream()
 		let initError = zlibInitializeInflate(&stream)
 		guard initError == Z_OK else {
 			throw CompressionError.zlibError(initError)
 		}
+		self.chunkSize = chunkSize
 	}
 	
 	deinit {
@@ -133,40 +161,47 @@ class CompressionPipeInflate {
 			throw CompressionError.streamFinished
 		}
 		
-		var dataReturn = Data()
-		
-		var inflateResult: Int32
-		repeat {
-			var dataOut = Data(count: dataIn.count)
+		return try dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) in
+			//Set the input data
+			stream.next_in = ptrIn.baseAddress!.assumingMemoryBound(to: Bytef.self)
+			stream.avail_in = uInt(ptrIn.count)
 			
-			//Run inflate
-			inflateResult = dataIn.withUnsafeMutableBytes { (ptrIn: UnsafeMutableRawBufferPointer) in
-				dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
-					stream.next_in = ptrIn.baseAddress!.assumingMemoryBound(to: Bytef.self)
-					stream.avail_in = uInt(ptrIn.count)
-					
+			//Create the result data collector
+			var dataReturn = Data()
+			
+			repeat {
+				//Initialize the output data
+				var dataOut: Data
+				if let chunkSize = chunkSize {
+					dataOut = Data(count: chunkSize)
+				} else {
+					dataOut = Data(count: max(ptrIn.count, minChunkSize))
+				}
+				
+				//Run inflate
+				let inflateResult = dataOut.withUnsafeMutableBytes { (ptrOut: UnsafeMutableRawBufferPointer) -> Int32 in
 					stream.next_out = ptrOut.baseAddress!.assumingMemoryBound(to: Bytef.self)
 					stream.avail_out = uInt(ptrOut.count)
 					
 					return inflate(&stream, Z_NO_FLUSH)
 				}
-			}
+				
+				//Check the return code
+				guard ![Z_STREAM_ERROR, Z_NEED_DICT, Z_DATA_ERROR, Z_MEM_ERROR].contains(inflateResult) else {
+					throw CompressionError.zlibError(inflateResult)
+				}
+				
+				//Set the finished flag if we reached the end of the stream
+				if inflateResult == Z_STREAM_END {
+					isFinished = true
+				}
+				
+				//Append the decompressed data
+				dataReturn.append(dataOut.dropLast(Int(stream.avail_out)))
+			} while stream.avail_out == 0
 			
-			//Check the return code
-			guard ![Z_STREAM_ERROR, Z_NEED_DICT, Z_DATA_ERROR, Z_MEM_ERROR].contains(inflateResult) else {
-				throw CompressionError.zlibError(inflateResult)
-			}
-			
-			//Set the finished flag if we reached the end of the stream
-			if inflateResult == Z_STREAM_END {
-				isFinished = true
-			}
-			
-			//Append the decompressed data
-			dataReturn += dataOut.dropLast(Int(stream.avail_out))
-		} while stream.avail_out == 0
-		
-		return dataReturn
+			return dataReturn
+		}
 	}
 }
 

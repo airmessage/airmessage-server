@@ -420,11 +420,12 @@ class ConnectionManager {
 			previousLooseModifiers += looseModifiers
 			
 			//Make sure we're still connected
-			guard client.isConnected.value,
-				  let dataProxy = dataProxy else { return }
+			guard client.isConnected.value else { return }
 			
 			//Send the results
 			do {
+				guard let dataProxy = dataProxy else { return }
+				
 				var packer = AirPacker()
 				packer.pack(int: NHT.massRetrieval.rawValue)
 				
@@ -478,7 +479,7 @@ class ConnectionManager {
 				//Read the file
 				var fileResponseIndex: Int32 = 0
 				do {
-					let compressionPipe = try CompressionPipeDeflate()
+					let compressionPipe = try CompressionPipeDeflate(chunkSize: Int(CommConst.defaultFileChunkSize))
 					
 					let fileHandle = try FileHandle(forReadingFrom: fileURL)
 					
@@ -497,6 +498,8 @@ class ConnectionManager {
 							
 							//Build and send the request
 							do {
+								guard let dataProxy = dataProxy else { return true }
+								
 								var packer = AirPacker()
 								packer.pack(int: NHT.massRetrievalFile.rawValue)
 								
@@ -514,6 +517,8 @@ class ConnectionManager {
 								
 								packer.pack(string: attachment.guid) //Attachment GUID
 								packer.pack(payload: dataOut) //Data
+								
+								dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 							}
 							
 							fileResponseIndex += 1
@@ -647,7 +652,7 @@ class ConnectionManager {
 		//Read the file
 		var responseIndex: Int32 = 0
 		do {
-			let compressionPipe = try CompressionPipeDeflate()
+			let compressionPipe = try CompressionPipeDeflate(chunkSize: Int(chunkSize))
 			
 			let fileHandle = try FileHandle(forReadingFrom: fileURL)
 			
@@ -666,6 +671,8 @@ class ConnectionManager {
 					
 					//Build and send the request
 					do {
+						guard let dataProxy = dataProxy else { return true }
+						
 						var packer = AirPacker()
 						packer.pack(int: NHT.attachmentReq.rawValue)
 						
@@ -682,6 +689,8 @@ class ConnectionManager {
 						packer.pack(bool: isEOF) //Is last message
 						
 						packer.pack(payload: dataOut)
+						
+						dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 					}
 					
 					responseIndex += 1
