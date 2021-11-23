@@ -375,12 +375,12 @@ class ConnectionManager {
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
 		
-		let messageStream = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages)
+		var messageIterator = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages).makeIterator()
 		var messageResponseIndex: Int32 = 1
 		var previousLooseModifiers: [ModifierInfo] = []
 		while true {
 			//Get next 20 results
-			let groupArray: [DatabaseManager.FailableDatabaseMessageRow] = Array(messageStream.prefix(20))
+			let groupArray: [DatabaseManager.FailableDatabaseMessageRow] = (0..<20).compactMap { i in messageIterator.next() }
 			
 			//Break if we're done
 			if groupArray.isEmpty {

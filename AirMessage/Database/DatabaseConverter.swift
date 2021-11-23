@@ -344,7 +344,7 @@ class DatabaseConverter {
 			
 			let guid = row[indices["attachment.guid"]!] as! String
 			let name = row[indices["attachment.transfer_name"]!] as! String
-			let type = row[indices["attachment.mime_type"]!] as! String
+			let type = row[indices["attachment.mime_type"]!] as! String?
 			let size = row[indices["attachment.total_bytes"]!] as! Int64
 			let url = (row[indices["attachment.filename"]!] as? String).map { createURL(dbPath: $0) }
 			let checksum: Data?
