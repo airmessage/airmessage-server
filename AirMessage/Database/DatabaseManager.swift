@@ -26,12 +26,9 @@ class DatabaseManager {
 	private var dbConnection: Connection!
 	
 	//Query state
-	private let lastScannedMessageIDLock = NSLock()
-	private var _lastScannedMessageID: Int64? = nil
+	private let _lastScannedMessageID = AtomicValue<Int64?>(initialValue: nil)
 	public var lastScannedMessageID: Int64? {
-		lastScannedMessageIDLock.lock()
-		defer { lastScannedMessageIDLock.unlock() }
-		return _lastScannedMessageID
+		_lastScannedMessageID.value
 	}
 	private struct MessageTrackingState: Equatable {
 		let id: Int64
@@ -78,7 +75,7 @@ class DatabaseManager {
 			//Build the WHERE clause and fetch messages
 			let whereClause: String
 			do {
-				if let id = lastScannedMessageID {
+				if let id = _lastScannedMessageID.value {
 					//If we've scanned previously, only search for messages with a higher ID than last time
 					whereClause = "message.ROWID > \(id)"
 				} else {
@@ -88,32 +85,37 @@ class DatabaseManager {
 			}
 			let stmt = try fetchMessages(using: dbConnection, where: whereClause)
 			let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
-			let rows = try stmt.map { row in
-				try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+			let rows = try stmt.map { row -> (id: Int64, messageRow: DatabaseMessageRow?) in
+				//Get the row ID
+				let rowID = row[indices["message.ROWID"]!] as! Int64
+				
+				//Process the message row
+				let messageRow = try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+				
+				return (rowID, messageRow)
 			}
 			
 			//Collect new additions
-			let (conversationItems, looseModifiers) = DatabaseConverter.groupMessageRows(rows).destructured
+			let (conversationItems, looseModifiers) = DatabaseConverter.groupMessageRows(rows.map { $0.messageRow }).destructured
 			
 			//Set to the latest message ID, only we hit a new max
-			let updatedMessageID: Int64?
+			var updatedMessageID: Int64?
 			
 			//Update the latest message ID
-			if conversationItems.isEmpty {
+			if rows.isEmpty {
 				updatedMessageID = nil
 			} else {
-				lastScannedMessageIDLock.lock()
-				defer { lastScannedMessageIDLock.unlock() }
-				
-				let maxID = conversationItems.reduce(Int64.min) { lastID, item in
-					max(lastID, item.serverID)
-				}
-				
-				if _lastScannedMessageID == nil || maxID > _lastScannedMessageID! {
-					_lastScannedMessageID = maxID
-					updatedMessageID = maxID
-				} else {
-					updatedMessageID = nil
+				_lastScannedMessageID.with { value in
+					let maxID = rows.reduce(Int64.min) { lastID, row in
+						max(lastID, row.id)
+					}
+					
+					if value == nil || maxID > value! {
+						value = maxID
+						updatedMessageID = maxID
+					} else {
+						updatedMessageID = nil
+					}
 				}
 			}
 			

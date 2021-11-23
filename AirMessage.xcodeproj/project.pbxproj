@@ -46,7 +46,6 @@
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
-		ED853E09274422DA00DCF446 /* AtomicBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E08274422DA00DCF446 /* AtomicBool.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
 		ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */; };
@@ -62,6 +61,7 @@
 		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = EDB04DBD273DDFDA00673AE4 /* SQLite */; };
+		EDC1DAF8274DA24C00D32C6B /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */; };
 		EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD5E49C269F9957005EB8EE /* NotificationNames.swift */; };
@@ -143,7 +143,6 @@
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED6CDD372689193000EEBE31 /* JavaNativeFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaNativeFoundation.framework; path = System/Library/Frameworks/JavaNativeFoundation.framework; sourceTree = SDKROOT; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
-		ED853E08274422DA00DCF446 /* AtomicBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicBool.swift; sourceTree = "<group>"; };
 		ED853E0B2744291400DCF446 /* ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjC.m; sourceTree = "<group>"; };
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
 		ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleCompat.swift; sourceTree = "<group>"; };
@@ -163,6 +162,7 @@
 		EDADEB1826A0E3D9001DA84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
 		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
+		EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
 		EDC2430326ACD22C006444FF /* JNILogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNILogging.h; sourceTree = "<group>"; };
 		EDC2430426ACD235006444FF /* JNILogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNILogging.m; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
@@ -407,22 +407,22 @@
 		ED891A4625A30BAE002230EB /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */,
+				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
+				ED8F3A74274950770069F25D /* ContentTypeHelper.swift */,
+				2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */,
 				ED44738A26A46B68006F5F0E /* DispatchHelper.swift */,
+				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
 				ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */,
 				ED44738626A387DD006F5F0E /* KeychainManager.swift */,
 				ED15912226AC5484008F5304 /* LogManager.swift */,
 				ED891A4725A30BC6002230EB /* PasswordGrade.swift */,
 				2EAEEE327A491386A20EC729 /* PreferencesManager.swift */,
+				ED853E062744218900DCF446 /* ReadWriteLock.swift */,
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
 				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
 				ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */,
 				2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */,
-				2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */,
-				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
-				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
-				ED853E062744218900DCF446 /* ReadWriteLock.swift */,
-				ED853E08274422DA00DCF446 /* AtomicBool.swift */,
-				ED8F3A74274950770069F25D /* ContentTypeHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -617,12 +617,12 @@
 				2EAEE55F794F5BA615333AEF /* UpdateErrorCode.swift in Sources */,
 				2EAEEE9E15E91097BC939BF0 /* DatabaseManager.swift in Sources */,
 				2EAEECB041864D4AB6212611 /* DatabaseTimeConverter.swift in Sources */,
+				EDC1DAF8274DA24C00D32C6B /* AtomicValue.swift in Sources */,
 				2EAEEEF57714B69D56E8415A /* DatabaseConverter.swift in Sources */,
 				ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */,
 				ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */,
 				ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */,
 				2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */,
-				ED853E09274422DA00DCF446 /* AtomicBool.swift in Sources */,
 				2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */,
 				2EAEE113FF8D1F0CF91485F1 /* CompressionHelper.swift in Sources */,
 				2EAEE1483F98DFB8A8E6DFA6 /* ConnectionManager.swift in Sources */,
