@@ -69,10 +69,6 @@ class ClientConnectionTCP: ClientConnection {
 				LogManager.log("An error occurred while reading client data: \(error)", level: .notice)
 				self?.stop(cleanup: false)
 			}
-			
-			if let self = self {
-				LogManager.log("Client disconnected from \(self.address)", level: .info)
-			}
 		}
 	}
 	
@@ -96,6 +92,9 @@ class ClientConnectionTCP: ClientConnection {
 		} catch {
 			LogManager.log("An error occurred while closing a client handle: \(error)", level: .notice)
 		}
+		
+		//Log a message
+		LogManager.log("Client disconnected from \(address)", level: .info)
 		
 		//Call the delegate
 		delegate?.clientConnectionTCPDidInvalidate(self)
