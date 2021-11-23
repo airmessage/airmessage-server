@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct FileDownloadRequestCreateError: LocalizedError {
+	let path: String
+	
+	var errorDescription: String {
+		"Failed to create file at \(path)"
+	}
+}
+
 class FileDownloadRequest {
 	private static let timeout: TimeInterval = 10
 	
@@ -44,6 +52,9 @@ class FileDownloadRequest {
 		fileDirURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString, isDirectory: true)
 		try FileManager.default.createDirectory(at: fileDirURL, withIntermediateDirectories: false, attributes: nil)
 		fileURL = fileDirURL.appendingPathComponent(fileName, isDirectory: false)
+		guard FileManager.default.createFile(atPath: fileURL.path, contents: nil) else {
+			throw FileDownloadRequestCreateError(path: fileURL.path)
+		}
 		
 		//Open a file handle to the file
 		do {
