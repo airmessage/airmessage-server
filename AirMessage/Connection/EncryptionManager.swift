@@ -103,7 +103,7 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 				//Encrypt the entire input
 				inputCipher = input
 			} else {
-				//Java and Web Crypto append the key to the end of the output, so we have to extract it
+				//Java and Web Crypto append the tag to the end of the output, so we have to extract it
 				inputCipher = input.dropLast(tagLength)
 				
 				let tagPointer = UnsafeMutableRawBufferPointer.allocate(byteCount: tagLength, alignment: 1)
@@ -156,7 +156,7 @@ private func cipher(data input: Data, withKey key: Data, withIV iv: Data, withOp
 			//Join the output and final output
 			let result = output.prefix(Int(outputLen)) + finalOutput.prefix(Int(finalOutputLen))
 			if operation == .encrypt {
-				//Java and Web Crypto append the key to the end of the output, so we'll match that functionality
+				//Java and Web Crypto append the tag to the end of the output, so we'll match that functionality
 				var tag = Data(count: tagLength)
 				let resultCtrl = tag.withUnsafeMutableBytes { (ptr: UnsafeMutableRawBufferPointer) -> Int32 in
 					EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, Int32(tagLength), ptr.baseAddress!)
