@@ -193,7 +193,7 @@ class DatabaseManager {
 			//Compare against the existing update
 			if let existingUpdate = messageStateDict[chatID] {
 				if existingUpdate != newUpdate {
-					print("Discovered activity status update for message \(modifier.messageGUID): \(existingUpdate) -> \(newUpdate)")
+					LogManager.log("Discovered activity status update for message \(modifier.messageGUID): \(existingUpdate) -> \(newUpdate)", level: .info)
 					
 					//Create an update
 					if newUpdate.state != .idle && newUpdate.state != .sent {
