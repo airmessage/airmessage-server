@@ -108,7 +108,7 @@ class DatabaseConverter {
 					else if associationData[0] == "p" {
 						//Get string after the '/'
 						let part = associationData[1]
-						associatedMessageGUID = String(part[part.firstIndex(of: "/")!...])
+						associatedMessageGUID = String(part[part.index(after: part.firstIndex(of: "/")!)...])
 					} else {
 						//Unknown type
 						LogManager.log("Encountered unexpected association data: \(associatedMessage)", level: .error)
