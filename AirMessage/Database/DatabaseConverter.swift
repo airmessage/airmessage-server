@@ -172,7 +172,7 @@ class DatabaseConverter {
 			)
 			let error = mapMessageErrorCode(Int(row[indices["message.error"]!] as! Int64))
 			let dateRead = row[indices["message.date_read"]!] as! Int64
-			let attachments = try fetchAttachments(ofMessage: rowID, withChecksum: sender != nil, ofDB: db)
+			let attachments = try fetchAttachments(ofMessage: rowID, withChecksum: sender == nil, ofDB: db)
 			
 			return .message(MessageInfo(
 					serverID: rowID,
