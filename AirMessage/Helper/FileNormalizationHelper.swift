@@ -31,7 +31,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 	guard #available(macOS 10.13, *) else { return nil }
 	
 	if ext == "heic" {
-		LogManager.log("Converting file \(inputFile.path) from HEIC", level: .info)
+		LogManager.log("Converting file \(inputFile.lastPathComponent) from HEIC", level: .info)
 		
 		//Get a temporary file
 		let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString + ".jpeg")
@@ -54,7 +54,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		
 		return NormalizedFile(url: tempFile, type: "image/jpeg", name: newFileName)
 	} else if ext == "caf" {
-		LogManager.log("Converting file \(inputFile.path) from CAF", level: .info)
+		LogManager.log("Converting file \(inputFile.lastPathComponent) from CAF", level: .info)
 		
 		//Get a temporary file
 		let tempFile = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString + ".mp4")
@@ -91,6 +91,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 private func runProcessLogError(_ process: Process) -> Bool {
 	//Capture the process' error pipe
 	let errorPipe = Pipe()
+	process.standardOutput = nil
 	process.standardError = errorPipe
 	
 	//Start the process
