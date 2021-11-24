@@ -49,6 +49,10 @@ struct AirPacker {
 		appendPrimitive(value.bigEndian)
 	}
 	
+	mutating func pack(byte value: Int8) {
+		appendPrimitive(value.bigEndian)
+	}
+	
 	mutating func pack(int value: Int32) {
 		appendPrimitive(value.bigEndian)
 	}
@@ -120,6 +124,16 @@ struct AirPacker {
 		let value = data[currentIndex]
 		currentIndex += 1
 		return value != 0
+	}
+	
+	mutating func unpackByte() throws -> Int8 {
+		guard currentIndex + MemoryLayout<Int8>.size - 1 < data.count else {
+			throw PackingError.rangeError
+		}
+		
+		let value = deserializePrimitive(fromByteOffset: currentIndex, as: Int8.self)
+		currentIndex += MemoryLayout<Int8>.size
+		return Int8(bigEndian: value)
 	}
 	
 	mutating func unpackShort() throws -> Int16 {
@@ -200,6 +214,13 @@ struct AirPacker {
 	mutating func unpackStringArray() throws -> [String] {
 		let count = try unpackArrayHeader()
 		return try (0..<count).map { _ in try unpackString() }
+	}
+	
+	/**
+	 Moves the current index backwards for the memory size of type
+	 */
+	mutating func backtrack<T>(size type: T.Type) {
+		currentIndex -= MemoryLayout<T>.size
 	}
 }
 

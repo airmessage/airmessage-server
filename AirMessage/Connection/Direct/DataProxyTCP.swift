@@ -15,7 +15,9 @@ class DataProxyTCP: DataProxy {
 	let requiresPersistence = true
 	let supportsPushNotifications = false
 	private(set) var connections: Set<ClientConnection> = []
-	let connectionsLock = NSLock()
+	let connectionsLock = ReadWriteLock()
+	
+	private let serverPort: Int
 	
 	private let connectionQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.connection", qos: .utility, attributes: .concurrent) //Long-running operations for connections
 	private let writeQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.write", qos: .utility) //Write requests
@@ -23,12 +25,13 @@ class DataProxyTCP: DataProxy {
 	private var serverRunning = false
 	private var serverSocketFD: Int32?
 	
+	init(port: Int) {
+		serverPort = port
+	}
+	
 	func startServer() {
 		//Ignore if the server is already running
 		guard !serverRunning else { return }
-		
-		//Get the port
-		let port = PreferencesManager.shared.serverPort
 		
 		//Create the socket
 		let socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
@@ -53,14 +56,14 @@ class DataProxyTCP: DataProxy {
 		var address = sockaddr_in()
 		address.sin_family = sa_family_t(AF_INET)
 		address.sin_addr.s_addr = INADDR_ANY
-		address.sin_port = in_port_t(Int16(port).bigEndian)
+		address.sin_port = in_port_t(Int16(serverPort).bigEndian)
 		let bindResult = withUnsafePointer(to: address) { ptr in
 			ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
 				bind(socketFD, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
 			}
 		}
 		guard bindResult == 0 else {
-			LogManager.log("Failed to bind socket: \(errno) on port \(port)", level: .error)
+			LogManager.log("Failed to bind socket: \(errno) on port \(serverPort)", level: .error)
 			
 			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
 			return
@@ -131,13 +134,9 @@ class DataProxyTCP: DataProxy {
 				guard let self = self else { break }
 				let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
 				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, address: clientAddress, delegate: self)
-				let connectionCount: Int
-				do {
-					self.connectionsLock.lock()
-					defer { self.connectionsLock.unlock() }
-					
+				let connectionCount = self.connectionsLock.withWriteLock { () -> Int in
 					self.connections.insert(client)
-					connectionCount = self.connections.count
+					return self.connections.count
 				}
 				
 				//Start the client process
@@ -193,21 +192,19 @@ class DataProxyTCP: DataProxy {
 				//Sending the data to the client
 				(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
 			} else {
+				guard let self = self else { return }
+				
 				//Copy the connections set
-				let connections: Set<ClientConnection>
-				do {
-					guard let self = self else { return }
-					
-					self.connectionsLock.lock()
-					defer { self.connectionsLock.unlock() }
-					connections = self.connections
-				}
+				let connections = self.connectionsLock.withReadLock { self.connections }
 				
 				//Send the data to all clients
 				for client in connections {
 					(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
 				}
 			}
+			
+			//Invoke the sent callback
+			onSent?()
 		}
 	}
 	
@@ -243,13 +240,9 @@ extension DataProxyTCP: ClientConnectionTCPDelegate {
 	
 	func clientConnectionTCPDidInvalidate(_ client: ClientConnectionTCP) {
 		//Remove the client from the list
-		let connectionCount: Int
-		do {
-			connectionsLock.lock()
-			defer { connectionsLock.unlock() }
-			
+		let connectionCount = connectionsLock.withWriteLock { () -> Int in
 			connections.remove(client)
-			connectionCount = connections.count
+			return connections.count
 		}
 		
 		//Call the delegate

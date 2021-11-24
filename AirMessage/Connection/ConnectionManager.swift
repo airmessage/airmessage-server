@@ -37,10 +37,7 @@ class ConnectionManager {
 		ConnectionManager.sendMessageHeaderOnly(dataProxy, to: nil, ofType: NHT.ping, encrypt: false)
 		
 		//Start ping response timers
-		do {
-			dataProxy.connectionsLock.lock()
-			defer { dataProxy.connectionsLock.unlock() }
-			
+		dataProxy.connectionsLock.withReadLock {
 			for connection in dataProxy.connections {
 				connection.startTimer(ofType: .pingExpiry, interval: CommConst.pingTimeout) { [weak self] client in
 					self?.dataProxy?.disconnect(client: client)
@@ -229,11 +226,8 @@ class ConnectionManager {
 		}
 		
 		//Disconnecting clients with the same installation ID
-		let existingClientSet: Set<C>
-		do {
-			dataProxy.connectionsLock.lock()
-			defer { dataProxy.connectionsLock.unlock() }
-			existingClientSet = dataProxy.connections.filter { existingClient in existingClient.registration?.installationID == clientRegistration.installationID }
+		let existingClientSet = dataProxy.connectionsLock.withReadLock {
+			dataProxy.connections.filter { existingClient in existingClient.registration?.installationID == clientRegistration.installationID }
 		}
 		for existingClient in existingClientSet {
 			ConnectionManager.sendInitiateClose(dataProxy, to: existingClient)

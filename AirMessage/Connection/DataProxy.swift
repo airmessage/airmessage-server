@@ -34,7 +34,7 @@ protocol DataProxy: AnyObject {
 	 Gets a list of connected clients
 	 */
 	var connections: Set<ClientConnection> { get }
-	var connectionsLock: NSLock { get }
+	var connectionsLock: ReadWriteLock { get }
 	
 	/**
 	 Starts this server, allowing it to accept incoming connections

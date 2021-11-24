@@ -62,6 +62,9 @@
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = EDB04DBD273DDFDA00673AE4 /* SQLite */; };
 		EDC1DAF8274DA24C00D32C6B /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */; };
+		EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EDC1DAFA274DAB7700D32C6B /* Starscream */; };
+		EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */; };
+		EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */; };
 		EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD5E49C269F9957005EB8EE /* NotificationNames.swift */; };
@@ -163,6 +166,8 @@
 		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
 		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
 		EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
+		EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProxyConnect.swift; sourceTree = "<group>"; };
+		EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectConstants.swift; sourceTree = "<group>"; };
 		EDC2430326ACD22C006444FF /* JNILogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNILogging.h; sourceTree = "<group>"; };
 		EDC2430426ACD235006444FF /* JNILogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNILogging.m; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
@@ -196,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */,
 				EDE3C801274A9E4500011351 /* Zlib in Frameworks */,
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
 				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
@@ -323,6 +329,7 @@
 				EDEDF9C8274152BD00C85506 /* AirPacker.swift */,
 				2EAEE24A8F9E40DCED942CF6 /* ClientConnection.swift */,
 				2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */,
+				EDC1DAFC274DAB9600D32C6B /* Connect */,
 				2EAEE19B93FDBB406A990E05 /* ConnectionManager.swift */,
 				2EAEED65BEC9AAC9A444C18F /* DataProxy.swift */,
 				2EAEE7BEDAA5FF7A348C4277 /* DataProxyDelegate.swift */,
@@ -427,6 +434,15 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		EDC1DAFC274DAB9600D32C6B /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */,
+				EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */,
+			);
+			path = Connect;
+			sourceTree = "<group>";
+		};
 		EDC8228A2697B75A007A8DF9 /* AuthSite */ = {
 			isa = PBXGroup;
 			children = (
@@ -479,6 +495,7 @@
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
 				EDE3C800274A9E4500011351 /* Zlib */,
 				EDE3C802274A9E6100011351 /* OpenSSL */,
+				EDC1DAFA274DAB7700D32C6B /* Starscream */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -515,6 +532,7 @@
 				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
 				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
 				EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -578,6 +596,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */,
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
 				ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */,
 				ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */,
@@ -595,6 +614,7 @@
 				ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */,
 				ED28095525A20332009E7636 /* AppDelegate.swift in Sources */,
 				EDD1514925A3232B00117C0D /* AccountConnectViewController.swift in Sources */,
+				EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */,
 				2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */,
 				ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */,
 				EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */,
@@ -891,6 +911,14 @@
 				minimumVersion = 0.13.0;
 			};
 		};
+		EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/httpswift/swifter.git";
@@ -916,6 +944,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
+		};
+		EDC1DAFA274DAB7700D32C6B /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
 		};
 		EDDE47302688C2890029628B /* Swifter */ = {
 			isa = XCSwiftPackageProductDependency;

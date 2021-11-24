@@ -28,7 +28,7 @@ func launchServer() {
 	}
 	
 	//Start the server
-	let proxy: DataProxy = DataProxyTCP()
+	let proxy: DataProxy = DataProxyTCP(port: PreferencesManager.shared.serverPort)
 	ConnectionManager.shared.start(proxy: proxy)
 }
 

@@ -16,8 +16,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@IBOutlet weak var menuItemSecondary: NSMenuItem!
 	
 	//UI state
-	private var currentServerState = ServerState.setup
-	private var currentClientCount = 0
+	public var currentServerState = ServerState.setup
+	public var currentClientCount = 0
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		LogManager.log("Starting AirMessage Server version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)", level: .info)

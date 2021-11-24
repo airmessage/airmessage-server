@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FIREBASE_API_KEY</key>
 	<string>$(FIREBASE_API_KEY)</string>
+	<key>CONNECT_ENDPOINT</key>
+	<string>$(CONNECT_ENDPOINT)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
