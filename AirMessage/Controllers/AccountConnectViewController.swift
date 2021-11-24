@@ -26,6 +26,9 @@ class AccountConnectViewController: NSViewController {
 	public var onAccountConfirm: ((_ userID: String) -> Void)?
 	
 	override func viewDidLoad() {
+		//Prevent resizing
+		preferredContentSize = view.frame.size
+		
 		//Initialize the WebView
 		webView = WKWebView()
 		webView.frame = CGRect(x: 20, y: 60, width: 450, height: 450)
@@ -69,6 +72,11 @@ class AccountConnectViewController: NSViewController {
 	private func setLoading(_ loading: Bool) {
 		cancelButton.isEnabled = !loading
 		loadingProgressIndicator.isHidden = !loading
+		if loading {
+			loadingProgressIndicator.startAnimation(self)
+		} else {
+			loadingProgressIndicator.stopAnimation(self)
+		}
 		loadingLabel.isHidden = !loading
 		webView.isHidden = loading
 	}
@@ -79,26 +87,28 @@ class AccountConnectViewController: NSViewController {
 		
 		//Exchange the refresh token
 		exchangeFirebaseRefreshToken(refreshToken) { [weak self] result, error in
-			guard let self = self else { return }
-			
-			//Check for errors
-			if let error = error {
-				LogManager.log("Failed to exchange refresh token: \(error)", level: .info)
-				self.showError(message: NSLocalizedString("message.register.error.signin", comment: ""), showReconnect: false)
-				return
+			DispatchQueue.main.async {
+				guard let self = self else { return }
+				
+				//Check for errors
+				if let error = error {
+					LogManager.log("Failed to exchange refresh token: \(error)", level: .info)
+					self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
+					return
+				}
+				
+				//If the error is nil, the result can't be nil
+				let result = result!
+				
+				//Set the data proxy and connect
+				self.isConnecting = true
+				self.currentUserID = result.userID
+				
+				let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: result.userID, idToken: result.idToken)
+				self.currentDataProxy = proxy
+				ConnectionManager.shared.setProxy(proxy)
+				ConnectionManager.shared.start()
 			}
-			
-			//If the error is nil, the result can't be nil
-			let result = result!
-			
-			//Set the data proxy and connect
-			self.isConnecting = true
-			self.currentUserID = result.userID
-			
-			let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: result.userID, idToken: result.idToken)
-			self.currentDataProxy = proxy
-			ConnectionManager.shared.setProxy(proxy)
-			ConnectionManager.shared.start()
 		}
 	}
 	
@@ -127,7 +137,9 @@ class AccountConnectViewController: NSViewController {
 		alert.alertStyle = .warning
 		alert.messageText = NSLocalizedString("message.register.error.title", comment: "")
 		alert.informativeText = message
-		alert.addButton(withTitle: NSLocalizedString("action.retry", comment: ""))
+		if showReconnect {
+			alert.addButton(withTitle: NSLocalizedString("action.retry", comment: ""))
+		}
 		alert.addButton(withTitle: NSLocalizedString("action.cancel", comment: ""))
 		alert.beginSheetModal(for: view.window!) { response in
 			if response == .alertSecondButtonReturn {

@@ -90,4 +90,5 @@ func resetServer() {
 	ConnectionManager.shared.stop()
 	DatabaseManager.shared.cancel()
 	PreferencesManager.shared.accountType = .unknown
+	(NSApplication.shared.delegate as! AppDelegate).isSetupMode = true
 }

@@ -80,6 +80,7 @@
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
+		EDF7664C274F07BA0008F730 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ED44738C26A46F86006F5F0E /* Secrets.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -550,6 +551,7 @@
 			files = (
 				EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */,
 				EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */,
+				EDF7664C274F07BA0008F730 /* Secrets.xcconfig in Resources */,
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
 				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,

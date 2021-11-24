@@ -90,7 +90,7 @@ class DataProxyTCP: DataProxy {
 					if self.serverRunning {
 						//If the user hasn't stopped the server, report the error
 						LogManager.log("Failed to accept new client: \(errno)", level: .notice)
-						self.delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
+						self.delegate?.dataProxy(self, didStopWithState: .errorTCPInternal, isRecoverable: false)
 					}
 					return
 				}
@@ -155,6 +155,7 @@ class DataProxyTCP: DataProxy {
 	func stopServer() {
 		//Ignore if the server isn't running
 		guard serverRunning, let serverSocketFD = serverSocketFD else { return }
+		serverRunning = false
 		
 		//Disconnect clients
 		for client in connections {
@@ -164,7 +165,7 @@ class DataProxyTCP: DataProxy {
 		//Close the file handle
 		close(serverSocketFD)
 		
-		serverRunning = false
+		//Notify the delegate
 		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 	}
 	
