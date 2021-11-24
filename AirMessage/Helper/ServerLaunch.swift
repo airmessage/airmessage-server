@@ -9,6 +9,28 @@ import Foundation
 import AppKit
 
 /**
+ Automatically sets the most appropriate data proxy
+ - Returns: Whether a data proxy was set
+ */
+func setDataProxyAuto() -> Bool {
+	switch PreferencesManager.shared.accountType {
+		case .direct:
+			ConnectionManager.shared.setProxy(DataProxyTCP(port: PreferencesManager.shared.serverPort))
+			return true
+		case .connect:
+			let installationID = PreferencesManager.shared.installationID
+			guard let userID = PreferencesManager.shared.connectUserID else {
+				LogManager.log("Couldn't set default data proxy - no Connect user ID", level: .notice)
+				return false
+			}
+			ConnectionManager.shared.setProxy(DataProxyConnect(installationID: installationID, userID: userID))
+			return true
+		case .unknown:
+			return false
+	}
+}
+
+/**
  * Checks for launch permissions and starts the server, or restarts it if it's already running
  */
 func launchServer() {
@@ -28,8 +50,7 @@ func launchServer() {
 	}
 	
 	//Start the server
-	let proxy: DataProxy = DataProxyTCP(port: PreferencesManager.shared.serverPort)
-	ConnectionManager.shared.start(proxy: proxy)
+	ConnectionManager.shared.start()
 }
 
 /**

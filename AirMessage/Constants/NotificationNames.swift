@@ -8,8 +8,8 @@
 import Foundation
 
 class NotificationNames {
-	static let updateUIState = NSNotification.Name("updateUIState")
-	static let updateUIStateParam = "state"
+	static let updateServerState = NSNotification.Name("updateServerState")
+	static let updateServerStateParam = "state"
 	
 	static let updateConnectionCount = NSNotification.Name("updateConnectionCount")
 	static let updateConnectionCountParam = "count"
@@ -21,7 +21,7 @@ class NotificationNames {
 	 */
 	static func postUpdateUIState(_ state: ServerState) {
 		runOnMainAsync {
-			NotificationCenter.default.post(name: NotificationNames.updateUIState, object: nil, userInfo: [NotificationNames.updateUIStateParam: state.rawValue])
+			NotificationCenter.default.post(name: NotificationNames.updateServerState, object: nil, userInfo: [NotificationNames.updateServerStateParam: state.rawValue])
 		}
 	}
 }

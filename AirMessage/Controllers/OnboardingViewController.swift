@@ -5,6 +5,7 @@
 //  Created by Cole Feuer on 2021-01-03.
 //
 
+import Foundation
 import AppKit
 
 func showOnboarding() {
@@ -14,12 +15,6 @@ func showOnboarding() {
 }
 
 class OnboardingViewController: NSViewController {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-
-		// Do any additional setup after loading the view.
-	}
-
 	override func viewWillAppear() {
 		let window = view.window!
 		window.isMovableByWindowBackground = true
@@ -34,12 +29,18 @@ class OnboardingViewController: NSViewController {
 			//Password is required for manual setup
 			passwordEntry.isRequired = true
 			passwordEntry.onSubmit = { [weak self] password in
-				//Save password
+				//Save password and reset server port
 				PreferencesManager.shared.password = password
-				
-				//Mark setup as complete
-				PreferencesManager.shared.accountType = .direct
 				PreferencesManager.shared.serverPort = defaultServerPort
+				
+				//Set the account type
+				PreferencesManager.shared.accountType = .direct
+				
+				//Set the data proxy
+				ConnectionManager.shared.setProxy(DataProxyTCP(port: defaultServerPort))
+				
+				//Disable setup mode
+				(NSApplication.shared.delegate as! AppDelegate).isSetupMode = false
 				
 				//Start server
 				launchServer()
@@ -51,16 +52,18 @@ class OnboardingViewController: NSViewController {
 			}
 		} else if segue.identifier == "AccountConnect" {
 			let accountConnect = segue.destinationController as! AccountConnectViewController
-			
-			accountConnect.onAccountConfirm = { [weak self] refreshToken in
-				//Save refresh token
-				PreferencesManager.shared.refreshToken = refreshToken
+			accountConnect.onAccountConfirm = { [weak self] userID in
+				//Dismiss the connect view
+				accountConnect.dismiss(self)
 				
-				//Mark setup as complete
+				//Save the user ID
+				PreferencesManager.shared.connectUserID = userID
+				
+				//Set the account type
 				PreferencesManager.shared.accountType = .connect
 				
-				//Start server
-				launchServer()
+				//Disable setup mode
+				(NSApplication.shared.delegate as! AppDelegate).isSetupMode = false
 				
 				//Close window
 				if let self = self {

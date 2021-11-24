@@ -519,12 +519,30 @@ Gw
                                     <action selector="dismissController:" target="Y7F-lv-57a" id="i8n-Dc-3Ec"/>
                                 </connections>
                             </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfJ-H5-Dj1">
+                                <rect key="frame" x="159" y="245" width="173" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Checking your connection…" id="Opk-1u-xCG">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <progressIndicator fixedFrame="YES" maxValue="100" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="2Uh-lB-MyH">
+                                <rect key="frame" x="237" y="269" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstItem="MmA-aP-aD0" firstAttribute="leading" secondItem="MDN-Zm-Nl6" secondAttribute="leading" constant="20" symbolic="YES" id="H00-H7-ZLu"/>
                             <constraint firstAttribute="bottom" secondItem="MmA-aP-aD0" secondAttribute="bottom" constant="20" symbolic="YES" id="v3t-y4-Tsl"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="MmA-aP-aD0" id="juM-9x-qqK"/>
+                        <outlet property="loadingLabel" destination="dfJ-H5-Dj1" id="6IC-lC-ksK"/>
+                        <outlet property="loadingProgressIndicator" destination="2Uh-lB-MyH" id="li1-Xq-p63"/>
+                    </connections>
                 </viewController>
                 <customObject id="dks-Pl-4Ar" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

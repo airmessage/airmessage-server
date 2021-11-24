@@ -21,8 +21,7 @@ class PreferencesManager {
 		case accountType
 		
 		//Storage
-		case idToken
-		case idTokenExpiry
+		case connectUserID
 	}
 	
 	var serverPort: Int {
@@ -66,21 +65,12 @@ class PreferencesManager {
 		}
 	}
 	
-	var idToken: String? {
+	var connectUserID: String? {
 		get {
-			UserDefaults.standard.string(forKey: UDKeys.idToken.rawValue)
+			UserDefaults.standard.string(forKey: UDKeys.connectUserID.rawValue)
 		}
 		set(newValue) {
-			UserDefaults.standard.set(newValue, forKey: UDKeys.idToken.rawValue)
-		}
-	}
-	
-	var idTokenExpiry: Int {
-		get {
-			UserDefaults.standard.integer(forKey: UDKeys.idTokenExpiry.rawValue)
-		}
-		set(newValue) {
-			UserDefaults.standard.set(newValue, forKey: UDKeys.idTokenExpiry.rawValue)
+			UserDefaults.standard.set(newValue, forKey: UDKeys.connectUserID.rawValue)
 		}
 	}
 	
@@ -88,7 +78,6 @@ class PreferencesManager {
 	
 	private enum KeychainAccount: String, CaseIterable {
 		case password = "airmessage-password"
-		case refreshToken = "refresh-token"
 		case installationID = "airmessage-installation"
 	}
 	
@@ -119,15 +108,6 @@ class PreferencesManager {
 		}
 		set(newValue) {
 			setValue(newValue, for: KeychainAccount.password)
-		}
-	}
-	
-	var refreshToken: String {
-		get {
-			self.getValue(for: KeychainAccount.refreshToken) ?? ""
-		}
-		set(newValue) {
-			setValue(newValue, for: KeychainAccount.refreshToken)
 		}
 	}
 	

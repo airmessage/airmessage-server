@@ -12,20 +12,38 @@ class ConnectionManager {
 	private let fileDownloadRequestMapLock = ReadWriteLock()
 	private var fileDownloadRequestMap: [Int16: FileDownloadRequest] = [:]
 	
-	func start(proxy: DataProxy) {
+	/**
+	 Sets the data proxy to use for future connections.
+	 Only call this function when the server isn't running.
+	 */
+	func setProxy(_ proxy: DataProxy) {
+		proxy.delegate = self
+		dataProxy = proxy
+	}
+	
+	/**
+	 Starts the server
+	 */
+	func start() {
+		guard let proxy = dataProxy else {
+			LogManager.log("Tried to start connection manager, but no proxy is assigned", level: .error)
+			NotificationNames.postUpdateUIState(ServerState.stopped)
+			return
+		}
+		
 		//Emit an update
 		NotificationNames.postUpdateUIState(ServerState.starting)
 		
 		//Start the proxy
-		proxy.delegate = self
 		proxy.startServer()
-		dataProxy = proxy
 	}
 	
+	/**
+	 Stops the server
+	 */
 	func stop() {
 		//Stop the proxy
 		dataProxy?.stopServer()
-		dataProxy = nil
 	}
 	
 	//MARK: Timers

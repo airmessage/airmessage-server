@@ -7,6 +7,7 @@
 */
 
 "action.retry"="Retry";
+"action.cancel"="Cancel";
 "action.reauthenticate"="Sign In Again";
 "action.sign_out"="Sign Out";
 "action.switch_to_account"="Switch to Account";
@@ -49,3 +50,9 @@
 "message.update.error.internal"="An internal error occurred while processing this update";
 "message.update.error.os_compat"="Please update to macOS %d.%d.%d and try again.";
 "message.update.error.arch_compat"="Your system architecture (%@) isn't supported.";
+
+"message.register.error.title"="Failed to register this computer";
+"message.register.error.signin"="An error occurred while trying to sign in. Please try again.";
+
+"message.register.success.title"="Computer registered";
+"message.register.success.description"="To get messaging, sign in to AirMessage on your phone or computer with the same account";

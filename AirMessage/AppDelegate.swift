@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	//UI state
 	public var currentServerState = ServerState.setup
 	public var currentClientCount = 0
+	public var isSetupMode = false
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		LogManager.log("Starting AirMessage Server version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)", level: .info)
@@ -29,11 +30,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		updateMenu()
 		
 		//Register notification center observers
-		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateUIState), name: NotificationNames.updateUIState, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateUIState), name: NotificationNames.updateServerState, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateConnectionCount), name: NotificationNames.updateConnectionCount, object: nil)
 		
-		//Show welcome window
-		if PreferencesManager.shared.accountType == .unknown {
+		//Set the data proxy
+		let dataProxyRegistered = setDataProxyAuto()
+		if !dataProxyRegistered {
+			//Show welcome window
+			isSetupMode = true
 			showOnboarding()
 			NSApp.activate(ignoringOtherApps: true)
 		} else {
@@ -59,7 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@objc private func onUpdateUIState(notification: NSNotification) {
-		currentServerState = ServerState(rawValue: notification.userInfo![NotificationNames.updateUIStateParam] as! Int)!
+		currentServerState = ServerState(rawValue: notification.userInfo![NotificationNames.updateServerStateParam] as! Int)!
 		updateMenu()
 	}
 	
