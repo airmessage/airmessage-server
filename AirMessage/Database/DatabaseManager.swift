@@ -23,7 +23,7 @@ class DatabaseManager {
 	
 	//Database state
 	private let initTime: Int64 //Time initialized in DB time
-	private var dbConnection: Connection!
+	private var dbConnection: Connection?
 	
 	//Query state
 	private let _lastScannedMessageID = AtomicValue<Int64?>(initialValue: nil)
@@ -71,6 +71,11 @@ class DatabaseManager {
 	//MARK: Scanner
 	
 	private func runScan() {
+		guard let dbConnection = dbConnection else {
+			LogManager.log("Trying to run scan, but database is available", level: .error)
+			return
+		}
+
 		do {
 			//Build the WHERE clause and fetch messages
 			let whereClause: String
@@ -169,6 +174,8 @@ class DatabaseManager {
 	 - Throws: SQL execution errors
 	 */
 	private func updateMessageStates() throws -> [ActivityStatusModifierInfo] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		//Create the result array
 		var resultArray: [ActivityStatusModifierInfo] = []
 		
@@ -287,6 +294,8 @@ class DatabaseManager {
 	 Fetches grouped messages from a specified time range
 	 */
 	public func fetchGrouping(fromTime timeLowerUNIX: Int64, to timeUpperUNIX: Int64) throws -> DBFetchGrouping {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		//Convert the times to database times
 		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 		let timeUpper = convertDBTime(fromUNIX: timeUpperUNIX)
@@ -303,6 +312,8 @@ class DatabaseManager {
 	 Fetches messages since a specified ID (exclusive)
 	 */
 	public func fetchGrouping(fromID idLower: Int64) throws -> DBFetchGrouping {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		let stmt = try fetchMessages(using: dbConnection, where: "message.ROWID > \(idLower)")
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		let rows = try stmt.map { row in
@@ -315,6 +326,8 @@ class DatabaseManager {
 	 Fetches an array of updated `ActivityStatusModifierInfo` after a certain time
 	 */
 	public func fetchActivityStatus(fromTime timeLowerUNIX: Int64) throws -> [ActivityStatusModifierInfo] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		//Convert the time to database time
 		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 		
@@ -338,6 +351,8 @@ class DatabaseManager {
 	 Fetches the path to the file of the attachment of GUID guid
 	 */
 	public func fetchFile(fromAttachmentGUID guid: String) throws -> AttachmentFile? {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		//Run the query
 		let stmt = try dbConnection.prepare("SELECT filename, mime_type, transfer_name FROM attachment WHERE guid = ? LIMIT 1", guid)
 		
@@ -357,6 +372,8 @@ class DatabaseManager {
 	 Fetches an array of conversations from their GUID, returning an array of mixed available and unavailable conversations
 	 */
 	public func fetchConversationArray(in guidArray: [String]) throws -> [BaseConversationInfo] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		let query = try! String(contentsOf: Bundle.main.url(forResource: "QuerySpecificChatDetails", withExtension: "sql", subdirectory: "SQL")!)
 		let stmt = try dbConnection.prepare(query, guidArray)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
@@ -378,6 +395,8 @@ class DatabaseManager {
 	 Fetches an array of conversations, optionally that have had activity since a certain time
 	 */
 	public func fetchConversationArray(since timeLowerUNIX: Int64? = nil) throws -> [ConversationInfo] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		let stmt: Statement
 		if let timeLowerUNIX = timeLowerUNIX {
 			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
@@ -397,6 +416,8 @@ class DatabaseManager {
 	 Counts the number of message rows, optionally since a certain time
 	 */
 	public func countMessages(since timeLowerUNIX: Int64? = nil) throws -> Int64 {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		if let timeLowerUNIX = timeLowerUNIX {
 			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 			
@@ -437,12 +458,16 @@ class DatabaseManager {
 	public func fetchMessagesLazy(since timeLowerUNIX: Int64? = nil) throws -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow> {
 		//Fetch the messages
 		let stmt: Statement
-		if let timeLowerUNIX = timeLowerUNIX {
-			let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+		do {
+			guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 			
-			stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower)")
-		} else {
-			stmt = try fetchMessages(using: dbConnection)
+			if let timeLowerUNIX = timeLowerUNIX {
+				let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
+				
+				stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower)")
+			} else {
+				stmt = try fetchMessages(using: dbConnection)
+			}
 		}
 		
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
@@ -469,6 +494,8 @@ class DatabaseManager {
 	 Fetches all `LiteConversationInfo` from the database
 	 */
 	public func fetchLiteConversations() throws -> [LiteConversationInfo] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		let extraRows: [String]
 		if #available(macOS 10.12, *) {
 			extraRows = ["message.expressive_send_style_id"]
@@ -489,6 +516,8 @@ class DatabaseManager {
 	 For pagination, `before` should be passed.
 	 */
 	public func fetchLiteThread(chatGUID: String, before: Int64?) throws -> [ConversationItem] {
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
 		let stmt = try fetchMessages(
 			using: dbConnection,
 			where: before.map { "message.ROWID < \($0)" },
@@ -508,4 +537,8 @@ class DatabaseManager {
 			}
 		}
 	}
+}
+
+struct DatabaseDisconnectedError: Error {
+	let localizedDescription = "Database is not connected"
 }
