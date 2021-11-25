@@ -44,7 +44,7 @@ class DataProxyConnect: DataProxy {
 	
 	@objc func startServer() {
 		//Ignore if we're already connecting or connected
-		guard isActive else { return }
+		guard !isActive else { return }
 		
 		//Cancel any active connection recover timers (in case the user initiated a reconnect)
 		stopConnectionRecoveryTimer()
@@ -79,7 +79,7 @@ class DataProxyConnect: DataProxy {
 	
 	func stopServer() {
 		//Ignore if we're not connected
-		guard !isActive, let socket = webSocket else { return }
+		guard isActive, let socket = webSocket else { return }
 		
 		//Cancel the handshake timer
 		stopHandshakeTimer()
@@ -116,7 +116,7 @@ class DataProxyConnect: DataProxy {
 		}
 		
 		//Create the message
-		var packer = AirPacker()
+		var packer = BytePacker()
 		if let client = client {
 			packer.pack(int: ConnectNHT.serverProxy.rawValue)
 			packer.pack(int: client.id)
@@ -133,7 +133,7 @@ class DataProxyConnect: DataProxy {
 			//We don't support encryption
 			packer.pack(byte: -102)
 		}
-		packer.pack(payload: secureData)
+		packer.pack(data: secureData)
 		
 		//Send the message
 		socket.write(data: packer.data, completion: onSent)
@@ -143,13 +143,13 @@ class DataProxyConnect: DataProxy {
 		guard let socket = webSocket else { return }
 		
 		//Create the message
-		var packer = AirPacker(capacity: MemoryLayout<Int32>.size * 6 + data.count)
+		var packer = BytePacker(capacity: MemoryLayout<Int32>.size * 6 + data.count)
 		packer.pack(int: ConnectNHT.serverNotifyPush.rawValue)
 		packer.pack(int: Int32(version))
 		packer.pack(int: 2)
 		packer.pack(int: CommConst.version)
 		packer.pack(int: CommConst.subVersion)
-		packer.pack(payload: data)
+		packer.pack(data: data)
 		
 		//Send the message
 		socket.write(data: packer.data, completion: nil)
@@ -163,7 +163,7 @@ class DataProxyConnect: DataProxy {
 		guard let socket = webSocket else { return }
 		
 		//Create the message
-		var packer = AirPacker(capacity: MemoryLayout<Int32>.size * 2)
+		var packer = BytePacker(capacity: MemoryLayout<Int32>.size * 2)
 		packer.pack(int: ConnectNHT.serverClose.rawValue)
 		packer.pack(int: clientID)
 		
@@ -293,12 +293,12 @@ class DataProxyConnect: DataProxy {
 		}
 		
 		//Notify the delegate
-		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: isRecoverable)
+		delegate?.dataProxy(self, didStopWithState: localError, isRecoverable: isRecoverable)
 	}
 	
 	private func onWSReceive(data: Data) {
 		do {
-			var messagePacker = AirPacker(from: data)
+			var messagePacker = BytePacker(from: data)
 			
 			//Unpack the message type
 			let messageTypeRaw = try messagePacker.unpackInt()
@@ -355,7 +355,7 @@ class DataProxyConnect: DataProxy {
 						}
 					}
 					
-					var payload = try messagePacker.unpackPayload()
+					var payload = try messagePacker.unpackData()
 					
 					//Decrypt the data
 					if isEncrypted {
@@ -421,11 +421,11 @@ class DataProxyConnect: DataProxy {
 			return connectionsMap.count
 		}
 		
+		//Log the event
+		LogManager.log("Client connected from Connect proxy (\(clientID))", level: .info)
+		
 		//Notify the delegate
 		delegate?.dataProxy(self, didConnectClient: client, totalCount: connectionCount)
-		
-		//Log the event
-		LogManager.log("Client connected from Connect proxy (\(connections))", level: .info)
 	}
 	
 	private func removeClient(clientID: Int32) {
@@ -438,15 +438,15 @@ class DataProxyConnect: DataProxy {
 		
 		//Make sure the client existed
 		guard let client = client else {
-			LogManager.log("Tried to deregister unknown client \(connections) via Connect proxy", level: .info)
+			LogManager.log("Tried to deregister unknown client \(clientID) via Connect proxy", level: .info)
 			return
 		}
 		
+		//Log the event
+		LogManager.log("Client disconnected from Connect proxy (\(clientID))", level: .info)
+		
 		//Notify the delegate
 		delegate?.dataProxy(self, didDisconnectClient: client, totalCount: connectionCount)
-		
-		//Log the event
-		LogManager.log("Client connected from Connect proxy (\(connections))", level: .info)
 	}
 }
 

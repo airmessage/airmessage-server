@@ -70,8 +70,8 @@ struct FirebaseTokenResult: Decodable {
 	let tokenType: String
 	let refreshToken: String
 	let idToken: String
-	let userID: String
-	let projectID: String
+	let userId: String
+	let projectId: String
 }
 
 enum FirebaseAuthError: Error {

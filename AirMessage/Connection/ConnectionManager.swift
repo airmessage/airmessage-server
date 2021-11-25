@@ -1139,7 +1139,7 @@ extension ConnectionManager: DataProxyDelegate {
 	func dataProxy(_ dataProxy: DataProxy, didReceive data: Data, from client: C, wasEncrypted: Bool) {
 		var packer = AirPacker(from: data)
 		
-		//Reading the common message data
+		//Read the common message data
 		let messageTypeRaw: Int32
 		do {
 			messageTypeRaw = try packer.unpackInt()
@@ -1148,7 +1148,7 @@ extension ConnectionManager: DataProxyDelegate {
 			return
 		}
 		
-		//Mapping the message type
+		//Map the message type
 		guard let messageType = NHT(rawValue: messageTypeRaw) else {
 			LogManager.log("Received unknown NHT \(messageTypeRaw)", level: .notice)
 			return

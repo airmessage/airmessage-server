@@ -1,15 +1,20 @@
 //
-//  AirPacker.swift
+//  BytePacker.swift
 //  AirMessage
 //
-//  Created by Cole Feuer on 2021-11-14.
+//  Created by Cole Feuer on 2021-11-25.
 //
 
 import Foundation
 
-struct AirPacker {
+/**
+ A structure for packing and unpacking raw data, similar to ByteBuffer
+ */
+struct BytePacker {
 	private(set) var data: Data
-	private var currentIndex = 0
+	private(set) var currentIndex = 0
+	public var count: Int { data.count }
+	public var remaining: Int { data.count - currentIndex }
 	
 	// MARK: - Initialize
 	
@@ -45,11 +50,11 @@ struct AirPacker {
 		data.append(value ? 1 : 0)
 	}
 	
-	mutating func pack(short value: Int16) {
+	mutating func pack(byte value: Int8) {
 		appendPrimitive(value.bigEndian)
 	}
 	
-	mutating func pack(byte value: Int8) {
+	mutating func pack(short value: Int16) {
 		appendPrimitive(value.bigEndian)
 	}
 	
@@ -61,49 +66,8 @@ struct AirPacker {
 		appendPrimitive(value.bigEndian)
 	}
 	
-	mutating func pack(payload value: Data) {
-		pack(int: Int32(value.count))
+	mutating func pack(data value: Data) {
 		data.append(value)
-	}
-	
-	mutating func pack(optionalPayload value: Data?) {
-		if let value = value {
-			pack(bool: true)
-			pack(payload: value)
-		} else {
-			pack(bool: false)
-		}
-	}
-	
-	mutating func pack(string value: String) {
-		pack(payload: value.data(using: .utf8)!)
-	}
-	
-	mutating func pack(optionalString value: String?) {
-		if let value = value {
-			pack(bool: true)
-			pack(string: value)
-		} else {
-			pack(bool: false)
-		}
-	}
-	
-	mutating func pack(arrayHeader value: Int32) {
-		pack(int: value)
-	}
-	
-	mutating func pack(stringArray value: [String]) {
-		pack(arrayHeader: Int32(value.count))
-		for item in value {
-			pack(string: item)
-		}
-	}
-	
-	mutating func pack(packableArray value: [Packable]) {
-		pack(arrayHeader: Int32(value.count))
-		for item in value {
-			item.pack(to: &self)
-		}
 	}
 	
 	// MARK: - Read
@@ -166,54 +130,26 @@ struct AirPacker {
 		return Int64(bigEndian: value)
 	}
 	
-	mutating func unpackPayload() throws -> Data {
-		let length = Int(try unpackInt())
-		
-		//Protect against large allocations
-		guard length < CommConst.maxPacketAllocation else {
-			throw PackingError.allocationError
-		}
-		
-		guard currentIndex + length - 1 < data.count else {
-			throw PackingError.rangeError
-		}
-		
-		let payload = data.subdata(in: currentIndex..<currentIndex + length)
-		currentIndex += length
-		return payload
-	}
-	
-	mutating func unpackOptionalPayload() throws -> Data? {
-		if try unpackBool() {
-			return try unpackPayload()
+	mutating func unpackData(length: Int? = nil) throws -> Data {
+		if let length = length {
+			//Unpack data of length
+			guard currentIndex + length - 1 < data.count else {
+				throw PackingError.rangeError
+			}
+			
+			let payload = data.subdata(in: currentIndex..<currentIndex + length)
+			currentIndex += length
+			return payload
 		} else {
-			return nil
+			//Unpack until the end
+			guard currentIndex < data.count else {
+				throw PackingError.rangeError
+			}
+			
+			let payload = data.subdata(in: currentIndex..<data.count)
+			currentIndex = data.count
+			return payload
 		}
-	}
-	
-	mutating func unpackString() throws -> String {
-		if let string = String(data: try unpackPayload(), encoding: .utf8) {
-			return string
-		} else {
-			throw PackingError.encodingError
-		}
-	}
-	
-	mutating func unpackOptionalString() throws -> String? {
-		if try unpackBool() {
-			return try unpackString()
-		} else {
-			return nil
-		}
-	}
-	
-	mutating func unpackArrayHeader() throws -> Int32 {
-		return try unpackInt()
-	}
-	
-	mutating func unpackStringArray() throws -> [String] {
-		let count = try unpackArrayHeader()
-		return try (0..<count).map { _ in try unpackString() }
 	}
 	
 	/**
@@ -222,14 +158,4 @@ struct AirPacker {
 	mutating func backtrack<T>(size type: T.Type) {
 		currentIndex -= MemoryLayout<T>.size
 	}
-}
-
-enum PackingError: Error {
-	case rangeError
-	case encodingError
-	case allocationError
-}
-
-protocol Packable {
-	func pack(to packer: inout AirPacker)
 }

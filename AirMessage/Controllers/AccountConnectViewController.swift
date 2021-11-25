@@ -102,9 +102,9 @@ class AccountConnectViewController: NSViewController {
 				
 				//Set the data proxy and connect
 				self.isConnecting = true
-				self.currentUserID = result.userID
+				self.currentUserID = result.userId
 				
-				let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: result.userID, idToken: result.idToken)
+				let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: result.userId, idToken: result.idToken)
 				self.currentDataProxy = proxy
 				ConnectionManager.shared.setProxy(proxy)
 				ConnectionManager.shared.start()
@@ -163,12 +163,14 @@ class AccountConnectViewController: NSViewController {
 			
 			//Show a success dialog and close the view
 			showSuccess()
+			
+			isConnecting = false
 		} else if serverState.isError {
 			//Show an error dialog
 			showError(message: serverState.description, showReconnect: serverState.recoveryType == .retry)
+			
+			isConnecting = false
 		}
-		
-		isConnecting = false
 	}
 }
 

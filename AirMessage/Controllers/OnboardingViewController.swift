@@ -69,6 +69,8 @@ class OnboardingViewController: NSViewController {
 				if let self = self {
 					self.view.window!.close()
 				}
+				
+				//TODO: Start DB manager and check for permissions after setting up connect account
 			}
 		}
 	}

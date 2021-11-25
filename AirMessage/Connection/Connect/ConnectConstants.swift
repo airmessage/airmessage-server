@@ -78,7 +78,7 @@ enum ConnectNHT: Int32 {
 	 */
 	case serverProxyBroadcast = 211
 	
-	/**
+	/*
 	 * Notify offline clients of a new message
 	 */
 	case serverNotifyPush = 212
