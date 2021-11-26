@@ -81,7 +81,13 @@ class PreferencesViewController: NSViewController {
 		
 		//Restart the server if the port changed
 		if originalPort != inputPortValue {
-			launchServer()
+			//Make sure the server is running
+			if(NSApplication.shared.delegate as! AppDelegate).currentServerState == .running {
+				//Restart the server
+				ConnectionManager.shared.stop()
+				ConnectionManager.shared.setProxy(DataProxyTCP(port: inputPortValue))
+				ConnectionManager.shared.start()
+			}
 		}
 		
 		//Start or stop update check timer
