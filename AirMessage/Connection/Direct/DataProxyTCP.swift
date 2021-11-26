@@ -160,6 +160,7 @@ class DataProxyTCP: DataProxy {
 		for client in connections {
 			(client as! ClientConnectionTCP).stop(cleanup: false)
 		}
+		NotificationNames.postUpdateConnectionCount(0)
 		
 		//Close the file handle
 		close(serverSocketFD)

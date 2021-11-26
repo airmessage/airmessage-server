@@ -85,6 +85,12 @@ class DataProxyConnect: DataProxy {
 		//Cancel the handshake timer
 		stopHandshakeTimer()
 		
+		//Clear connected clients
+		connectionsLock.withWriteLock {
+			connectionsMap.removeAll()
+		}
+		NotificationNames.postUpdateConnectionCount(0)
+		
 		//Disconect
 		socket.disconnect()
 		isActive = false
