@@ -52,12 +52,13 @@ class OnboardingViewController: NSViewController {
 			}
 		} else if segue.identifier == "AccountConnect" {
 			let accountConnect = segue.destinationController as! AccountConnectViewController
-			accountConnect.onAccountConfirm = { [weak self] userID in
+			accountConnect.onAccountConfirm = { [weak self] userID, emailAddress in
 				//Dismiss the connect view
 				accountConnect.dismiss(self)
 				
-				//Save the user ID
+				//Save the user ID and email address
 				PreferencesManager.shared.connectUserID = userID
+				PreferencesManager.shared.connectEmailAddress = emailAddress
 				
 				//Set the account type
 				PreferencesManager.shared.accountType = .connect

@@ -38,7 +38,7 @@ class PreferencesViewController: NSViewController {
 			labelSignOut.stringValue = NSLocalizedString("message.preference.account_manual", comment: "")
 		} else if PreferencesManager.shared.accountType == .connect {
 			buttonSignOut.title = NSLocalizedString("action.sign_out", comment: "")
-			labelSignOut.stringValue = String(format: NSLocalizedString("message.preference.account_connect", comment: ""), "hello@example.com")
+			labelSignOut.stringValue = String(format: NSLocalizedString("message.preference.account_connect", comment: ""), PreferencesManager.shared.connectEmailAddress ?? "nil")
 		}
 	}
 	
@@ -61,9 +61,9 @@ class PreferencesViewController: NSViewController {
 			let alert = NSAlert()
 			alert.alertStyle = .critical
 			if inputPort.stringValue.isEmpty {
-				alert.messageText = "Please enter a server port"
+				alert.messageText = NSLocalizedString("message.enter_server_port", comment: "")
 			} else {
-				alert.messageText = "\(inputPort.stringValue) cannot be used as a server port"
+				alert.messageText = String(format: NSLocalizedString("message.invalid_server_port", comment: ""), inputPort.stringValue)
 			}
 			alert.beginSheetModal(for: view.window!)
 			return
@@ -92,11 +92,16 @@ class PreferencesViewController: NSViewController {
 		view.window!.close()
 	}
 	
-	@IBAction func onClickSwitchAccount(_ sender: NSButton) {
+	@IBAction func onClickSignOut(_ sender: NSButton) {
 		let alert = NSAlert()
-		alert.messageText = "Do you want to reconfigure AirMessage Server?"
-		alert.informativeText = "Until you set up AirMessage Server again, you won't be able to receive messages on any AirMessage devices."
-		alert.addButton(withTitle: "Switch to Account")
+		if PreferencesManager.shared.accountType == .direct {
+			alert.messageText = NSLocalizedString("message.reset.title.direct", comment: "")
+			alert.addButton(withTitle: NSLocalizedString("action.switch_to_account", comment: ""))
+		} else {
+			alert.messageText = NSLocalizedString("message.reset.title.connect", comment: "")
+			alert.addButton(withTitle: NSLocalizedString("action.sign_out", comment: ""))
+		}
+		alert.informativeText = NSLocalizedString("message.reset.subtitle", comment: "")
 		alert.addButton(withTitle: "Cancel")
 		alert.beginSheetModal(for: view.window!) { response in
 			if response != .alertFirstButtonReturn {
@@ -117,15 +122,20 @@ class PreferencesViewController: NSViewController {
 	@IBAction func onClickReceiveBetaUpdates(_ sender: NSButton) {
 		if sender.state == .on {
 			let alert = NSAlert()
-			alert.messageText = "Do you want to receive beta updates?"
-			alert.informativeText = "Beta updates may be unstable, and may also require you to be enrolled in the beta program for AirMessage for Android."
-			alert.addButton(withTitle: "Receive Beta Updates")
-			alert.addButton(withTitle: "Cancel")
+			alert.messageText = NSLocalizedString("message.beta_enrollment.title", comment: "")
+			alert.informativeText = NSLocalizedString("message.beta_enrollment.description", comment: "")
+			alert.addButton(withTitle: NSLocalizedString("action.receive_beta_updates", comment: ""))
+			alert.addButton(withTitle: NSLocalizedString("action.cancel", comment: ""))
 			alert.beginSheetModal(for: view.window!) { response in
 				if response == .alertSecondButtonReturn {
 					sender.state = .off
 				}
 			}
+		} else {
+			let alert = NSAlert()
+			alert.messageText = NSLocalizedString("message.beta_unenrollment.title", comment: "")
+			alert.informativeText = NSLocalizedString("message.beta_unenrollment.description", comment: "")
+			alert.beginSheetModal(for: view.window!)
 		}
 	}
 	

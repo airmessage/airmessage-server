@@ -22,6 +22,7 @@ class PreferencesManager {
 		
 		//Storage
 		case connectUserID
+		case connectEmailAddress
 	}
 	
 	var serverPort: Int {
@@ -71,6 +72,15 @@ class PreferencesManager {
 		}
 		set(newValue) {
 			UserDefaults.standard.set(newValue, forKey: UDKeys.connectUserID.rawValue)
+		}
+	}
+	
+	var connectEmailAddress: String? {
+		get {
+			UserDefaults.standard.string(forKey: UDKeys.connectEmailAddress.rawValue)
+		}
+		set(newValue) {
+			UserDefaults.standard.set(newValue, forKey: UDKeys.connectEmailAddress.rawValue)
 		}
 	}
 	

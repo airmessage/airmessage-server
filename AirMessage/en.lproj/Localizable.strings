@@ -11,6 +11,7 @@
 "action.reauthenticate"="Sign In Again";
 "action.sign_out"="Sign Out";
 "action.switch_to_account"="Switch to Account";
+"action.receive_beta_updates"="Receive beta updates";
 
 "passwordstrength"="Password Strength: %@";
 "passwordstrength.level1"="Weak";
@@ -39,6 +40,18 @@
 
 "message.preference.account_manual"="This server is configured for manual access. Configure AirMessage on your phone to connect using this computer's internet address.";
 "message.preference.account_connect"="This server is configured for %@. Sign in to AirMessage on your smartphone, tablet, or PC to get messaging.";
+"message.enter_server_port"="Please enter a server port";
+"message.invalid_server_port"="%@ cannot be used as a server port";
+
+"message.reset.title.direct"="Do you want to reconfigure AirMessage Server?";
+"message.reset.title.connect"="Do you want to sign out of AirMessage Server?";
+"message.reset.subtitle"="Until you set up AirMessage Server again, you won't be able to receive messages on any AirMessage devices.";
+
+"message.beta_enrollment.title"="Do you want to receive beta updates?";
+"message.beta_enrollment.description"="Beta updates may be unstable, and will also require you to be enrolled in the beta program for AirMessage for Android.";
+
+"message.beta_unenrollment.title"="You will no longer receive beta updates";
+"message.beta_unenrollment.description"="Please note that you may still be running a beta version of AirMessage.";
 
 "message.update.available"="AirMessage Server %1$@ is available — you have %2$@. Would you like to download it now?";
 "message.update.uptodate.title"="You’re up to date!";

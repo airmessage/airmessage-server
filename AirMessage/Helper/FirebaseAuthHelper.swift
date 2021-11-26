@@ -15,7 +15,7 @@ import Foundation
 func exchangeFirebaseRefreshToken(_ refreshToken: String, callback: @escaping (_ result: FirebaseTokenResult?, _ error: Error?) -> Void) {
 	//Send the request
 	guard let requestBody = "grant_type=refresh_token&refresh_token=\(refreshToken)".data(using: .utf8) else {
-		callback(nil, FirebaseAuthError.serializationError)
+		callback(nil, FirebaseRequestError.serializationError)
 		return
 	}
 	
@@ -26,36 +26,89 @@ func exchangeFirebaseRefreshToken(_ refreshToken: String, callback: @escaping (_
 	
 	let task = URLSession.shared.uploadTask(with: request, from: requestBody) { data, response, error in
 		if let error = error {
-			callback(nil, FirebaseAuthError.requestError(cause: error))
+			callback(nil, FirebaseRequestError.requestError(cause: error))
 			return
 		}
 		
 		guard let response = response as? HTTPURLResponse else {
-			callback(nil, FirebaseAuthError.serverError(code: nil))
+			callback(nil, FirebaseRequestError.serverError(code: nil))
 			return
 		}
 		
 		guard (200...299).contains(response.statusCode) else {
 			if let data = data,
 			   let dataString = String(data: data, encoding: .utf8) {
-				LogManager.log("Request error: \(dataString)", level: .error)
+				LogManager.log("Firebase authentication request error: \(dataString)", level: .error)
 			}
 			
-			callback(nil, FirebaseAuthError.serverError(code: response.statusCode))
+			callback(nil, FirebaseRequestError.serverError(code: response.statusCode))
 			return
 		}
 		
 		guard let mimeType = response.mimeType,
 			  mimeType == "application/json",
 			  let data = data else {
-			callback(nil, FirebaseAuthError.responseError)
+			callback(nil, FirebaseRequestError.responseError)
 			return
 		}
 		
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
 		guard let result = try? decoder.decode(FirebaseTokenResult.self, from: data) else {
-			callback(nil, FirebaseAuthError.deserializationError)
+			callback(nil, FirebaseRequestError.deserializationError)
+			return
+		}
+		
+		//Return the result
+		callback(result, nil)
+	}
+	task.resume()
+}
+
+func getFirebaseUserData(idToken: String, callback: @escaping (_ result: FirebaseUserDataResult?, _ error: Error?) -> Void) {
+	//Send the request
+	guard let requestBody = "{\"idToken\":\"\(idToken)\"}".data(using: .utf8) else {
+		callback(nil, FirebaseRequestError.serializationError)
+		return
+	}
+	
+	let url = URL(string: "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=\(Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String)")!
+	var request = URLRequest(url: url)
+	request.httpMethod = "POST"
+	request.setValue("application/json ", forHTTPHeaderField: "Content-Type")
+	
+	let task = URLSession.shared.uploadTask(with: request, from: requestBody) { data, response, error in
+		if let error = error {
+			callback(nil, FirebaseRequestError.requestError(cause: error))
+			return
+		}
+		
+		guard let response = response as? HTTPURLResponse else {
+			callback(nil, FirebaseRequestError.serverError(code: nil))
+			return
+		}
+		
+		guard (200...299).contains(response.statusCode) else {
+			if let data = data,
+			   let dataString = String(data: data, encoding: .utf8) {
+				LogManager.log("Firebase user info request error: \(dataString)", level: .error)
+			}
+			
+			callback(nil, FirebaseRequestError.serverError(code: response.statusCode))
+			return
+		}
+		
+		guard let mimeType = response.mimeType,
+			  mimeType == "application/json",
+			  let data = data else {
+			callback(nil, FirebaseRequestError.responseError)
+			return
+		}
+		
+		let decoder = JSONDecoder()
+		decoder.keyDecodingStrategy = .convertFromSnakeCase
+		guard let result = try? decoder.decode(FirebaseUserDataResult.self, from: data) else {
+			callback(nil, FirebaseRequestError.deserializationError)
 			return
 		}
 		
@@ -74,7 +127,17 @@ struct FirebaseTokenResult: Decodable {
 	let projectId: String
 }
 
-enum FirebaseAuthError: Error {
+struct FirebaseUserDataResult: Decodable {
+	let users: [FirebaseUserDataResultEntry]
+}
+
+struct FirebaseUserDataResultEntry: Decodable {
+	let localId: String
+	let email: String
+	let displayName: String
+}
+
+enum FirebaseRequestError: Error {
 	case serializationError
 	case deserializationError
 	case serverError(code: Int?)

@@ -731,7 +731,7 @@ Gw
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="onClickSwitchAccount:" target="TFo-6b-9Gw" id="sD0-UN-YDA"/>
+                                                            <action selector="onClickSignOut:" target="TFo-6b-9Gw" id="WVI-ce-CMu"/>
                                                         </connections>
                                                     </button>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jxh-hs-p0X">
@@ -1507,7 +1507,7 @@ DQ
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="vea-fE-dcY"/>
+        <segue reference="aM8-FM-ABJ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AppIconResource" width="256" height="256"/>

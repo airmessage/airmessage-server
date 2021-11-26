@@ -22,8 +22,9 @@ class AccountConnectViewController: NSViewController {
 	private var isConnecting = false
 	private var currentDataProxy: DataProxyConnect!
 	private var currentUserID: String!
+	private var currentEmailAddress: String!
 	
-	public var onAccountConfirm: ((_ userID: String) -> Void)?
+	public var onAccountConfirm: ((_ userID: String, _ emailAddress: String) -> Void)?
 	
 	override func viewDidLoad() {
 		//Prevent resizing
@@ -99,15 +100,38 @@ class AccountConnectViewController: NSViewController {
 				
 				//If the error is nil, the result can't be nil
 				let result = result!
+				let userID = result.userId
+				let idToken = result.idToken
 				
-				//Set the data proxy and connect
-				self.isConnecting = true
-				self.currentUserID = result.userId
-				
-				let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: result.userId, idToken: result.idToken)
-				self.currentDataProxy = proxy
-				ConnectionManager.shared.setProxy(proxy)
-				ConnectionManager.shared.start()
+				//Get the user info
+				getFirebaseUserData(idToken: idToken) { [weak self] result, error in
+					guard let self = self else { return }
+					
+					//Check for errors
+					if let error = error {
+						LogManager.log("Failed to get user data: \(error)", level: .info)
+						self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
+						return
+					}
+					
+					let result = result!
+					guard !result.users.isEmpty else {
+						LogManager.log("Failed to get user data: no users returned", level: .info)
+						self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
+						return
+					}
+					let user = result.users[0]
+					
+					//Set the data proxy and connect
+					self.isConnecting = true
+					self.currentUserID = userID
+					self.currentEmailAddress = user.email
+					
+					let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: userID, idToken: idToken)
+					self.currentDataProxy = proxy
+					ConnectionManager.shared.setProxy(proxy)
+					ConnectionManager.shared.start()
+				}
 			}
 		}
 	}
@@ -122,7 +146,7 @@ class AccountConnectViewController: NSViewController {
 		alert.informativeText = NSLocalizedString("message.register.success.description", comment: "")
 		alert.beginSheetModal(for: view.window!) { response in
 			self.dismiss(self)
-			self.onAccountConfirm?(self.currentUserID)
+			self.onAccountConfirm?(self.currentUserID, self.currentEmailAddress)
 		}
 	}
 	
