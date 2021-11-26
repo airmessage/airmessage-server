@@ -46,6 +46,8 @@ class DataProxyConnect: DataProxy {
 		//Ignore if we're already connecting or connected
 		guard !isActive else { return }
 		
+		print("Starting Connect proxy server")
+		
 		//Cancel any active connection recover timers (in case the user initiated a reconnect)
 		stopConnectionRecoveryTimer()
 		
@@ -389,11 +391,15 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	private func onWSError(error: Error?) {
+		//Log the error
 		if let error = error {
 			LogManager.log("Encountered a WebSocket error: \(error)", level: .notice)
 		} else {
 			LogManager.log("Encountered an unknown WebSocket error", level: .notice)
 		}
+		
+		//Disconnect
+		onWSDisconnect(reason: "", code: CloseCode.normal.rawValue)
 	}
 	
 	//MARK: Message handling
@@ -456,7 +462,6 @@ extension DataProxyConnect: WebSocketDelegate {
 			case .connected(_): onWSConnect()
 			case .disconnected(let reason, let code): onWSDisconnect(reason: reason, code: code)
 			case .binary(let data): onWSReceive(data: data)
-			case .cancelled: break
 			case .error(let error): onWSError(error: error)
 			default: break
 		}
