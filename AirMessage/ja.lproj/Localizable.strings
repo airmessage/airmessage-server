@@ -6,8 +6,114 @@
   
 */
 
-"passwordstrength"="パスワード強度: %@";
-"passwordstrength.level1"="弱い";
-"passwordstrength.level2"="普通";
-"passwordstrength.level3"="高い";
-"passwordstrength.level4"="非常に高い";
+"action.ok"="OK";
+"action.retry"="再試行";
+"action.cancel"="キャンセル";
+"action.reauthenticate"="再度ログイン";
+"action.sign_out"="ログアウト";
+"action.preferences"="環境設定…";
+"action.switch_to_account"="アカウントに切り替える";
+"action.receive_beta_updates"="ベータ版のアップデートを受け取る";
+"action.connect_account"="アカウントで接続 (推奨)";
+"action.configure_manually"="手動設定を使用";
+"action.open_full_disk_access"="フルディスクアクセスの設定を開く";
+"action.open_automation_settings"="オートメーションの設定を開く";
+"action.edit_password"="パスワードの編集…";
+"action.auto_update"="アップデートを自動的に確認する";
+"action.beta_update"="ベータ版のアップデートを受け取る";
+"action.remind_me_later"="後で通知";
+"action.install_update"="アップデートをインストール";
+"action.check_for_updates"="アップデートの確認…";
+"action.about_airmessage"="AirMessageについて";
+"action.quit_airmessage"="AirMessageを終了";
+
+"label.password"="パスワード:";
+"label.show_password"="パスワードの表示";
+
+"label.password_strength"="パスワード強度: %@";
+"label.password_strength.level1"="弱い";
+"label.password_strength.level2"="普通";
+"label.password_strength.level3"="高い";
+"label.password_strength.level4"="非常に高い";
+
+"label.full_disk_access"="フルディスクアクセス";
+"label.automation_access"="オートメーション";
+
+"label.preferences"="環境設定";
+"label.preferences.server_port"="サーバーポート:";
+"label.preferences.security"="セキュリティ:";
+"label.preferences.updates"="アップデート:";
+"label.preferences.account"="アカウント:";
+
+"label.software_update"="ソフトウェア・アップデート";
+
+"label.client_log"="デバイスログ";
+"label.currently_connected"="現在接続中";
+
+"message.intro.title"="AirMessage Server へようこそ！";
+"message.intro.body"="AirMessage Server はメニューバーにあります。アイコンをクリックして、サーバーの状態や設定を確認します。開始するには、サーバーの設定方法を選択してください。";
+
+"message.grant.full_disk_access"="AirMessageへのフルディスクアクセスの許可";
+"message.grant.full_disk_access.explanation"="AirMessage Serverはメッセージを読むために、フルディスクアクセスが必要です。";
+"message.grant.full_disk_access.step1"="• ウィンドウの左下にあるロックをクリックします";
+"message.grant.full_disk_access.step2"="• アイコンを「フルディスクアクセス」リストにドラッグ＆ドロップします";
+"message.grant.full_disk_access.step3"="• AirMessageを再起動します";
+"message.grant.automation_access"="AirMessageへのメッセージのオートメーションの許可";
+"message.grant.automation_access.explanation"="AirMessage Serverがメッセージを送信するためには、メッセージに対するオートメーション権限が必要です。";
+"message.grant.automation_access.instructions"="オートメーション」リストの中から「AirMessage」を見つけ、「メッセージ」のチェックボックスをクリックします";
+
+"message.status.setup"="セットアップを待っています";
+"message.status.starting"="サーバー起動中…";
+"message.status.connecting"="接続中…";
+"message.status.running"="サーバー実行中";
+"message.status.stopped"="サーバー停止";
+
+"message.status.error.database"="データベースへの接続ができません";
+"message.status.error.internal"="内部エラーが発生しました";
+"message.status.error.external"="外部エラーが発生しました";
+"message.status.error.internet"="インターネットに接続できません";
+"message.status.error.port_unavailable"="ポートが既に使用されている";
+"message.status.error.port_error"="ポートの準備が失敗しました";
+"message.status.error.bad_request"="通信エラーが発生しました";
+"message.status.error.outdated"="アプリは古くなっています";
+"message.status.error.account_validation"="接続されたアカウントは使用できません";
+"message.status.error.token_refresh"="デバイスが登録されていません";
+"message.status.error.no_activation"="アカウントが有効化されていません";
+"message.status.error.account_conflict"="別の場所からログインしています";
+
+"message.preference.account_manual"="このサーバーは手動でアクセスできるように設定されています。このコンピューターのインターネットアドレスを使って、AndroidのAirMessageを設定します。";
+"message.preference.account_connect"="このサーバーは %@ 用に設定されています。スマートフォン、タブレット、PC で AirMessage にサインインすると、メッセージのやり取りが始まります。";
+"message.enter_server_port"="サーバーポートを入力してください";
+"message.invalid_server_port"="%@ はサーバーポートとしては使用できません";
+
+"message.reset.title.direct"="AirMessage Server を再設定しますか？";
+"message.reset.title.connect"="AirMessage Server からログアウトしますか？";
+"message.reset.subtitle"="AirMessage Server を再設定するまでは、AirMessage デバイスでメッセージを受信することはできません。";
+
+"message.beta_enrollment.title"="ベータ版のアップデートを受け取りますか？";
+"message.beta_enrollment.description"="ベータ版のアップデートは不安定な場合があり、Android 版 AirMessage のベータ版プログラムに登録する必要があります";
+
+"message.beta_unenrollment.title"="ベータ版のアップデートが受けなくなります";
+"message.beta_unenrollment.description"="AirMessage のベータ版を使用している可能性があります";
+
+"message.update.title"="新しいバージョンの AirMessage が入手できます!";
+"message.update.available"="AirMessage Server %1$@ が入手できます（使用中のバージョンは%2$@です）。今すぐインストールしますか？";
+"message.update.release_notes"="リリースノート:";
+"message.update.uptodate.title"="新版を使用しています!";
+"message.update.uptodate.description"="AirMessage Server %1$@ は現在入手できる最新バージョンです";
+"message.update.error.title"="アップデートの確認中にエラーが発生しました";
+"message.update.error.parse"="アップデートの詳細をダウンロードできませんでした、後でもう一度お試しください。";
+"message.update.error.download"="アップデートファイルのダウンロードができない";
+"message.update.error.invalid_package"="無効なアップデートパッケージを受信しました";
+"message.update.error.internal"="このアップデートの処理中に内部エラーが発生しました";
+"message.update.error.os_compat"="macOS %d.%d.%d にアップデートして再度お試しください。";
+"message.update.error.arch_compat"="お使いのシステム・アーキテクチャ（%@）はサポートされていません。";
+
+"message.register.error.title"="このコンピュータの登録に失敗しました";
+"message.register.error.sign_in"="ログインしようとしてエラーが発生しました";
+
+"message.register.success.title"="コンピュータが登録されました";
+"message.register.success.description"="メッセージを受信するには、同じアカウントで携帯電話またはコンピューターで AirMessage にログインします";
+
+"progress.check_connection"="接続を確認中…";
+"progress.install_update"="アップデートをインストール中…";

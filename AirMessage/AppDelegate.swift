@@ -148,7 +148,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				alert.messageText = NSLocalizedString("message.update.uptodate.title", comment: "")
 				alert.informativeText = String(
 						format: NSLocalizedString("message.update.uptodate.description", comment: ""),
-						Bundle.main.infoDictionary!["CFBundleName"] as! String,
 						Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
 				)
 				alert.runModal()

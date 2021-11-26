@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>message.status.connected_count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@clientCount@</string>
+		<key>clientCount</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>Aucun client n&apos;est connecté</string>
+			<key>one</key>
+			<string>1 client est connecté</string>
+			<key>other</key>
+			<string>%d clients sont connectés</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

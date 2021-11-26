@@ -33,6 +33,9 @@ class ClientListViewController: NSViewController {
 	override func viewDidAppear() {
 		super.viewDidAppear()
 		
+		//Set the window title
+		view.window!.title = NSLocalizedString("label.client_log", comment: "")
+		
 		//Focus app
 		NSApp.activate(ignoringOtherApps: true)
 	}
@@ -77,7 +80,7 @@ extension ClientListViewController: NSTableViewDelegate {
 		
 		cell.icon.image = image
 		cell.title.stringValue = client.clientName
-		cell.subtitle.stringValue = "Currently connected"
+		cell.subtitle.stringValue = NSLocalizedString("label.currently_connected", comment: "")
 		
 		return cell
 	}

@@ -6,8 +6,114 @@
   
 */
 
-"passwordstrength"="Force: %@";
-"passwordstrength.level1"="Faible";
-"passwordstrength.level2"="Correcte";
-"passwordstrength.level3"="Bonne";
-"passwordstrength.level4"="Parfaite";
+"action.ok"="OK";
+"action.retry"="Réessayer";
+"action.cancel"="Annuler";
+"action.reauthenticate"="Se connecter à nouveau";
+"action.sign_out"="Déconnexion";
+"action.preferences"="Préférences…";
+"action.switch_to_account"="Utiliser un compte";
+"action.receive_beta_updates"="Recevoir les mises à jour bêta";
+"action.connect_account"="Connecter un compte (recommandé)";
+"action.configure_manually"="Configurer manuellement";
+"action.open_full_disk_access"="Ouvrir les paramètres d'accès complet au disque";
+"action.open_automation_settings"="Ouvrir les paramètres d'Automatisation";
+"action.edit_password"="Modifier le mot de passe…";
+"action.auto_update"="Vérifier les mises à jour automatiquement";
+"action.beta_update"="Recevoir les mises à jour bêta";
+"action.remind_me_later"="Rappelez-moi plus tard";
+"action.install_update"="Installer";
+"action.check_for_updates"="Vérifier les mises à jour…";
+"action.about_airmessage"="À propos d'AirMessage";
+"action.quit_airmessage"="Quitter AirMessage";
+
+"label.password"="Mot de passe:";
+"label.show_password"="Montrer le mot de passe";
+
+"label.password_strength"="Force: %@";
+"label.password_strength.level1"="Faible";
+"label.password_strength.level2"="Correcte";
+"label.password_strength.level3"="Bonne";
+"label.password_strength.level4"="Parfaite";
+
+"label.full_disk_access"="Accès complet au disque";
+"label.automation_access"="Accès à l'Automatisation";
+
+"label.preferences"="Préférences";
+"label.preferences.server_port"="Port de serveur:";
+"label.preferences.security"="Sécurité:";
+"label.preferences.updates"="Mises à jour:";
+"label.preferences.account"="Compte:";
+
+"label.software_update"="Mise à jour logiciel";
+
+"label.client_log"="Journal des clients";
+"label.currently_connected"="Actuellement connecté";
+
+"message.intro.title"="Bienvenue à AirMessage Server!";
+"message.intro.body"="AirMessage Server se place dans votre barre de menu. Cliquez sur l'icône pour vérifier l'état et la configuration du serveur. Pour commencer, veuillez choisir la manière dont vous souhaitez configurer votre serveur.";
+
+"message.grant.full_disk_access"="Accorder l'accès complet au disque à AirMessage";
+"message.grant.full_disk_access.explanation"="AirMessage Server a besoin d'un accès complet au disque pour lire vos messages";
+"message.grant.full_disk_access.step1"="• Cliquez sur le cadenas dans le coin inférieur gauche de la fenêtre";
+"message.grant.full_disk_access.step2"="• Faites glisser et déposez l'icône AirMessage dans la liste Accès complet au disque";
+"message.grant.full_disk_access.step3"="• Relancez AirMessage";
+"message.grant.automation_access"="Accorder l'accès à l'Automatisation pour Messages à AirMessage";
+"message.grant.automation_access.explanation"="AirMessage Server a besoin de l'accès Automatisation de Messages afin d'envoyer des messages.";
+"message.grant.automation_access.instructions"="Trouvez AirMessage dans la liste Automatisation, et cochez la case Messages";
+
+"message.status.setup"="En attente de la configuration";
+"message.status.starting"="Démarrage de serveur…";
+"message.status.connecting"="Connexion en cours…";
+"message.status.running"="Le serveur est actif";
+"message.status.stopped"="Le serveur est arrêté";
+
+"message.status.error.database"="N'a pas pu se connecter au base de données";
+"message.status.error.internal"="Une erreur interne s'est produite";
+"message.status.error.external"="Une erreur externe s'est produite";
+"message.status.error.internet"="Impossible de se connecter à l'internet";
+"message.status.error.port_unavailable"="Le port n'est pas disponible";
+"message.status.error.port_error"="Échec de la préparation du port";
+"message.status.error.bad_request"="Erreur de communication";
+"message.status.error.outdated"="L'application n'est pas à jour";
+"message.status.error.account_validation"="Compte non disponible";
+"message.status.error.token_refresh"="Cet ordinateur n'est pas enregistré";
+"message.status.error.no_activation"="Compte non activé";
+"message.status.error.account_conflict"="Connecté depuis un autre endroit";
+
+"message.preference.account_manual"="Ce serveur est configuré pour un accès manuel. Configurez AirMessage sur votre téléphone pour vous connecter en utilisant l'adresse internet de cet ordinateur.";
+"message.preference.account_connect"="Ce serveur est configuré pour %@. Connectez-vous à AirMessage sur votre smartphone, votre tablette ou votre PC pour commencer.";
+"message.enter_server_port"="Veuillez entrer un port de serveur";
+"message.invalid_server_port"="%@ ne peut pas être utilisé comme port de serveur";
+
+"message.reset.title.direct"="Voulez-vous reconfigurer AirMessage Server?";
+"message.reset.title.connect"="Voulez-vous vous déconnecter d'AirMessage Server?";
+"message.reset.subtitle"="Tant que vous n'aurez pas reconfiguré AirMessage Server, vous ne pourrez pas recevoir de messages sur les appareils AirMessage.";
+
+"message.beta_enrollment.title"="Voulez-vous recevoir des mises à jour bêta?";
+"message.beta_enrollment.description"="Les mises à jour bêta peuvent être instables, et nécessitent également que vous soyez inscrit au programme bêta d'AirMessage pour Android.";
+
+"message.beta_unenrollment.title"="Vous ne recevrez plus de mises à jour bêta";
+"message.beta_unenrollment.description"="Veuillez noter que vous pouvez encore utiliser une version bêta de AirMessage.";
+
+"message.update.title"="Une nouvelle version d'AirMessage Server est disponible!";
+"message.update.available"="AirMessage Server %1$@ est disponible - vous avez %2$@. Voulez-vous le télécharger maintenant?";
+"message.update.release_notes"="Notes de version:";
+"message.update.uptodate.title"="Vous êtes à jour!";
+"message.update.uptodate.description"="AirMessage Server %1$@ est la version la plus récente.";
+"message.update.error.title"="Une erreur s'est produite lors de la recherche de mises à jour";
+"message.update.error.parse"="Impossible de télécharger les détails de la mise à jour, veuillez réessayer plus tard";
+"message.update.error.download"="Impossible de télécharger la mise à jour";
+"message.update.error.invalid_package"="Des données de mise à jour non valides ont été reçues";
+"message.update.error.internal"="Une erreur interne s'est produite lors du traitement de cette mise à jour";
+"message.update.error.os_compat"="Veuillez mettre à jour vers macOS %d.%d.%d et réessayer";
+"message.update.error.arch_compat"="L'architecture de votre système (%@) n'est pas prise en charge";
+
+"message.register.error.title"="Impossible d'enregistrer cet ordinateur";
+"message.register.error.sign_in"="Une erreur s'est produite lors de la connexion";
+
+"message.register.success.title"="Cet ordinateur a été enregistré";
+"message.register.success.description"="Pour recevoir vos messages, connectez-vous à AirMessage sur votre téléphone ou votre ordinateur avec le même compte.";
+
+"progress.check_connection"="Vérification de votre connexion…";
+"progress.install_update"="Installation de la mise à jour…";

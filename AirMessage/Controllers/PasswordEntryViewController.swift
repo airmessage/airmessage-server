@@ -60,7 +60,7 @@ class PasswordEntryViewController: NSViewController {
 		confirmButton.isEnabled = !isRequired || !getText().isEmpty
 		
 		//Update the password strength label
-		strengthLabel.stringValue = String(format: NSLocalizedString("passwordstrength", comment: ""), getPasswordStrengthLabel(calculatePasswordStrength(getText())))
+		strengthLabel.stringValue = String(format: NSLocalizedString("label.password_strength", comment: ""), getPasswordStrengthLabel(calculatePasswordStrength(getText())))
 	}
 	
 	func getText() -> String { currentTextField.stringValue }

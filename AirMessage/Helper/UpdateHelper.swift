@@ -8,7 +8,7 @@ import Zip
 
 class UpdateHelper {
 	//Constants
-	private static let updateBaseURL = "http://localhost:4000"
+	private static let updateBaseURL = "https://airmessage.org"
 	private static let stableUpdateURL = URL(string: updateBaseURL + "/update/server/3.json")!
 	private static let betaUpdateURL = URL(string: updateBaseURL + "/update/server-beta/3.json")!
 	private static let updateCheckInterval: TimeInterval = 60 * 60 * 24

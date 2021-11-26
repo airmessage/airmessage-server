@@ -48,6 +48,9 @@ class SoftwareUpdateViewController: NSViewController {
 	override func viewDidAppear() {
 		super.viewDidAppear()
 		
+		//Set the window title
+		view.window!.title = NSLocalizedString("label.software_update", comment: "")
+		
 		//Focus app
 		NSApp.activate(ignoringOtherApps: true)
 	}

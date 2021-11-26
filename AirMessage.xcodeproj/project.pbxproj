@@ -82,6 +82,7 @@
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
 		EDF7664E274FC8560008F730 /* BytePacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7664D274FC8560008F730 /* BytePacker.swift */; };
 		EDF76651274FC9DE0008F730 /* PackingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF76650274FC9DE0008F730 /* PackingError.swift */; };
+		EDF7665827516CBE0008F730 /* LocalizeStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,8 +157,6 @@
 		ED891A3925A30701002230EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3E25A30754002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		ED891A4025A3089D002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
-		ED891A4225A308C6002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
 		ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAttachmentsFilter.swift; sourceTree = "<group>"; };
 		ED8F3A74274950770069F25D /* ContentTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeHelper.swift; sourceTree = "<group>"; };
@@ -198,6 +197,9 @@
 		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
 		EDF7664D274FC8560008F730 /* BytePacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytePacker.swift; sourceTree = "<group>"; };
 		EDF76650274FC9DE0008F730 /* PackingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackingError.swift; sourceTree = "<group>"; };
+		EDF76652275161440008F730 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		EDF76653275161460008F730 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ja; path = ja.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizeStoryboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +318,7 @@
 				ED67D1182689096300DB7B95 /* JavaBridge */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */,
+				EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */,
 				ED28095A25A20333009E7636 /* Main.storyboard */,
 				2EAEEACDB56ABC3A7FDFAC48 /* MessageInterop */,
 				ED853E0A274428F300DCF446 /* ObjC */,
@@ -666,6 +669,7 @@
 				2EAEEE829B3030FF1028C15A /* ClientConnection.swift in Sources */,
 				2EAEEDFC55048362F2150A81 /* DataProxyTCP.swift in Sources */,
 				2EAEE884082FC5161893DBBF /* DataProxyDelegate.swift in Sources */,
+				EDF7665827516CBE0008F730 /* LocalizeStoryboard.swift in Sources */,
 				2EAEEBEF65B8A843FC0162FD /* ClientConnectionTCP.swift in Sources */,
 				2EAEEADDCBE7124BBDB9CDF4 /* CommConst.swift in Sources */,
 				2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */,
@@ -680,8 +684,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				ED28095B25A20333009E7636 /* Base */,
-				ED891A4025A3089D002230EB /* fr */,
-				ED891A4225A308C6002230EB /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -690,6 +692,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				ED440E0F269FB51F00BFBEE5 /* en */,
+				EDF76652275161440008F730 /* fr */,
+				EDF76653275161460008F730 /* ja */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";

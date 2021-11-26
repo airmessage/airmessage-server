@@ -39,12 +39,12 @@ func calculatePasswordStrength(_ password: String) -> Int {
 func getPasswordStrengthLabel(_ value: Int) -> String {
 	switch value {
 	case 0..<5:
-		return NSLocalizedString("passwordstrength.level1", comment: "")
+		return NSLocalizedString("label.password_strength.level1", comment: "")
 	case 5..<7:
-		return NSLocalizedString("passwordstrength.level2", comment: "")
+		return NSLocalizedString("label.password_strength.level2", comment: "")
 	case 7..<9:
-		return NSLocalizedString("passwordstrength.level3", comment: "")
+		return NSLocalizedString("label.password_strength.level3", comment: "")
 	default:
-		return NSLocalizedString("passwordstrength.level4", comment: "")
+		return NSLocalizedString("label.password_strength.level4", comment: "")
 	}
 }

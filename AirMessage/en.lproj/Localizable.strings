@@ -6,18 +6,61 @@
   
 */
 
+"action.ok"="OK";
 "action.retry"="Retry";
 "action.cancel"="Cancel";
 "action.reauthenticate"="Sign In Again";
 "action.sign_out"="Sign Out";
+"action.preferences"="Preferences…";
 "action.switch_to_account"="Switch to Account";
-"action.receive_beta_updates"="Receive beta updates";
+"action.receive_beta_updates"="Receive Beta Updates";
+"action.connect_account"="Connect an Account (Recommended)";
+"action.configure_manually"="Configure Manually";
+"action.open_full_disk_access"="Open Full Disk Access Settings";
+"action.open_automation_settings"="Open Automation Settings";
+"action.edit_password"="Edit Password…";
+"action.auto_update"="Check for updates automatically";
+"action.beta_update"="Receive beta updates";
+"action.remind_me_later"="Remind Me Later";
+"action.install_update"="Install Update";
+"action.check_for_updates"="Check for Updates…";
+"action.about_airmessage"="About AirMessage";
+"action.quit_airmessage"="Quit AirMessage";
 
-"passwordstrength"="Password Strength: %@";
-"passwordstrength.level1"="Weak";
-"passwordstrength.level2"="Fair";
-"passwordstrength.level3"="Good";
-"passwordstrength.level4"="Excellent";
+"label.password"="Password:";
+"label.show_password"="Show Password";
+
+"label.password_strength"="Password Strength: %@";
+"label.password_strength.level1"="Weak";
+"label.password_strength.level2"="Fair";
+"label.password_strength.level3"="Good";
+"label.password_strength.level4"="Excellent";
+
+"label.full_disk_access"="Full Disk Access";
+"label.automation_access"="Automation Access";
+
+"label.preferences"="Preferences";
+"label.preferences.server_port"="Server Port:";
+"label.preferences.security"="Security:";
+"label.preferences.updates"="Updates:";
+"label.preferences.account"="Account:";
+
+"label.software_update"="Software Update";
+
+"label.client_log"="Client Log";
+"label.currently_connected"="Currently connected";
+
+"message.intro.title"="Welcome to AirMessage Server!";
+"message.intro.body"="AirMessage Server lives in your menu bar. Click the icon to check server status and configuration. To get started, please choose how you would like to set up your server.";
+
+"message.grant.full_disk_access"="Grant Full Disk Access to AirMessage";
+"message.grant.full_disk_access.explanation"="AirMessage Server needs Full Disk Access in order to read your messages";
+"message.grant.full_disk_access.step1"="• Click the lock in the bottom-left corner of the window";
+"message.grant.full_disk_access.step2"="• Drag and drop the AirMessage icon to the Full Disk Access list";
+"message.grant.full_disk_access.step3"="• Relaunch AirMessage Server";
+"message.grant.automation_access"="Grant Messages Automation Access to AirMessage";
+"message.grant.automation_access.explanation"="AirMessage Server needs Automation access for Messages in order to send messages";
+"message.grant.automation_access.instructions"="Find AirMessage in the Automation list, and click the checkbox for Messages.";
 
 "message.status.setup"="Waiting for Setup";
 "message.status.starting"="Server Starting…";
@@ -48,14 +91,16 @@
 "message.reset.subtitle"="Until you set up AirMessage Server again, you won't be able to receive messages on any AirMessage devices.";
 
 "message.beta_enrollment.title"="Do you want to receive beta updates?";
-"message.beta_enrollment.description"="Beta updates may be unstable, and will also require you to be enrolled in the beta program for AirMessage for Android.";
+"message.beta_enrollment.description"="Beta updates may be unstable, and will also require you to be enrolled in the beta program for AirMessage for Android";
 
 "message.beta_unenrollment.title"="You will no longer receive beta updates";
-"message.beta_unenrollment.description"="Please note that you may still be running a beta version of AirMessage.";
+"message.beta_unenrollment.description"="Please note that you may still be running a beta version of AirMessage";
 
+"message.update.title"="A new version of AirMessage is available!";
 "message.update.available"="AirMessage Server %1$@ is available — you have %2$@. Would you like to download it now?";
+"message.update.release_notes"="Release Notes:";
 "message.update.uptodate.title"="You’re up to date!";
-"message.update.uptodate.description"="%1$@ %2$@ is currently the newest version available.";
+"message.update.uptodate.description"="AirMessage Server %1$@ is currently the newest version available.";
 "message.update.error.title"="An error occurred while checking for updates";
 "message.update.error.parse"="Couldn't download update details, please try again later.";
 "message.update.error.download"="Couldn't download update file";
@@ -65,7 +110,10 @@
 "message.update.error.arch_compat"="Your system architecture (%@) isn't supported.";
 
 "message.register.error.title"="Failed to register this computer";
-"message.register.error.sign_in"="An error occurred while trying to sign in. Please try again.";
+"message.register.error.sign_in"="An error occurred while trying to sign in";
 
 "message.register.success.title"="Computer registered";
 "message.register.success.description"="To get messaging, sign in to AirMessage on your phone or computer with the same account";
+
+"progress.check_connection"="Checking your connection…";
+"progress.install_update"="Installing update…";

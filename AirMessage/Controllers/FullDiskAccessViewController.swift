@@ -27,6 +27,13 @@ class FullDiskAccessViewController: NSViewController {
 		}
 	}
 	
+	override func viewDidAppear() {
+		super.viewDidAppear()
+		
+		//Set the window title
+		view.window!.title = NSLocalizedString("label.full_disk_access", comment: "")
+	}
+	
 	@IBAction func onOpenFullDiskAccess(_ sender: Any) {
 		NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
 	}

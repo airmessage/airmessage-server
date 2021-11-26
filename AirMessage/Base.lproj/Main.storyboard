@@ -34,12 +34,18 @@
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.preferences"/>
+                                            </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <segue destination="cGc-zf-mLe" kind="show" id="AQZ-vy-jjO"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Check for Updates…" id="gii-7S-Dfv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.check_for_updates"/>
+                                            </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="onCheckForUpdates:" target="Voe-Tx-rLC" id="1F7-Bk-JS0"/>
                                             </connections>
@@ -47,11 +53,17 @@
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="About AirMessage" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.about_airmessage"/>
+                                            </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Quit AirMessage" keyEquivalent="q" id="4sb-4s-VLi">
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.quit_airmessage"/>
+                                            </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -325,6 +337,9 @@
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.intro.title"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cwP-HO-5MA">
                                 <rect key="frame" x="18" y="56" width="594" height="32"/>
@@ -334,6 +349,9 @@
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.intro.body"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ndj-pf-12z">
                                 <rect key="frame" x="355" y="13" width="262" height="32"/>
@@ -344,6 +362,9 @@
 DQ
 </string>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.connect_account"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Y7F-lv-57a" kind="sheet" identifier="AccountConnect" id="Oa8-fk-piq"/>
                                 </connections>
@@ -354,6 +375,9 @@ DQ
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.configure_manually"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Skp-rU-QjG" kind="sheet" identifier="PasswordEntry" id="vea-fE-dcY"/>
                                 </connections>
@@ -396,6 +420,9 @@ DQ
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.password"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <secureTextField verticalHuggingPriority="750" ambiguous="YES" contentType="password" translatesAutoresizingMaskIntoConstraints="NO" id="SUs-bK-Xp5" userLabel="Password Field">
                                 <rect key="frame" x="20" y="106" width="260" height="21"/>
@@ -430,6 +457,9 @@ DQ
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.show_password"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onClickPasswordVisibility:" target="Skp-rU-QjG" id="Rgd-gc-jC0"/>
                                 </connections>
@@ -446,6 +476,9 @@ DQ
 DQ
 </string>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.ok"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onClickConfirm:" target="Skp-rU-QjG" id="dbB-Fk-Qhg"/>
                                 </connections>
@@ -462,6 +495,9 @@ DQ
 Gw
 </string>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.cancel"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="dismissController:" target="Skp-rU-QjG" id="P0b-yf-SzI"/>
                                 </connections>
@@ -516,23 +552,29 @@ Gw
 Gw
 </string>
                                 </buttonCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.cancel"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="dismissController:" target="Y7F-lv-57a" id="i8n-Dc-3Ec"/>
                                 </connections>
                             </button>
+                            <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="2Uh-lB-MyH">
+                                <rect key="frame" x="237" y="269" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </progressIndicator>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfJ-H5-Dj1">
-                                <rect key="frame" x="159" y="245" width="173" height="16"/>
+                                <rect key="frame" x="45" y="245" width="400" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Checking your connection…" id="Opk-1u-xCG">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="progress.check_connection"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="2Uh-lB-MyH">
-                                <rect key="frame" x="237" y="269" width="16" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstItem="MmA-aP-aD0" firstAttribute="leading" secondItem="MDN-Zm-Nl6" secondAttribute="leading" constant="20" symbolic="YES" id="H00-H7-ZLu"/>
@@ -597,6 +639,9 @@ Gw
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.preferences.server_port"/>
+                                                </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField verticalHuggingPriority="750" ambiguous="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8eS-Rq-H6a">
                                                 <rect key="frame" x="108" y="0.0" width="50" height="21"/>
@@ -632,6 +677,9 @@ Gw
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.preferences.security"/>
+                                                </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2HA-lj-PVN">
                                                 <rect key="frame" x="101" y="-7" width="130" height="32"/>
@@ -639,6 +687,9 @@ Gw
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.edit_password"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <segue destination="Skp-rU-QjG" kind="sheet" identifier="PasswordEntry" id="aM8-FM-ABJ"/>
                                                 </connections>
@@ -666,6 +717,9 @@ Gw
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.preferences.updates"/>
+                                                </userDefinedRuntimeAttributes>
                                             </textField>
                                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C5k-Ch-qNL">
                                                 <rect key="frame" x="108" y="0.0" width="220" height="40"/>
@@ -676,6 +730,9 @@ Gw
                                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.auto_update"/>
+                                                        </userDefinedRuntimeAttributes>
                                                     </button>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7if-Yx-qbX">
                                                         <rect key="frame" x="-2" y="-1" width="157" height="18"/>
@@ -683,6 +740,9 @@ Gw
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.beta_update"/>
+                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="onClickReceiveBetaUpdates:" target="TFo-6b-9Gw" id="R5b-UN-qBJ"/>
                                                         </connections>
@@ -720,6 +780,9 @@ Gw
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="label.preferences.account"/>
+                                                </userDefinedRuntimeAttributes>
                                             </textField>
                                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mtG-nG-jJM">
                                                 <rect key="frame" x="108" y="0.0" width="370" height="56"/>
@@ -781,6 +844,9 @@ Gw
 Gw
 </string>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.cancel"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onClickCloseWith_sender:" target="TFo-6b-9Gw" id="vQX-ef-WJZ"/>
                                                 </connections>
@@ -797,6 +863,9 @@ Gw
 DQ
 </string>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.ok"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onClickOK:" target="TFo-6b-9Gw" id="Ggt-PK-5gd"/>
                                                 </connections>
@@ -869,6 +938,9 @@ DQ
                             <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitle" value="label.full_disk_access"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="delegate" destination="HCE-lQ-pAu" id="hh3-DS-1nb"/>
                         </connections>
@@ -886,40 +958,46 @@ DQ
             <objects>
                 <viewController id="2am-CR-TqS" customClass="FullDiskAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="CWi-KJ-5Pc">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="727"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="695"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0xr-yx-pAS">
-                                <rect key="frame" x="20" y="20" width="400" height="687"/>
+                                <rect key="frame" x="20" y="20" width="400" height="655"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8eW-NU-Jdd">
-                                        <rect key="frame" x="-2" y="666" width="342" height="21"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Full Disk Access to AirMessage Server" id="nxf-aY-KhM">
+                                        <rect key="frame" x="-2" y="634" width="288" height="21"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Full Disk Access to AirMessage" id="nxf-aY-KhM">
                                             <font key="font" textStyle="title2" name=".SFNS-Regular"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.full_disk_access"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n0l-AX-yD6">
-                                        <rect key="frame" x="-2" y="618" width="404" height="32"/>
+                                        <rect key="frame" x="-2" y="586" width="404" height="32"/>
                                         <textFieldCell key="cell" title="AirMessage Server needs Full Disk Access in order to read your messages." id="Y8k-7T-NTB">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.full_disk_access.explanation"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k3G-tF-7yb">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="602"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="570"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Lh-FI-ldc">
-                                                <rect key="frame" x="0.0" y="244" width="400" height="358"/>
+                                                <rect key="frame" x="0.0" y="212" width="400" height="358"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="1Lh-FI-ldc" secondAttribute="height" multiplier="1560:1398" id="CXr-it-Rdu"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="FullDiskAccess" id="WlY-DG-v1X"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kOe-xi-WuA">
-                                                <rect key="frame" x="-7" y="201" width="222" height="32"/>
+                                                <rect key="frame" x="-7" y="169" width="222" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Open Full Disk Access Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7h3-J8-a3C">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -927,39 +1005,40 @@ DQ
 DQ
 </string>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.open_full_disk_access"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onOpenFullDiskAccess:" target="2am-CR-TqS" id="sSd-Cz-a9k"/>
                                                 </connections>
                                             </button>
                                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OwF-lO-yDi">
-                                                <rect key="frame" x="0.0" y="0.0" width="386" height="192"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="386" height="160"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5bt-Lh-CQ6">
-                                                        <rect key="frame" x="0.0" y="80" width="386" height="112"/>
+                                                        <rect key="frame" x="0.0" y="80" width="386" height="80"/>
                                                         <subviews>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DNc-bW-q4s">
-                                                                <rect key="frame" x="-2" y="96" width="356" height="16"/>
-                                                                <textFieldCell key="cell" title="• Click the lock in the bottom-left corner to make changes" id="eTj-1c-N69">
-                                                                    <font key="font" metaFont="system"/>
-                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HV6-L0-zQb">
-                                                                <rect key="frame" x="-2" y="64" width="390" height="16"/>
-                                                                <textFieldCell key="cell" title="• Drag and drop the AirMessage icon to the Full Disk Access list" id="Sdi-Nc-DRj">
+                                                                <rect key="frame" x="-2" y="64" width="338" height="16"/>
+                                                                <textFieldCell key="cell" title="• Click the lock in the bottom-left corner of the window" id="Sdi-Nc-DRj">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.full_disk_access.step1"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1G3-zf-0z7">
-                                                                <rect key="frame" x="-2" y="32" width="275" height="16"/>
-                                                                <textFieldCell key="cell" title="• Add AirMessage to the Full Disk Access list" id="cgh-qo-Cih">
+                                                                <rect key="frame" x="-2" y="32" width="390" height="16"/>
+                                                                <textFieldCell key="cell" title="• Drag and drop the AirMessage icon to the Full Disk Access list" id="cgh-qo-Cih">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.full_disk_access.step2"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dp6-73-vFy">
                                                                 <rect key="frame" x="-2" y="0.0" width="187" height="16"/>
@@ -968,16 +1047,17 @@ DQ
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.full_disk_access.step3"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </textField>
                                                         </subviews>
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
-                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
-                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
@@ -1088,7 +1168,7 @@ DQ
         <scene sceneID="OZ1-Ax-xkw">
             <objects>
                 <windowController storyboardIdentifier="ClientList" showSeguePresentationStyle="single" id="0JS-fv-X8d" sceneMemberID="viewController">
-                    <window key="window" title="Device Log" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="hDv-IF-xtW">
+                    <window key="window" title="Client Log" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="hDv-IF-xtW">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="249" width="480" height="270"/>
@@ -1097,6 +1177,9 @@ DQ
                             <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitle" value="label.client_log"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="delegate" destination="0JS-fv-X8d" id="1Q3-82-lkM"/>
                         </connections>
@@ -1217,12 +1300,15 @@ DQ
                                 <rect key="frame" x="20" y="20" width="400" height="563"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qAW-cA-0Uc">
-                                        <rect key="frame" x="-2" y="542" width="401" height="21"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Messsages Automation Access to AirMessage" id="73A-ed-irS">
+                                        <rect key="frame" x="-2" y="542" width="393" height="21"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Messages Automation Access to AirMessage" id="73A-ed-irS">
                                             <font key="font" textStyle="title2" name=".SFNS-Regular"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.automation_access"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XWv-YB-ZIC">
                                         <rect key="frame" x="-2" y="494" width="404" height="32"/>
@@ -1231,6 +1317,9 @@ DQ
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.automation_access.explanation"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jpH-3r-AHR">
                                         <rect key="frame" x="0.0" y="36" width="400" height="442"/>
@@ -1248,6 +1337,9 @@ DQ
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.open_automation_settings"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onOpenAutomationAccess:" target="hja-eM-bID" id="fcD-WT-hcD"/>
                                                 </connections>
@@ -1259,6 +1351,9 @@ DQ
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.automation_access.instructions"/>
+                                                </userDefinedRuntimeAttributes>
                                             </textField>
                                         </subviews>
                                         <visibilityPriorities>
@@ -1281,6 +1376,9 @@ DQ
 DQ
 </string>
                                         </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.done"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="onClickDone:" target="hja-eM-bID" id="kw8-Me-TIN"/>
                                         </connections>
@@ -1328,6 +1426,9 @@ DQ
                             <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitle" value="label.software_update"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="delegate" destination="39P-PF-iMd" id="C1L-Q5-THS"/>
                         </connections>
@@ -1366,6 +1467,9 @@ DQ
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.update.title"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FhY-C3-Y1U">
                                         <rect key="frame" x="-2" y="264" width="517" height="16"/>
@@ -1382,6 +1486,9 @@ DQ
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.update.release_notes"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textField>
                                     <containerView translatesAutoresizingMaskIntoConstraints="NO" id="rSD-50-pXn">
                                         <rect key="frame" x="0.0" y="32" width="550" height="200"/>
@@ -1401,6 +1508,9 @@ DQ
 Gw
 </string>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.remind_me_later"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onRemindLater:" target="41f-th-T07" id="X2h-Wv-XM6"/>
                                                 </connections>
@@ -1414,6 +1524,9 @@ Gw
 DQ
 </string>
                                                 </buttonCell>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.install_update"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="onInstallUpdate:" target="41f-th-T07" id="Q1Z-Hf-Ao1"/>
                                                 </connections>
@@ -1489,6 +1602,9 @@ DQ
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="progress.install_update"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                             <progressIndicator fixedFrame="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="RzU-PH-L0b">
                                 <rect key="frame" x="20" y="13" width="410" height="20"/>
@@ -1503,7 +1619,7 @@ DQ
                 </viewController>
                 <customObject id="h3D-HD-aVz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-754" y="2410"/>
+            <point key="canvasLocation" x="-922" y="2139"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

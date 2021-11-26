@@ -45,6 +45,9 @@ class PreferencesViewController: NSViewController {
 	override func viewDidAppear() {
 		super.viewDidAppear()
 		
+		//Set the window title
+		view.window!.title = NSLocalizedString("label.preferences", comment: "")
+		
 		//Focus app
 		NSApp.activate(ignoringOtherApps: true)
 	}
