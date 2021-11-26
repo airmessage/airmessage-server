@@ -257,7 +257,7 @@ class DatabaseConverter {
 	 */
 	static func processLiteConversationRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> LiteConversationInfo {
 		let guid = row[indices["chat.guid"]!] as! String
-		let service = row[indices["chat.service"]!] as! String
+		let service = row[indices["chat.service_name"]!] as! String
 		let name = row[indices["chat.display_name"]!] as! String?
 		let members = (row[indices["member_list"]!] as! String)
 			.components(separatedBy: ",")
@@ -282,7 +282,7 @@ class DatabaseConverter {
 			service: service,
 			name: name,
 			members: members,
-			previewDate: lastMessageDate,
+			previewDate: convertDBTime(fromDB: lastMessageDate),
 			previewSender: lastMessageSender,
 			previewText: lastMessageText,
 			previewSendStyle: lastMessageSendStyle,

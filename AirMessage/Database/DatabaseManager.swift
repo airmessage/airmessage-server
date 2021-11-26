@@ -520,8 +520,9 @@ class DatabaseManager {
 		
 		let stmt = try fetchMessages(
 			using: dbConnection,
-			where: before.map { "message.ROWID < \($0)" },
-			sort: "message.ROWID DESC"
+			where: "chat.GUID = \"\(chatGUID)\"" + (before.map { " AND message.ROWID < \($0)" } ?? ""),
+			sort: "message.ROWID DESC",
+			limit: 24
 		)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		

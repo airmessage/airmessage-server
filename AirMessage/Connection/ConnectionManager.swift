@@ -762,13 +762,14 @@ class ConnectionManager {
 		//Send a response
 		var responsePacker = AirPacker()
 		responsePacker.pack(int: NHT.liteThreadRetrieval.rawValue)
+		responsePacker.pack(string: chatGUID)
 		if let firstMessageID = firstMessageID {
 			responsePacker.pack(bool: true)
 			responsePacker.pack(long: firstMessageID)
 		} else {
 			responsePacker.pack(bool: false)
 		}
-		responsePacker.pack(packableArray: messages)
+		responsePacker.pack(packableArray: messages.reversed()) //Send messages least recent to most recent
 		
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 	}
