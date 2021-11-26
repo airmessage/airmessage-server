@@ -404,13 +404,13 @@
 			children = (
 				EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */,
 				ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */,
+				EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */,
 				ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */,
 				ED28095625A20332009E7636 /* OnboardingViewController.swift */,
 				ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */,
 				ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */,
-				EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */,
-				2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */,
 				2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */,
+				2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

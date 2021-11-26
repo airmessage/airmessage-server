@@ -11,17 +11,38 @@ class NotificationNames {
 	static let updateServerState = NSNotification.Name("updateServerState")
 	static let updateServerStateParam = "state"
 	
+	static let updateSetupMode = NSNotification.Name("updateSetupMode")
+	static let updateSetupModeParam = "isSetupMode"
+	
 	static let updateConnectionCount = NSNotification.Name("updateConnectionCount")
 	static let updateConnectionCountParam = "count"
 	
 	static let signOut = NSNotification.Name("signOut")
 	
 	/**
-	 Posts the UI state update to `NotificationCenter` in a thread-safe manner
+	 Posts a UI state update to `NotificationCenter` in a thread-safe manner
 	 */
 	static func postUpdateUIState(_ state: ServerState) {
 		runOnMainAsync {
 			NotificationCenter.default.post(name: NotificationNames.updateServerState, object: nil, userInfo: [NotificationNames.updateServerStateParam: state.rawValue])
+		}
+	}
+	
+	/**
+	 Posts a setup mode update to `NotificationCenter` in a thread-safe manner
+	 */
+	static func postUpdateSetupMode(_ setupMode: Bool) {
+		runOnMainAsync {
+			NotificationCenter.default.post(name: NotificationNames.updateSetupMode, object: nil, userInfo: [NotificationNames.updateSetupModeParam: setupMode])
+		}
+	}
+	
+	/**
+	 Posts a setup mode update to `NotificationCenter` in a thread-safe manner
+	 */
+	static func postUpdateConnectionCount(_ connectionCount: Int) {
+		runOnMainAsync {
+			NotificationCenter.default.post(name: NotificationNames.updateConnectionCount, object: nil, userInfo: [NotificationNames.updateConnectionCountParam: connectionCount])
 		}
 	}
 }

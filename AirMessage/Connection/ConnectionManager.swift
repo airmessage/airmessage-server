@@ -12,6 +12,15 @@ class ConnectionManager {
 	private let fileDownloadRequestMapLock = ReadWriteLock()
 	private var fileDownloadRequestMap: [Int16: FileDownloadRequest] = [:]
 	
+	/// Gets a set of connections in a thread-safe manner
+	var connections: Set<ClientConnection>? {
+		guard let dataProxy = dataProxy else { return nil }
+		
+		return dataProxy.connectionsLock.withReadLock {
+			dataProxy.connections
+		}
+	}
+	
 	/**
 	 Sets the data proxy to use for future connections.
 	 Only call this function when the server isn't running.
@@ -1097,6 +1106,9 @@ extension ConnectionManager: DataProxyDelegate {
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didConnectClient client: C, totalCount: Int) {
+		//Send an update
+		NotificationNames.postUpdateConnectionCount(totalCount)
+		
 		//Send initial server information
 		var packer = AirPacker()
 		packer.pack(int: NHT.information.rawValue)
@@ -1133,6 +1145,9 @@ extension ConnectionManager: DataProxyDelegate {
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didDisconnectClient client: C, totalCount: Int) {
+		//Send an update
+		NotificationNames.postUpdateConnectionCount(totalCount)
+		
 		//Clean up pending timers
 		client.cancelAllTimers()
 	}

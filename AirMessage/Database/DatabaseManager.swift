@@ -42,10 +42,10 @@ class DatabaseManager {
 	
 	deinit {
 		//Make sure timers are canceled on deinit
-		cancel()
+		stop()
 	}
 	
-	func resume() throws {
+	func start() throws {
 		//Connect to the database
 		dbConnection = try Connection(DatabaseManager.databaseLocation, readonly: true)
 		
@@ -59,7 +59,7 @@ class DatabaseManager {
 		timerScanner = timer
 	}
 	
-	func cancel() {
+	func stop() {
 		//Disconnect from the database
 		dbConnection = nil
 		

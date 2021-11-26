@@ -40,7 +40,7 @@ class OnboardingViewController: NSViewController {
 				ConnectionManager.shared.setProxy(DataProxyTCP(port: defaultServerPort))
 				
 				//Disable setup mode
-				(NSApplication.shared.delegate as! AppDelegate).isSetupMode = false
+				NotificationNames.postUpdateSetupMode(false)
 				
 				//Start server
 				launchServer()
@@ -63,14 +63,26 @@ class OnboardingViewController: NSViewController {
 				PreferencesManager.shared.accountType = .connect
 				
 				//Disable setup mode
-				(NSApplication.shared.delegate as! AppDelegate).isSetupMode = false
+				NotificationNames.postUpdateSetupMode(false)
+				
+				//Run permissions check
+				if checkServerPermissions() {
+					//Connect to the database
+					do {
+						try DatabaseManager.shared.start()
+					} catch {
+						LogManager.log("Failed to start database: \(error)", level: .notice)
+						ConnectionManager.shared.stop()
+					}
+				} else {
+					//Disconnect and let the user resolve the error
+					ConnectionManager.shared.stop()
+				}
 				
 				//Close window
 				if let self = self {
 					self.view.window!.close()
 				}
-				
-				//TODO: Start DB manager and check for permissions after setting up connect account
 			}
 		}
 	}

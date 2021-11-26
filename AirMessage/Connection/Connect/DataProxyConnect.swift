@@ -86,10 +86,8 @@ class DataProxyConnect: DataProxy {
 		
 		//Disconect
 		socket.disconnect()
-		
-		//Wait for callback?
-		/* isActive = false
-		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false) */
+		isActive = false
+		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 	}
 	
 	deinit {

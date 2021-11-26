@@ -35,7 +35,7 @@
 "message.status.error.account_validation"="Account Not Available";
 "message.status.error.token_refresh"="Device Not Registered";
 "message.status.error.no_activation"="Account Not Activated";
-"message.status.error.account_conflict"="Signed In from Another Location";
+"message.status.error.account_conflict"="Signed In From Another Location";
 
 "message.preference.account_manual"="This server is configured for manual access. Configure AirMessage on your phone to connect using this computer's internet address.";
 "message.preference.account_connect"="This server is configured for %@. Sign in to AirMessage on your smartphone, tablet, or PC to get messaging.";

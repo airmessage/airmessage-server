@@ -14,9 +14,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@IBOutlet weak var menu: NSMenu!
 	@IBOutlet weak var menuItemPrimary: NSMenuItem!
 	@IBOutlet weak var menuItemSecondary: NSMenuItem!
+	@IBOutlet weak var menuItemPreferences: NSMenuItem!
 	
 	//UI state
-	public var currentServerState = ServerState.setup
+	public var currentServerState = ServerState.stopped
 	public var currentClientCount = 0
 	public var isSetupMode = false
 	
@@ -27,10 +28,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		statusBarItem.menu = menu
 		let statusButton = statusBarItem.button!
 		statusButton.image = NSImage(named:NSImage.Name("StatusBarIcon"))
-		updateMenu()
 		
 		//Register notification center observers
-		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateUIState), name: NotificationNames.updateServerState, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateServerState), name: NotificationNames.updateServerState, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateSetupMode), name: NotificationNames.updateSetupMode, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateConnectionCount), name: NotificationNames.updateConnectionCount, object: nil)
 		
 		//Set the data proxy
@@ -44,6 +45,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			//Start server
 			launchServer()
 		}
+		
+		//Update the menu
+		updateMenu()
 		
 		//Prevent system from sleeping
 		lockSystemSleep()
@@ -60,10 +64,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		
 		//Allow system to sleep
 		releaseSystemSleep()
+		
+		//Disconnect
+		ConnectionManager.shared.stop()
+		DatabaseManager.shared.stop()
 	}
 	
-	@objc private func onUpdateUIState(notification: NSNotification) {
+	@objc private func onUpdateServerState(notification: NSNotification) {
 		currentServerState = ServerState(rawValue: notification.userInfo![NotificationNames.updateServerStateParam] as! Int)!
+		updateMenu()
+	}
+	
+	@objc private func onUpdateSetupMode(notification: NSNotification) {
+		isSetupMode = notification.userInfo![NotificationNames.updateSetupModeParam] as! Bool
 		updateMenu()
 	}
 	
@@ -93,6 +106,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			menuItemSecondary.action = #selector(onOpenClientList)
 			menuItemSecondary.title = String(format: NSLocalizedString("message.status.connected_count", comment: ""), currentClientCount)
 		}
+		
+		menuItemPreferences.isEnabled = !isSetupMode
 	}
 	
 	@objc private func onRestartServer() {
@@ -100,7 +115,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@objc private func onReauthenticate() {
-		
+		resetServer()
+		showOnboarding()
 	}
 	
 	@objc private func onOpenClientList() {

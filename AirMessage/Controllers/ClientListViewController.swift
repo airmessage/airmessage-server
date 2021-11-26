@@ -19,8 +19,11 @@ class ClientListViewController: NSViewController {
 		super.viewDidLoad()
 		
 		//Load data
-		//clients = (jniGetClients() as! [ClientRegistration])
-		clients = []
+		clients = ConnectionManager.shared.connections
+			.map { connSet in
+				connSet.sorted { $0.id > $1.id }
+				.compactMap { $0.registration }
+			} ?? []
 		
 		//Set table delegate
 		tableView.delegate = self

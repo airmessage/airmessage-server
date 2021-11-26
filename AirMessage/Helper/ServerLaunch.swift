@@ -35,14 +35,14 @@ func setDataProxyAuto() -> Bool {
  */
 func launchServer() {
 	//Check for setup and permissions before launching
-	guard PreferencesManager.shared.accountType != .unknown && launchCheck() else {
+	guard PreferencesManager.shared.accountType != .unknown && checkServerPermissions() else {
 		NotificationNames.postUpdateUIState(.setup)
 		return
 	}
 	
 	//Connect to the database
 	do {
-		try DatabaseManager.shared.resume()
+		try DatabaseManager.shared.start()
 	} catch {
 		LogManager.log("Failed to start database: \(error)", level: .notice)
 		NotificationNames.postUpdateUIState(.errorDatabase)
@@ -56,7 +56,7 @@ func launchServer() {
 /**
  * Runs checks to test if the server has all the permissions it needs to work
  */
-fileprivate func launchCheck() -> Bool {
+func checkServerPermissions() -> Bool {
 	//Check for Apple Events access
 	guard AppleScriptBridge.shared.checkPermissionsMessages() else {
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
@@ -87,8 +87,9 @@ fileprivate func launchCheck() -> Bool {
 * Stops the server and resets the state to setup
 */
 func resetServer() {
-	ConnectionManager.shared.stop()
-	DatabaseManager.shared.cancel()
 	PreferencesManager.shared.accountType = .unknown
-	(NSApplication.shared.delegate as! AppDelegate).isSetupMode = true
+	NotificationNames.postUpdateSetupMode(true)
+	
+	ConnectionManager.shared.stop()
+	DatabaseManager.shared.stop()
 }

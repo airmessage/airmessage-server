@@ -14,16 +14,17 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AirMessage" customModuleProvider="target">
                     <connections>
                         <outlet property="menu" destination="uQy-DD-JDr" id="kHf-gA-lox"/>
+                        <outlet property="menuItemPreferences" destination="BOF-NM-1cW" id="Fyh-nf-06K"/>
                         <outlet property="menuItemPrimary" destination="5jL-EB-ghD" id="75B-da-1F8"/>
                         <outlet property="menuItemSecondary" destination="CpQ-ja-jCe" id="fQm-Zl-b5G"/>
                     </connections>
                 </customObject>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
-                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
+                    <menu key="mainMenu" title="Main Menu" systemMenu="main" autoenablesItems="NO" id="AYu-sK-qS6">
                         <items>
                             <menuItem title="AirMessage" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="AirMessage" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="AirMessage" systemMenu="apple" autoenablesItems="NO" id="uQy-DD-JDr">
                                     <items>
                                         <menuItem title="Initializing…" enabled="NO" id="5jL-EB-ghD">
                                             <modifierMask key="keyEquivalentModifierMask"/>
