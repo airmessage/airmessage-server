@@ -1,3 +1,6 @@
+#ifndef ZlibHelpers_h
+#define ZlibHelpers_h
+
 #include <zlib.h>
 
 /**
@@ -5,7 +8,7 @@
  * @param stream A pointer to the stream to initialize
  * @return The return code of deflateInit
  */
-int zlibInitializeDeflate(z_stream *stream) {
+static inline int zlibInitializeDeflate(z_stream *stream) {
 	stream->zalloc = Z_NULL;
 	stream->zfree = Z_NULL;
 	stream->opaque = Z_NULL;
@@ -18,7 +21,7 @@ int zlibInitializeDeflate(z_stream *stream) {
  * @param stream A pointer to the stream to initialize
  * @return The return code of inflateInit
  */
-int zlibInitializeInflate(z_stream *stream) {
+static inline int zlibInitializeInflate(z_stream *stream) {
 	stream->zalloc = Z_NULL;
 	stream->zfree = Z_NULL;
 	stream->opaque = Z_NULL;
@@ -27,3 +30,5 @@ int zlibInitializeInflate(z_stream *stream) {
 
 	return inflateInit(stream);
 }
+
+#endif /* ZlibHelpers_h */
