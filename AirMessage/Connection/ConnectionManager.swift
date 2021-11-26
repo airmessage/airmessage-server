@@ -21,6 +21,10 @@ class ConnectionManager {
 		}
 	}
 	
+	private var useAuthentication: Bool {
+		!PreferencesManager.shared.password.isEmpty
+	}
+	
 	/**
 	 Sets the data proxy to use for future connections.
 	 Only call this function when the server isn't running.
@@ -216,7 +220,7 @@ class ConnectionManager {
 		}
 		
 		let clientRegistration: ClientConnection.Registration
-		if dataProxy.requiresAuthentication {
+		if useAuthentication {
 			//Reading the data
 			let encryptedPayload = try messagePacker.unpackPayload()
 			let transmissionCheck: Data
@@ -1116,7 +1120,7 @@ extension ConnectionManager: DataProxyDelegate {
 		packer.pack(int: CommConst.version)
 		packer.pack(int: CommConst.subVersion)
 		
-		if dataProxy.requiresAuthentication {
+		if useAuthentication {
 			//Generate a transmission check
 			let transmissionCheck: Data
 			do {

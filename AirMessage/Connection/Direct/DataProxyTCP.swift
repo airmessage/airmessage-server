@@ -11,7 +11,6 @@ class DataProxyTCP: DataProxy {
 	weak var delegate: DataProxyDelegate?
 	
 	let name = "Direct"
-	let requiresAuthentication = true
 	let requiresPersistence = true
 	let supportsPushNotifications = false
 	private(set) var connections: Set<ClientConnection> = []

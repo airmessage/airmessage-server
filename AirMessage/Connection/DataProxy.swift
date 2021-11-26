@@ -16,11 +16,6 @@ protocol DataProxy: AnyObject {
 	var name: String { get }
 	
 	/**
-	 Gets whether this protocol requires clients to authenticate with a password
-	 */
-	var requiresAuthentication: Bool { get }
-	
-	/**
 	 Gets whether this protocol requires the server to actively maintain connections
 	 */
 	var requiresPersistence: Bool { get }

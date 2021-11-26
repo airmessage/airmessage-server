@@ -13,7 +13,6 @@ class DataProxyConnect: DataProxy {
 	weak var delegate: DataProxyDelegate?
 	
 	let name = "Connect"
-	let requiresAuthentication = false
 	let requiresPersistence = false
 	let supportsPushNotifications = true
 	private var connectionsMap: [Int32: ClientConnection] = [:]
