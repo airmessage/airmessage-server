@@ -564,9 +564,9 @@ class ConnectionManager {
 					LogManager.log("Failed to read / compress data for mass retrieval attachment file \(fileURL.path) (\(attachment.guid)): \(error)", level: .notice)
 					return
 				}
-			
-				messageResponseIndex += 1
 			}
+			
+			messageResponseIndex += 1
 		}
 		
 		//Send a success message
