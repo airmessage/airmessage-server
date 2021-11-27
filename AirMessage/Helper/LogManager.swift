@@ -65,6 +65,7 @@ private struct FileLogger: TextOutputStream {
 	
 	func write(_ string: String) {
 		let fileHandle = try! FileHandle(forWritingTo: file)
+		try! fileHandle.seekToEndCompat()
 		try! fileHandle.writeCompat(contentsOf: string.data(using: .utf8)!)
 	}
 }

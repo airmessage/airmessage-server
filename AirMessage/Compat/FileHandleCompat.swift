@@ -52,4 +52,15 @@ extension FileHandle {
 			closeFile()
 		}
 	}
+	
+	func seekToEndCompat() throws {
+		if #available(macOS 10.15.4, *) {
+			try seekToEnd()
+		} else {
+			//FileHandle.seekToEndOfFile() raises an NSException if the write fails
+			try ObjC.catchException {
+				seekToEndOfFile()
+			}
+		}
+	}
 }
