@@ -4,13 +4,11 @@
 import PackageDescription
 
 let package = Package(
-		name: "CLib",
+		name: "Zlib",
 		products: [
-			.library(name: "OpenSSL", targets: ["OpenSSL"]),
 			.library(name: "Zlib", targets: ["Zlib"]),
 		],
 		targets: [
-			.systemLibrary(name: "OpenSSL", pkgConfig: "openssl", providers: [.brew(["openssl"])]),
 			.systemLibrary(name: "Zlib", pkgConfig: "zlib", providers: [.brew(["zlib"])]),
 		]
 )

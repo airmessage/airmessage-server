@@ -1,0 +1,5 @@
+module OpenSSL [system][extern_c] {
+	header "OpenSSL.h"
+	link "libcrypto.a"
+	export *
+}
