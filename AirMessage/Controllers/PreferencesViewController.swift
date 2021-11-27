@@ -111,7 +111,7 @@ class PreferencesViewController: NSViewController {
 			alert.addButton(withTitle: NSLocalizedString("action.sign_out", comment: ""))
 		}
 		alert.informativeText = NSLocalizedString("message.reset.subtitle", comment: "")
-		alert.addButton(withTitle: "Cancel")
+		alert.addButton(withTitle: NSLocalizedString("action.cancel", comment: ""))
 		alert.beginSheetModal(for: view.window!) { response in
 			if response != .alertFirstButtonReturn {
 				return

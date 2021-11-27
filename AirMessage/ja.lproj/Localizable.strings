@@ -7,6 +7,7 @@
 */
 
 "action.ok"="OK";
+"action.done"="完了";
 "action.retry"="再試行";
 "action.cancel"="キャンセル";
 "action.reauthenticate"="再度ログイン";
