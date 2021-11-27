@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ED28095025A20332009E7636"
-               BuildableName = "AirMessage.app"
-               BlueprintName = "AirMessage"
-               ReferencedContainer = "container:AirMessage.xcodeproj">
+               BlueprintIdentifier = "Zlib"
+               BuildableName = "Zlib"
+               BlueprintName = "Zlib"
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,24 +34,12 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      disableMainThreadChecker = "YES"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      enableGPUValidationMode = "1"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ED28095025A20332009E7636"
-            BuildableName = "AirMessage.app"
-            BlueprintName = "AirMessage"
-            ReferencedContainer = "container:AirMessage.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -59,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ED28095025A20332009E7636"
-            BuildableName = "AirMessage.app"
-            BlueprintName = "AirMessage"
-            ReferencedContainer = "container:AirMessage.xcodeproj">
+            BlueprintIdentifier = "Zlib"
+            BuildableName = "Zlib"
+            BlueprintName = "Zlib"
+            ReferencedContainer = "container:">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
