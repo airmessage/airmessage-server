@@ -45,8 +45,6 @@ class DataProxyConnect: DataProxy {
 		//Ignore if we're already connecting or connected
 		guard !isActive else { return }
 		
-		print("Starting Connect proxy server")
-		
 		//Cancel any active connection recover timers (in case the user initiated a reconnect)
 		stopConnectionRecoveryTimer()
 		
