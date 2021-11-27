@@ -430,7 +430,6 @@ class DatabaseManager {
 	enum FailableDatabaseMessageRow {
 		case deallocError
 		case sqlError(Error)
-		case dataError
 		case row(DatabaseMessageRow?)
 
 		var isError: Bool {

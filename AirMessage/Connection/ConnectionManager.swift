@@ -413,7 +413,15 @@ class ConnectionManager {
 			}
 			
 			//Check for errors
-			guard !groupArray.contains(where: { $0.isError }) else {
+			if let error = groupArray.first(where: { $0.isError }) {
+				switch error {
+					case .deallocError:
+						LogManager.log("Encountered an error while reading mass retrieval messages: database deallocated", level: .notice)
+					case .sqlError(let error):
+						LogManager.log("Encountered an error while reading mass retrieval messages: \(error)", level: .notice)
+					default:
+						break
+				}
 				return
 			}
 			
