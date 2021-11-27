@@ -8,6 +8,6 @@ SELECT max(message.ROWID) as "message.ROWID",
 FROM message
     JOIN chat_message_join ON message.ROWID = chat_message_join.message_id
     JOIN chat ON chat_message_join.chat_id = chat.ROWID
-WHERE message.is_from_me IS TRUE
+WHERE message.is_from_me IS 1
 %1$@ /* Extra query statements */
 GROUP BY chat.ROWID
