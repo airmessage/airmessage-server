@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import WebKit
 import Swifter
 
 private let jsFuncConfirm = "confirmHandler"
@@ -15,7 +14,6 @@ class AccountConnectViewController: NSViewController {
 	@IBOutlet weak var cancelButton: NSButton!
 	@IBOutlet weak var loadingProgressIndicator: NSProgressIndicator!
 	@IBOutlet weak var loadingLabel: NSTextField!
-	private var webView: WKWebView!
 	
 	private var server: HttpServer!
 	
@@ -30,32 +28,69 @@ class AccountConnectViewController: NSViewController {
 		//Prevent resizing
 		preferredContentSize = view.frame.size
 		
-		//Initialize the WebView
-		webView = WKWebView()
-		webView.frame = CGRect(x: 20, y: 60, width: 450, height: 450)
-		view.addSubview(webView)
-		
-		let contentController = webView.configuration.userContentController
-		contentController.add(self, name: jsFuncConfirm)
-		
-		webView.layer!.borderWidth = 1
-		webView.layer!.borderColor = NSColor.lightGray.cgColor
-		
 		//Start the HTTP server
 		server = HttpServer()
 		
 		server["/"] = shareFile(Bundle.main.resourcePath! + "/build/index.html")
 		server["/:path"] = shareFilesFromDirectory(Bundle.main.resourcePath! + "/build")
+		server.POST["/method"] = { request in
+			if #available(macOS 10.15, *) {
+				return .ok(.text("scheme"))
+			} else {
+				return .ok(.text("post"))
+			}
+		}
+		server.POST["/submit"] = { request in
+			//Get the refresh token
+			guard let refreshToken = request.queryParams.first(where: { $0.0 == "refreshToken" })?.1 else {
+				LogManager.log("Ignoring invalid /submit request", level: .notice)
+				return .badRequest(nil)
+			}
+			
+			//Start connecting
+			DispatchQueue.main.async {
+				NSApp.activate(ignoringOtherApps: true)
+				self.startConnection(refreshToken: refreshToken)
+			}
+			
+			//Return OK
+			return .ok(.data(Data(), contentType: nil))
+		}
 		try! server.start(0)
 		let port = try! server.port()
 		
 		LogManager.log("Running local server on http://localhost:\(port)", level: .info)
-		webView.load(URLRequest(url: URL(string:"http://localhost:\(port)")!))
+		
+		//Open the URL in Safari
+		var urlComponents = URLComponents()
+		urlComponents.scheme = "http"
+		urlComponents.host = "localhost"
+		urlComponents.port = port
+		if #available(macOS 10.15, *) {
+			urlComponents.queryItems = [
+				URLQueryItem(name: "method", value: "custom")
+			]
+		} else {
+			urlComponents.queryItems = [
+				URLQueryItem(name: "method", value: "post")
+			]
+		}
+		
+		
+		let url = URL(string:"http://localhost:\(port)")!
+		if #available(macOS 10.15, *) {
+			let safariURL = try! FileManager.default.url(for: .applicationDirectory, in: .localDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Safari.app")
+			NSWorkspace.shared.open([url], withApplicationAt: safariURL, configuration: NSWorkspace.OpenConfiguration())
+		} else {
+			NSWorkspace.shared.open([url], withAppBundleIdentifier: "com.apple.safari", options: .default, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
+		}
 		
 		//Update the view
 		setLoading(false)
+		loadingProgressIndicator.startAnimation(self)
 		
-		//Register for connection updates
+		//Register for authentication and connection updates
+		NotificationCenter.default.addObserver(self, selector: #selector(onAuthenticate), name: NotificationNames.authenticate, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateServerState), name: NotificationNames.updateServerState, object: nil)
 	}
 	
@@ -72,14 +107,7 @@ class AccountConnectViewController: NSViewController {
 	 */
 	private func setLoading(_ loading: Bool) {
 		cancelButton.isEnabled = !loading
-		loadingProgressIndicator.isHidden = !loading
-		if loading {
-			loadingProgressIndicator.startAnimation(self)
-		} else {
-			loadingProgressIndicator.stopAnimation(self)
-		}
 		loadingLabel.isHidden = !loading
-		webView.isHidden = loading
 	}
 	
 	private func startConnection(refreshToken: String) {
@@ -177,6 +205,11 @@ class AccountConnectViewController: NSViewController {
 		}
 	}
 	
+	@objc private func onAuthenticate(notification: NSNotification) {
+		let refreshToken = notification.userInfo![NotificationNames.authenticateParam] as! String
+		startConnection(refreshToken: refreshToken)
+	}
+	
 	@objc private func onUpdateServerState(notification: NSNotification) {
 		guard isConnecting else { return }
 		
@@ -194,15 +227,6 @@ class AccountConnectViewController: NSViewController {
 			showError(message: serverState.description, showReconnect: serverState.recoveryType == .retry)
 			
 			isConnecting = false
-		}
-	}
-}
-
-extension AccountConnectViewController: WKScriptMessageHandler {
-	func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-		if message.name == jsFuncConfirm {
-			let dict = message.body as! [String: String]
-			startConnection(refreshToken: dict["refreshToken"]!)
 		}
 	}
 }

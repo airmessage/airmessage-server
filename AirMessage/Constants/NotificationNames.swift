@@ -17,6 +17,9 @@ class NotificationNames {
 	static let updateConnectionCount = NSNotification.Name("updateConnectionCount")
 	static let updateConnectionCountParam = "count"
 	
+	static let authenticate = NSNotification.Name("authenticate")
+	static let authenticateParam = "refreshToken"
+	
 	static let signOut = NSNotification.Name("signOut")
 	
 	/**
@@ -43,6 +46,15 @@ class NotificationNames {
 	static func postUpdateConnectionCount(_ connectionCount: Int) {
 		runOnMainAsync {
 			NotificationCenter.default.post(name: NotificationNames.updateConnectionCount, object: nil, userInfo: [NotificationNames.updateConnectionCountParam: connectionCount])
+		}
+	}
+	
+	/**
+	 Posts an authentication update to `NotificationCenter` in a thread-safe manner
+	 */
+	static func postAuthenticate(_ refreshToken: String) {
+		runOnMainAsync {
+			NotificationCenter.default.post(name: NotificationNames.authenticate, object: nil, userInfo: [NotificationNames.authenticateParam: refreshToken])
 		}
 	}
 }

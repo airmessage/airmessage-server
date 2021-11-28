@@ -537,7 +537,7 @@ Gw
             <objects>
                 <viewController id="Y7F-lv-57a" userLabel="Account Sign-In" customClass="AccountConnectViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="MDN-Zm-Nl6">
-                        <rect key="frame" x="0.0" y="0.0" width="590" height="630"/>
+                        <rect key="frame" x="0.0" y="0.0" width="490" height="530"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MmA-aP-aD0">
@@ -556,12 +556,12 @@ Gw
                                     <action selector="dismissController:" target="Y7F-lv-57a" id="i8n-Dc-3Ec"/>
                                 </connections>
                             </button>
-                            <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="2Uh-lB-MyH">
-                                <rect key="frame" x="287" y="359" width="16" height="16"/>
+                            <progressIndicator fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="2Uh-lB-MyH">
+                                <rect key="frame" x="229" y="261" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </progressIndicator>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfJ-H5-Dj1">
-                                <rect key="frame" x="95" y="335" width="400" height="16"/>
+                                <rect key="frame" x="45" y="237" width="400" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Checking your connection…" id="Opk-1u-xCG">
                                     <font key="font" metaFont="system"/>

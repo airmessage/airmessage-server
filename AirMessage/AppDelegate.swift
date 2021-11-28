@@ -70,6 +70,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		DatabaseManager.shared.stop()
 	}
 	
+	func application(_ application: NSApplication, open urls: [URL]) {
+		for url in urls {
+			//Parse the URL
+			guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+				  let scheme = components.scheme,
+				  let path = components.path,
+				  let params = components.queryItems else {
+					  LogManager.log("Unable to parse incoming URL: \(url)", level: .notice)
+					  continue
+				  }
+			
+			//Check for authentication
+			guard scheme == "airmessageauth",
+				  path == "firebase",
+				  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
+					  LogManager.log("Unable to validate incoming URL: \(url)", level: .notice)
+					  continue
+				  }
+			
+			//Post the update
+			NotificationNames.postAuthenticate(refreshToken)
+		}
+	}
+	
 	@objc private func onUpdateServerState(notification: NSNotification) {
 		currentServerState = ServerState(rawValue: notification.userInfo![NotificationNames.updateServerStateParam] as! Int)!
 		updateMenu()
