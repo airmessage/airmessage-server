@@ -78,7 +78,7 @@ class DatabaseConverter {
 		let chatGUID = row[indices["chat.guid"]!] as! String
 		let date = row[indices["message.date"]!] as! Int64
 		
-		let sender = (row[indices["message.is_from_me"]!] as! Int64 != 0) ? nil : (row[indices["sender_handle.id"]!] as! String)
+		let sender = (row[indices["message.is_from_me"]!] as! Int64 != 0) ? nil : (row[indices["sender_handle.id"]!] as! String?)
 		let itemType = MessageItemType(rawValue: Int(row[indices["message.item_type"]!] as! Int64))
 		
 		if itemType == .message {
