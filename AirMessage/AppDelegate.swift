@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		if !dataProxyRegistered {
 			//Show welcome window
 			isSetupMode = true
-			showOnboarding()
+            OnboardingViewController.open()
 			NSApp.activate(ignoringOtherApps: true)
 		} else {
 			//Start server
@@ -116,13 +116,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	@objc private func onReauthenticate() {
 		resetServer()
-		showOnboarding()
+        OnboardingViewController.open()
 	}
 	
 	@objc private func onOpenClientList() {
-		let storyboard = NSStoryboard(name: "Main", bundle: nil)
-		let windowController = storyboard.instantiateController(withIdentifier: "ClientList") as! NSWindowController
-		windowController.showWindow(nil)
+        ClientListViewController.open()
 	}
 	
 	@IBAction func onCheckForUpdates(_ sender: Any) {

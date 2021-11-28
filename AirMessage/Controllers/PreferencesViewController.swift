@@ -124,7 +124,7 @@ class PreferencesViewController: NSViewController {
 			self.view.window!.close()
 			
 			//Show the onboarding window
-			showOnboarding()
+            OnboardingViewController.open()
 		}
 	}
 	

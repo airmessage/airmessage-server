@@ -9,11 +9,21 @@ import Foundation
 import AppKit
 
 class ClientListViewController: NSViewController {
+    //Keep in memory on older versions of OS X
+    private static var clientListWindowController: NSWindowController!
+    
 	private static let cellID = NSUserInterfaceItemIdentifier(rawValue: "DeviceTableCell")
 	
 	@IBOutlet weak var tableView: NSTableView!
 	
 	private var clients: [ClientConnection.Registration]!
+    
+    static func open() {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let windowController = storyboard.instantiateController(withIdentifier: "ClientList") as! NSWindowController
+        windowController.showWindow(nil)
+        clientListWindowController = windowController
+    }
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

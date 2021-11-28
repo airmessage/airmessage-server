@@ -8,13 +8,17 @@
 import Foundation
 import AppKit
 
-func showOnboarding() {
-	let storyboard = NSStoryboard(name: "Main", bundle: nil)
-	let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
-	windowController.showWindow(nil)
-}
-
 class OnboardingViewController: NSViewController {
+    //Keep in memory on older versions of OS X
+    private static var onboardingWindowController: NSWindowController!
+    
+    static func open() {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
+        windowController.showWindow(nil)
+        onboardingWindowController = windowController
+    }
+    
 	override func viewWillAppear() {
 		let window = view.window!
 		window.isMovableByWindowBackground = true
