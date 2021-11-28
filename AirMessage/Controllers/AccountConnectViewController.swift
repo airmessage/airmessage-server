@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import AuthenticationServices
 import Swifter
 
 private let jsFuncConfirm = "confirmHandler"
@@ -17,6 +18,9 @@ class AccountConnectViewController: NSViewController {
 	
 	private var server: HttpServer!
 	
+	@available(macOS 10.15, *)
+	private lazy var currentAuthSession: ASWebAuthenticationSession? = nil
+	
 	private var isConnecting = false
 	private var currentDataProxy: DataProxyConnect!
 	private var currentUserID: String!
@@ -27,6 +31,10 @@ class AccountConnectViewController: NSViewController {
 	override func viewDidLoad() {
 		//Prevent resizing
 		preferredContentSize = view.frame.size
+	}
+	
+	override func viewDidAppear() {
+		super.viewDidAppear()
 		
 		//Start the HTTP server
 		server = HttpServer()
@@ -62,26 +70,48 @@ class AccountConnectViewController: NSViewController {
 		LogManager.log("Running local server on http://localhost:\(port)", level: .info)
 		
 		//Open the URL in Safari
-		var urlComponents = URLComponents()
-		urlComponents.scheme = "http"
-		urlComponents.host = "localhost"
-		urlComponents.port = port
-		if #available(macOS 10.15, *) {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "method", value: "custom")
-			]
-		} else {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "method", value: "post")
-			]
-		}
-		
-		
 		let url = URL(string:"http://localhost:\(port)")!
 		if #available(macOS 10.15, *) {
-			let safariURL = try! FileManager.default.url(for: .applicationDirectory, in: .localDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Safari.app")
-			NSWorkspace.shared.open([url], withApplicationAt: safariURL, configuration: NSWorkspace.OpenConfiguration())
+			//Open URL in an authentication session
+			let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "airmessageauth") { [self] callbackURL, error in
+				DispatchQueue.main.async {
+					//Remove the session
+					currentAuthSession = nil
+					
+					//Check the response
+					guard error == nil, let callbackURL = callbackURL else {
+						dismiss(self)
+						return
+					}
+					
+					//Parse the URL
+					guard let components = NSURLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
+						  let scheme = components.scheme,
+						  let path = components.path,
+						  let params = components.queryItems else {
+							  LogManager.log("Unable to parse authentication response URL: \(url)", level: .notice)
+							  dismiss(self)
+							  return
+						  }
+					
+					//Check for authentication
+					guard scheme == "airmessageauth",
+						  path == "firebase",
+						  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
+							  LogManager.log("Unable to validate authentication response URL: \(url)", level: .notice)
+							  dismiss(self)
+							  return
+						  }
+					
+					//Start connecting
+					startConnection(refreshToken: refreshToken)
+				}
+			}
+			session.presentationContextProvider = self
+			session.start()
+			currentAuthSession = session
 		} else {
+			//Open URL in Safari
 			NSWorkspace.shared.open([url], withAppBundleIdentifier: "com.apple.safari", options: .default, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
 		}
 		
@@ -100,6 +130,11 @@ class AccountConnectViewController: NSViewController {
 		
 		//Remove update listeners
 		NotificationCenter.default.removeObserver(self)
+		
+		//Cancel the authentication session
+		if #available(macOS 10.15, *) {
+			currentAuthSession?.cancel()
+		}
 	}
 	
 	/**
@@ -228,5 +263,12 @@ class AccountConnectViewController: NSViewController {
 			
 			isConnecting = false
 		}
+	}
+}
+
+@available(macOS 10.15, *)
+extension AccountConnectViewController: ASWebAuthenticationPresentationContextProviding {
+	func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+		return view.window!
 	}
 }
