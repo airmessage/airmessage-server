@@ -9,6 +9,6 @@ let package = Package(
 			.library(name: "Zlib", targets: ["Zlib"]),
 		],
 		targets: [
-			.systemLibrary(name: "Zlib", pkgConfig: "zlib", providers: [.brew(["zlib"])]),
+			.systemLibrary(name: "Zlib", pkgConfig: "zlib"),
 		]
 )

@@ -1306,7 +1306,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed\"\n  exit 1\nfi\n\ncd AirMessage/AuthSite\nnpm install\nnpm run build\n";
+			shellScript = "export PATH=\"$PATH:/usr/local/bin:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed\"\n  exit 1\nfi\n\ncd AirMessage/AuthSite\nnpm install\nnpm run build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
