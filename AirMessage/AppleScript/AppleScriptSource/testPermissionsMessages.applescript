@@ -1,3 +1,3 @@
 tell application "Messages"
-	get first chat
+	count windows
 end tell
