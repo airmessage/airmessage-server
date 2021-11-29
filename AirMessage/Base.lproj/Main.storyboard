@@ -1471,8 +1471,8 @@ DQ
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FhY-C3-Y1U">
-                                        <rect key="frame" x="-2" y="264" width="517" height="16"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="AirMessage Server 2.0 is available - you have 1.5. Would you like to download it now?" id="c7E-6N-uOg">
+                                        <rect key="frame" x="-2" y="264" width="554" height="16"/>
+                                        <textFieldCell key="cell" title="AirMessage Server 2.0 is available - you have 1.5. Would you like to download it now?" id="c7E-6N-uOg">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1546,6 +1546,8 @@ DQ
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="rSD-50-pXn" firstAttribute="leading" secondItem="qln-JE-dUV" secondAttribute="leading" id="Kwm-CT-Xgz"/>
+                                    <constraint firstItem="FhY-C3-Y1U" firstAttribute="leading" secondItem="qln-JE-dUV" secondAttribute="leading" id="PZO-ov-hnc"/>
+                                    <constraint firstAttribute="trailing" secondItem="FhY-C3-Y1U" secondAttribute="trailing" id="Qic-oe-36d"/>
                                     <constraint firstAttribute="trailing" secondItem="rSD-50-pXn" secondAttribute="trailing" id="dxX-TW-hNc"/>
                                     <constraint firstAttribute="width" constant="550" id="eDn-HM-gFJ"/>
                                     <constraint firstAttribute="trailing" secondItem="xsY-uQ-l0m" secondAttribute="trailing" id="jg2-tU-utq"/>
