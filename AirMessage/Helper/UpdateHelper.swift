@@ -49,9 +49,17 @@ class UpdateHelper {
 				return
 			}
 			
-			guard let data = data,
-				  let updateData = try? JSONDecoder().decode(UpdateCheckResult.self, from: data) else {
-				LogManager.log("Failed to parse update data", level: .notice)
+			guard let data = data else {
+				LogManager.log("No update data available", level: .notice)
+				notifyError(.parseError)
+				return
+			}
+			
+			let updateData: UpdateCheckResult
+			do {
+				updateData = try JSONDecoder().decode(UpdateCheckResult.self, from: data)
+			} catch {
+				LogManager.log("Failed to parse update data: \(error)", level: .notice)
 				notifyError(.parseError)
 				return
 			}
