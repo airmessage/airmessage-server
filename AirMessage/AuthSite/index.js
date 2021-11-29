@@ -1,5 +1,5 @@
 import {initializeApp} from "firebase/app";
-import {getAuth, getIdToken, GoogleAuthProvider} from "firebase/auth";
+import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import {firebaseConfig} from "./secrets";
 

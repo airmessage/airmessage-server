@@ -1,21 +1,10 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	entry: "./index.js",
 	target: ["web", "es5"],
 	mode: "production",
-    optimization: {
-        minimize: true,
-        minimizer: [
-        	new TerserPlugin({
-        		terserOptions: {
-        			safari10: true
-        		}
-        	})
-        ]
-    },
 	output: {
 		path: path.resolve(__dirname, "build"),
 		filename: "index.js",
@@ -27,12 +16,15 @@ module.exports = {
 		rules: [
 			{
 				test: /\.m?js$/,
-				exclude: /node_modules/,
 				use: {
 					loader: "babel-loader",
 					options: {
 						presets: ["@babel/preset-env"],
-                        targets: "safari >= 10"
+                        targets: "safari >= 10",
+						"exclude": [
+							/node_modules[\\\/]core-js/,
+							/node_modules[\\\/]webpack[\\\/]buildin/,
+						],
 					}
 				}
 			}
