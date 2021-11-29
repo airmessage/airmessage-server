@@ -18,21 +18,21 @@ ui.start("#firebaseui-auth-container", {
 			const refreshToken = authResult.user.refreshToken;
 			
 			//Get response method
-			const xhr = new XMLHttpRequest();
-			xhr.responseType = "text";
-			xhr.open("POST", "/method");
-			xhr.onload = () => {
+			const xhrMethod = new XMLHttpRequest();
+            xhrMethod.responseType = "text";
+            xhrMethod.open("POST", "/method");
+            xhrMethod.onload = () => {
 				//Send response back to Mac app
-				const method = xhr.responseText;
+				const method = xhrMethod.responseText;
 				if(method === "scheme") {
 					window.location.href = `airmessageauth:firebase?refreshToken=${refreshToken}`;
 				} else if(method === "post") {
-					const xhr = new XMLHttpRequest();
-					xhr.open("POST", `submit/?refreshToken=${refreshToken}`);
-					xhr.send();
+					const xhrSubmit = new XMLHttpRequest();
+                    xhrSubmit.open("POST", `submit/?refreshToken=${refreshToken}`);
+                    xhrSubmit.send();
 				}
 			};
-			xhr.send();
+            xhrMethod.send();
 			
 			//Disable automatic redirect
 			return false;
