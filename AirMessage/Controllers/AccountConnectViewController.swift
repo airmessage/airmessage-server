@@ -69,7 +69,6 @@ class AccountConnectViewController: NSViewController {
 		
 		LogManager.log("Running local server on http://localhost:\(port)", level: .info)
 		
-		//Open the URL in Safari
 		let url = URL(string:"http://localhost:\(port)")!
 		if #available(macOS 10.15, *) {
 			//Open URL in an authentication session
@@ -111,8 +110,8 @@ class AccountConnectViewController: NSViewController {
 			session.start()
 			currentAuthSession = session
 		} else {
-			//Open URL in Safari
-			NSWorkspace.shared.open([url], withAppBundleIdentifier: "com.apple.safari", options: .default, additionalEventParamDescriptor: nil, launchIdentifiers: nil)
+			//Open URL in the default web browser
+			NSWorkspace.shared.open(url)
 		}
 		
 		//Update the view
