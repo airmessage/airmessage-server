@@ -1231,7 +1231,7 @@ DQ
                                                             </constraints>
                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="BrowserChrome" id="CDc-PE-COz"/>
                                                         </imageView>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SSw-1T-x1h">
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SSw-1T-x1h">
                                                             <rect key="frame" x="58" y="30" width="369" height="16"/>
                                                             <textFieldCell key="cell" title="Title" id="3Kz-ZL-dhB">
                                                                 <font key="font" metaFont="systemBold"/>
@@ -1239,7 +1239,7 @@ DQ
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                         </textField>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g5q-ke-Gz6">
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g5q-ke-Gz6">
                                                             <rect key="frame" x="58" y="11" width="369" height="16"/>
                                                             <textFieldCell key="cell" title="Title" id="aKU-dV-VHF">
                                                                 <font key="font" metaFont="system"/>
@@ -1249,7 +1249,9 @@ DQ
                                                         </textField>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="g5q-ke-Gz6" firstAttribute="top" secondItem="SSw-1T-x1h" secondAttribute="bottom" constant="3" id="6br-d9-8AH"/>
                                                         <constraint firstItem="Ewd-A2-C5e" firstAttribute="centerY" secondItem="HzZ-gG-hmQ" secondAttribute="centerY" id="8xQ-GH-M6j"/>
+                                                        <constraint firstItem="SSw-1T-x1h" firstAttribute="top" secondItem="HzZ-gG-hmQ" secondAttribute="top" constant="14" id="Nal-we-ij6"/>
                                                         <constraint firstItem="g5q-ke-Gz6" firstAttribute="leading" secondItem="Ewd-A2-C5e" secondAttribute="trailing" constant="8" id="YeH-hn-Whh"/>
                                                         <constraint firstItem="Ewd-A2-C5e" firstAttribute="leading" secondItem="HzZ-gG-hmQ" secondAttribute="leading" constant="4" id="dzX-zt-JSD"/>
                                                         <constraint firstItem="SSw-1T-x1h" firstAttribute="leading" secondItem="Ewd-A2-C5e" secondAttribute="trailing" constant="8" id="hHI-t9-Se4"/>
