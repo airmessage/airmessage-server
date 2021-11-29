@@ -20,25 +20,6 @@ func releaseSystemSleep() {
 }
 
 /**
- Gets if this process is translated by Rosetta.
- Defaults to returning false if an error occurs.
- */
-func isProcessTranslated() -> Bool {
-	var ret: Int32 = 0
-	var size = MemoryLayout.size(ofValue: ret)
-	sysctlbyname("sysctl.proc_translated", &ret, &size, nil, 0)
-	return ret == 1
-}
-
-/**
- Gets a string representation of the current computer architecture
- */
-func getSystemArchitecture() -> String {
-	let info = NXGetLocalArchInfo()
-	return String(utf8String: (info!.pointee.description)!)!
-}
-
-/**
  Gets the name of the computer
  */
 func getComputerName() -> String? {

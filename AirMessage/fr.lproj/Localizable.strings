@@ -108,7 +108,6 @@
 "message.update.error.invalid_package"="Des données de mise à jour non valides ont été reçues";
 "message.update.error.internal"="Une erreur interne s'est produite lors du traitement de cette mise à jour";
 "message.update.error.os_compat"="Veuillez mettre à jour vers macOS %d.%d.%d et réessayer";
-"message.update.error.arch_compat"="L'architecture de votre système (%@) n'est pas prise en charge";
 
 "message.register.error.title"="Impossible d'enregistrer cet ordinateur";
 "message.register.error.sign_in"="Une erreur s'est produite lors de la connexion";

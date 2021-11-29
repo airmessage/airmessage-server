@@ -131,24 +131,10 @@ class UpdateHelper {
 				updateNotes = updateData.notes[0].message
 			}
 			
-			//Find a matching download URL
-			let downloadURL: URL?
-			#if arch(x86_64)
-				if isProcessTranslated() {
-					//Try for Apple Silicon
-					downloadURL = UpdateHelper.resolveDownloadURL(forAppleSilicon: updateData)
-				} else {
-					downloadURL = UpdateHelper.resolveDownloadURL(forIntel: updateData)
-				}
-			#elseif arch(arm64)
-				downloadURL = UpdateHelper.resolveDownloadURL(forAppleSilicon: updateData)
-			#else
-				downloadURL = nil
-			#endif
-			
-			guard let downloadURL = downloadURL else {
-				LogManager.log("Can't apply update, no URL available for architecture", level: .notice)
-				notifyError(.archCompatibilityError)
+			//Get the download URL
+			guard let downloadURL = URL(string: updateData.url) else {
+				LogManager.log("Can't apply update, invalid URL", level: .notice)
+				notifyError(.parseError)
 				return
 			}
 			
@@ -311,29 +297,6 @@ class UpdateHelper {
 		
 		return true
 	}
-	
-	/**
-	 Gets the download URL from an update check result for Intel devices
-	 */
-	private static func resolveDownloadURL(forIntel updateData: UpdateCheckResult) -> URL? {
-		if let urlIntelString = updateData.urlIntel, let urlIntel = URL(string: urlIntelString) {
-			return urlIntel
-		} else {
-			return nil
-		}
-	}
-	
-	/**
-	 Gets the download URL from an update check result for Apple Silicon devices
-	 */
-	private static func resolveDownloadURL(forAppleSilicon updateData: UpdateCheckResult) -> URL? {
-		if let urlAppleSiliconString = updateData.urlAppleSilicon, let urlAppleSilicon = URL(string: urlAppleSiliconString) {
-			return urlAppleSilicon
-		} else {
-			//Fall back to Intel
-			return UpdateHelper.resolveDownloadURL(forIntel: updateData)
-		}
-	}
 }
 
 private struct UpdateCheckResult: Decodable {
@@ -342,8 +305,7 @@ private struct UpdateCheckResult: Decodable {
 	let osRequirement: String
 	let protocolRequirement: String
 	let notes: [UpdateNotes]
-	let urlIntel: String?
-	let urlAppleSilicon: String?
+	let url: String
 	let externalDownload: Bool
 }
 
@@ -474,7 +436,6 @@ enum UpdateError: Error, LocalizedError {
 	case networkError(error: Error)
 	case parseError
 	case osCompatibilityError(minVersion: OperatingSystemVersion)
-	case archCompatibilityError
 	
 	var errorDescription: String? {
 		switch self {
@@ -484,8 +445,6 @@ enum UpdateError: Error, LocalizedError {
 				return NSLocalizedString("message.update.error.parse", comment: "")
 			case .osCompatibilityError(let minVersion):
 				return String(format: NSLocalizedString("message.update.error.os_compat", comment: ""), minVersion.majorVersion, minVersion.minorVersion, minVersion.patchVersion)
-			case .archCompatibilityError:
-				return String(format: NSLocalizedString("message.update.error.arch_compat", comment: ""), getSystemArchitecture())
 		}
 	}
 }

@@ -108,7 +108,6 @@
 "message.update.error.invalid_package"="無効なアップデートパッケージを受信しました";
 "message.update.error.internal"="このアップデートの処理中に内部エラーが発生しました";
 "message.update.error.os_compat"="macOS %d.%d.%d にアップデートして再度お試しください。";
-"message.update.error.arch_compat"="お使いのシステム・アーキテクチャ（%@）はサポートされていません。";
 
 "message.register.error.title"="このコンピュータの登録に失敗しました";
 "message.register.error.sign_in"="ログインしようとしてエラーが発生しました";
