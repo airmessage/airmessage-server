@@ -5,9 +5,9 @@
 import Foundation
 
 struct UpdateStruct {
-	let id: Int
-	let protocolRequirement: [Int]
-	let versionCode: Int
+	let id: Int32
+	let protocolRequirement: [Int32]
+	let versionCode: Int32
 	let versionName: String
 	let notes: String
 	let downloadURL: URL

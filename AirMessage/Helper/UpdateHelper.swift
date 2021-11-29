@@ -24,7 +24,7 @@ class UpdateHelper {
 	private static var updatePromptWindow: NSWindow?
 	
 	//Incremented update ID value
-	private static var nextUpdateID = 0
+	private static var nextUpdateID: Int32 = 0
 	
 	/**
 	 Queries the online server for available updates
@@ -100,9 +100,9 @@ class UpdateHelper {
 			}
 			
 			//Parsing the protocol requirement
-			var protocolSplit: [Int] = []
+			var protocolSplit: [Int32] = []
 			for version in updateData.protocolRequirement.components(separatedBy: ".") {
-				guard let versionInt = Int(version) else {
+				guard let versionInt = Int32(version) else {
 					LogManager.log("Failed to parse protocol version int \(version) in \(updateData.protocolRequirement)", level: .notice)
 					notifyError(.parseError)
 					return
@@ -171,7 +171,7 @@ class UpdateHelper {
 							downloadURL: downloadURL,
 							downloadExternal: updateData.externalDownload
 					)
-					nextUpdateID += 1
+					nextUpdateID &+= 1
 					
 					pendingUpdate = updateStruct
 					onUpdate(updateStruct, true)
@@ -202,6 +202,14 @@ class UpdateHelper {
 	@objc private static func updateTimerCheck() {
 		//Check for updates, show window
 		checkUpdates(onError: nil, onUpdate: { update, isNew in
+			if isNew {
+				//Notify connected clients of an update
+				DispatchQueue.global(qos: .default).async {
+					ConnectionManager.shared.send(update: update)
+				}
+			}
+			
+			//Show the update window
 			showUpdateWindow(for: update, isNew: isNew, backgroundMode: true)
 		})
 	}
@@ -329,7 +337,7 @@ class UpdateHelper {
 }
 
 private struct UpdateCheckResult: Decodable {
-	let versionCode: Int
+	let versionCode: Int32
 	let versionName: String
 	let osRequirement: String
 	let protocolRequirement: String

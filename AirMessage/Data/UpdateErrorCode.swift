@@ -4,7 +4,7 @@
 
 import Foundation
 
-@objc enum UpdateErrorCode: Int {
+enum UpdateErrorCode: Int {
 	case download = 0
 	case badPackage = 1
 	case internalError = 2

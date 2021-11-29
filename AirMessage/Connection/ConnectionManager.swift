@@ -166,6 +166,31 @@ class ConnectionManager {
 		dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 	}
 	
+	/// Sends a pending update to a client
+	/// - Parameters:
+	///   - update: The update information to send
+	///   - client: The client to send the update to, or nil to broadcast
+	public func send(update: UpdateStruct?, to client: C? = nil) {
+		guard let dataProxy = dataProxy else { return }
+		
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.softwareUpdateListing.rawValue)
+		if let update = update {
+			responsePacker.pack(bool: true)
+			responsePacker.pack(int: update.id)
+			responsePacker.pack(arrayHeader: Int32(update.protocolRequirement.count))
+			update.protocolRequirement.forEach { responsePacker.pack(int: $0) }
+			
+			responsePacker.pack(string: update.versionName)
+			responsePacker.pack(string: update.notes)
+			responsePacker.pack(bool: !update.downloadExternal) //Whether this update is remotely installable
+		} else {
+			responsePacker.pack(bool: false)
+		}
+		
+		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+	}
+	
 	/**
 	 Sends an array of incoming messages or incoming modifiers as a push notification
 	 */
@@ -1032,6 +1057,72 @@ class ConnectionManager {
 		}
 	}
 	
+	private func handleMessageGetSoftwareUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Get the pending update
+		let pendingUpdate = DispatchQueue.main.sync {
+			UpdateHelper.pendingUpdate
+		}
+		
+		send(update: pendingUpdate, to: client)
+	}
+	
+	private func handleMessageInstallSoftwareUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Get the update ID
+		let updateID = try messagePacker.unpackInt()
+		
+		func sendResult(_ result: Bool) {
+			guard let dataProxy = dataProxy else { return }
+			
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.softwareUpdateInstall.rawValue)
+			responsePacker.pack(bool: false)
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//Get the current pending update
+		let pendingUpdate = DispatchQueue.main.sync {
+			UpdateHelper.pendingUpdate
+		}
+		
+		//Make sure we have a pending update
+		guard let pendingUpdate = pendingUpdate else {
+			LogManager.log("Ignoring update request \(updateID): no pending update", level: .notice)
+			
+			sendResult(false)
+			return
+		}
+		
+		//Make sure the current update matches the update ID
+		guard pendingUpdate.id == updateID else {
+			LogManager.log("Ignoring update request \(updateID): update ID doesn't match pending update \(pendingUpdate.id)", level: .notice)
+			
+			sendResult(false)
+			return
+		}
+		
+		//Install the update
+		let installResult = UpdateHelper.install(update: pendingUpdate,
+							 onProgress: nil,
+							 onSuccess: nil,
+							 onError: { [weak self] code, message in
+			guard let self = self else { return }
+			
+			//Notify the client of an update error
+			guard let dataProxy = self.dataProxy else { return }
+			
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.softwareUpdateError.rawValue)
+			responsePacker.pack(int: Int32(code.rawValue))
+			responsePacker.pack(string: message)
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		})
+		
+		//Send the initial update result
+		sendResult(installResult)
+	}
+	
 	//MARK: Process message
 	
 	@discardableResult
@@ -1077,6 +1168,9 @@ class ConnectionManager {
 			case .sendTextNew: try handleMessageSendTextNew(packer: &packer, from: client)
 			case .sendFileExisting: try handleMessageSendFileExisting(packer: &packer, from: client)
 			case .sendFileNew: try handleMessageSendFileNew(packer: &packer, from: client)
+				
+			case .softwareUpdateListing: try handleMessageGetSoftwareUpdate(packer: &packer, from: client)
+			case .softwareUpdateInstall: try handleMessageInstallSoftwareUpdate(packer: &packer, from: client)
 			
 			default: return false
 		}
