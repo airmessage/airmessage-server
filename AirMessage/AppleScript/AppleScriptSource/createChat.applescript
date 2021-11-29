@@ -11,11 +11,11 @@ on main(addressList, serviceType)
 		--Create the participants
 		set participantList to {}
 		repeat with address in addressList
-			set end of participantList to buddy address of serviceType
+			set end of participantList to buddy address of targetService
 		end repeat
 		
 		--Create the chat
-		set createdChat to make new chat with properties {participants: participantList}
+		set createdChat to make new text chat with properties {participants: participantList}
 		
 		return id of createdChat
 	end tell
