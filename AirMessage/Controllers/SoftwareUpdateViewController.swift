@@ -26,6 +26,7 @@ class SoftwareUpdateViewController: NSViewController {
 		let webView = WKWebView()
 		webView.frame = webViewContainer.bounds
 		webView.navigationDelegate = self
+		webView.wantsLayer = true
 		webView.layer!.borderWidth = 1
 		webView.layer!.borderColor = NSColor.lightGray.cgColor
 		webViewContainer.addSubview(webView)
