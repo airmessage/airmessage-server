@@ -5,10 +5,14 @@
 //  Created by Cole Feuer on 2021-01-03.
 //
 
+import Foundation
 import AppKit
+import Sentry
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
+	private static let letsEncryptUrlSessionDelegate = LetsEncryptURLSessionDelegate()
+	
 	//Status bar
 	private let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 	@IBOutlet weak var menu: NSMenu!
@@ -23,6 +27,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		LogManager.log("Starting AirMessage Server version \(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)", level: .info)
+		
+		//Initialize Sentry
+		SentrySDK.start { options in
+			#if DEBUG
+				options.enabled = false
+				options.debug = true
+			#else
+				options.enabled = true
+			#endif
+			
+			//Sentry uses a Let's Encrypt certificate, so we distribute their root certificate
+			//ourselves so that older Macs still trust it
+			options.urlSessionDelegate = AppDelegate.letsEncryptUrlSessionDelegate
+			
+			options.dsn = Bundle.main.infoDictionary!["SENTRY_DSN"] as? String
+		}
 		
 		//Register status bar item
 		statusBarItem.menu = menu
@@ -73,9 +93,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func application(_ application: NSApplication, open urls: [URL]) {
 		for url in urls {
 			//Parse the URL
-			guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+			guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
 				  let scheme = components.scheme,
-				  let path = components.path,
 				  let params = components.queryItems else {
 					  LogManager.log("Unable to parse incoming URL: \(url)", level: .notice)
 					  continue
@@ -83,7 +102,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			
 			//Check for authentication
 			guard scheme == "airmessageauth",
-				  path == "firebase",
+				  components.path == "firebase",
 				  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
 					  LogManager.log("Unable to validate incoming URL: \(url)", level: .notice)
 					  continue
@@ -144,6 +163,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@objc private func onOpenClientList() {
+		SentrySDK.crash()
         ClientListViewController.open()
 	}
 	

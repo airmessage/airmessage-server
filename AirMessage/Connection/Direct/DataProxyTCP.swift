@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Sentry
 
 class DataProxyTCP: DataProxy {
 	weak var delegate: DataProxyDelegate?
@@ -183,6 +184,7 @@ class DataProxyTCP: DataProxy {
 					preparedData = try networkEncrypt(data: data)
 				} catch {
 					LogManager.log("Failed to encrypt network message: \(error)", level: .error)
+					SentrySDK.capture(error: error)
 					return
 				}
 			} else {

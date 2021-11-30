@@ -59,12 +59,14 @@
 		ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */; };
 		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
 		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
+		ED9C293A2756684200EA07C8 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = ED9C29392756684200EA07C8 /* Sentry */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = EDB04DBD273DDFDA00673AE4 /* SQLite */; };
 		EDC1DAF8274DA24C00D32C6B /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */; };
 		EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EDC1DAFA274DAB7700D32C6B /* Starscream */; };
 		EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */; };
 		EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */; };
+		EDC58E022756E71E00935C49 /* isrg-root-x1-cross-signed.der in Resources */ = {isa = PBXBuildFile; fileRef = EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; };
 		EDC898672752BF290081BDB7 /* OpenSSL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -220,6 +222,8 @@
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
+		EDEDFFE42756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */; };
+		EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */; };
 		EDF7664E274FC8560008F730 /* BytePacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7664D274FC8560008F730 /* BytePacker.swift */; };
 		EDF76651274FC9DE0008F730 /* PackingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF76650274FC9DE0008F730 /* PackingError.swift */; };
 		EDF7665827516CBE0008F730 /* LocalizeStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */; };
@@ -333,6 +337,7 @@
 		EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectConstants.swift; sourceTree = "<group>"; };
 		EDC2430326ACD22C006444FF /* JNILogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNILogging.h; sourceTree = "<group>"; };
 		EDC2430426ACD235006444FF /* JNILogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNILogging.m; sourceTree = "<group>"; };
+		EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "isrg-root-x1-cross-signed.der"; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
 		EDC8228C2697B769007A8DF9 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		EDC8228D2697B769007A8DF9 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -527,6 +532,8 @@
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
 		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
+		EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetsEncryptURLSessionDelegate.swift; sourceTree = "<group>"; };
+		EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateTrust.swift; sourceTree = "<group>"; };
 		EDF7664D274FC8560008F730 /* BytePacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytePacker.swift; sourceTree = "<group>"; };
 		EDF76650274FC9DE0008F730 /* PackingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackingError.swift; sourceTree = "<group>"; };
 		EDF76652275161440008F730 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -542,6 +549,7 @@
 				EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */,
 				EDC899BF2752BFA50081BDB7 /* Zlib in Frameworks */,
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
+				ED9C293A2756684200EA07C8 /* Sentry in Frameworks */,
 				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
 				EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
@@ -666,6 +674,7 @@
 				ED853E0A274428F300DCF446 /* ObjC */,
 				EDF7664F274FC9CB0008F730 /* Packer */,
 				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
+				EDEDFFE52756E10A0088F2E3 /* Security */,
 				EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */,
 				ED1E5685269A52E50019CCD5 /* Views */,
 			);
@@ -1002,6 +1011,16 @@
 			path = AppleScript;
 			sourceTree = "<group>";
 		};
+		EDEDFFE52756E10A0088F2E3 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */,
+				EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */,
+				EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		EDF7664F274FC9CB0008F730 /* Packer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1172,6 +1191,7 @@
 				ED67A8972688D62C00DB7B95 /* Compile Webpack */,
 				ED28094F25A20332009E7636 /* Resources */,
 				EDC8986B2752BF290081BDB7 /* Embed Frameworks */,
+				ED9C293B27567C0000EA07C8 /* Upload Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -1186,6 +1206,7 @@
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
 				EDC1DAFA274DAB7700D32C6B /* Starscream */,
 				EDC899BE2752BFA50081BDB7 /* Zlib */,
+				ED9C29392756684200EA07C8 /* Sentry */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -1244,6 +1265,7 @@
 				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
 				EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */,
+				ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -1266,6 +1288,7 @@
 				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
+				EDC58E022756E71E00935C49 /* isrg-root-x1-cross-signed.der in Resources */,
 				ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */,
 				2EAEEB68DD2F52A48268E94A /* SQL in Resources */,
 			);
@@ -1307,6 +1330,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/usr/local/bin:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed\"\n  exit 1\nfi\n\ncd AirMessage/AuthSite\nnpm install\nnpm run build\n";
+		};
+		ED9C293B27567C0000EA07C8 /* Upload Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Upload Symbols to Sentry";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/usr/local/bin:/opt/homebrew/bin\"\n\nif which sentry-cli >/dev/null; then\n\tERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" --force-foreground 2>&1 >/dev/null)\n\tif [ ! $? -eq 0 ]; then\n\t\techo \"warning: sentry-cli - $ERROR\"\n\tfi\nelse\n    echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1365,7 +1407,9 @@
 				ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */,
 				2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */,
 				2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */,
+				EDEDFFE42756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift in Sources */,
 				2EAEE113FF8D1F0CF91485F1 /* CompressionHelper.swift in Sources */,
+				EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */,
 				2EAEE1483F98DFB8A8E6DFA6 /* ConnectionManager.swift in Sources */,
 				2EAEE225BB82417444D48EAE /* DataProxy.swift in Sources */,
 				2EAEEE829B3030FF1028C15A /* ClientConnection.swift in Sources */,
@@ -1730,6 +1774,14 @@
 				revision = 059e7346082d02de16220cd79df7db18ddeba8c3;
 			};
 		};
+		ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
@@ -1766,6 +1818,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */;
 			productName = Zip;
+		};
+		ED9C29392756684200EA07C8 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 		EDB04DBD273DDFDA00673AE4 /* SQLite */ = {
 			isa = XCSwiftPackageProductDependency;

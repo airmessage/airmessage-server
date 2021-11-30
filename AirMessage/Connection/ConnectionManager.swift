@@ -3,6 +3,8 @@
 //
 
 import Foundation
+import SQLite
+import Sentry
 
 class ConnectionManager {
 	public static let shared = ConnectionManager()
@@ -215,6 +217,7 @@ class ConnectionManager {
 				payload = try networkEncrypt(data: securePacker.data)
 			} catch {
 				LogManager.log("Failed to encrypt data for push notification: \(error)", level: .error)
+				SentrySDK.capture(error: error)
 				return
 			}
 		} else {
@@ -321,6 +324,7 @@ class ConnectionManager {
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
 		} catch {
 			LogManager.log("Failed to fetch messages for time range \(timeLower) - \(timeUpper): \(error)", level: .notice)
+			SentrySDK.capture(error: error)
 			return
 		}
 		
@@ -348,6 +352,7 @@ class ConnectionManager {
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
 		} catch {
 			LogManager.log("Failed to fetch messages for ID range >\(idLower): \(error)", level: .notice)
+			SentrySDK.capture(error: error)
 			return
 		}
 		
@@ -403,6 +408,7 @@ class ConnectionManager {
 			messageCount = Int(try DatabaseManager.shared.countMessages(since: timeSinceMessages))
 		} catch {
 			LogManager.log("Failed to read conversations from database: \(error)", level: .error)
+			SentrySDK.capture(error: error)
 			return
 		}
 		
@@ -425,7 +431,14 @@ class ConnectionManager {
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
 		
-		var messageIterator = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages).makeIterator()
+		var messageIterator: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow>.Iterator
+		do {
+			messageIterator = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages).makeIterator()
+		} catch {
+			LogManager.log("Encountered an error while preparing to read mass retrieval messages: \(error)", level: .notice)
+			SentrySDK.capture(error: error)
+			return
+		}
 		var messageResponseIndex: Int32 = 1
 		var previousLooseModifiers: [ModifierInfo] = []
 		while true {
@@ -444,6 +457,7 @@ class ConnectionManager {
 						LogManager.log("Encountered an error while reading mass retrieval messages: database deallocated", level: .notice)
 					case .sqlError(let error):
 						LogManager.log("Encountered an error while reading mass retrieval messages: \(error)", level: .notice)
+						SentrySDK.capture(error: error)
 					default:
 						break
 				}
@@ -608,6 +622,7 @@ class ConnectionManager {
 			resultConversations = try DatabaseManager.shared.fetchConversationArray(in: chatGUIDArray)
 		} catch {
 			LogManager.log("Failed to read conversations from database: \(error)", level: .error)
+			SentrySDK.capture(error: error)
 			return
 		}
 		
@@ -643,6 +658,7 @@ class ConnectionManager {
 			fileDetails = try DatabaseManager.shared.fetchFile(fromAttachmentGUID: attachmentGUID)
 		} catch {
 			LogManager.log("Failed to get file path for attachment GUID \(attachmentGUID)): \(error)", level: .notice)
+			SentrySDK.capture(error: error)
 			
 			//Send a response (I/O error)
 			guard let dataProxy = dataProxy else { return }
@@ -777,6 +793,7 @@ class ConnectionManager {
 			conversations = try DatabaseManager.shared.fetchLiteConversations()
 		} catch {
 			LogManager.log("Failed to fetch lite conversation summary: \(error)", level: .error)
+			SentrySDK.capture(error: error)
 			return
 		}
 		
@@ -800,6 +817,8 @@ class ConnectionManager {
 			messages = try DatabaseManager.shared.fetchLiteThread(chatGUID: chatGUID, before: firstMessageID)
 		} catch {
 			LogManager.log("Failed to fetch lite thread messages for \(chatGUID) before \(firstMessageID.map{ String($0) } ?? "nil"): \(error)", level: .error)
+			SentrySDK.capture(error: error)
+			
 			return
 		}
 		
@@ -1276,6 +1295,23 @@ extension ConnectionManager: DataProxyDelegate {
 			return
 		}
 		
+		//Log the message
+		do {
+			let messageLength = data.count - MemoryLayout<Int32>.size
+			LogManager.log("Received new message: \(messageType) / of length \(messageLength)", level: .info)
+			
+			let crumb = Breadcrumb()
+			crumb.level = .info
+			crumb.category = "network"
+			crumb.message = "Received new message"
+			crumb.data = [
+				"Message type": messageTypeRaw,
+				"Message length": messageLength
+			]
+			SentrySDK.addBreadcrumb(crumb: crumb)
+		}
+		
+		//Process the message
 		do {
 			if wasEncrypted {
 				try processMessageSensitive(dataProxy: dataProxy, packer: &packer, from: client, type: messageType)

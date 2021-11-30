@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Sentry
 
 struct NormalizedFile {
 	let url: URL
@@ -99,6 +100,7 @@ private func runProcessLogError(_ process: Process) -> Bool {
 		try process.run()
 	} catch {
 		LogManager.log("An error occurred while running process: \(error)", level: .info)
+		SentrySDK.capture(error: error)
 		return false
 	}
 	
@@ -117,6 +119,7 @@ private func runProcessLogError(_ process: Process) -> Bool {
 		}
 		
 		LogManager.log("An error occurred while running process: \(errorMessage ?? "Unknown error")", level: .info)
+		SentrySDK.capture(message: "An error occurred while running process: \(errorMessage ?? "Unknown error")")
 		return false
 	}
 	

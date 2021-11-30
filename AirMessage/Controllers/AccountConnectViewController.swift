@@ -84,9 +84,8 @@ class AccountConnectViewController: NSViewController {
 					}
 					
 					//Parse the URL
-					guard let components = NSURLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
+					guard let components = URLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
 						  let scheme = components.scheme,
-						  let path = components.path,
 						  let params = components.queryItems else {
 							  LogManager.log("Unable to parse authentication response URL: \(url)", level: .notice)
 							  dismiss(self)
@@ -95,7 +94,7 @@ class AccountConnectViewController: NSViewController {
 					
 					//Check for authentication
 					guard scheme == "airmessageauth",
-						  path == "firebase",
+						  components.path == "firebase",
 						  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
 							  LogManager.log("Unable to validate authentication response URL: \(url)", level: .notice)
 							  dismiss(self)

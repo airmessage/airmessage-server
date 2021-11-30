@@ -5,6 +5,7 @@
 import Foundation
 import AppKit
 import Zip
+import Sentry
 
 class UpdateHelper {
 	//Constants
@@ -60,6 +61,7 @@ class UpdateHelper {
 				updateData = try JSONDecoder().decode(UpdateCheckResult.self, from: data)
 			} catch {
 				LogManager.log("Failed to parse update data: \(error)", level: .notice)
+				SentrySDK.capture(error: error)
 				notifyError(.parseError)
 				return
 			}
@@ -80,6 +82,7 @@ class UpdateHelper {
 			for version in updateData.osRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int(version) else {
 					LogManager.log("Failed to parse OS version int \(version) in \(updateData.osRequirement)", level: .notice)
+					SentrySDK.capture(message: "Failed to parse OS version int \(version) in \(updateData.osRequirement)")
 					notifyError(.parseError)
 					return
 				}
@@ -112,6 +115,7 @@ class UpdateHelper {
 			for version in updateData.protocolRequirement.components(separatedBy: ".") {
 				guard let versionInt = Int32(version) else {
 					LogManager.log("Failed to parse protocol version int \(version) in \(updateData.protocolRequirement)", level: .notice)
+					SentrySDK.capture(message: "Failed to parse protocol version int \(version) in \(updateData.protocolRequirement)")
 					notifyError(.parseError)
 					return
 				}
@@ -141,7 +145,8 @@ class UpdateHelper {
 			
 			//Get the download URL
 			guard let downloadURL = URL(string: updateData.url) else {
-				LogManager.log("Can't apply update, invalid URL", level: .notice)
+				LogManager.log("Can't apply update, invalid URL \(updateData.url)", level: .notice)
+				SentrySDK.capture(message: "Can't apply update, invalid URL \(updateData.url)")
 				notifyError(.parseError)
 				return
 			}
@@ -392,6 +397,7 @@ private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
 			//Find app file
 			guard let updateAppFile = try FileManager.default.contentsOfDirectory(at: unzippedFolder, includingPropertiesForKeys: nil).filter({ $0.pathExtension == "app" }).first else {
 				LogManager.log("Can't apply update, can't find app file in update archive", level: .notice)
+				SentrySDK.capture(message: "Can't apply update, can't find app file in update archive")
 				notifyError(code: UpdateErrorCode.badPackage, message: "Can't find app file in update archive")
 				return
 			}

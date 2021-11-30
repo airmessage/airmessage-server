@@ -7,7 +7,7 @@
 
 import Foundation
 import Starscream
-import AppKit
+import Sentry
 
 class DataProxyConnect: DataProxy {
 	weak var delegate: DataProxyDelegate?
@@ -59,7 +59,7 @@ class DataProxyConnect: DataProxy {
 		} else {
 			queryItems.append(URLQueryItem(name: "user_id", value: userID))
 		}
-		var components = URLComponents(string: "wss://connect.airmessage.org")!
+		var components = URLComponents(string: Bundle.main.infoDictionary!["CONNECT_ENDPOINT"] as! String)!
 		components.queryItems = queryItems
 		
 		//Create the request
@@ -112,6 +112,7 @@ class DataProxyConnect: DataProxy {
 				secureData = try networkEncrypt(data: data)
 			} catch {
 				LogManager.log("Failed to encrypt data for Connect proxy: \(error)", level: .error)
+				SentrySDK.capture(error: error)
 				return
 			}
 		} else {

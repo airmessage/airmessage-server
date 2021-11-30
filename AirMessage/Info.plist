@@ -37,22 +37,19 @@
 	<string>$(CONNECT_ENDPOINT)</string>
 	<key>FIREBASE_API_KEY</key>
 	<string>$(FIREBASE_API_KEY)</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-	</dict>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>AirMessage needs to control Messages to send outgoing messages</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SENTRY_DSN</key>
+	<string>$(SENTRY_DSN)</string>
 </dict>
 </plist>
