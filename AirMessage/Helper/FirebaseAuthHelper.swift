@@ -24,7 +24,7 @@ func exchangeFirebaseRefreshToken(_ refreshToken: String, callback: @escaping (_
 	request.httpMethod = "POST"
 	request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 	
-	let task = URLSession.shared.uploadTask(with: request, from: requestBody) { data, response, error in
+	let task = URLSession.sharedCompat.uploadTask(with: request, from: requestBody) { data, response, error in
 		if let error = error {
 			callback(nil, FirebaseRequestError.requestError(cause: error))
 			return
@@ -75,9 +75,9 @@ func getFirebaseUserData(idToken: String, callback: @escaping (_ result: Firebas
 	let url = URL(string: "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=\(Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String)")!
 	var request = URLRequest(url: url)
 	request.httpMethod = "POST"
-	request.setValue("application/json ", forHTTPHeaderField: "Content-Type")
+	request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 	
-	let task = URLSession.shared.uploadTask(with: request, from: requestBody) { data, response, error in
+	let task = URLSession.sharedCompat.uploadTask(with: request, from: requestBody) { data, response, error in
 		if let error = error {
 			callback(nil, FirebaseRequestError.requestError(cause: error))
 			return

@@ -9,9 +9,9 @@ import Sentry
 
 class UpdateHelper {
 	//Constants
-	private static let updateBaseURL = "https://airmessage.org"
-	private static let stableUpdateURL = URL(string: updateBaseURL + "/update/server/3.json")!
-	private static let betaUpdateURL = URL(string: updateBaseURL + "/update/server-beta/3.json")!
+	private static let updateBaseURL = "https://airmessage.github.io/airmessage-update"
+	private static let stableUpdateURL = URL(string: updateBaseURL + "/server.json")!
+	private static let betaUpdateURL = URL(string: updateBaseURL + "/server-beta.json")!
 	private static let updateCheckInterval: TimeInterval = 60 * 60 * 24
 	
 	//Pending and installing update state
@@ -37,7 +37,15 @@ class UpdateHelper {
 	 */
 	public static func checkUpdates(onError: ((UpdateError) -> Void)?, onUpdate: @escaping (UpdateStruct?, Bool) -> Void) {
 		//Download update data
-		URLSession.shared.dataTask(with: PreferencesManager.shared.betaUpdates ? UpdateHelper.betaUpdateURL : UpdateHelper.stableUpdateURL) { [self] (data, response, error) in
+		var request: URLRequest
+		if PreferencesManager.shared.betaUpdates {
+			request = URLRequest(url: UpdateHelper.betaUpdateURL)
+		} else {
+			request = URLRequest(url: UpdateHelper.stableUpdateURL)
+		}
+		
+		//For some reason this doesn't trigger an authentication challenge
+		let task = URLSession.sharedCompat.dataTask(with: request) { [self] (data, response, error) in
 			func notifyError(_ error: UpdateError) {
 				if let onError = onError {
 					DispatchQueue.main.async { onError(.networkError(error: error)) }
@@ -176,7 +184,8 @@ class UpdateHelper {
 					onUpdate(updateStruct, true)
 				}
 			}
-		}.resume()
+		}
+		task.resume()
 	}
 	
 	/**
@@ -304,7 +313,7 @@ class UpdateHelper {
 		}
 		
 		//Download the update file
-		urlSession = URLSession(configuration: URLSessionConfiguration.default, delegate: UpdateDownloadURLDelegate(onProgress: onProgress, onSuccess: onSuccessIntercept, onError: onErrorIntercept), delegateQueue: nil)
+		urlSession = URLSession(configuration: .default, delegate: UpdateDownloadURLDelegate(onProgress: onProgress, onSuccess: onSuccessIntercept, onError: onErrorIntercept), delegateQueue: nil)
 		let task = urlSession.downloadTask(with: update.downloadURL)
 		task.resume()
 		
@@ -327,7 +336,7 @@ private struct UpdateNotes: Decodable {
 	let message: String
 }
 
-private class UpdateDownloadURLDelegate: NSObject, URLSessionDownloadDelegate {
+private class UpdateDownloadURLDelegate: ForwardCompatURLSessionDelegate, URLSessionDownloadDelegate {
 	private let onProgress: ((Double) -> Void)?
 	private let onSuccess: (() -> Void)?
 	private let onError: ((UpdateErrorCode, String) -> Void)?

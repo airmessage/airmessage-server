@@ -11,8 +11,6 @@ import Sentry
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	private static let letsEncryptUrlSessionDelegate = LetsEncryptURLSessionDelegate()
-	
 	//Status bar
 	private let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 	@IBOutlet weak var menu: NSMenu!
@@ -36,10 +34,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			#else
 				options.enabled = true
 			#endif
+			options.enableSwizzling = false
 			
 			//Sentry uses a Let's Encrypt certificate, so we distribute their root certificate
 			//ourselves so that older Macs still trust it
-			options.urlSessionDelegate = AppDelegate.letsEncryptUrlSessionDelegate
+			options.urlSessionDelegate = URLSessionCompat.delegate
 			
 			options.dsn = Bundle.main.infoDictionary!["SENTRY_DSN"] as? String
 		}
@@ -163,7 +162,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	}
 	
 	@objc private func onOpenClientList() {
-		SentrySDK.crash()
         ClientListViewController.open()
 	}
 	

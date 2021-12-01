@@ -8,13 +8,16 @@
 import Foundation
 
 /**
- Loads a certificate from the bundle
+ Gets all locally-stored certificates
  */
-func loadCertificate(named name: String) -> SecCertificate {
-	let cerURL = Bundle.main.url(forResource: name, withExtension: "der")!
-	let cerData = try! Data(contentsOf: cerURL)
-	let cer = SecCertificateCreateWithData(nil, cerData as CFData)!
-	return cer
+func loadBundleCertificates() -> [SecCertificate] {
+	//Get all local root certificates
+	let certificatesDir = URL(string: Bundle.main.resourcePath!)!.appendingPathComponent("Certificates", isDirectory: true)
+	let certificates = try! FileManager.default.contentsOfDirectory(at: certificatesDir, includingPropertiesForKeys: nil)
+		.map { fileURL in
+			SecCertificateCreateWithData(nil, try! Data(contentsOf: fileURL) as CFData)!
+	}
+	return certificates
 }
 
 /**

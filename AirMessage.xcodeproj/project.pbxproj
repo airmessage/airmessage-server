@@ -45,6 +45,7 @@
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
+		ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
@@ -66,7 +67,7 @@
 		EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EDC1DAFA274DAB7700D32C6B /* Starscream */; };
 		EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */; };
 		EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */; };
-		EDC58E022756E71E00935C49 /* isrg-root-x1-cross-signed.der in Resources */ = {isa = PBXBuildFile; fileRef = EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */; };
+		EDC58E042756F59200935C49 /* Certificates in Resources */ = {isa = PBXBuildFile; fileRef = EDC58E032756F59200935C49 /* Certificates */; };
 		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; };
 		EDC898672752BF290081BDB7 /* OpenSSL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -222,7 +223,7 @@
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
-		EDEDFFE42756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */; };
+		EDEDFFE42756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE32756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift */; };
 		EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */; };
 		EDF7664E274FC8560008F730 /* BytePacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7664D274FC8560008F730 /* BytePacker.swift */; };
 		EDF76651274FC9DE0008F730 /* PackingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF76650274FC9DE0008F730 /* PackingError.swift */; };
@@ -314,6 +315,7 @@
 		ED44738C26A46F86006F5F0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		ED675FF026890AC100DB7B95 /* airmessage-server */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-server"; sourceTree = "<group>"; };
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
+		ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCompat.swift; sourceTree = "<group>"; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		ED853E0B2744291400DCF446 /* ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjC.m; sourceTree = "<group>"; };
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
@@ -337,7 +339,7 @@
 		EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectConstants.swift; sourceTree = "<group>"; };
 		EDC2430326ACD22C006444FF /* JNILogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNILogging.h; sourceTree = "<group>"; };
 		EDC2430426ACD235006444FF /* JNILogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNILogging.m; sourceTree = "<group>"; };
-		EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "isrg-root-x1-cross-signed.der"; sourceTree = "<group>"; };
+		EDC58E032756F59200935C49 /* Certificates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Certificates; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
 		EDC8228C2697B769007A8DF9 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		EDC8228D2697B769007A8DF9 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -532,7 +534,7 @@
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
 		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
-		EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetsEncryptURLSessionDelegate.swift; sourceTree = "<group>"; };
+		EDEDFFE32756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardCompatURLSessionDelegate.swift; sourceTree = "<group>"; };
 		EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateTrust.swift; sourceTree = "<group>"; };
 		EDF7664D274FC8560008F730 /* BytePacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytePacker.swift; sourceTree = "<group>"; };
 		EDF76650274FC9DE0008F730 /* PackingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackingError.swift; sourceTree = "<group>"; };
@@ -1014,9 +1016,10 @@
 		EDEDFFE52756E10A0088F2E3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
-				EDC58E012756E71E00935C49 /* isrg-root-x1-cross-signed.der */,
-				EDEDFFE32756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift */,
+				EDC58E032756F59200935C49 /* Certificates */,
+				EDEDFFE32756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift */,
 				EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */,
+				ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -1288,8 +1291,8 @@
 				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
-				EDC58E022756E71E00935C49 /* isrg-root-x1-cross-signed.der in Resources */,
 				ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */,
+				EDC58E042756F59200935C49 /* Certificates in Resources */,
 				2EAEEB68DD2F52A48268E94A /* SQL in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1365,6 +1368,7 @@
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
 				EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */,
+				ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */,
 				EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */,
 				EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */,
 				EDD70D6A2699F1BC00E8DC06 /* AppleScriptBridge.swift in Sources */,
@@ -1407,7 +1411,7 @@
 				ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */,
 				2EAEE857EA06ACA138B985C2 /* MessageTypes.swift in Sources */,
 				2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */,
-				EDEDFFE42756D01B0088F2E3 /* LetsEncryptURLSessionDelegate.swift in Sources */,
+				EDEDFFE42756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift in Sources */,
 				2EAEE113FF8D1F0CF91485F1 /* CompressionHelper.swift in Sources */,
 				EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */,
 				2EAEE1483F98DFB8A8E6DFA6 /* ConnectionManager.swift in Sources */,
