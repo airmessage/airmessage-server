@@ -256,13 +256,10 @@
 
 /* Begin PBXFileReference section */
 		2EAEE027B256CC2BFB3C76CC /* SQL */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SQL; sourceTree = "<group>"; };
-		2EAEE04E2200019FF3869C09 /* JNIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIPreferences.m; sourceTree = "<group>"; };
-		2EAEE0A15D515D80070BB923 /* JNIUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIUpdate.m; sourceTree = "<group>"; };
 		2EAEE1798DD4556D5CC8247C /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		2EAEE19B93FDBB406A990E05 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		2EAEE1D06A8C16D02D734925 /* ClientConnectionTCP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConnectionTCP.swift; sourceTree = "<group>"; };
 		2EAEE24A8F9E40DCED942CF6 /* ClientConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConnection.swift; sourceTree = "<group>"; };
-		2EAEE2E16E83486BABD81E6D /* JVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVM.h; sourceTree = "<group>"; };
 		2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionHelper.swift; sourceTree = "<group>"; };
 		2EAEE54358769BD24B8AA900 /* MessageTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTypes.swift; sourceTree = "<group>"; };
 		2EAEE5AB48D97DEE4DD37D94 /* DatabaseConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseConverter.swift; sourceTree = "<group>"; };
@@ -270,32 +267,23 @@
 		2EAEE71EBC8C6499069EEFCD /* EncryptionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionManager.swift; sourceTree = "<group>"; };
 		2EAEE7BEDAA5FF7A348C4277 /* DataProxyDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProxyDelegate.swift; sourceTree = "<group>"; };
 		2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
-		2EAEE83BAD7327E559A33AFC /* JNIUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUpdate.h; sourceTree = "<group>"; };
 		2EAEE94B0A247777A71528B0 /* DataProxyTCP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProxyTCP.swift; sourceTree = "<group>"; };
 		2EAEEA0713233C244E8AB383 /* UpdateStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateStruct.swift; sourceTree = "<group>"; };
-		2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIStorage.h; sourceTree = "<group>"; };
-		2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIStorage.m; sourceTree = "<group>"; };
-		2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIUserInterface.m; sourceTree = "<group>"; };
-		2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIPreferences.h; sourceTree = "<group>"; };
 		2EAEEB9731EC0559ADB1DC43 /* DatabaseTimeConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTimeConverter.swift; sourceTree = "<group>"; };
 		2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerState.swift; sourceTree = "<group>"; };
 		2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdateViewController.swift; sourceTree = "<group>"; };
 		2EAEED65BEC9AAC9A444C18F /* DataProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProxy.swift; sourceTree = "<group>"; };
-		2EAEED88784206F8146AEC97 /* JNIUserInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIUserInterface.h; sourceTree = "<group>"; };
 		2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdateProgressViewController.swift; sourceTree = "<group>"; };
 		2EAEEE327A491386A20EC729 /* PreferencesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
-		2EAEEE533ACABFADD2316DAD /* JNIEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNIEnvironment.h; sourceTree = "<group>"; };
 		2EAEEF14220907E804086BB9 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
 		2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateHelper.swift; sourceTree = "<group>"; };
 		2EAEEF997E8EB41FF44B6D71 /* CommConst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommConst.swift; sourceTree = "<group>"; };
-		2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNIEnvironment.m; sourceTree = "<group>"; };
 		ED15912226AC5484008F5304 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		ED15912426AC76C2008F5304 /* MessageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		ED1E5683269A50360019CCD5 /* DraggableAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableAppView.swift; sourceTree = "<group>"; };
 		ED1E5686269B14290019CCD5 /* FullDiskAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullDiskAccessViewController.swift; sourceTree = "<group>"; };
 		ED1E5688269B1C7B0019CCD5 /* AutomationAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationAccessViewController.swift; sourceTree = "<group>"; };
-		ED267858269132ED001EFCB7 /* JVM.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JVM.m; sourceTree = "<group>"; };
 		ED28095125A20332009E7636 /* AirMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED28095425A20332009E7636 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED28095625A20332009E7636 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -303,17 +291,12 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
-		ED42B4BB26AC7C8B00409B24 /* JNIMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIMessage.h; sourceTree = "<group>"; };
-		ED42B4BC26AC7C9800409B24 /* JNIMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIMessage.m; sourceTree = "<group>"; };
-		ED42B4BE26AC921D00409B24 /* JVMHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JVMHelper.m; sourceTree = "<group>"; };
-		ED42B4C026AC923A00409B24 /* JVMHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JVMHelper.h; sourceTree = "<group>"; };
 		ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateRecovery.swift; sourceTree = "<group>"; };
 		ED440E0F269FB51F00BFBEE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		ED44738626A387DD006F5F0E /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthHelper.swift; sourceTree = "<group>"; };
 		ED44738A26A46B68006F5F0E /* DispatchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchHelper.swift; sourceTree = "<group>"; };
 		ED44738C26A46F86006F5F0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
-		ED675FF026890AC100DB7B95 /* airmessage-server */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-server"; sourceTree = "<group>"; };
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCompat.swift; sourceTree = "<group>"; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
@@ -332,13 +315,9 @@
 		ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptCodes.swift; sourceTree = "<group>"; };
 		ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadRequest.swift; sourceTree = "<group>"; };
 		EDADEB1826A0E3D9001DA84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		EDC02BF92697CA8D003FA87E /* JNIControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNIControl.m; sourceTree = "<group>"; };
-		EDC02BFB2697CAAF003FA87E /* JNIControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNIControl.h; sourceTree = "<group>"; };
 		EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicValue.swift; sourceTree = "<group>"; };
 		EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProxyConnect.swift; sourceTree = "<group>"; };
 		EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectConstants.swift; sourceTree = "<group>"; };
-		EDC2430326ACD22C006444FF /* JNILogging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JNILogging.h; sourceTree = "<group>"; };
-		EDC2430426ACD235006444FF /* JNILogging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JNILogging.m; sourceTree = "<group>"; };
 		EDC58E032756F59200935C49 /* Certificates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Certificates; sourceTree = "<group>"; };
 		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
 		EDC8228C2697B769007A8DF9 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
@@ -521,8 +500,6 @@
 		EDC899122752BF4D0081BDB7 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		EDC899132752BF4D0081BDB7 /* References.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = References.txt; sourceTree = "<group>"; };
 		EDC899C12752C1360081BDB7 /* OpenSSL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSSL.h; sourceTree = "<group>"; };
-		EDCAA231269CFE5900327BCD /* airmessage-libs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "airmessage-libs"; sourceTree = "<group>"; };
-		EDCAA232269CFE5E00327BCD /* java-runtime */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "java-runtime"; sourceTree = "<group>"; };
 		EDD1514825A3232B00117C0D /* AccountConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConnectViewController.swift; sourceTree = "<group>"; };
 		EDD5E49C269F9957005EB8EE /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		EDD70D662699F00300E8DC06 /* AppleScriptSource */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppleScriptSource; sourceTree = "<group>"; };
@@ -667,7 +644,6 @@
 				2EAEEA876A2182E9E2F80FC7 /* Database */,
 				ED891A4625A30BAE002230EB /* Helper */,
 				ED28095D25A20333009E7636 /* Info.plist */,
-				ED67D1182689096300DB7B95 /* JavaBridge */,
 				ED891A3A25A30701002230EB /* Localizable.strings */,
 				ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */,
 				EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */,
@@ -698,36 +674,6 @@
 				ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */,
 			);
 			path = Connection;
-			sourceTree = "<group>";
-		};
-		ED67D1182689096300DB7B95 /* JavaBridge */ = {
-			isa = PBXGroup;
-			children = (
-				EDCAA231269CFE5900327BCD /* airmessage-libs */,
-				ED675FF026890AC100DB7B95 /* airmessage-server */,
-				EDCAA232269CFE5E00327BCD /* java-runtime */,
-				EDC02BFB2697CAAF003FA87E /* JNIControl.h */,
-				EDC02BF92697CA8D003FA87E /* JNIControl.m */,
-				2EAEEB16BC5E920905A4F789 /* JNIPreferences.h */,
-				2EAEE04E2200019FF3869C09 /* JNIPreferences.m */,
-				2EAEEA1748CA3B61C90E2173 /* JNIStorage.h */,
-				2EAEEA17DEA39220A4C6B4F2 /* JNIStorage.m */,
-				2EAEED88784206F8146AEC97 /* JNIUserInterface.h */,
-				2EAEEA66BAF7478948C57650 /* JNIUserInterface.m */,
-				2EAEE2E16E83486BABD81E6D /* JVM.h */,
-				ED267858269132ED001EFCB7 /* JVM.m */,
-				ED42B4BB26AC7C8B00409B24 /* JNIMessage.h */,
-				ED42B4BC26AC7C9800409B24 /* JNIMessage.m */,
-				ED42B4BE26AC921D00409B24 /* JVMHelper.m */,
-				ED42B4C026AC923A00409B24 /* JVMHelper.h */,
-				EDC2430326ACD22C006444FF /* JNILogging.h */,
-				EDC2430426ACD235006444FF /* JNILogging.m */,
-				2EAEEFFC5579BD216FC7CF68 /* JNIEnvironment.m */,
-				2EAEEE533ACABFADD2316DAD /* JNIEnvironment.h */,
-				2EAEE0A15D515D80070BB923 /* JNIUpdate.m */,
-				2EAEE83BAD7327E559A33AFC /* JNIUpdate.h */,
-			);
-			path = JavaBridge;
 			sourceTree = "<group>";
 		};
 		ED6CDD362689193000EEBE31 /* Frameworks */ = {
