@@ -9,7 +9,7 @@ import Sentry
 
 class UpdateHelper {
 	//Constants
-	private static let updateBaseURL = "https://airmessage.github.io/airmessage-update"
+	private static let updateBaseURL = "https://update.airmessage.org"
 	private static let stableUpdateURL = URL(string: updateBaseURL + "/server.json")!
 	private static let betaUpdateURL = URL(string: updateBaseURL + "/server-beta.json")!
 	private static let updateCheckInterval: TimeInterval = 60 * 60 * 24
