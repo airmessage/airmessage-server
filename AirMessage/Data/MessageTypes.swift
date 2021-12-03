@@ -4,6 +4,8 @@
 
 import Foundation
 
+//MARK: - iMessage
+
 protocol BaseConversationInfo: Packable {
 	var guid: String { get }
 }
@@ -257,5 +259,21 @@ struct TapbackModifierInfo: ModifierInfo {
 		packer.pack(optionalString: sender)
 		packer.pack(bool: isAddition)
 		packer.pack(int: tapbackType)
+	}
+}
+
+//MARK: - FaceTime
+
+struct CallHistoryEntry: Packable {
+	let outgoing: Bool
+	let answered: Bool
+	let date: Int64
+	let participants: [String]
+	
+	func pack(to packer: inout AirPacker) {
+		packer.pack(bool: outgoing)
+		packer.pack(bool: answered)
+		packer.pack(long: date)
+		packer.pack(stringArray: participants)
 	}
 }

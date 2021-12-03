@@ -9,9 +9,14 @@ import Foundation
 import Carbon
 
 class AppleScriptBridge {
-	private static func getScript(_ name: String) -> NSAppleScript {
+	enum ScriptSourceCategory: String {
+		case messages = "Messages"
+		case faceTime = "FaceTime"
+	}
+	
+	private static func getScript(_ name: String, ofCategory category: ScriptSourceCategory) -> NSAppleScript {
 		NSAppleScript.init(
-			contentsOf: Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource")!,
+			contentsOf: Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource/\(category.rawValue)")!,
 			error: nil)!
 	}
 	
@@ -40,24 +45,23 @@ class AppleScriptBridge {
 		return list
 	}
 	
-	private lazy var scriptCreateChat = AppleScriptBridge.getScript("createChat")
-	private lazy var scriptSendMessageExisting = AppleScriptBridge.getScript("sendMessageExisting")
-	private lazy var scriptSendMessageDirect = AppleScriptBridge.getScript("sendMessageDirect")
-	private lazy var scriptSendMessageNew = AppleScriptBridge.getScript("sendMessageNew")
-	
 	private init() {
 	}
 	
 	public static let shared = AppleScriptBridge()
 	
+	//MARK: - Messages
+	
+	private lazy var scriptMessagesCreateChat = AppleScriptBridge.getScript("createChat", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageExisting = AppleScriptBridge.getScript("sendMessageExisting", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageDirect = AppleScriptBridge.getScript("sendMessageDirect", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageNew = AppleScriptBridge.getScript("sendMessageNew", ofCategory: .messages)
+	
 	/**
 	Returns if the app has permission to control Messages
 	*/
 	func checkPermissionsMessages() -> Bool {
-		//Compile the script when this function is invoked, since this likely won't be called enough to be worth saving the compiled result for later
-		let scriptTestAutomation = NSAppleScript.init(
-				contentsOf: Bundle.main.url(forResource: "testPermissionsMessages", withExtension: "applescript", subdirectory: "AppleScriptSource")!,
-				error: nil)!
+		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsMessages", ofCategory: .messages)
 		
 		var scriptError: NSDictionary?
 		scriptTestAutomation.executeAndReturnError(&scriptError)
@@ -78,7 +82,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(string: service), at: 2)
 		
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptCreateChat, params: params, error: &executeError)
+		let result = AppleScriptBridge.runScript(scriptMessagesCreateChat, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to create chat with \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -97,7 +101,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 3)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageExisting, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageExisting, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to chat \(chatID): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -115,7 +119,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 4)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageDirect, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageDirect, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send direct message to \(address): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -138,10 +142,35 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 4)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageNew, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageNew, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to new chat \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		}
+	}
+	
+	//MARK: - FaceTime
+	
+	private lazy var scriptFaceTimeCreateNewLink = AppleScriptBridge.getScript("getNewLink", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeGetActiveLink = AppleScriptBridge.getScript("getActiveLink", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeLeaveCall = AppleScriptBridge.getScript("leaveCall", ofCategory: .faceTime)
+	
+	private lazy var scriptFaceTimeWaitIncomingCall = AppleScriptBridge.getScript("waitIncomingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeHandleIncomingCall = AppleScriptBridge.getScript("handleIncomingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeWaitOutgoingCall = AppleScriptBridge.getScript("waitOutgoingCall", ofCategory: .faceTime)
+	
+	/**
+	Returns if the app has permission to control FaceTime
+	*/
+	func checkPermissionsFaceTime() -> Bool {
+		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsFaceTime", ofCategory: .faceTime)
+		
+		var scriptError: NSDictionary?
+		scriptTestAutomation.executeAndReturnError(&scriptError)
+		return scriptError == nil
+	}
+	
+	func startIncomingCallChecker() {
+		
 	}
 }
