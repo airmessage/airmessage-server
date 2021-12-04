@@ -61,7 +61,7 @@ class ConnectionManager {
 		dataProxy?.stopServer()
 	}
 	
-	//MARK: Timers
+	//MARK: - Timers
 	
 	@objc private func runKeepalive() {
 		guard let dataProxy = dataProxy else { return }
@@ -79,7 +79,7 @@ class ConnectionManager {
 		}
 	}
 	
-	//MARK: Send helpers
+	//MARK: - Send helpers
 	
 	/**
 	 Packs and sends a header-only message to a client
@@ -112,7 +112,7 @@ class ConnectionManager {
 		dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 	}
 	
-	//MARK: Send functions
+	//MARK: - Send functions
 	
 	/**
 	 Sends an ID update to a client
@@ -193,6 +193,18 @@ class ConnectionManager {
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 	}
 	
+	/// Notifies connected clients of an updated incoming caller
+	/// - Parameter faceTimeCaller: The name of the caller, or nil if there is none
+	public func send(faceTimeCaller: String?) {
+		guard let dataProxy = dataProxy else { return }
+		
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.faceTimeIncomingCallerUpdate.rawValue)
+		responsePacker.pack(optionalString: faceTimeCaller)
+		
+		dataProxy.send(message: responsePacker.data, to: nil, encrypt: true, onSent: nil)
+	}
+	
 	/**
 	 Sends an array of incoming messages or incoming modifiers as a push notification
 	 */
@@ -231,7 +243,9 @@ class ConnectionManager {
 		dataProxy.send(pushNotification: messagePacker.data, version: 2)
 	}
 	
-	//MARK: Handle message
+	//MARK: - Handle message
+	
+	//MARK: Handle message handshake
 	
 	private func handleMessageAuthentication(dataProxy: DataProxy, packer messagePacker: inout AirPacker, from client: C) throws {
 		//Cancel the handshake expiry timer
@@ -310,6 +324,8 @@ class ConnectionManager {
 			send(idUpdate: lastID, to: client)
 		}
 	}
+	
+	//MARK: Handle message messaging standard
 	
 	private func handleMessageTimeRetrieval(packer messagePacker: inout AirPacker, from client: C) throws {
 		//Read the request
@@ -786,6 +802,8 @@ class ConnectionManager {
 		}
 	}
 	
+	//MARK: Handle message lite
+	
 	private func handleMessageLiteConversationRetrieval(packer messagePacker: inout AirPacker, from client: C) throws {
 		//Fetch the conversations
 		let conversations: [LiteConversationInfo]
@@ -838,6 +856,8 @@ class ConnectionManager {
 		
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 	}
+	
+	//MARK: Handle message outgoing
 	
 	private func handleMessageCreateChat(packer messagePacker: inout AirPacker, from client: C) throws {
 		//Read the request
@@ -1076,6 +1096,8 @@ class ConnectionManager {
 		}
 	}
 	
+	//MARK: Handle message software update
+	
 	private func handleMessageGetSoftwareUpdate(packer messagePacker: inout AirPacker, from client: C) throws {
 		//Get the pending update
 		let pendingUpdate = DispatchQueue.main.sync {
@@ -1142,6 +1164,149 @@ class ConnectionManager {
 		sendResult(installResult)
 	}
 	
+	//MARK: Handle message FaceTime
+	
+	private func handleMessageFaceTimeCreateLink(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Get the link
+		let link: String?
+		do {
+			link = try AppleScriptBridge.shared.getNewFaceTimeLink()
+		} catch {
+			LogManager.log("Failed to get new FaceTime link: \(error)", level: .error)
+			SentrySDK.capture(error: error)
+			link = nil
+		}
+		
+		//Send a response
+		guard let dataProxy = dataProxy else { return }
+
+		var responsePacker = AirPacker()
+		responsePacker.pack(int: NHT.faceTimeCreateLink.rawValue)
+		if let link = link {
+			responsePacker.pack(string: link)
+			responsePacker.pack(bool: true)
+		} else {
+			responsePacker.pack(bool: false)
+		}
+		
+		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+	}
+	
+	private func handleMessageFaceTimeOutgoingInitiate(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Get the addresses
+		let addresses = try messagePacker.unpackStringArray()
+		
+		//Initiate the call
+		let initiateCallResult: NSTInitiateFaceTimeCall
+		let initiateCallErrorDesc: String?
+		do {
+			let result = try AppleScriptBridge.shared.initiateOutgoingCall(with: addresses)
+			if result {
+				initiateCallResult = .ok
+			} else {
+				initiateCallResult = .badMembers
+			}
+			initiateCallErrorDesc = nil
+		} catch {
+			LogManager.log("Failed to initiate outgoing FaceTime call with \(addresses.count) addresses: \(error)", level: .error)
+			SentrySDK.capture(error: error)
+			initiateCallResult = .appleScriptError
+			initiateCallErrorDesc = error.localizedDescription
+			return
+		}
+		
+		//Send the result
+		do {
+			guard let dataProxy = dataProxy else { return }
+			
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.faceTimeOutgoingInitiate.rawValue)
+			responsePacker.pack(int: initiateCallResult.rawValue)
+			responsePacker.pack(optionalString: initiateCallErrorDesc)
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//Don't continue if we didn't successfully initiate the call
+		guard initiateCallResult == .ok else { return }
+		
+		//Wait for the call to be handled by the recipient
+		FaceTimeHelper.waitInitiatedCall { [weak self, weak client] result in
+			//Make sure the client is still valid
+			guard let client = client, client.isConnected.value else { return }
+			
+			guard let dataProxy = self?.dataProxy else { return }
+			
+			//Send the result
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.faceTimeOutgoingHandled.rawValue)
+			switch result {
+				case .accepted(let link):
+					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.accepted.rawValue)
+					responsePacker.pack(string: link)
+				case .rejected:
+					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.rejected.rawValue)
+				case .error(let error):
+					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.error.rawValue)
+					responsePacker.pack(optionalString: error.localizedDescription)
+			}
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+	}
+	
+	private func handleMessageFaceTimeIncomingHandle(packer messagePacker: inout AirPacker, from client: C) throws {
+		let incomingCaller = try messagePacker.unpackString()
+		let accept = try messagePacker.unpackBool()
+		
+		///Sends a response to the client. If the link is nil, the client will report an error.
+		func sendResponse(link: String?) {
+			guard let dataProxy = dataProxy else { return }
+
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.faceTimeIncomingHandle.rawValue)
+			if let link = link {
+				responsePacker.pack(string: link)
+				responsePacker.pack(bool: true)
+			} else {
+				responsePacker.pack(bool: false)
+			}
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//Handle the call
+		let result = FaceTimeHelper.handleCall(incomingCaller, accept: accept)
+		guard result else {
+			sendResponse(link: nil)
+			return
+		}
+		
+		//Generate a link for the call
+		let faceTimeLink: String
+		do {
+			faceTimeLink = try AppleScriptBridge.shared.getActiveFaceTimeLink()
+		} catch {
+			LogManager.log("Failed to get active FaceTime link: \(error)", level: .error)
+			SentrySDK.capture(error: error)
+			sendResponse(link: nil)
+			return
+		}
+		
+		//Send the link to the client
+		sendResponse(link: faceTimeLink)
+	}
+	
+	private func handleMessageFaceTimeDisconnect(packer messagePacker: inout AirPacker, from client: C) throws {
+		//Drop off the call
+		do {
+			try AppleScriptBridge.shared.leaveFaceTimeCall()
+		} catch {
+			LogManager.log("Failed to leave active FaceTime call: \(error)", level: .error)
+			SentrySDK.capture(error: error)
+		}
+	}
+	
 	//MARK: Process message
 	
 	@discardableResult
@@ -1190,6 +1355,11 @@ class ConnectionManager {
 				
 			case .softwareUpdateListing: try handleMessageGetSoftwareUpdate(packer: &packer, from: client)
 			case .softwareUpdateInstall: try handleMessageInstallSoftwareUpdate(packer: &packer, from: client)
+				
+			case .faceTimeCreateLink: try handleMessageFaceTimeCreateLink(packer: &packer, from: client)
+			case .faceTimeOutgoingInitiate: try handleMessageFaceTimeOutgoingInitiate(packer: &packer, from: client)
+			case .faceTimeIncomingHandle: try handleMessageFaceTimeIncomingHandle(packer: &packer, from: client)
+			case .faceTimeDisconnect: try handleMessageFaceTimeDisconnect(packer: &packer, from: client)
 			
 			default: return false
 		}
@@ -1198,7 +1368,7 @@ class ConnectionManager {
 	}
 }
 
-//MARK: Data proxy delegate
+//MARK: - Data proxy delegate
 
 extension ConnectionManager: DataProxyDelegate {
 	func dataProxyDidStart(_ dataProxy: DataProxy) {
@@ -1259,6 +1429,8 @@ extension ConnectionManager: DataProxyDelegate {
 		} else {
 			packer.pack(bool: false) //Transmission check not required
 		}
+		
+		packer.pack(bool: FaceTimeHelper.isRunning) //Is FaceTime supported?
 		
 		dataProxy.send(message: packer.data, to: client, encrypt: false, onSent: nil)
 		

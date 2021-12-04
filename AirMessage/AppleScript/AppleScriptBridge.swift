@@ -155,9 +155,16 @@ class AppleScriptBridge {
 	private lazy var scriptFaceTimeGetActiveLink = AppleScriptBridge.getScript("getActiveLink", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeLeaveCall = AppleScriptBridge.getScript("leaveCall", ofCategory: .faceTime)
 	
-	private lazy var scriptFaceTimeWaitIncomingCall = AppleScriptBridge.getScript("waitIncomingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeQueryIncomingCall = AppleScriptBridge.getScript("queryIncomingCall", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeHandleIncomingCall = AppleScriptBridge.getScript("handleIncomingCall", ofCategory: .faceTime)
-	private lazy var scriptFaceTimeWaitOutgoingCall = AppleScriptBridge.getScript("waitOutgoingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeInitiateOutgoingCall = AppleScriptBridge.getScript("initiateOutgoingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeQueryOutgoingCall = AppleScriptBridge.getScript("queryOutgoingCall", ofCategory: .faceTime)
+	
+	enum OutgoingCallStatus: String {
+		case pending = "pending"
+		case accepted = "accepted"
+		case rejected = "rejected"
+	}
 	
 	/**
 	Returns if the app has permission to control FaceTime
@@ -170,7 +177,90 @@ class AppleScriptBridge {
 		return scriptError == nil
 	}
 	
-	func startIncomingCallChecker() {
+	///Creates and gets a new FaceTime link
+	func getNewFaceTimeLink() throws -> String {
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeCreateNewLink, params: NSAppleEventDescriptor.list(), error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.stringValue!
+		}
+	}
+	
+	///Gets a FaceTime link for the active call
+	func getActiveFaceTimeLink() throws -> String {
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeGetActiveLink, params: NSAppleEventDescriptor.list(), error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.stringValue!
+		}
+	}
+	
+	///Leaves the active FaceTime call
+	func leaveFaceTimeCall() throws {
+		var executeError: NSDictionary? = nil
+		AppleScriptBridge.runScript(scriptFaceTimeLeaveCall, params: NSAppleEventDescriptor.list(), error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		}
+	}
+	
+	///Checks for incoming calls, returning the current caller name, or nil if there is no incoming call
+	func queryIncomingCall() throws -> String? {
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptMessagesCreateChat, params: NSAppleEventDescriptor.list(), error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			let callerName = result.stringValue!.trimmingCharacters(in: .whitespacesAndNewlines)
+			//The script returns an empty string if there is no incoming call
+			if callerName.isEmpty {
+				return nil
+			} else {
+				return callerName
+			}
+		}
+	}
+	
+	///Accepts or rejects the current incoming call
+	func handleIncomingCall(accept: Bool) throws -> Bool {
+		let params = NSAppleEventDescriptor.list()
+		params.insert(NSAppleEventDescriptor(boolean: accept), at: 1)
 		
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeHandleIncomingCall, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
+		}
+	}
+	
+	///Creates and starts a new outgoing FaceTime call. Returns whether the call was created successfully.
+	func initiateOutgoingCall(with addresses: [String]) throws -> Bool {
+		let params = NSAppleEventDescriptor.list()
+		params.insert(AppleScriptBridge.stringArrayToEventDescriptor(addresses), at: 1)
+		
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeInitiateOutgoingCall, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
+		}
+	}
+	
+	///Checks the status of an outgoing call
+	func queryOutgoingCall() throws -> OutgoingCallStatus {
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeQueryOutgoingCall, params: NSAppleEventDescriptor.list(), error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return OutgoingCallStatus(rawValue: result.stringValue!)!
+		}
 	}
 }

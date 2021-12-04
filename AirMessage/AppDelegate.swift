@@ -75,6 +75,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		if PreferencesManager.shared.checkUpdates {
 			UpdateHelper.startUpdateTimer()
 		}
+		
+		//Listen for incoming FaceTime calls
+		if FaceTimeHelper.isSupported {
+			LogManager.log("FaceTime is enabled", level: .info)
+			
+			FaceTimeHelper.startIncomingCallTimer()
+		}
 	}
 	
 	func applicationWillTerminate(_ notification: Notification) {
@@ -87,6 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		//Disconnect
 		ConnectionManager.shared.stop()
 		DatabaseManager.shared.stop()
+		FaceTimeHelper.stopIncomingCallTimer()
 	}
 	
 	func application(_ application: NSApplication, open urls: [URL]) {
