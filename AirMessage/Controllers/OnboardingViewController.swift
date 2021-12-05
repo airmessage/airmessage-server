@@ -79,6 +79,11 @@ class OnboardingViewController: NSViewController {
 						LogManager.log("Failed to start database: \(error)", level: .notice)
 						ConnectionManager.shared.stop()
 					}
+					
+					//Start listening for FaceTime calls
+					if FaceTimeHelper.isSupported {
+						FaceTimeHelper.startIncomingCallTimer()
+					}
 				} else {
 					//Disconnect and let the user resolve the error
 					ConnectionManager.shared.stop()

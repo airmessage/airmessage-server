@@ -1,3 +1,5 @@
-tell application "FaceTime"
-	count windows
+tell application "System Events"
+	tell process "FaceTime"
+		activate
+	end tell
 end tell

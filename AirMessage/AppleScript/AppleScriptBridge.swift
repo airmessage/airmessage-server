@@ -65,6 +65,9 @@ class AppleScriptBridge {
 		
 		var scriptError: NSDictionary?
 		scriptTestAutomation.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("Messages permissions test failed: \(error)", level: .debug)
+		}
 		return scriptError == nil
 	}
 	
@@ -174,13 +177,16 @@ class AppleScriptBridge {
 		
 		var scriptError: NSDictionary?
 		scriptTestAutomation.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("FaceTime permissions test failed: \(error)", level: .debug)
+		}
 		return scriptError == nil
 	}
 	
 	///Creates and gets a new FaceTime link
 	func getNewFaceTimeLink() throws -> String {
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptFaceTimeCreateNewLink, params: NSAppleEventDescriptor.list(), error: &executeError)
+		let result = scriptFaceTimeCreateNewLink.executeAndReturnError(&executeError)
 		if let error = executeError {
 			throw AppleScriptExecutionError(error: error)
 		} else {
@@ -191,7 +197,7 @@ class AppleScriptBridge {
 	///Gets a FaceTime link for the active call
 	func getActiveFaceTimeLink() throws -> String {
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptFaceTimeGetActiveLink, params: NSAppleEventDescriptor.list(), error: &executeError)
+		let result = scriptFaceTimeGetActiveLink.executeAndReturnError(&executeError)
 		if let error = executeError {
 			throw AppleScriptExecutionError(error: error)
 		} else {
@@ -202,7 +208,7 @@ class AppleScriptBridge {
 	///Leaves the active FaceTime call
 	func leaveFaceTimeCall() throws {
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptFaceTimeLeaveCall, params: NSAppleEventDescriptor.list(), error: &executeError)
+		scriptFaceTimeLeaveCall.executeAndReturnError(&executeError)
 		if let error = executeError {
 			throw AppleScriptExecutionError(error: error)
 		}
@@ -211,9 +217,16 @@ class AppleScriptBridge {
 	///Checks for incoming calls, returning the current caller name, or nil if there is no incoming call
 	func queryIncomingCall() throws -> String? {
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptMessagesCreateChat, params: NSAppleEventDescriptor.list(), error: &executeError)
+		let result = scriptFaceTimeQueryIncomingCall.executeAndReturnError(&executeError)
+		
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			let appleScriptError = AppleScriptExecutionError(error: error)
+			//Ignore error -1719 (invalid index) errors, as these can be caused by changing UI while the script is executing
+			if appleScriptError.code != -1719 {
+				throw appleScriptError
+			} else {
+				return nil
+			}
 		} else {
 			let callerName = result.stringValue!.trimmingCharacters(in: .whitespacesAndNewlines)
 			//The script returns an empty string if there is no incoming call
@@ -256,7 +269,8 @@ class AppleScriptBridge {
 	///Checks the status of an outgoing call
 	func queryOutgoingCall() throws -> OutgoingCallStatus {
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptFaceTimeQueryOutgoingCall, params: NSAppleEventDescriptor.list(), error: &executeError)
+		let result = scriptFaceTimeQueryOutgoingCall.executeAndReturnError(&executeError)
+		
 		if let error = executeError {
 			throw AppleScriptExecutionError(error: error)
 		} else {

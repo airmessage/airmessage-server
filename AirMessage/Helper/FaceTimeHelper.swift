@@ -26,7 +26,7 @@ class FaceTimeHelper {
 	}
 	
 	///Gets if FaceTime bridge is supported on this computer
-	static var isSupported: Bool {
+	static var isSupported: Bool = {
 		if #available(macOS 12.0, *) {
 			//Make sure we're using a supported language, as some UI automation features are language-dependant
 			guard let languageCode = Locale.current.languageCode else {
@@ -37,18 +37,24 @@ class FaceTimeHelper {
 			//Not available on older versions of macOS
 			return false
 		}
-	}
+	}()
 	
 	///Gets if FaceTime bridge is running
 	static var isRunning: Bool { incomingCallTimer != nil }
 	
 	///Starts the timer that listens for incoming calls
 	static func startIncomingCallTimer() {
+		//Make sure we're not already running a timer
+		guard incomingCallTimer == nil else { return }
+		
+		//Start a new timer
 		let timer = DispatchSource.makeTimerSource(queue: incomingCallTimerQueue)
 		timer.schedule(deadline: .now(), repeating: intervalPollIncomingCall)
 		timer.setEventHandler(handler: runIncomingCallListener)
 		timer.resume()
 		incomingCallTimer = timer
+		
+		LogManager.log("Listening for FaceTime calls", level: .info)
 	}
 	
 	///Stops the timer that listens for incoming calls
@@ -76,6 +82,12 @@ class FaceTimeHelper {
 			value = incomingCaller
 			return true
 		}) else { return }
+		
+		if let incomingCaller = incomingCaller {
+			LogManager.log("Detected new incoming FaceTimer caller: \(incomingCaller)", level: .info)
+		} else {
+			LogManager.log("No new incoming FaceTime caller", level: .info)
+		}
 		
 		//Notify clients
 		ConnectionManager.shared.send(faceTimeCaller: incomingCaller)

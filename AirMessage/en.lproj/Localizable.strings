@@ -19,6 +19,7 @@
 "action.configure_manually"="Configure Manually";
 "action.open_full_disk_access"="Open Full Disk Access Settings";
 "action.open_automation_settings"="Open Automation Settings";
+"action.open_accessibility_settings"="Open Accessibility Settings";
 "action.edit_password"="Edit Password…";
 "action.auto_update"="Check for updates automatically";
 "action.beta_update"="Receive beta updates";
@@ -39,6 +40,7 @@
 
 "label.full_disk_access"="Full Disk Access";
 "label.automation_access"="Automation Access";
+"label.accessibility_access"="Accessibility Access";
 
 "label.preferences"="Preferences";
 "label.preferences.server_port"="Server Port:";
@@ -57,11 +59,18 @@
 "message.grant.full_disk_access"="Grant Full Disk Access to AirMessage";
 "message.grant.full_disk_access.explanation"="AirMessage Server needs Full Disk Access in order to read your messages";
 "message.grant.full_disk_access.step1"="• Click the lock in the bottom-left corner of the window";
-"message.grant.full_disk_access.step2"="• Drag and drop the AirMessage icon to the Full Disk Access list";
-"message.grant.full_disk_access.step3"="• Relaunch AirMessage Server";
+"message.grant.full_disk_access.step2Yosemite"="• Add AirMessage to the Full Disk Access list";
+"message.grant.full_disk_access.step2HighSierra"="• Drag and drop the AirMessage icon to the Full Disk Access list";
+"message.grant.full_disk_access.step3"="• Relaunch AirMessage";
+
 "message.grant.automation_access"="Grant Messages Automation Access to AirMessage";
 "message.grant.automation_access.explanation"="AirMessage Server needs Automation access for Messages in order to send messages";
 "message.grant.automation_access.instructions"="Find AirMessage in the Automation list, and click the checkbox for Messages.";
+
+"message.grant.accessibility_accesss"="Grant Accessibility Access to AirMessage";
+"message.grant_accessibility_access.explanation"="AirMessage Server needs Accessibility access in order to send messages and make FaceTime calls.";
+"message.grant.accessibility_accesss.step1"="• Click the lock in the bottom-left corner of the window";
+"message.grant.accessibility_accesss.step2"="• Add AirMessage to the Accessibility list";
 
 "message.status.setup"="Waiting for Setup";
 "message.status.starting"="Server Starting…";

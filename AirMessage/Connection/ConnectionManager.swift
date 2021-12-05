@@ -317,11 +317,19 @@ class ConnectionManager {
 		responsePacker.pack(string: getComputerName() ?? "Unknown") //Computer name
 		responsePacker.pack(string: ProcessInfo.processInfo.operatingSystemVersionString) //System version
 		responsePacker.pack(string: Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) //Software version
+		responsePacker.pack(bool: FaceTimeHelper.isRunning) //Is FaceTime supported?
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		
 		//Sending the client the latest database entry ID
 		if let lastID = DatabaseManager.shared.lastScannedMessageID {
 			send(idUpdate: lastID, to: client)
+		}
+		
+		//Sending the client pending update data
+		if let pendingUpdate = DispatchQueue.main.sync(execute: {
+			UpdateHelper.pendingUpdate
+		}) {
+			send(update: pendingUpdate, to: client)
 		}
 	}
 	
@@ -1429,8 +1437,6 @@ extension ConnectionManager: DataProxyDelegate {
 		} else {
 			packer.pack(bool: false) //Transmission check not required
 		}
-		
-		packer.pack(bool: FaceTimeHelper.isRunning) //Is FaceTime supported?
 		
 		dataProxy.send(message: packer.data, to: client, encrypt: false, onSent: nil)
 		
