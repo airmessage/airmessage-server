@@ -1094,7 +1094,7 @@ class ConnectionManager {
 			
 			var responsePacker = AirPacker()
 			responsePacker.pack(int: NHT.softwareUpdateInstall.rawValue)
-			responsePacker.pack(bool: false)
+			responsePacker.pack(bool: result)
 			
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
