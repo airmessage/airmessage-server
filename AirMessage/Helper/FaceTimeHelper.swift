@@ -42,6 +42,9 @@ class FaceTimeHelper {
 	///Gets if FaceTime bridge is running
 	static var isRunning: Bool { incomingCallTimer != nil }
 	
+	///Gets the current incoming caller, or nil if there is none
+	static var currentIncomingCaller: String? { lastIncomingCaller.value }
+	
 	///Starts the timer that listens for incoming calls
 	static func startIncomingCallTimer() {
 		//Make sure we're not already running a timer

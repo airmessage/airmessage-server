@@ -1220,7 +1220,6 @@ class ConnectionManager {
 			SentrySDK.capture(error: error)
 			initiateCallResult = .appleScriptError
 			initiateCallErrorDesc = error.localizedDescription
-			return
 		}
 		
 		//Send the result
@@ -1267,42 +1266,78 @@ class ConnectionManager {
 		let incomingCaller = try messagePacker.unpackString()
 		let accept = try messagePacker.unpackBool()
 		
-		///Sends a response to the client. If the link is nil, the client will report an error.
-		func sendResponse(link: String?) {
+		///Sends a response to the client with the FaceTime link
+		func sendLink(_ link: String) {
 			guard let dataProxy = dataProxy else { return }
-
+			
 			var responsePacker = AirPacker()
 			responsePacker.pack(int: NHT.faceTimeIncomingHandle.rawValue)
-			if let link = link {
-				responsePacker.pack(string: link)
-				responsePacker.pack(bool: true)
-			} else {
-				responsePacker.pack(bool: false)
-			}
+			responsePacker.pack(bool: true)
+			responsePacker.pack(string: link)
 			
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
 		
+		///Sends an error response to the client
+		func sendError(errorDetails: String?) {
+			guard let dataProxy = dataProxy else { return }
+			
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.faceTimeIncomingHandle.rawValue)
+			responsePacker.pack(bool: false)
+			responsePacker.pack(optionalString: errorDetails)
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//Make sure there's an active incoming call
+		let currentIncomingCaller = FaceTimeHelper.currentIncomingCaller
+		guard let currentIncomingCaller = currentIncomingCaller else {
+			LogManager.log("Failed to handle incoming FaceTime call: no active incoming call (client wanted \(incomingCaller))", level: .notice)
+			sendError(errorDetails: "No active incoming call")
+			return
+		}
+		
+		//Make sure we have the right caller
+		guard incomingCaller == currentIncomingCaller else {
+			LogManager.log("Failed to handle incoming FaceTime call: incoming caller mismatch; got \(incomingCaller), expected \(currentIncomingCaller)", level: .notice)
+			sendError(errorDetails: "Incoming caller mismatch; got \(incomingCaller), expected \(currentIncomingCaller)")
+			return
+		}
+		
 		//Handle the call
-		let result = FaceTimeHelper.handleCall(incomingCaller, accept: accept)
-		guard result else {
-			sendResponse(link: nil)
-			return
-		}
-		
-		//Generate a link for the call
-		let faceTimeLink: String
+		let callHandled: Bool
 		do {
-			faceTimeLink = try AppleScriptBridge.shared.getActiveFaceTimeLink()
+			callHandled = try AppleScriptBridge.shared.handleIncomingCall(accept: accept)
 		} catch {
-			LogManager.log("Failed to get active FaceTime link: \(error)", level: .error)
+			LogManager.log("Failed to handle incoming FaceTime call (\(accept ? "accept" : "reject")): \(error)", level: .notice)
 			SentrySDK.capture(error: error)
-			sendResponse(link: nil)
+			sendError(errorDetails: error.localizedDescription)
 			return
 		}
 		
-		//Send the link to the client
-		sendResponse(link: faceTimeLink)
+		//Make sure the call was handled
+		guard callHandled else {
+			LogManager.log("Failed to handle incoming FaceTime call: call not available in system", level: .notice)
+			sendError(errorDetails: "Call not available in system")
+			return
+		}
+		
+		if accept {
+			//Generate a link for the call
+			let faceTimeLink: String
+			do {
+				faceTimeLink = try AppleScriptBridge.shared.getActiveFaceTimeLink()
+			} catch {
+				LogManager.log("Failed to get active FaceTime link: \(error)", level: .error)
+				SentrySDK.capture(error: error)
+				sendError(errorDetails: error.localizedDescription)
+				return
+			}
+			
+			//Send the link to the client
+			sendLink(faceTimeLink)
+		}
 	}
 	
 	private func handleMessageFaceTimeDisconnect(packer messagePacker: inout AirPacker, from client: C) throws {
