@@ -12,7 +12,7 @@ tell application "System Events"
 		set linkButton to button 2 of group 3 of list 1 of list 1 of scroll area 2 of window 1
 		click linkButton
 		click menu item 1 of menu of linkButton
-		delay 0.1
+		delay 0.5
 		return the clipboard
 	end tell
 end tell
