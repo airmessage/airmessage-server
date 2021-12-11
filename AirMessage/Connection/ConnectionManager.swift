@@ -1191,8 +1191,8 @@ class ConnectionManager {
 		var responsePacker = AirPacker()
 		responsePacker.pack(int: NHT.faceTimeCreateLink.rawValue)
 		if let link = link {
-			responsePacker.pack(string: link)
 			responsePacker.pack(bool: true)
+			responsePacker.pack(string: link)
 		} else {
 			responsePacker.pack(bool: false)
 		}
