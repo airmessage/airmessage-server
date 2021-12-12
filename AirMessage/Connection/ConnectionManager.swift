@@ -317,6 +317,7 @@ class ConnectionManager {
 		responsePacker.pack(string: getComputerName() ?? "Unknown") //Computer name
 		responsePacker.pack(string: ProcessInfo.processInfo.operatingSystemVersionString) //System version
 		responsePacker.pack(string: Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String) //Software version
+		responsePacker.pack(string: NSFullUserName()) //User name (for FaceTime calls)
 		responsePacker.pack(bool: FaceTimeHelper.isRunning) //Is FaceTime supported?
 		dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		
