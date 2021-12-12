@@ -10,6 +10,7 @@ import Sentry
 
 class FaceTimeHelper {
 	private static let intervalPollIncomingCall: TimeInterval = 1
+	private static let intervalPollAcceptEntry: TimeInterval = 0.5
 	
 	private static let incomingCallTimerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".facetime.incominglistener", qos: .utility)
 	private static var incomingCallTimer: DispatchSourceTimer? = nil
@@ -20,6 +21,12 @@ class FaceTimeHelper {
 	private static let outgoingCallTimerRunning = AtomicBool(initialValue: false)
 	private static var outgoingCallListenerArray: [(InitiateCallResult) -> Void] = []
 	private static let outgoingCallListenerArrayLock = ReadWriteLock() //Cannot be locked before locking incomingCallTimer
+	
+	private static let acceptEntryTimerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".facetime.outgoinglistener", qos: .utility)
+	private static var acceptEntryTimer: DispatchSourceTimer? = nil
+	private static let acceptEntryTimerRunning = AtomicBool(initialValue: false)
+	private static var acceptEntryListenerArray: [(Error?) -> Void] = []
+	private static let acceptEntryListenerArrayLock = ReadWriteLock() //Cannot be locked before locking incomingCallTimer
 	
 	private init() {
 		
@@ -134,11 +141,34 @@ class FaceTimeHelper {
 			value = true
 			
 			//Start the timer
-			let timer = DispatchSource.makeTimerSource(queue: incomingCallTimerQueue)
+			let timer = DispatchSource.makeTimerSource(queue: outgoingCallTimerQueue)
 			timer.schedule(deadline: .now(), repeating: intervalPollIncomingCall)
 			timer.setEventHandler(handler: runOutgoingCallListener)
 			timer.resume()
 			outgoingCallTimer = timer
+		}
+	}
+	
+	///Waits for a user to ask to enter the call, and lets them in
+	static func waitAcceptEntry(onResult listener: @escaping (Error?) -> Void) {
+		acceptEntryTimerRunning.with { value in
+			//Add the listener
+			acceptEntryListenerArrayLock.withWriteLock {
+				acceptEntryListenerArray.append(listener)
+			}
+			
+			//Ignore if we're already running
+			guard !value else { return }
+			
+			//Set the value to running
+			value = true
+			
+			//Start the timer
+			let timer = DispatchSource.makeTimerSource(queue: acceptEntryTimerQueue)
+			timer.schedule(deadline: .now(), repeating: intervalPollAcceptEntry)
+			timer.setEventHandler(handler: runAcceptEntryListener)
+			timer.resume()
+			acceptEntryTimer = timer
 		}
 	}
 	
@@ -196,6 +226,47 @@ class FaceTimeHelper {
 			cancelAndNotify(result: .accepted(link: link))
 		} else if status == .rejected {
 			cancelAndNotify(result: .rejected)
+		}
+	}
+	
+	private static func runAcceptEntryListener() {
+		func cancelAndNotify(error: Error?) {
+			acceptEntryTimerRunning.with { value in
+				acceptEntryListenerArrayLock.withWriteLock {
+					//Call the listeners
+					for listener in acceptEntryListenerArray {
+						listener(error)
+					}
+					
+					//Clear the array
+					acceptEntryListenerArray.removeAll()
+				}
+				
+				//Set the timer flag as not running
+				value = false
+				acceptEntryTimer!.cancel()
+				
+				//Cancel and invalidate the timer
+				acceptEntryTimer = nil
+			}
+		}
+		
+		let accepted: Bool
+		do {
+			accepted = try AppleScriptBridge.shared.acceptFaceTimeEntry()
+		} catch {
+			//Report the error
+			cancelAndNotify(error: error)
+			
+			//Leave the call
+			try? AppleScriptBridge.shared.leaveFaceTimeCall()
+			
+			return
+		}
+		
+		if accepted {
+			//Finish
+			cancelAndNotify(error: nil)
 		}
 	}
 }

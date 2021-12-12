@@ -9,7 +9,7 @@ tell application "System Events"
 		end repeat
 		
 		--Click "share link" button
-		set linkButton to button 2 of group 3 of list 1 of list 1 of scroll area 2 of window 1
+		set linkButton to button 2 of last group of list 1 of list 1 of scroll area 2 of window 1
 		click linkButton
 		click menu item 1 of menu of linkButton
 		delay 0.5

@@ -1204,6 +1204,8 @@ class ConnectionManager {
 		//Get the addresses
 		let addresses = try messagePacker.unpackStringArray()
 		
+		LogManager.log("Initiating an outgoing FaceTime call with \(addresses.joined(separator: ", "))", level: .info)
+		
 		//Initiate the call
 		let initiateCallResult: NSTInitiateFaceTimeCall
 		let initiateCallErrorDesc: String?
@@ -1239,26 +1241,46 @@ class ConnectionManager {
 		
 		//Wait for the call to be handled by the recipient
 		FaceTimeHelper.waitInitiatedCall { [weak self, weak client] result in
-			//Make sure the client is still valid
-			guard let client = client, client.isConnected.value else { return }
-			
-			guard let dataProxy = self?.dataProxy else { return }
-			
-			//Send the result
-			var responsePacker = AirPacker()
-			responsePacker.pack(int: NHT.faceTimeOutgoingHandled.rawValue)
-			switch result {
-				case .accepted(let link):
-					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.accepted.rawValue)
-					responsePacker.pack(string: link)
-				case .rejected:
-					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.rejected.rawValue)
-				case .error(let error):
-					responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.error.rawValue)
-					responsePacker.pack(optionalString: error.localizedDescription)
+			do {
+				//Make sure the client is still valid
+				guard let client = client, client.isConnected.value else { return }
+				
+				guard let dataProxy = self?.dataProxy else { return }
+				
+				//Send the result
+				var responsePacker = AirPacker()
+				responsePacker.pack(int: NHT.faceTimeOutgoingHandled.rawValue)
+				switch result {
+					case .accepted(let link):
+						responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.accepted.rawValue)
+						responsePacker.pack(string: link)
+					case .rejected:
+						responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.rejected.rawValue)
+					case .error(let error):
+						responsePacker.pack(int: NSTOutgoingFaceTimeCallHandled.error.rawValue)
+						responsePacker.pack(optionalString: error.localizedDescription)
+				}
+				
+				dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 			}
 			
-			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+			//Wait for the user to ask to join the call
+			FaceTimeHelper.waitAcceptEntry { error in
+				if let error = error {
+					LogManager.log("Failed to wait for FaceTime user entry: \(error)", level: .error)
+					SentrySDK.capture(error: error)
+					return
+				}
+			
+				
+				//Leave the call
+				do {
+					try AppleScriptBridge.shared.leaveFaceTimeCall()
+				} catch {
+					LogManager.log("Failed to leave active FaceTime call: \(error)", level: .error)
+					SentrySDK.capture(error: error)
+				}
+			}
 		}
 	}
 	

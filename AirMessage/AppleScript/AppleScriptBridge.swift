@@ -157,6 +157,7 @@ class AppleScriptBridge {
 	private lazy var scriptFaceTimeCreateNewLink = AppleScriptBridge.getScript("getNewLink", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeGetActiveLink = AppleScriptBridge.getScript("getActiveLink", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeLeaveCall = AppleScriptBridge.getScript("leaveCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeAcceptPendingUser = AppleScriptBridge.getScript("acceptPendingUser", ofCategory: .faceTime)
 	
 	private lazy var scriptFaceTimeQueryIncomingCall = AppleScriptBridge.getScript("queryIncomingCall", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeHandleIncomingCall = AppleScriptBridge.getScript("handleIncomingCall", ofCategory: .faceTime)
@@ -211,6 +212,17 @@ class AppleScriptBridge {
 		scriptFaceTimeLeaveCall.executeAndReturnError(&executeError)
 		if let error = executeError {
 			throw AppleScriptExecutionError(error: error)
+		}
+	}
+	
+	///Accepts the first pending user for the current FaceTime call if present, returns false if there was no user to accept
+	func acceptFaceTimeEntry() throws -> Bool {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeAcceptPendingUser.executeAndReturnError(&executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
 		}
 	}
 	
