@@ -38,7 +38,7 @@ on main(addressList)
 			
 			if exists of radio group 1 of createSheet then
 				--Click the create button and join the call
-				delay 0.1
+				delay 0.3
 				set buttonCreate to radio button 1 of radio group 1 of createSheet
 				click buttonCreate
 				
