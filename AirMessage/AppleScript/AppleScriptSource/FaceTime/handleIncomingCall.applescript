@@ -14,7 +14,7 @@ on main(accept)
 			set buttonAccept to button 1 of notificationGroup
 			click buttonAccept
 		else
-			set buttonReject to button 1 of notificationGroup
+			set buttonReject to button 2 of notificationGroup
 			click buttonReject
 		end if
 		

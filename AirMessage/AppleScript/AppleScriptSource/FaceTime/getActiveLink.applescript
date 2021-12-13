@@ -1,4 +1,20 @@
 --Creates and returns a FaceTime link for the current call
+
+--Open FaceTime
+tell application "FaceTime" to activate
+
+--Wait for FaceTime to initialize
+tell application "System Events"
+	tell process "FaceTime"
+		set windowReady to false
+		repeat while not windowReady
+			if exists window 1
+				set windowReady to true
+			end if
+		end repeat
+	end tell
+end tell
+
 tell application "System Events"
 	tell process "FaceTime"
 		--Open sidebar

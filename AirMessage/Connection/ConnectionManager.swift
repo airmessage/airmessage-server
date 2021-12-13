@@ -1272,7 +1272,6 @@ class ConnectionManager {
 					SentrySDK.capture(error: error)
 					return
 				}
-			
 				
 				//Leave the call
 				do {
@@ -1360,6 +1359,23 @@ class ConnectionManager {
 			
 			//Send the link to the client
 			sendLink(faceTimeLink)
+			
+			//Wait for the user to ask to join the call
+			FaceTimeHelper.waitAcceptEntry { error in
+				if let error = error {
+					LogManager.log("Failed to wait for FaceTime user entry: \(error)", level: .error)
+					SentrySDK.capture(error: error)
+					return
+				}
+				
+				//Leave the call
+				do {
+					try AppleScriptBridge.shared.leaveFaceTimeCall()
+				} catch {
+					LogManager.log("Failed to leave active FaceTime call: \(error)", level: .error)
+					SentrySDK.capture(error: error)
+				}
+			}
 		}
 	}
 	
