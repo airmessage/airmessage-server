@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 import Carbon
 
 class AppleScriptBridge {
@@ -158,6 +159,7 @@ class AppleScriptBridge {
 	private lazy var scriptFaceTimeGetActiveLink = AppleScriptBridge.getScript("getActiveLink", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeLeaveCall = AppleScriptBridge.getScript("leaveCall", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeAcceptPendingUser = AppleScriptBridge.getScript("acceptPendingUser", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeCenterWindow = AppleScriptBridge.getScript("centerWindow", ofCategory: .faceTime)
 	
 	private lazy var scriptFaceTimeQueryIncomingCall = AppleScriptBridge.getScript("queryIncomingCall", ofCategory: .faceTime)
 	private lazy var scriptFaceTimeHandleIncomingCall = AppleScriptBridge.getScript("handleIncomingCall", ofCategory: .faceTime)
@@ -224,6 +226,28 @@ class AppleScriptBridge {
 		} else {
 			return result.booleanValue
 		}
+	}
+	
+	///Centers the FaceTime window and the mouse cursor in the middle of the screen
+	func centerFaceTimeWindow() throws {
+		//Get the middle of the screen
+		let screen = NSScreen.main!
+		let rect = screen.frame
+		let moveX = rect.size.width / 2
+		let moveY = rect.size.height / 2
+		
+		let params = NSAppleEventDescriptor.list()
+		params.insert(NSAppleEventDescriptor(int32: Int32(moveX)), at: 1)
+		params.insert(NSAppleEventDescriptor(int32: Int32(moveY)), at: 2)
+		
+		var executeError: NSDictionary? = nil
+		AppleScriptBridge.runScript(scriptFaceTimeCenterWindow, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		}
+		
+		//Move the cursor to the middle of the screen
+		CGDisplayMoveCursorToPoint(0, CGPoint(x: moveX, y: moveY))
 	}
 	
 	///Checks for incoming calls, returning the current caller name, or nil if there is no incoming call

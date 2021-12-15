@@ -10,7 +10,10 @@ tell application "System Events"
 		repeat while not windowReady
 			if exists window 1
 				set windowReady to true
+				exit repeat
 			end if
+			
+			delay 0.1
 		end repeat
 	end tell
 end tell
@@ -24,11 +27,23 @@ tell application "System Events"
 			end if
 		end repeat
 		
+		--Minimize window
+		keystroke "m" using command down
+		
+		set originalClipboard to the clipboard
+
 		--Click "share link" button
 		set linkButton to button 2 of last group of list 1 of list 1 of scroll area 2 of window 1
 		click linkButton
+		delay 0.1
 		click menu item 1 of menu of linkButton
-		delay 0.5
-		return the clipboard
+		
+		repeat
+			if the clipboard is not originalClipboard
+				return the clipboard
+			end if
+		end repeat
 	end tell
 end tell
+
+tell application "FaceTime" to activate

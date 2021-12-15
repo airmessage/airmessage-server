@@ -1207,38 +1207,49 @@ class ConnectionManager {
 		
 		LogManager.log("Initiating an outgoing FaceTime call with \(addresses.joined(separator: ", "))", level: .info)
 		
+		func sendResult(dataProxy: DataProxy, result: NSTInitiateFaceTimeCall, errorDesc: String?) {
+			var responsePacker = AirPacker()
+			responsePacker.pack(int: NHT.faceTimeOutgoingInitiate.rawValue)
+			responsePacker.pack(int: result.rawValue)
+			responsePacker.pack(optionalString: errorDesc)
+			
+			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+		}
+		
+		//Center the window in the middle of the screen
+		do {
+			try AppleScriptBridge.shared.centerFaceTimeWindow()
+		} catch {
+			LogManager.log("Failed to center FaceTime window: \(error)", level: .error)
+			SentrySDK.capture(error: error)
+			
+			guard let dataProxy = dataProxy else { return }
+			sendResult(dataProxy: dataProxy, result: .appleScriptError, errorDesc: error.localizedDescription)
+			return
+		}
+		
 		//Initiate the call
-		let initiateCallResult: NSTInitiateFaceTimeCall
-		let initiateCallErrorDesc: String?
 		do {
 			let result = try AppleScriptBridge.shared.initiateOutgoingCall(with: addresses)
-			if result {
-				initiateCallResult = .ok
-			} else {
-				initiateCallResult = .badMembers
+			guard result else {
+				guard let dataProxy = dataProxy else { return }
+				sendResult(dataProxy: dataProxy, result: .badMembers, errorDesc: nil)
+				return
 			}
-			initiateCallErrorDesc = nil
 		} catch {
 			LogManager.log("Failed to initiate outgoing FaceTime call with \(addresses.count) addresses: \(error)", level: .error)
 			SentrySDK.capture(error: error)
-			initiateCallResult = .appleScriptError
-			initiateCallErrorDesc = error.localizedDescription
+			
+			guard let dataProxy = dataProxy else { return }
+			sendResult(dataProxy: dataProxy, result: .appleScriptError, errorDesc: error.localizedDescription)
+			return
 		}
 		
 		//Send the result
 		do {
 			guard let dataProxy = dataProxy else { return }
-			
-			var responsePacker = AirPacker()
-			responsePacker.pack(int: NHT.faceTimeOutgoingInitiate.rawValue)
-			responsePacker.pack(int: initiateCallResult.rawValue)
-			responsePacker.pack(optionalString: initiateCallErrorDesc)
-			
-			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
+			sendResult(dataProxy: dataProxy, result: .ok, errorDesc: nil)
 		}
-		
-		//Don't continue if we didn't successfully initiate the call
-		guard initiateCallResult == .ok else { return }
 		
 		//Wait for the call to be handled by the recipient
 		FaceTimeHelper.waitInitiatedCall { [weak self, weak client] result in

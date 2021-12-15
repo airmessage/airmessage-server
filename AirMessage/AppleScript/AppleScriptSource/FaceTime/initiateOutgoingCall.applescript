@@ -1,18 +1,21 @@
 on main(addressList)
 	--Open FaceTime
 	tell application "FaceTime" to activate
-
+	
 	--Wait for FaceTime to initialize
 	tell application "System Events"
 		tell process "FaceTime"
 			set windowReady to false
 			repeat while not windowReady
-				repeat with buttonEl in buttons of window 1
-					if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
-						set windowReady to true
-						exit repeat
-					end if
-				end repeat
+				if exists window 1 then
+					repeat with buttonEl in buttons of window 1
+						if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
+							set windowReady to true
+							exit repeat
+						end if
+					end repeat
+				end if
+				delay 0.1
 			end repeat
 		end tell
 	end tell
@@ -36,19 +39,25 @@ on main(addressList)
 				keystroke return
 			end repeat
 			
-			if exists of radio group 1 of createSheet then
-				--Click the create button and join the call
-				delay 0.3
-				set buttonCreate to radio button 1 of radio group 1 of createSheet
-				click buttonCreate
+			--Wait for the request to go through
+			repeat
+				if (exists of radio group 1 of createSheet) and (enabled of radio group 1 of createSheet) then
+					delay 0.3
+					
+					--Click the create button and join the call
+					set buttonCreate to radio button 1 of radio group 1 of createSheet
+					click buttonCreate
+					
+					return true
+				else if (exists button 2 of createSheet) and (name of button 2 of createSheet contains "Messages") then --Invite with Messages
+					--Dismiss the sheet
+					click button 1 of createSheet
+					
+					return false
+				end if
 				
-				return true
-			else
-				--Dismiss the sheet
-				click button 1 of createSheet
-				
-				return false
-			end if
+				delay 0.1
+			end repeat
 		end tell
 	end tell
 end main
