@@ -134,6 +134,8 @@ extension SoftwareUpdateViewController: WKNavigationDelegate {
 		if navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url {
 			NSWorkspace.shared.open(url)
 			decisionHandler(.cancel)
+		} else if navigationAction.navigationType == .reload {
+			decisionHandler(.cancel)
 		} else {
 			decisionHandler(.allow)
 		}
