@@ -1,4 +1,6 @@
 on main(addressList)
+	set labelsMessages to {"Messages", "メッセージ"}
+	
 	--Open FaceTime
 	tell application "FaceTime" to activate
 	
@@ -49,11 +51,17 @@ on main(addressList)
 					click buttonCreate
 					
 					return true
-				else if (exists button 2 of createSheet) and (name of button 2 of createSheet contains "Messages") then --Invite with Messages
-					--Dismiss the sheet
-					click button 1 of createSheet
-					
-					return false
+				else if exists button 2 of createSheet then
+					set buttonName to name of button 2 of createSheet
+					repeat with label in labelsMessages
+						if buttonName contains label
+							--Invite with Messages
+							--Dismiss the sheet
+							click button 1 of createSheet
+							
+							return false
+						end if
+					end repeat
 				end if
 				
 				delay 0.1
