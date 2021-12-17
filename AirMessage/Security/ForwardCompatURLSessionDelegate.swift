@@ -15,7 +15,9 @@ import Foundation
  */
 class ForwardCompatURLSessionDelegate: NSObject, URLSessionDelegate {
 	public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-		LogManager.log("Evaluating host \(challenge.protectionSpace.host) for \(challenge.protectionSpace.authenticationMethod)", level: .debug)
+		#if DEBUG
+			LogManager.log("Evaluating host \(challenge.protectionSpace.host) for \(challenge.protectionSpace.authenticationMethod)", level: .debug)
+		#endif
 		
 		if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
 			//Get all local root certificates
