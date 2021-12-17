@@ -15,6 +15,7 @@
 "action.preferences"="Préférences…";
 "action.switch_to_account"="Utiliser un compte";
 "action.receive_beta_updates"="Recevoir les mises à jour bêta";
+"action.facetime_integration"="Intégration avec FaceTime";
 "action.connect_account"="Connecter un compte (recommandé)";
 "action.configure_manually"="Configurer manuellement";
 "action.open_full_disk_access"="Ouvrir les paramètres d'accès complet au disque";
@@ -44,6 +45,7 @@
 "label.preferences.server_port"="Port de serveur:";
 "label.preferences.security"="Sécurité:";
 "label.preferences.updates"="Mises à jour:";
+"label.preferences.facetime"="FaceTime:";
 "label.preferences.account"="Compte:";
 
 "label.software_update"="Mise à jour logiciel";
@@ -86,6 +88,7 @@
 "message.preference.account_connect"="Ce serveur est configuré pour %@. Connectez-vous à AirMessage sur votre smartphone, votre tablette ou votre PC pour commencer.";
 "message.enter_server_port"="Veuillez entrer un port de serveur";
 "message.invalid_server_port"="%@ ne peut pas être utilisé comme port de serveur";
+"message.facetime_integration"="Passer et recevoir des appels FaceTime sur Android et sur le Web";
 
 "message.reset.title.direct"="Voulez-vous reconfigurer AirMessage Server?";
 "message.reset.title.connect"="Voulez-vous vous déconnecter d'AirMessage Server?";

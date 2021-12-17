@@ -50,7 +50,7 @@ func launchServer() {
 	}
 	
 	//Start listening for FaceTime calls
-	if FaceTimeHelper.isSupported {
+	if FaceTimeHelper.isSupported && PreferencesManager.shared.faceTimeIntegration {
 		FaceTimeHelper.startIncomingCallTimer()
 	}
 	
@@ -63,7 +63,7 @@ func launchServer() {
  */
 func checkServerPermissions() -> Bool {
 	//Check for FaceTime Accessibility access
-	if FaceTimeHelper.isSupported {
+	if FaceTimeHelper.isSupported && PreferencesManager.shared.faceTimeIntegration {
 		guard AppleScriptBridge.shared.checkPermissionsFaceTime() else {
 			let storyboard = NSStoryboard(name: "Main", bundle: nil)
 			let windowController = storyboard.instantiateController(withIdentifier: "AccessibilityAccess") as! NSWindowController

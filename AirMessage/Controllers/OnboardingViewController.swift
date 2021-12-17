@@ -81,7 +81,7 @@ class OnboardingViewController: NSViewController {
 					}
 					
 					//Start listening for FaceTime calls
-					if FaceTimeHelper.isSupported {
+					if FaceTimeHelper.isSupported && PreferencesManager.shared.faceTimeIntegration {
 						FaceTimeHelper.startIncomingCallTimer()
 					}
 				} else {
