@@ -205,6 +205,32 @@ class ConnectionManager {
 		dataProxy.send(message: responsePacker.data, to: nil, encrypt: true, onSent: nil)
 	}
 	
+	//MARK: - Send push notification functions
+	
+	private static func sendPushNotificationPayload(_ dataProxy: DataProxy, data: Data) {
+		//Encrypt the data
+		let payload: Data
+		let password = PreferencesManager.shared.password
+		let encrypt = !password.isEmpty
+		if encrypt {
+			do {
+				payload = try networkEncrypt(data: data)
+			} catch {
+				LogManager.log("Failed to encrypt data for push notification: \(error)", level: .error)
+				SentrySDK.capture(error: error)
+				return
+			}
+		} else {
+			payload = data
+		}
+		
+		//Pack into a final message and send
+		var messagePacker = AirPacker()
+		messagePacker.pack(bool: encrypt)
+		messagePacker.pack(payload: payload)
+		dataProxy.send(pushNotification: messagePacker.data, version: 3)
+	}
+	
 	/**
 	 Sends an array of incoming messages or incoming modifiers as a push notification
 	 */
@@ -216,31 +242,27 @@ class ConnectionManager {
 		guard let dataProxy = dataProxy, dataProxy.supportsPushNotifications else { return }
 		
 		//Serialize the data
-		var securePacker = AirPacker()
-		securePacker.pack(packableArray: messages)
-		securePacker.pack(packableArray: modifiers)
+		var packer = AirPacker()
+		packer.pack(int: PushNotificationPayloadType.message.rawValue)
+		packer.pack(packableArray: messages)
+		packer.pack(packableArray: modifiers)
 		
-		//Encrypt the data
-		let payload: Data
-		let password = PreferencesManager.shared.password
-		let encrypt = !password.isEmpty
-		if encrypt {
-			do {
-				payload = try networkEncrypt(data: securePacker.data)
-			} catch {
-				LogManager.log("Failed to encrypt data for push notification: \(error)", level: .error)
-				SentrySDK.capture(error: error)
-				return
-			}
-		} else {
-			payload = securePacker.data
-		}
+		//Send the push notification
+		ConnectionManager.sendPushNotificationPayload(dataProxy, data: packer.data)
+	}
+	
+	///Sends a FaceTime caller as a push notification
+	public func sendPushNotification(faceTimerCaller: String?) {
+		//Make sure we have an active data proxy
+		guard let dataProxy = dataProxy, dataProxy.supportsPushNotifications else { return }
 		
-		//Pack into a final message and send
-		var messagePacker = AirPacker()
-		messagePacker.pack(bool: encrypt)
-		messagePacker.pack(payload: payload)
-		dataProxy.send(pushNotification: messagePacker.data, version: 2)
+		//Serialize the data
+		var packer = AirPacker()
+		packer.pack(int: PushNotificationPayloadType.faceTime.rawValue)
+		packer.pack(optionalString: faceTimerCaller)
+		
+		//Send the push notification
+		ConnectionManager.sendPushNotificationPayload(dataProxy, data: packer.data)
 	}
 	
 	//MARK: - Handle message

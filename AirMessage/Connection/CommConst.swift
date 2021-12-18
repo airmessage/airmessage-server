@@ -106,3 +106,8 @@ enum NSTOutgoingFaceTimeCallHandled: Int32 {
 	case rejected = 1
 	case error = 2
 }
+
+enum PushNotificationPayloadType: Int32 {
+	case message = 0
+	case faceTime = 1
+}

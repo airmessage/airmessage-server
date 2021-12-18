@@ -103,6 +103,7 @@ class FaceTimeHelper {
 		
 		//Notify clients
 		ConnectionManager.shared.send(faceTimeCaller: incomingCaller)
+		ConnectionManager.shared.sendPushNotification(faceTimerCaller: incomingCaller)
 	}
 	
 	///Accepts or rejects a pending incoming call
