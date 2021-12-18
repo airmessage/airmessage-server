@@ -12,7 +12,7 @@ class ConnectConstants {
 	static let commVer = 1
 	
 	//Timeout for handshake from server
-	static let handshakeTimeout: TimeInterval = 8
+	static let handshakeTimeout: TimeInterval = 15
 }
 
 enum ConnectNHT: Int32 {

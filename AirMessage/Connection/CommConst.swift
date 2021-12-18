@@ -6,7 +6,7 @@ import Foundation
 
 class CommConst {
 	static let version: Int32 = 5
-	static let subVersion: Int32 = 4
+	static let subVersion: Int32 = 5
 	
 	static let defaultFileChunkSize: Int64 = 1024 * 1024 //1 MB
 	
@@ -55,6 +55,13 @@ enum NHT: Int32 {
 	case softwareUpdateListing = 500
 	case softwareUpdateInstall = 501
 	case softwareUpdateError = 502
+	
+	case faceTimeCreateLink = 600 //Create a new FaceTime link
+	case faceTimeOutgoingInitiate = 601 //Initiate a new FaceTime call
+	case faceTimeOutgoingHandled = 602 //Notify a client that an outgoing call has been accepted or rejected
+	case faceTimeIncomingCallerUpdate = 603 //Notify clients that there is a new incoming call
+	case faceTimeIncomingHandle = 604 //Client -> Server: accept or reject the incoming call and return its link
+	case faceTimeDisconnect = 605 //Client -> Server: Drop the current call
 }
 
 //Net sub-type
@@ -86,4 +93,21 @@ enum NSTCreateChat: Int32 {
 	case scriptError = 1 //Some unknown AppleScript error
 	case badRequest = 2 //Invalid data received
 	case unauthorized = 3 //System rejected request to send message
+}
+
+enum NSTInitiateFaceTimeCall: Int32 {
+	case ok = 0
+	case badMembers = 1
+	case appleScriptError = 2
+}
+
+enum NSTOutgoingFaceTimeCallHandled: Int32 {
+	case accepted = 0
+	case rejected = 1
+	case error = 2
+}
+
+enum PushNotificationPayloadType: Int32 {
+	case message = 0
+	case faceTime = 1
 }

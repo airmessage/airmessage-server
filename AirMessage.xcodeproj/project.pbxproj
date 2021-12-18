@@ -50,6 +50,8 @@
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
 		ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */; };
+		ED87C51E275A996100EBB3C6 /* FaceTimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */; };
+		ED87C520275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87C51F275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift */; };
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
@@ -304,6 +306,8 @@
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
 		ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandleCompat.swift; sourceTree = "<group>"; };
 		ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemHelper.swift; sourceTree = "<group>"; };
+		ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTimeHelper.swift; sourceTree = "<group>"; };
+		ED87C51F275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityAccessViewController.swift; sourceTree = "<group>"; };
 		ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEntryViewController.swift; sourceTree = "<group>"; };
 		ED891A3925A30701002230EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -712,6 +716,7 @@
 				ED1B06532690EBE9006D34DF /* PreferencesViewController.swift */,
 				2EAEEDAC65D9FE81E6C8197F /* SoftwareUpdateProgressViewController.swift */,
 				2EAEECDDCA322350B1497585 /* SoftwareUpdateViewController.swift */,
+				ED87C51F275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -735,6 +740,7 @@
 				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
 				ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */,
 				2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */,
+				ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1359,8 +1365,10 @@
 				2EAEE6E8BF8CBE545789C1EF /* CryptoHelper.swift in Sources */,
 				EDEDFFE42756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift in Sources */,
 				2EAEE113FF8D1F0CF91485F1 /* CompressionHelper.swift in Sources */,
+				ED87C520275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift in Sources */,
 				EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */,
 				2EAEE1483F98DFB8A8E6DFA6 /* ConnectionManager.swift in Sources */,
+				ED87C51E275A996100EBB3C6 /* FaceTimeHelper.swift in Sources */,
 				2EAEE225BB82417444D48EAE /* DataProxy.swift in Sources */,
 				2EAEEE829B3030FF1028C15A /* ClientConnection.swift in Sources */,
 				2EAEEDFC55048362F2150A81 /* DataProxyTCP.swift in Sources */,

@@ -53,6 +53,15 @@ class PreferencesManager {
 		}
 	}
 	
+	var faceTimeIntegration: Bool {
+		get {
+			UserDefaults.standard.bool(forKey: UDKeys.betaUpdates.rawValue)
+		}
+		set(newValue) {
+			UserDefaults.standard.set(newValue, forKey: UDKeys.betaUpdates.rawValue)
+		}
+	}
+	
 	var accountType: AccountType {
 		get {
 			if UserDefaults.standard.object(forKey: UDKeys.accountType.rawValue) != nil {

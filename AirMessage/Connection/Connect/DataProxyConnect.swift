@@ -25,6 +25,7 @@ class DataProxyConnect: DataProxy {
 	
 	private var webSocket: WebSocket?
 	private var handshakeTimer: Timer?
+	private var pingTimer: Timer?
 	
 	private var connectionRecoveryTimer: Timer?
 	private var connectionRecoveryCount = 0
@@ -185,6 +186,28 @@ class DataProxyConnect: DataProxy {
 		idToken = nil
 	}
 	
+	//MARK: Ping timer
+	
+	private func startPingTimer() {
+		//Cancel the old timer
+		pingTimer?.invalidate()
+		
+		//Create the new timer
+		let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
+		RunLoop.main.add(timer, forMode: .common)
+		pingTimer = timer
+	}
+	
+	private func stopPingTimer() {
+		pingTimer?.invalidate()
+		pingTimer = nil
+	}
+	
+	@objc private func onPingTimer() {
+		//Ping
+		webSocket?.write(ping: Data())
+	}
+	
 	//MARK: Handshake Timer
 	
 	private func startHandshakeTimer() {
@@ -238,12 +261,18 @@ class DataProxyConnect: DataProxy {
 	private func onWSConnect() {
 		LogManager.log("Connection to Connect relay opened", level: .info)
 		
+		//Start the ping timer
+		startPingTimer()
+		
 		//Start the handshake timer
 		startHandshakeTimer()
 	}
 	
 	private func onWSDisconnect(reason: String, code: UInt16) {
 		LogManager.log("Connection to Connect relay lost: \(code) / \(reason)", level: .info)
+		
+		//Stop the ping timer
+		stopPingTimer()
 		
 		//Cancel the handshake timer
 		stopHandshakeTimer()
@@ -467,6 +496,10 @@ extension DataProxyConnect: WebSocketDelegate {
 			case .disconnected(let reason, let code): onWSDisconnect(reason: reason, code: code)
 			case .binary(let data): onWSReceive(data: data)
 			case .error(let error): onWSError(error: error)
+			case .viabilityChanged(let viable):
+				if !viable {
+					onWSError(error: nil)
+				}
 			default: break
 		}
 	}

@@ -6,12 +6,18 @@
 //
 
 import Foundation
+import AppKit
 import Carbon
 
 class AppleScriptBridge {
-	private static func getScript(_ name: String) -> NSAppleScript {
+	enum ScriptSourceCategory: String {
+		case messages = "Messages"
+		case faceTime = "FaceTime"
+	}
+	
+	private static func getScript(_ name: String, ofCategory category: ScriptSourceCategory) -> NSAppleScript {
 		NSAppleScript.init(
-			contentsOf: Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource")!,
+			contentsOf: Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource/\(category.rawValue)")!,
 			error: nil)!
 	}
 	
@@ -40,27 +46,29 @@ class AppleScriptBridge {
 		return list
 	}
 	
-	private lazy var scriptCreateChat = AppleScriptBridge.getScript("createChat")
-	private lazy var scriptSendMessageExisting = AppleScriptBridge.getScript("sendMessageExisting")
-	private lazy var scriptSendMessageDirect = AppleScriptBridge.getScript("sendMessageDirect")
-	private lazy var scriptSendMessageNew = AppleScriptBridge.getScript("sendMessageNew")
-	
 	private init() {
 	}
 	
 	public static let shared = AppleScriptBridge()
 	
+	//MARK: - Messages
+	
+	private lazy var scriptMessagesCreateChat = AppleScriptBridge.getScript("createChat", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageExisting = AppleScriptBridge.getScript("sendMessageExisting", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageDirect = AppleScriptBridge.getScript("sendMessageDirect", ofCategory: .messages)
+	private lazy var scriptMessagesSendMessageNew = AppleScriptBridge.getScript("sendMessageNew", ofCategory: .messages)
+	
 	/**
 	Returns if the app has permission to control Messages
 	*/
 	func checkPermissionsMessages() -> Bool {
-		//Compile the script when this function is invoked, since this likely won't be called enough to be worth saving the compiled result for later
-		let scriptTestAutomation = NSAppleScript.init(
-				contentsOf: Bundle.main.url(forResource: "testPermissionsMessages", withExtension: "applescript", subdirectory: "AppleScriptSource")!,
-				error: nil)!
+		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsMessages", ofCategory: .messages)
 		
 		var scriptError: NSDictionary?
 		scriptTestAutomation.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("Messages permissions test failed: \(error)", level: .debug)
+		}
 		return scriptError == nil
 	}
 	
@@ -78,7 +86,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(string: service), at: 2)
 		
 		var executeError: NSDictionary? = nil
-		let result = AppleScriptBridge.runScript(scriptCreateChat, params: params, error: &executeError)
+		let result = AppleScriptBridge.runScript(scriptMessagesCreateChat, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to create chat with \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -97,7 +105,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 3)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageExisting, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageExisting, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to chat \(chatID): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -115,7 +123,7 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 4)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageDirect, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageDirect, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send direct message to \(address): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
@@ -138,10 +146,171 @@ class AppleScriptBridge {
 		params.insert(NSAppleEventDescriptor(boolean: isFile), at: 4)
 		
 		var executeError: NSDictionary? = nil
-		AppleScriptBridge.runScript(scriptSendMessageNew, params: params, error: &executeError)
+		AppleScriptBridge.runScript(scriptMessagesSendMessageNew, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to new chat \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
+		}
+	}
+	
+	//MARK: - FaceTime
+	
+	private lazy var scriptFaceTimeCreateNewLink = AppleScriptBridge.getScript("getNewLink", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeGetActiveLink = AppleScriptBridge.getScript("getActiveLink", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeLeaveCall = AppleScriptBridge.getScript("leaveCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeAcceptPendingUser = AppleScriptBridge.getScript("acceptPendingUser", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeCenterWindow = AppleScriptBridge.getScript("centerWindow", ofCategory: .faceTime)
+	
+	private lazy var scriptFaceTimeQueryIncomingCall = AppleScriptBridge.getScript("queryIncomingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeHandleIncomingCall = AppleScriptBridge.getScript("handleIncomingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeInitiateOutgoingCall = AppleScriptBridge.getScript("initiateOutgoingCall", ofCategory: .faceTime)
+	private lazy var scriptFaceTimeQueryOutgoingCall = AppleScriptBridge.getScript("queryOutgoingCall", ofCategory: .faceTime)
+	
+	enum OutgoingCallStatus: String {
+		case pending = "pending"
+		case accepted = "accepted"
+		case rejected = "rejected"
+	}
+	
+	/**
+	Returns if the app has permission to control FaceTime
+	*/
+	func checkPermissionsFaceTime() -> Bool {
+		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsFaceTime", ofCategory: .faceTime)
+		
+		var scriptError: NSDictionary?
+		scriptTestAutomation.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("FaceTime permissions test failed: \(error)", level: .debug)
+		}
+		return scriptError == nil
+	}
+	
+	///Creates and gets a new FaceTime link
+	func getNewFaceTimeLink() throws -> String {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeCreateNewLink.executeAndReturnError(&executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.stringValue!
+		}
+	}
+	
+	///Gets a FaceTime link for the active call
+	func getActiveFaceTimeLink() throws -> String {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeGetActiveLink.executeAndReturnError(&executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.stringValue!
+		}
+	}
+	
+	///Leaves the active FaceTime call
+	func leaveFaceTimeCall() throws {
+		var executeError: NSDictionary? = nil
+		scriptFaceTimeLeaveCall.executeAndReturnError(&executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		}
+	}
+	
+	///Accepts the first pending user for the current FaceTime call if present, returns false if there was no user to accept
+	func acceptFaceTimeEntry() throws -> Bool {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeAcceptPendingUser.executeAndReturnError(&executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
+		}
+	}
+	
+	///Centers the FaceTime window and the mouse cursor in the middle of the screen
+	func centerFaceTimeWindow() throws {
+		//Get the middle of the screen
+		let screen = NSScreen.main!
+		let rect = screen.frame
+		let moveX = rect.size.width / 2
+		let moveY = rect.size.height / 2
+		
+		let params = NSAppleEventDescriptor.list()
+		params.insert(NSAppleEventDescriptor(int32: Int32(moveX)), at: 1)
+		params.insert(NSAppleEventDescriptor(int32: Int32(moveY)), at: 2)
+		
+		var executeError: NSDictionary? = nil
+		AppleScriptBridge.runScript(scriptFaceTimeCenterWindow, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		}
+		
+		//Move the cursor to the middle of the screen
+		CGDisplayMoveCursorToPoint(0, CGPoint(x: moveX, y: moveY))
+	}
+	
+	///Checks for incoming calls, returning the current caller name, or nil if there is no incoming call
+	func queryIncomingCall() throws -> String? {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeQueryIncomingCall.executeAndReturnError(&executeError)
+		
+		if let error = executeError {
+			let appleScriptError = AppleScriptExecutionError(error: error)
+			//Ignore error -1719 (invalid index) errors, as these can be caused by changing UI while the script is executing
+			if appleScriptError.code != -1719 {
+				throw appleScriptError
+			} else {
+				return nil
+			}
+		} else {
+			let callerName = result.stringValue!.trimmingCharacters(in: .whitespacesAndNewlines)
+			//The script returns an empty string if there is no incoming call
+			if callerName.isEmpty {
+				return nil
+			} else {
+				return callerName
+			}
+		}
+	}
+	
+	///Accepts or rejects the current incoming call
+	func handleIncomingCall(accept: Bool) throws -> Bool {
+		let params = NSAppleEventDescriptor.list()
+		params.insert(NSAppleEventDescriptor(boolean: accept), at: 1)
+		
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeHandleIncomingCall, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
+		}
+	}
+	
+	///Creates and starts a new outgoing FaceTime call. Returns whether the call was created successfully.
+	func initiateOutgoingCall(with addresses: [String]) throws -> Bool {
+		let params = NSAppleEventDescriptor.list()
+		params.insert(AppleScriptBridge.stringArrayToEventDescriptor(addresses), at: 1)
+		
+		var executeError: NSDictionary? = nil
+		let result = AppleScriptBridge.runScript(scriptFaceTimeInitiateOutgoingCall, params: params, error: &executeError)
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return result.booleanValue
+		}
+	}
+	
+	///Checks the status of an outgoing call
+	func queryOutgoingCall() throws -> OutgoingCallStatus {
+		var executeError: NSDictionary? = nil
+		let result = scriptFaceTimeQueryOutgoingCall.executeAndReturnError(&executeError)
+		
+		if let error = executeError {
+			throw AppleScriptExecutionError(error: error)
+		} else {
+			return OutgoingCallStatus(rawValue: result.stringValue!)!
 		}
 	}
 }

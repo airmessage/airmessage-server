@@ -13,6 +13,9 @@ class PreferencesViewController: NSViewController {
 	@IBOutlet weak var checkboxAutoUpdate: NSButton!
 	@IBOutlet weak var checkboxBetaUpdate: NSButton!
 	
+	@IBOutlet weak var groupFaceTime: NSStackView!
+	@IBOutlet weak var checkboxFaceTime: NSButton!
+	
 	@IBOutlet weak var buttonSignOut: NSButton!
 	@IBOutlet weak var labelSignOut: NSTextField!
 	
@@ -31,6 +34,12 @@ class PreferencesViewController: NSViewController {
 		checkboxAutoUpdate.state = PreferencesManager.shared.checkUpdates ? .on : .off
 		
 		checkboxBetaUpdate.state = PreferencesManager.shared.betaUpdates ? .on : .off
+		
+		if FaceTimeHelper.isSupported {
+			checkboxFaceTime.state = PreferencesManager.shared.faceTimeIntegration ? .on : .off
+		} else {
+			groupFaceTime.removeFromSuperview()
+		}
 		
 		//Update "sign out" button text
 		if PreferencesManager.shared.accountType == .direct {
@@ -72,17 +81,21 @@ class PreferencesViewController: NSViewController {
 			return
 		}
 		
+		let faceTimeIntegration = checkboxFaceTime.state == .on
+		
 		let originalPort = PreferencesManager.shared.serverPort
+		let originalFaceTime = PreferencesManager.shared.faceTimeIntegration
 		
 		//Save changes to disk
 		PreferencesManager.shared.serverPort = inputPortValue
 		PreferencesManager.shared.checkUpdates = checkboxAutoUpdate.state == .on
 		PreferencesManager.shared.betaUpdates = checkboxBetaUpdate.state == .on
+		PreferencesManager.shared.faceTimeIntegration = faceTimeIntegration
 		
 		//Restart the server if the port changed
 		if originalPort != inputPortValue {
 			//Make sure the server is running
-			if(NSApplication.shared.delegate as! AppDelegate).currentServerState == .running {
+			if (NSApplication.shared.delegate as! AppDelegate).currentServerState == .running {
 				//Restart the server
 				ConnectionManager.shared.stop()
 				ConnectionManager.shared.setProxy(DataProxyTCP(port: inputPortValue))
@@ -95,6 +108,17 @@ class PreferencesViewController: NSViewController {
 			UpdateHelper.startUpdateTimer()
 		} else {
 			UpdateHelper.stopUpdateTimer()
+		}
+		
+		//Start or stop the FaceTime manager (as long as we're in a position where it could be running)
+		if originalFaceTime != faceTimeIntegration &&
+			!(NSApplication.shared.delegate as! AppDelegate).isSetupMode &&
+			AppleScriptBridge.shared.checkPermissionsFaceTime() {
+			if faceTimeIntegration {
+				FaceTimeHelper.startIncomingCallTimer()
+			} else {
+				FaceTimeHelper.stopIncomingCallTimer()
+			}
 		}
 		
 		//Close window

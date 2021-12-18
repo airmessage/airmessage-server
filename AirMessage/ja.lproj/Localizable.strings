@@ -22,6 +22,7 @@
 "action.edit_password"="パスワードの編集…";
 "action.auto_update"="アップデートを自動的に確認する";
 "action.beta_update"="ベータ版のアップデートを受け取る";
+"action.facetime_integration"="FaceTimeとの連携";
 "action.remind_me_later"="後で通知";
 "action.install_update"="アップデートをインストール";
 "action.check_for_updates"="アップデートの確認…";
@@ -44,6 +45,7 @@
 "label.preferences.server_port"="サーバーポート:";
 "label.preferences.security"="セキュリティ:";
 "label.preferences.updates"="アップデート:";
+"label.preferences.facetime"="FaceTime:";
 "label.preferences.account"="アカウント:";
 
 "label.software_update"="ソフトウェア・アップデート";
@@ -86,6 +88,7 @@
 "message.preference.account_connect"="このサーバーは %@ 用に設定されています。スマートフォン、タブレット、PC で AirMessage にサインインすると、メッセージのやり取りが始まります。";
 "message.enter_server_port"="サーバーポートを入力してください";
 "message.invalid_server_port"="%@ はサーバーポートとしては使用できません";
+"message.facetime_integration"="Android とウェブで FaceTime 通話を発信および受信";
 
 "message.reset.title.direct"="AirMessage Server を再設定しますか？";
 "message.reset.title.connect"="AirMessage Server からログアウトしますか？";
