@@ -59,7 +59,8 @@
 "message.grant.full_disk_access"="AirMessageへのフルディスクアクセスの許可";
 "message.grant.full_disk_access.explanation"="AirMessage Serverはメッセージを読むために、フルディスクアクセスが必要です。";
 "message.grant.full_disk_access.step1"="• ウィンドウの左下にあるロックをクリックします";
-"message.grant.full_disk_access.step2"="• アイコンを「フルディスクアクセス」リストにドラッグ＆ドロップします";
+"message.grant.full_disk_access.step2Yosemite"="• 「フルディスクアクセス」リストに AirMessage を追加します";
+"message.grant.full_disk_access.step2HighSierra"="• アイコンを「フルディスクアクセス」リストにドラッグ＆ドロップします";
 "message.grant.full_disk_access.step3"="• AirMessageを再起動します";
 "message.grant.automation_access"="AirMessageへのメッセージのオートメーションの許可";
 "message.grant.automation_access.explanation"="AirMessage Serverがメッセージを送信するためには、メッセージに対するオートメーション権限が必要です。";

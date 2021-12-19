@@ -59,7 +59,8 @@
 "message.grant.full_disk_access"="Accorder l'accès complet au disque à AirMessage";
 "message.grant.full_disk_access.explanation"="AirMessage Server a besoin d'un accès complet au disque pour lire vos messages";
 "message.grant.full_disk_access.step1"="• Cliquez sur le cadenas dans le coin inférieur gauche de la fenêtre";
-"message.grant.full_disk_access.step2"="• Faites glisser et déposez l'icône AirMessage dans la liste Accès complet au disque";
+"message.grant.full_disk_access.step2Yosemite"="• Ajoutez AirMessage à la liste Accès complet au disque";
+"message.grant.full_disk_access.step2HighSierra"="• Faites glisser et déposez l'icône AirMessage dans la liste Accès complet au disque";
 "message.grant.full_disk_access.step3"="• Relancez AirMessage";
 "message.grant.automation_access"="Accorder l'accès à l'Automatisation pour Messages à AirMessage";
 "message.grant.automation_access.explanation"="AirMessage Server a besoin de l'accès Automatisation de Messages afin d'envoyer des messages.";
