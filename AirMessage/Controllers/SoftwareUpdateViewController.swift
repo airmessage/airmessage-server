@@ -62,7 +62,7 @@ class SoftwareUpdateViewController: NSViewController {
 	}
 	
 	@IBAction func onInstallUpdate(_ sender: Any) {
-		if updateData.downloadExternal {
+		if updateData.downloadType == .external {
 			//Open the URL
 			NSWorkspace.shared.open(updateData.downloadURL)
 			

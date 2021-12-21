@@ -185,7 +185,7 @@ class ConnectionManager {
 			
 			responsePacker.pack(string: update.versionName)
 			responsePacker.pack(string: update.notes)
-			responsePacker.pack(bool: !update.downloadExternal) //Whether this update is remotely installable
+			responsePacker.pack(bool: update.downloadType == .remote) //Whether this update is remotely installable
 		} else {
 			responsePacker.pack(bool: false)
 		}
@@ -1168,6 +1168,14 @@ class ConnectionManager {
 		//Make sure the current update matches the update ID
 		guard pendingUpdate.id == updateID else {
 			LogManager.log("Ignoring update request \(updateID): update ID doesn't match pending update \(pendingUpdate.id)", level: .notice)
+			
+			sendResult(false)
+			return
+		}
+		
+		//Make sure the current update is remotely installable
+		guard pendingUpdate.downloadType == .remote else {
+			LogManager.log("Ignoring update request \(updateID): update isn't remotely installable", level: .notice)
 			
 			sendResult(false)
 			return

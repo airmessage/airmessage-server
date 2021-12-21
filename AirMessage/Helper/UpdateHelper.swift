@@ -159,13 +159,23 @@ class UpdateHelper {
 				return
 			}
 			
+			//Get the download type
+			let downloadType: UpdateStruct.DownloadType
+			if updateData.externalDownload {
+				downloadType = .external
+			} else if updateData.remoteInstallable {
+				downloadType = .remote
+			} else {
+				downloadType = .local
+			}
+			
 			DispatchQueue.main.async {
 				//Checking if this update is the same as the pending update
 				if let pendingUpdate = pendingUpdate,
 				   pendingUpdate.versionCode == updateData.versionCode,
 				   pendingUpdate.versionName == updateData.versionName,
 				   pendingUpdate.downloadURL == downloadURL,
-				   pendingUpdate.downloadExternal == updateData.externalDownload {
+				   pendingUpdate.downloadType == downloadType {
 					onUpdate(pendingUpdate, false)
 				} else {
 					//Setting the pending update
@@ -176,7 +186,7 @@ class UpdateHelper {
 							versionName: updateData.versionName,
 							notes: updateNotes,
 							downloadURL: downloadURL,
-							downloadExternal: updateData.externalDownload
+							downloadType: downloadType
 					)
 					nextUpdateID &+= 1
 					
@@ -328,6 +338,7 @@ private struct UpdateCheckResult: Decodable {
 	let protocolRequirement: String
 	let notes: [UpdateNotes]
 	let url: String
+	let remoteInstallable: Bool
 	let externalDownload: Bool
 }
 
