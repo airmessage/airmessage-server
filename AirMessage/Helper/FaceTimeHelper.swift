@@ -69,10 +69,11 @@ class FaceTimeHelper {
 	
 	///Stops the timer that listens for incoming calls
 	static func stopIncomingCallTimer() {
-		incomingCallTimer?.cancel()
+		if let timer = incomingCallTimer {
+			timer.cancel()
+			LogManager.log("Stopped listening for FaceTime calls", level: .info)
+		}
 		incomingCallTimer = nil
-		
-		LogManager.log("Stopped listening for FaceTime calls", level: .info)
 	}
 	
 	private static func runIncomingCallListener() {
