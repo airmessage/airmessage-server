@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 
 class MessageManager {
 	static func createChat(withAddresses addresses: [String], service: String) throws -> String {
@@ -26,26 +27,36 @@ class MessageManager {
 	}
 	
 	static func send(message: String, toNewChat addresses: [String], onService service: String) throws {
-		//If there's only one member and we're on macOS 11, use our hacky workaround
+		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
-			if addresses.count == 1 {
-				return try AppleScriptBridge.shared.sendMessage(toDirect: addresses[0], service: service, message: message, isFile: false)
-			} else {
-				throw ForwardsSupportError(noSupportVer: "11.0")
+			DispatchQueue.main.sync {
+				//Open the sharing service
+				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+				service.recipients = addresses
+				service.perform(withItems: [message])
 			}
+			
+			//Submit the sharing service
+			Thread.sleep(forTimeInterval: 0.5)
+			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
-			return try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: message, isFile: false)
+			try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: message, isFile: false)
 		}
 	}
 	
 	static func send(file: URL, toNewChat addresses: [String], onService service: String) throws {
-		//If there's only one member and we're on macOS 11, use our hacky workaround
+		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
-			if addresses.count == 1 {
-				return try AppleScriptBridge.shared.sendMessage(toDirect: addresses[0], service: service, message: file.path, isFile: true)
-			} else {
-				throw ForwardsSupportError(noSupportVer: "11.0")
+			DispatchQueue.main.sync {
+				//Open the sharing service
+				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+				service.recipients = addresses
+				service.perform(withItems: [file])
 			}
+			
+			//Submit the sharing service
+			Thread.sleep(forTimeInterval: 0.5)
+			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
 			return try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: file.path, isFile: true)
 		}

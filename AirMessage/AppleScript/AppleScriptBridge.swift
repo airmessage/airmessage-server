@@ -11,6 +11,7 @@ import Carbon
 
 class AppleScriptBridge {
 	enum ScriptSourceCategory: String {
+		case common = "Common"
 		case messages = "Messages"
 		case faceTime = "FaceTime"
 	}
@@ -50,6 +51,19 @@ class AppleScriptBridge {
 	}
 	
 	public static let shared = AppleScriptBridge()
+	
+	//MARK: - Common
+	
+	private lazy var scriptCommonPressCommandReturn = AppleScriptBridge.getScript("pressCommandReturn", ofCategory: .common)
+	
+	func pressCommandReturn() throws {
+		var scriptError: NSDictionary?
+		scriptCommonPressCommandReturn.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("Failed to press command-return: \(error)", level: .debug)
+			throw AppleScriptExecutionError(error: error)
+		}
+	}
 	
 	//MARK: - Messages
 	
