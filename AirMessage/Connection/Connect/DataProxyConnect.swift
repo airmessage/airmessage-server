@@ -424,6 +424,9 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	private func onWSError(error: Error?) {
+		//Ignore if we're not connected
+		guard DispatchQueue.main.sync(execute: { isActive }) else { return }
+		
 		//Log the error
 		if let error = error {
 			LogManager.log("Encountered a WebSocket error: \(error)", level: .notice)
@@ -496,6 +499,7 @@ extension DataProxyConnect: WebSocketDelegate {
 			case .disconnected(let reason, let code): onWSDisconnect(reason: reason, code: code)
 			case .binary(let data): onWSReceive(data: data)
 			case .error(let error): onWSError(error: error)
+			case .cancelled: onWSError(error: nil)
 			case .viabilityChanged(let viable):
 				if !viable {
 					onWSError(error: nil)
