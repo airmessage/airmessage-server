@@ -43,6 +43,7 @@ class ConnectionManager {
 		guard let proxy = dataProxy else {
 			LogManager.log("Tried to start connection manager, but no proxy is assigned", level: .error)
 			NotificationNames.postUpdateUIState(ServerState.stopped)
+			NotificationNames.postUpdateConnectionCount(0)
 			return
 		}
 		
@@ -1511,6 +1512,7 @@ extension ConnectionManager: DataProxyDelegate {
 	func dataProxy(_ dataProxy: DataProxy, didStopWithState state: ServerState, isRecoverable: Bool) {
 		//Emit an update
 		NotificationNames.postUpdateUIState(state)
+		NotificationNames.postUpdateConnectionCount(0)
 		
 		//Stop the keepalive timer
 		keepaliveTimer?.invalidate()
