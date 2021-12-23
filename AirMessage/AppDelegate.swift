@@ -160,6 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	@objc private func onReauthenticate() {
 		resetServer()
         OnboardingViewController.open()
+		NSApp.activate(ignoringOtherApps: true)
 	}
 	
 	@objc private func onOpenClientList() {
