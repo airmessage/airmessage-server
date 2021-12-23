@@ -154,10 +154,7 @@ class DatabaseConverter {
 			}
 			
 			//Message-specific parameters
-			let text = (row[indices["message.text"]!] as! String?)?
-					//Replace some characters that can magically appear in messages
-					.replacingOccurrences(of: "\u{FFFC}", with: "")
-					.replacingOccurrences(of: "\u{FFFD}", with: "")
+			let text = cleanMessageText(row[indices["message.text"]!] as! String?)
 			let subject = row[indices["message.subject"]!] as! String?
 			let sendEffect: String?
 			if #available(macOS 10.12, *) {
@@ -263,10 +260,7 @@ class DatabaseConverter {
 			.components(separatedBy: ",")
 		
 		let lastMessageDate = row[indices["message.date"]!] as! Int64
-		var lastMessageText: String? = row[indices["message.text"]!] as! String?
-		if let text = lastMessageText, text.isEmpty {
-			lastMessageText = nil
-		}
+		let lastMessageText = cleanMessageText(row[indices["message.text"]!] as! String?)
 		let lastMessageSendStyle: String?
 		if #available(macOS 10.12, *) {
 			lastMessageSendStyle = row[indices["message.expressive_send_style_id"]!] as! String?
@@ -450,6 +444,22 @@ class DatabaseConverter {
 	}
 	
 	//MARK: Helpers
+	
+	///Cleans a message string found in the database
+	static func cleanMessageText(_ message: String?) -> String? {
+		//Skip if the message is nil
+		guard let message = message else { return nil }
+		
+		//Replace some characters that can magically appear in messages
+		let cleanMessage = message.replacingOccurrences(of: "\u{FFFC}", with: "").replacingOccurrences(of: "\u{FFFD}", with: "")
+		
+		//Return nil if the message is empty
+		if cleanMessage.isEmpty {
+			return nil
+		} else {
+			return cleanMessage
+		}
+	}
 	
 	/**
 	 Creats a URL from a filename path found in the database
