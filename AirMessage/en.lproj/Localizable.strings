@@ -69,10 +69,10 @@
 "message.grant.automation_access.explanation"="AirMessage Server needs Automation access for Messages in order to send messages";
 "message.grant.automation_access.instructions"="Find AirMessage in the Automation list, and click the checkbox for Messages.";
 
-"message.grant.accessibility_accesss"="Grant Accessibility Access to AirMessage";
-"message.grant_accessibility_access.explanation"="AirMessage Server needs Accessibility access in order to send messages and make FaceTime calls.";
-"message.grant.accessibility_accesss.step1"="• Click the lock in the bottom-left corner of the window";
-"message.grant.accessibility_accesss.step2"="• Add AirMessage to the Accessibility list";
+"message.grant.accessibility_access"="Grant Accessibility Access to AirMessage";
+"message.grant.accessibility_access.explanation"="AirMessage Server needs Accessibility access in order to send messages and make FaceTime calls.";
+"message.grant.accessibility_access.step1"="• Click the lock in the bottom-left corner of the window";
+"message.grant.accessibility_access.step2"="• Add AirMessage to the Accessibility list";
 
 "message.status.setup"="Waiting for Setup";
 "message.status.starting"="Server Starting…";

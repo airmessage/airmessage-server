@@ -20,6 +20,7 @@
 "action.configure_manually"="Configurer manuellement";
 "action.open_full_disk_access"="Ouvrir les paramètres d'accès complet au disque";
 "action.open_automation_settings"="Ouvrir les paramètres d'Automatisation";
+"action.open_accessibility_settings"="Ouvrir les paramètres d'accessibilité";
 "action.edit_password"="Modifier le mot de passe…";
 "action.auto_update"="Vérifier les mises à jour automatiquement";
 "action.beta_update"="Recevoir les mises à jour bêta";
@@ -40,6 +41,7 @@
 
 "label.full_disk_access"="Accès complet au disque";
 "label.automation_access"="Accès à l'Automatisation";
+"label.accessibility_access"="Accès à l'accessibilité";
 
 "label.preferences"="Préférences";
 "label.preferences.server_port"="Port de serveur:";
@@ -62,9 +64,15 @@
 "message.grant.full_disk_access.step2Yosemite"="• Ajoutez AirMessage à la liste Accès complet au disque";
 "message.grant.full_disk_access.step2HighSierra"="• Faites glisser et déposez l'icône AirMessage dans la liste Accès complet au disque";
 "message.grant.full_disk_access.step3"="• Relancez AirMessage";
+
 "message.grant.automation_access"="Accorder l'accès à l'Automatisation pour Messages à AirMessage";
 "message.grant.automation_access.explanation"="AirMessage Server a besoin de l'accès Automatisation de Messages afin d'envoyer des messages.";
 "message.grant.automation_access.instructions"="Trouvez AirMessage dans la liste Automatisation, et cochez la case Messages";
+
+"message.grant.accessibility_access"="Accorder l'accès d'accessibilité à AirMessage";
+"message.grant_accessibility_access.explanation"="AirMessage Server a besoin de l'accès à l'accessibilité pour pouvoir envoyer des messages et passer des appels FaceTime.";
+"message.grant.accessibility_access.step1"="• Cliquez sur le cadenas dans le coin inférieur gauche de la fenêtre";
+"message.grant.accessibility_access.step2"="• Ajoutez AirMessage à la liste d'accessibilité";
 
 "message.status.setup"="En attente de la configuration";
 "message.status.starting"="Démarrage de serveur…";

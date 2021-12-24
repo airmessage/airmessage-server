@@ -1845,7 +1845,7 @@ DQ
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_accesss"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_access"/>
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6KL-A9-4Z2">
@@ -1856,7 +1856,7 @@ DQ
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant_accessibility_access.explanation"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_access.explanation"/>
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1B7-bN-g1x">
@@ -1896,7 +1896,7 @@ DQ
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                                 <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_accesss.step1"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_access.step1"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="38b-UX-wUW">
@@ -1907,7 +1907,7 @@ DQ
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                                 <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_accesss.step2"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.accessibility_access.step2"/>
                                                                 </userDefinedRuntimeAttributes>
                                                             </textField>
                                                         </subviews>

@@ -19,6 +19,7 @@
 "action.configure_manually"="手動設定を使用";
 "action.open_full_disk_access"="フルディスクアクセスの設定を開く";
 "action.open_automation_settings"="オートメーションの設定を開く";
+"action.open_accessibility_settings"="アクセシビリティの設定を開く";
 "action.edit_password"="パスワードの編集…";
 "action.auto_update"="アップデートを自動的に確認する";
 "action.beta_update"="ベータ版のアップデートを受け取る";
@@ -40,6 +41,7 @@
 
 "label.full_disk_access"="フルディスクアクセス";
 "label.automation_access"="オートメーション";
+"label.accessibility_access"="アクセシビリティ";
 
 "label.preferences"="環境設定";
 "label.preferences.server_port"="サーバーポート:";
@@ -57,14 +59,20 @@
 "message.intro.body"="AirMessage Server はメニューバーにあります。アイコンをクリックして、サーバーの状態や設定を確認します。開始するには、サーバーの設定方法を選択してください。";
 
 "message.grant.full_disk_access"="AirMessageへのフルディスクアクセスの許可";
-"message.grant.full_disk_access.explanation"="AirMessage Serverはメッセージを読むために、フルディスクアクセスが必要です。";
+"message.grant.full_disk_access.explanation"="AirMessage Server はメッセージを読むために、フルディスクアクセスが必要です。";
 "message.grant.full_disk_access.step1"="• ウィンドウの左下にあるロックをクリックします";
 "message.grant.full_disk_access.step2Yosemite"="• 「フルディスクアクセス」リストに AirMessage を追加します";
 "message.grant.full_disk_access.step2HighSierra"="• アイコンを「フルディスクアクセス」リストにドラッグ＆ドロップします";
-"message.grant.full_disk_access.step3"="• AirMessageを再起動します";
-"message.grant.automation_access"="AirMessageへのメッセージのオートメーションの許可";
-"message.grant.automation_access.explanation"="AirMessage Serverがメッセージを送信するためには、メッセージに対するオートメーション権限が必要です。";
+"message.grant.full_disk_access.step3"="• AirMessage を再起動します";
+
+"message.grant.automation_access"="AirMessage へのメッセージのオートメーションの許可";
+"message.grant.automation_access.explanation"="AirMessage Server がメッセージを送信するためには、メッセージに対するオートメーション権限が必要です。";
 "message.grant.automation_access.instructions"="オートメーション」リストの中から「AirMessage」を見つけ、「メッセージ」のチェックボックスをクリックします";
+
+"message.grant.accessibility_access"="AirMessage へアクセシビリティの許可";
+"message.grant.accessibility_access.explanation"="AirMessage Server は、メッセージの送信と FaceTime 通話のためにアクセシビリティ権限が必要です。";
+"message.grant.accessibility_access.step1"="• ウィンドウの左下にあるロックをクリックします";
+"message.grant.accessibility_access.step2"="• AirMessage をアクセシビリティリストに追加します";
 
 "message.status.setup"="セットアップを待っています";
 "message.status.starting"="サーバー起動中…";
