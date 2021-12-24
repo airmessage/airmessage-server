@@ -56,6 +56,18 @@ class AppleScriptBridge {
 	
 	private lazy var scriptCommonPressCommandReturn = AppleScriptBridge.getScript("pressCommandReturn", ofCategory: .common)
 	
+	///Returns whether the app has permission to control System Events / Automation
+	func checkPermissionsAutomation() -> Bool {
+		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsAutomation", ofCategory: .common)
+		
+		var scriptError: NSDictionary?
+		scriptTestAutomation.executeAndReturnError(&scriptError)
+		if let error = scriptError {
+			LogManager.log("System Events permissions test failed: \(error)", level: .debug)
+		}
+		return scriptError == nil
+	}
+	
 	func pressCommandReturn() throws {
 		var scriptError: NSDictionary?
 		scriptCommonPressCommandReturn.executeAndReturnError(&scriptError)
@@ -184,20 +196,6 @@ class AppleScriptBridge {
 		case pending = "pending"
 		case accepted = "accepted"
 		case rejected = "rejected"
-	}
-	
-	/**
-	Returns if the app has permission to control FaceTime
-	*/
-	func checkPermissionsFaceTime() -> Bool {
-		let scriptTestAutomation = AppleScriptBridge.getScript("testPermissionsFaceTime", ofCategory: .faceTime)
-		
-		var scriptError: NSDictionary?
-		scriptTestAutomation.executeAndReturnError(&scriptError)
-		if let error = scriptError {
-			LogManager.log("FaceTime permissions test failed: \(error)", level: .debug)
-		}
-		return scriptError == nil
 	}
 	
 	///Creates and gets a new FaceTime link

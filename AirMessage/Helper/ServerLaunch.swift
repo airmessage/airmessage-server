@@ -62,18 +62,6 @@ func launchServer() {
  * Runs checks to test if the server has all the permissions it needs to work
  */
 func checkServerPermissions() -> Bool {
-	//Check for FaceTime Accessibility access
-	if FaceTimeHelper.isSupported && PreferencesManager.shared.faceTimeIntegration {
-		guard AppleScriptBridge.shared.checkPermissionsFaceTime() else {
-			let storyboard = NSStoryboard(name: "Main", bundle: nil)
-			let windowController = storyboard.instantiateController(withIdentifier: "AccessibilityAccess") as! NSWindowController
-			(windowController.contentViewController as! AccessibilityAccessViewController).onDone = launchServer
-			windowController.showWindow(nil)
-			
-			return false
-		}
-	}
-	
 	//Check for Messages Automation access
 	guard AppleScriptBridge.shared.checkPermissionsMessages() else {
 		let storyboard = NSStoryboard(name: "Main", bundle: nil)
@@ -82,6 +70,18 @@ func checkServerPermissions() -> Bool {
 		windowController.showWindow(nil)
 		
 		return false
+	}
+	
+	//Check for Accessibility access (for sending messages on macOS 11+ or FaceTime)
+	if #available(macOS 11.0, *) {
+		guard AppleScriptBridge.shared.checkPermissionsAutomation() else {
+			let storyboard = NSStoryboard(name: "Main", bundle: nil)
+			let windowController = storyboard.instantiateController(withIdentifier: "AccessibilityAccess") as! NSWindowController
+			(windowController.contentViewController as! AccessibilityAccessViewController).onDone = launchServer
+			windowController.showWindow(nil)
+			
+			return false
+		}
 	}
 	
 	//Check for Full Disk Access

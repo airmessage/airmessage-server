@@ -113,7 +113,7 @@ class PreferencesViewController: NSViewController {
 		//Start or stop the FaceTime manager (as long as we're in a position where it could be running)
 		if originalFaceTime != faceTimeIntegration &&
 			!(NSApplication.shared.delegate as! AppDelegate).isSetupMode &&
-			AppleScriptBridge.shared.checkPermissionsFaceTime() {
+			AppleScriptBridge.shared.checkPermissionsAutomation() {
 			if faceTimeIntegration {
 				FaceTimeHelper.startIncomingCallTimer()
 			} else {
