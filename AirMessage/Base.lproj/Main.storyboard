@@ -1532,7 +1532,7 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="JA5-Wi-uLE" secondAttribute="height" multiplier="1560:1398" id="fVy-cZ-f7h"/>
                                                 </constraints>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="FullDiskAccess" id="HEJ-I4-yX0"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AutomationAccess" id="HEJ-I4-yX0"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OrT-gT-kpE">
                                                 <rect key="frame" x="-7" y="41" width="194" height="32"/>
@@ -1867,7 +1867,7 @@ DQ
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="hpP-V6-eZG" secondAttribute="height" multiplier="1560:1398" id="f6r-O7-8zj"/>
                                                 </constraints>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="FullDiskAccess" id="YEF-4N-3OP"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AccessibilityAccess" id="YEF-4N-3OP"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wDK-rc-vLd">
                                                 <rect key="frame" x="-7" y="173" width="200" height="32"/>
@@ -2014,7 +2014,9 @@ DQ
         <segue reference="aM8-FM-ABJ"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="AccessibilityAccess" width="1560" height="1398"/>
         <image name="AppIconResource" width="256" height="256"/>
+        <image name="AutomationAccess" width="1560" height="1398"/>
         <image name="BrowserChrome" width="48" height="48"/>
         <image name="FullDiskAccess" width="1560" height="1398"/>
     </resources>
