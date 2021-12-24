@@ -71,6 +71,18 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="File" id="yFp-hu-QJe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="File" id="GLZ-Rf-81V">
+                                    <items>
+                                        <menuItem title="Close" keyEquivalent="w" id="Glg-eQ-BAW">
+                                            <connections>
+                                                <action selector="performClose:" target="Ady-hI-5gd" id="OCH-kJ-KHn"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Edit" id="IgY-za-znW">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Edit" id="1kj-Tc-gDU">
@@ -286,6 +298,31 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Window" id="7cY-6z-O6K">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Window" systemMenu="window" id="Ik8-WL-Y02">
+                                    <items>
+                                        <menuItem title="Minimize" keyEquivalent="m" id="WRs-OG-dHh">
+                                            <connections>
+                                                <action selector="performMiniaturize:" target="Ady-hI-5gd" id="KyS-CY-oAW"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Zoom" id="VNl-aT-Nfx">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="performZoom:" target="Ady-hI-5gd" id="p4B-fP-tDe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="nFq-7d-DRR"/>
+                                        <menuItem title="Bring All to Front" id="kiO-BD-moA">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="arrangeInFront:" target="Ady-hI-5gd" id="aqn-FQ-slC"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
