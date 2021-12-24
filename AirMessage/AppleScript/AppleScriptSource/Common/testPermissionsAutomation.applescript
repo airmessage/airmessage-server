@@ -1,3 +1,3 @@
 tell application "System Events"
-	keystroke shift
+	key code 57 --Shift
 end tell
