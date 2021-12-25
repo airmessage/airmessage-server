@@ -86,7 +86,6 @@ class PreferencesViewController: NSViewController {
 		}
 		
 		let originalPort = PreferencesManager.shared.serverPort
-		let originalFaceTime = PreferencesManager.shared.faceTimeIntegration
 		
 		//Save changes to disk
 		PreferencesManager.shared.serverPort = inputPortValue
@@ -113,6 +112,8 @@ class PreferencesViewController: NSViewController {
 		
 		//Apply FaceTime updates
 		if isShowingFaceTime {
+			let originalFaceTime = PreferencesManager.shared.faceTimeIntegration
+			
 			//Get FaceTime integration state
 			let faceTimeIntegration = checkboxFaceTime.state == .on
 			
