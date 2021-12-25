@@ -19,6 +19,8 @@ class PreferencesViewController: NSViewController {
 	@IBOutlet weak var buttonSignOut: NSButton!
 	@IBOutlet weak var labelSignOut: NSTextField!
 	
+	private var isShowingFaceTime: Bool!
+	
 	override func viewWillAppear() {
 		super.viewWillAppear()
 		preferredContentSize = view.fittingSize
@@ -37,8 +39,10 @@ class PreferencesViewController: NSViewController {
 		
 		if FaceTimeHelper.isSupported {
 			checkboxFaceTime.state = PreferencesManager.shared.faceTimeIntegration ? .on : .off
+			isShowingFaceTime = true
 		} else {
 			groupFaceTime.removeFromSuperview()
+			isShowingFaceTime = false
 		}
 		
 		//Update "sign out" button text
@@ -81,8 +85,6 @@ class PreferencesViewController: NSViewController {
 			return
 		}
 		
-		let faceTimeIntegration = checkboxFaceTime.state == .on
-		
 		let originalPort = PreferencesManager.shared.serverPort
 		let originalFaceTime = PreferencesManager.shared.faceTimeIntegration
 		
@@ -90,7 +92,6 @@ class PreferencesViewController: NSViewController {
 		PreferencesManager.shared.serverPort = inputPortValue
 		PreferencesManager.shared.checkUpdates = checkboxAutoUpdate.state == .on
 		PreferencesManager.shared.betaUpdates = checkboxBetaUpdate.state == .on
-		PreferencesManager.shared.faceTimeIntegration = faceTimeIntegration
 		
 		//Restart the server if the port changed
 		if originalPort != inputPortValue {
@@ -110,14 +111,23 @@ class PreferencesViewController: NSViewController {
 			UpdateHelper.stopUpdateTimer()
 		}
 		
-		//Start or stop the FaceTime manager (as long as we're in a position where it could be running)
-		if originalFaceTime != faceTimeIntegration &&
-			!(NSApplication.shared.delegate as! AppDelegate).isSetupMode &&
-			AppleScriptBridge.shared.checkPermissionsAutomation() {
-			if faceTimeIntegration {
-				FaceTimeHelper.startIncomingCallTimer()
-			} else {
-				FaceTimeHelper.stopIncomingCallTimer()
+		//Apply FaceTime updates
+		if isShowingFaceTime {
+			//Get FaceTime integration state
+			let faceTimeIntegration = checkboxFaceTime.state == .on
+			
+			//Save change to disk
+			PreferencesManager.shared.faceTimeIntegration = faceTimeIntegration
+			
+			//Start or stop the FaceTime manager (as long as we're in a position where it could be running)
+			if originalFaceTime != faceTimeIntegration &&
+				!(NSApplication.shared.delegate as! AppDelegate).isSetupMode &&
+				AppleScriptBridge.shared.checkPermissionsAutomation() {
+				if faceTimeIntegration {
+					FaceTimeHelper.startIncomingCallTimer()
+				} else {
+					FaceTimeHelper.stopIncomingCallTimer()
+				}
 			}
 		}
 		
