@@ -37,7 +37,7 @@ class MessageManager {
 			}
 			
 			//Submit the sharing service
-			Thread.sleep(forTimeInterval: 0.5)
+			Thread.sleep(forTimeInterval: 1)
 			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
 			try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: message, isFile: false)
@@ -55,7 +55,7 @@ class MessageManager {
 			}
 			
 			//Submit the sharing service
-			Thread.sleep(forTimeInterval: 0.5)
+			Thread.sleep(forTimeInterval: 1)
 			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
 			return try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: file.path, isFile: true)
