@@ -1016,6 +1016,7 @@ DQ
                         <outlet property="checkboxBetaUpdate" destination="7if-Yx-qbX" id="ABN-ED-Lze"/>
                         <outlet property="checkboxFaceTime" destination="jdc-vN-R7q" id="Bdz-Jl-giU"/>
                         <outlet property="groupFaceTime" destination="bBU-17-EMb" id="tYe-K6-CYb"/>
+                        <outlet property="groupPort" destination="BoU-vA-LNw" id="tag-vL-ABk"/>
                         <outlet property="inputPort" destination="8eS-Rq-H6a" id="8Ic-jr-MJz"/>
                         <outlet property="labelSignOut" destination="jxh-hs-p0X" id="Ty6-Gy-jbN"/>
                     </connections>

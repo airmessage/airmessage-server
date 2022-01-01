@@ -9,7 +9,9 @@ import Foundation
 import AppKit
 
 class PreferencesViewController: NSViewController {
+	@IBOutlet weak var groupPort: NSStackView!
 	@IBOutlet weak var inputPort: NSTextField!
+	
 	@IBOutlet weak var checkboxAutoUpdate: NSButton!
 	@IBOutlet weak var checkboxBetaUpdate: NSButton!
 	
@@ -19,7 +21,7 @@ class PreferencesViewController: NSViewController {
 	@IBOutlet weak var buttonSignOut: NSButton!
 	@IBOutlet weak var labelSignOut: NSTextField!
 	
-	private var isShowingFaceTime: Bool!
+	private var isShowingPort, isShowingFaceTime: Bool!
 	
 	override func viewWillAppear() {
 		super.viewWillAppear()
@@ -30,8 +32,14 @@ class PreferencesViewController: NSViewController {
 		super.viewDidLoad()
 		
 		//Load control values
-		inputPort.stringValue = String(PreferencesManager.shared.serverPort)
-		inputPort.formatter = PortFormatter()
+		if PreferencesManager.shared.accountType == .direct {
+			inputPort.stringValue = String(PreferencesManager.shared.serverPort)
+			inputPort.formatter = PortFormatter()
+			isShowingPort = true
+		} else {
+			groupPort.removeFromSuperview()
+			isShowingPort = false
+		}
 		
 		checkboxAutoUpdate.state = PreferencesManager.shared.checkUpdates ? .on : .off
 		
@@ -71,37 +79,41 @@ class PreferencesViewController: NSViewController {
 	}
 	
 	@IBAction func onClickOK(_ sender: NSButton) {
-		//Validate port input
-		guard let inputPortValue = Int(inputPort.stringValue),
-			  inputPortValue >= 1024 && inputPortValue <= 65535 else {
-			let alert = NSAlert()
-			alert.alertStyle = .critical
-			if inputPort.stringValue.isEmpty {
-				alert.messageText = NSLocalizedString("message.enter_server_port", comment: "")
-			} else {
-				alert.messageText = String(format: NSLocalizedString("message.invalid_server_port", comment: ""), inputPort.stringValue)
+		if isShowingPort {
+			//Validate port input
+			guard let inputPortValue = Int(inputPort.stringValue),
+				  inputPortValue >= 1024 && inputPortValue <= 65535 else {
+				let alert = NSAlert()
+				alert.alertStyle = .critical
+				if inputPort.stringValue.isEmpty {
+					alert.messageText = NSLocalizedString("message.enter_server_port", comment: "")
+				} else {
+					alert.messageText = String(format: NSLocalizedString("message.invalid_server_port", comment: ""), inputPort.stringValue)
+				}
+				alert.beginSheetModal(for: view.window!)
+				return
 			}
-			alert.beginSheetModal(for: view.window!)
-			return
+			
+			let originalPort = PreferencesManager.shared.serverPort
+			
+			//Save change to disk
+			PreferencesManager.shared.serverPort = inputPortValue
+			
+			//Restart the server if the port changed
+			if originalPort != inputPortValue {
+				//Make sure the server is running
+				if (NSApplication.shared.delegate as! AppDelegate).currentServerState == .running {
+					//Restart the server
+					ConnectionManager.shared.stop()
+					ConnectionManager.shared.setProxy(DataProxyTCP(port: inputPortValue))
+					ConnectionManager.shared.start()
+				}
+			}
 		}
 		
-		let originalPort = PreferencesManager.shared.serverPort
-		
-		//Save changes to disk
-		PreferencesManager.shared.serverPort = inputPortValue
+		//Save update changes to disk
 		PreferencesManager.shared.checkUpdates = checkboxAutoUpdate.state == .on
 		PreferencesManager.shared.betaUpdates = checkboxBetaUpdate.state == .on
-		
-		//Restart the server if the port changed
-		if originalPort != inputPortValue {
-			//Make sure the server is running
-			if (NSApplication.shared.delegate as! AppDelegate).currentServerState == .running {
-				//Restart the server
-				ConnectionManager.shared.stop()
-				ConnectionManager.shared.setProxy(DataProxyTCP(port: inputPortValue))
-				ConnectionManager.shared.start()
-			}
-		}
 		
 		//Start or stop update check timer
 		if checkboxAutoUpdate.state == .on {
