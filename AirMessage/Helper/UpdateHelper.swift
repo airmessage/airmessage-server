@@ -176,8 +176,11 @@ class UpdateHelper {
 				   pendingUpdate.versionName == updateData.versionName,
 				   pendingUpdate.downloadURL == downloadURL,
 				   pendingUpdate.downloadType == downloadType {
+					LogManager.log("Discovered matching update \(updateData.versionName)", level: .info)
 					onUpdate(pendingUpdate, false)
 				} else {
+					LogManager.log("Discovered new update \(updateData.versionName) (ID \(nextUpdateID))", level: .info)
+					
 					//Setting the pending update
 					let updateStruct = UpdateStruct(
 							id: nextUpdateID,
@@ -218,6 +221,8 @@ class UpdateHelper {
 	}
 	
 	@objc private static func updateTimerCheck() {
+		LogManager.log("Running automatic update check", level: .info)
+		
 		//Check for updates, show window
 		checkUpdates(onError: nil, onUpdate: { update, isNew in
 			if isNew {

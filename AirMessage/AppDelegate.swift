@@ -12,7 +12,7 @@ import Sentry
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 	//Status bar
-	private let statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+	private var statusBarItem: NSStatusItem!
 	@IBOutlet weak var menu: NSMenu!
 	@IBOutlet weak var menuItemPrimary: NSMenuItem!
 	@IBOutlet weak var menuItemSecondary: NSMenuItem!
@@ -30,7 +30,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		SentrySDK.start { options in
 			#if DEBUG
 				options.enabled = false
-				options.debug = true
 			#else
 				options.enabled = true
 			#endif
@@ -44,9 +43,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		}
 		
 		//Register status bar item
+		statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 		statusBarItem.menu = menu
 		let statusButton = statusBarItem.button!
-		statusButton.image = NSImage(named:NSImage.Name("StatusBarIcon"))
+		statusButton.image = NSImage(named: NSImage.Name("StatusBarIcon"))
 		
 		//Register notification center observers
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateServerState), name: NotificationNames.updateServerState, object: nil)
