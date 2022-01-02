@@ -257,7 +257,6 @@ class UpdateHelper {
 			else if update != nil {
 				if !backgroundMode {
 					//Focus the window
-					NSApp.activate(ignoringOtherApps: true)
 					window.makeKey()
 				}
 				

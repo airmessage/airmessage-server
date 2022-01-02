@@ -51,6 +51,9 @@ class SoftwareUpdateViewController: NSViewController {
 		
 		//Set the window title
 		view.window!.title = NSLocalizedString("label.software_update", comment: "")
+		
+		//Focus app
+		NSApp.activate(ignoringOtherApps: true)
 	}
 	
 	@IBAction func onRemindLater(_ sender: Any) {

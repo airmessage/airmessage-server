@@ -13,10 +13,9 @@ import Sentry
 class AppDelegate: NSObject, NSApplicationDelegate {
 	//Status bar
 	private var statusBarItem: NSStatusItem!
-	@IBOutlet weak var menu: NSMenu!
-	@IBOutlet weak var menuItemPrimary: NSMenuItem!
-	@IBOutlet weak var menuItemSecondary: NSMenuItem!
-	@IBOutlet weak var menuItemPreferences: NSMenuItem!
+	private var menuItemPrimary: NSMenuItem!
+	private var menuItemSecondary: NSMenuItem!
+	private var menuItemPreferences: NSMenuItem!
 	
 	//UI state
 	public var currentServerState = ServerState.stopped
@@ -44,9 +43,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		
 		//Register status bar item
 		statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-		statusBarItem.menu = menu
+		
 		let statusButton = statusBarItem.button!
 		statusButton.image = NSImage(named: NSImage.Name("StatusBarIcon"))
+		
+		let statusBarMenu = NSMenu()
+		menuItemPrimary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
+		menuItemSecondary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
+		statusBarMenu.addItem(NSMenuItem.separator())
+		menuItemPreferences = statusBarMenu.addItem(withTitle: NSLocalizedString("action.preferences", comment: ""), action: #selector(onOpenPreferences), keyEquivalent: "")
+		statusBarMenu.addItem(withTitle: NSLocalizedString("action.check_for_updates", comment: ""), action: #selector(onCheckForUpdates), keyEquivalent: "")
+		statusBarMenu.addItem(NSMenuItem.separator())
+		statusBarMenu.addItem(withTitle: NSLocalizedString("action.about_airmessage", comment: ""), action: #selector(onAboutApp), keyEquivalent: "")
+		statusBarMenu.addItem(withTitle: NSLocalizedString("action.quit_airmessage", comment: ""), action: #selector(onQuitApp), keyEquivalent: "")
+		statusBarItem.menu = statusBarMenu
 		
 		//Register notification center observers
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateServerState), name: NotificationNames.updateServerState, object: nil)
@@ -153,6 +163,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		menuItemPreferences.isEnabled = !isSetupMode
 	}
 	
+	@objc private func onOpenPreferences() {
+		PreferencesViewController.open()
+	}
+	
 	@objc private func onRestartServer() {
 		launchServer()
 	}
@@ -167,7 +181,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ClientListViewController.open()
 	}
 	
-	@IBAction func onCheckForUpdates(_ sender: Any) {
+	@objc private func onCheckForUpdates() {
 		UpdateHelper.checkUpdates(onError: {error in
 			NSApp.activate(ignoringOtherApps: true)
 			
@@ -195,5 +209,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 				alert.runModal()
 			}
 		})
+	}
+	
+	@objc private func onAboutApp() {
+		NSApplication.shared.orderFrontStandardAboutPanel(self)
+	}
+	
+	@objc private func onQuitApp() {
+		NSApplication.shared.terminate(self)
 	}
 }

@@ -9,6 +9,9 @@ import Foundation
 import AppKit
 
 class PreferencesViewController: NSViewController {
+	//Keep in memory for older versions of OS X
+	private static var preferencesWindowController: NSWindowController?
+	
 	@IBOutlet weak var groupPort: NSStackView!
 	@IBOutlet weak var inputPort: NSTextField!
 	
@@ -22,6 +25,21 @@ class PreferencesViewController: NSViewController {
 	@IBOutlet weak var labelSignOut: NSTextField!
 	
 	private var isShowingPort, isShowingFaceTime: Bool!
+	
+	static func open() {
+		//If we're already showing the window, just focus it
+		if let window = preferencesWindowController?.window, window.isVisible {
+			window.makeKeyAndOrderFront(self)
+			NSApp.activate(ignoringOtherApps: true)
+			return
+		}
+		
+		let storyboard = NSStoryboard(name: "Main", bundle: nil)
+		let windowController = storyboard.instantiateController(withIdentifier: "Preferences") as! NSWindowController
+		windowController.showWindow(nil)
+		preferencesWindowController = windowController
+		NSApp.activate(ignoringOtherApps: true)
+	}
 	
 	override func viewWillAppear() {
 		super.viewWillAppear()

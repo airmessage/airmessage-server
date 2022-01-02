@@ -9,8 +9,8 @@ import Foundation
 import AppKit
 
 class ClientListViewController: NSViewController {
-    //Keep in memory on older versions of OS X
-    private static var clientListWindowController: NSWindowController!
+    //Keep in memory for older versions of OS X
+    private static var clientListWindowController: NSWindowController?
     
 	private static let cellID = NSUserInterfaceItemIdentifier(rawValue: "DeviceTableCell")
 	
@@ -19,10 +19,18 @@ class ClientListViewController: NSViewController {
 	private var clients: [ClientConnection.Registration]!
     
     static func open() {
+		//If we're already showing the window, just focus it
+		if let window = clientListWindowController?.window, window.isVisible {
+			window.makeKeyAndOrderFront(self)
+			NSApp.activate(ignoringOtherApps: true)
+			return
+		}
+		
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let windowController = storyboard.instantiateController(withIdentifier: "ClientList") as! NSWindowController
         windowController.showWindow(nil)
         clientListWindowController = windowController
+		NSApp.activate(ignoringOtherApps: true)
     }
 	
 	override func viewDidLoad() {

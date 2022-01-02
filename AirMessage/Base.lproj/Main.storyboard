@@ -11,61 +11,49 @@
             <objects>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AirMessage" customModuleProvider="target">
-                    <connections>
-                        <outlet property="menu" destination="uQy-DD-JDr" id="kHf-gA-lox"/>
-                        <outlet property="menuItemPreferences" destination="BOF-NM-1cW" id="Fyh-nf-06K"/>
-                        <outlet property="menuItemPrimary" destination="5jL-EB-ghD" id="75B-da-1F8"/>
-                        <outlet property="menuItemSecondary" destination="CpQ-ja-jCe" id="fQm-Zl-b5G"/>
-                    </connections>
-                </customObject>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AirMessage" customModuleProvider="target"/>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" autoenablesItems="NO" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="AirMessage" id="1Xt-HY-uBw">
+                            <menuItem title="AirMessage" id="M5T-DH-mf6">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="AirMessage" systemMenu="apple" autoenablesItems="NO" id="uQy-DD-JDr">
+                                <menu key="submenu" title="AirMessage" id="3eA-0Q-7Ol">
                                     <items>
-                                        <menuItem title="Initializing…" enabled="NO" id="5jL-EB-ghD">
+                                        <menuItem title="About AirMessage" id="bp6-Ed-JiY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                        </menuItem>
-                                        <menuItem title="No Clients Connected" id="CpQ-ja-jCe">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.preferences"/>
-                                            </userDefinedRuntimeAttributes>
                                             <connections>
-                                                <segue destination="cGc-zf-mLe" kind="show" id="AQZ-vy-jjO"/>
+                                                <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="ZCh-GY-8OA"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Check for Updates…" id="gii-7S-Dfv">
+                                        <menuItem isSeparatorItem="YES" id="M8l-7e-Vg1"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="P2A-2x-bxq"/>
+                                        <menuItem isSeparatorItem="YES" id="6un-F2-mFz"/>
+                                        <menuItem title="Services" id="RIB-mn-FeF">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.check_for_updates"/>
-                                            </userDefinedRuntimeAttributes>
+                                            <menu key="submenu" title="Services" systemMenu="services" id="4q5-Qg-FEH"/>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="uEL-mi-m6e"/>
+                                        <menuItem title="Hide AirMessage" keyEquivalent="h" id="hBM-0l-ED2">
                                             <connections>
-                                                <action selector="onCheckForUpdates:" target="Voe-Tx-rLC" id="1F7-Bk-JS0"/>
+                                                <action selector="hide:" target="Ady-hI-5gd" id="O9S-gb-HvH"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
-                                        <menuItem title="About AirMessage" id="5kV-Vb-QxS">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.about_airmessage"/>
-                                            </userDefinedRuntimeAttributes>
+                                        <menuItem title="Hide Others" keyEquivalent="h" id="dFd-ah-7jQ">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
-                                                <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
+                                                <action selector="hideOtherApplications:" target="Ady-hI-5gd" id="88P-fz-WN4"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Quit AirMessage" keyEquivalent="q" id="4sb-4s-VLi">
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="action.quit_airmessage"/>
-                                            </userDefinedRuntimeAttributes>
+                                        <menuItem title="Show All" id="pdj-Ra-S0Z">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
+                                                <action selector="unhideAllApplications:" target="Ady-hI-5gd" id="Y7C-Vl-9py"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="5YF-oX-Oi7"/>
+                                        <menuItem title="Quit AirMessage" keyEquivalent="q" id="pHU-ef-g5i">
+                                            <connections>
+                                                <action selector="terminate:" target="Ady-hI-5gd" id="7Nl-8O-aG9"/>
                                             </connections>
                                         </menuItem>
                                     </items>
