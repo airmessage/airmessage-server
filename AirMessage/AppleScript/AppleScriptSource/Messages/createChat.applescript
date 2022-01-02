@@ -17,6 +17,6 @@ on main(addressList, serviceType)
 		--Create the chat
 		set createdChat to make new text chat with properties {participants: participantList}
 		
-		return id of createdChat
+		return createdChat
 	end tell
 end run

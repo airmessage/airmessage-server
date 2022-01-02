@@ -117,7 +117,7 @@ class AppleScriptBridge {
 			LogManager.log("Failed to create chat with \(addresses): \(error)", level: .error)
 			throw AppleScriptExecutionError(error: error)
 		} else {
-			return result.stringValue!
+			return result.forKeyword(AEKeyword(keyAEKeyData))!.stringValue!
 		}
 	}
 	
