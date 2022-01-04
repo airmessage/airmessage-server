@@ -1106,9 +1106,10 @@ class ConnectionManager {
 		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
 		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
 		let isLast = try messagePacker.unpackBool() //Is this the last packet?
-		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
 		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
+		
 		let fileName = packetIndex == 0 ? try messagePacker.unpackString() : nil //The name of the file to download and send
+		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
 		
 		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: chatGUID) { downloadRequest in
 			handleMessageSendCommon(requestID: requestID, client: client) {
@@ -1122,9 +1123,10 @@ class ConnectionManager {
 		let requestID = try messagePacker.unpackShort() //The request ID to keep track of requests
 		let packetIndex = try messagePacker.unpackInt() //The index of this packet, to ensure that packets are received and written in order
 		let isLast = try messagePacker.unpackBool() //Is this the last packet?
-		let members = try messagePacker.unpackStringArray() //The members of the chat to send the message to
 		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
+		
 		let fileName = packetIndex == 0 ? try messagePacker.unpackString() : nil //The name of the file to download and send
+		let members = packetIndex == 0 ? try messagePacker.unpackStringArray() : nil //The members of the chat to send the message to
 		let service = packetIndex == 0 ? try messagePacker.unpackString() : nil //The service of the conversation
 		
 		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: (members, service)) { downloadRequest in
