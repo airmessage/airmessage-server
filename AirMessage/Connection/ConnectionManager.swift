@@ -1109,9 +1109,9 @@ class ConnectionManager {
 		var fileData = try messagePacker.unpackPayload() //The compressed file data to append
 		
 		let fileName = packetIndex == 0 ? try messagePacker.unpackString() : nil //The name of the file to download and send
-		let chatGUID = try messagePacker.unpackString() //The GUID of the chat to send the message to
+		let chatGUID = packetIndex == 0 ? try messagePacker.unpackString() : nil //The GUID of the chat to send the message to
 		
-		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: chatGUID) { downloadRequest in
+		try handleMessageFileDownloadCommon(client: client, requestID: requestID, packetIndex: packetIndex, fileName: fileName, fileData: &fileData, isLast: isLast, customData: chatGUID as Any) { downloadRequest in
 			handleMessageSendCommon(requestID: requestID, client: client) {
 				try MessageManager.send(file: downloadRequest.fileURL, toExistingChat: downloadRequest.customData as! String)
 			}
