@@ -1040,6 +1040,7 @@ class ConnectionManager {
 			} catch DownloadRequestCreateError.createError(let createError) {
 				LogManager.log("Failed to create file download request: \(createError)", level: .error)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to create file download request: \(createError.localizedDescription)", to: client)
+				fileDownloadRequestMapLock.withWriteLock { fileDownloadRequestMap[requestID] = nil }
 				return
 			}
 		} else {
@@ -1056,6 +1057,7 @@ class ConnectionManager {
 			guard !downloadRequest.isDataComplete else {
 				LogManager.log("Received additional data for file download request \(requestID)-\(packetIndex), even though data is already complete", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Data is already complete", to: client)
+				fileDownloadRequestMapLock.withWriteLock { fileDownloadRequestMap[requestID] = nil }
 				return
 			}
 			
@@ -1063,6 +1065,7 @@ class ConnectionManager {
 			guard downloadRequest.packetsWritten == packetIndex else {
 				LogManager.log("Received invalid packet order for file download request \(requestID)-\(packetIndex); expected \(downloadRequest.packetsWritten)", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Received invalid packet order for file download request \(requestID)-\(packetIndex); expected \(downloadRequest.packetsWritten)", to: client)
+				fileDownloadRequestMapLock.withWriteLock { fileDownloadRequestMap[requestID] = nil }
 				return
 			}
 			
@@ -1072,6 +1075,7 @@ class ConnectionManager {
 			} catch {
 				LogManager.log("Failed to write download request file data for request \(requestID)-\(packetIndex): \(error)", level: .notice)
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.internalError.rawValue, details: "Failed to write file data for packet index \(packetIndex): \(error.localizedDescription)", to: client)
+				fileDownloadRequestMapLock.withWriteLock { fileDownloadRequestMap[requestID] = nil }
 				return
 			}
 		}
@@ -1082,6 +1086,9 @@ class ConnectionManager {
 			downloadRequest.startTimeoutTimer()
 			return
 		}
+		
+		//Remove the entry from the array
+		fileDownloadRequestMapLock.withWriteLock { fileDownloadRequestMap[requestID] = nil }
 		
 		//Make sure we have complete data
 		guard downloadRequest.isDataComplete else {
