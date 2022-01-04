@@ -18,6 +18,7 @@ class PreferencesManager {
 		case serverPort
 		case checkUpdates
 		case betaUpdates
+		case faceTimeIntegration
 		case accountType
 		
 		//Storage
@@ -55,10 +56,10 @@ class PreferencesManager {
 	
 	var faceTimeIntegration: Bool {
 		get {
-			UserDefaults.standard.bool(forKey: UDKeys.betaUpdates.rawValue)
+			UserDefaults.standard.bool(forKey: UDKeys.faceTimeIntegration.rawValue)
 		}
 		set(newValue) {
-			UserDefaults.standard.set(newValue, forKey: UDKeys.betaUpdates.rawValue)
+			UserDefaults.standard.set(newValue, forKey: UDKeys.faceTimeIntegration.rawValue)
 		}
 	}
 	
