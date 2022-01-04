@@ -29,16 +29,18 @@ class MessageManager {
 	static func send(message: String, toNewChat addresses: [String], onService service: String) throws {
 		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
+			//NSSharingService only supports iMessage
+			guard service == "iMessage" else {
+				throw ForwardsSupportError(noSupportVer: "11.0")
+			}
+			
 			DispatchQueue.main.sync {
 				//Open the sharing service
 				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+				service.delegate = autoSubmitNSSharingServiceDelegate
 				service.recipients = addresses
 				service.perform(withItems: [message])
 			}
-			
-			//Submit the sharing service
-			Thread.sleep(forTimeInterval: 1)
-			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
 			try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: message, isFile: false)
 		}
@@ -47,18 +49,60 @@ class MessageManager {
 	static func send(file: URL, toNewChat addresses: [String], onService service: String) throws {
 		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
+			//NSSharingService only supports iMessage
+			guard service == "iMessage" else {
+				throw ForwardsSupportError(noSupportVer: "11.0")
+			}
+			
 			DispatchQueue.main.sync {
 				//Open the sharing service
 				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+				service.delegate = autoSubmitNSSharingServiceDelegate
 				service.recipients = addresses
 				service.perform(withItems: [file])
 			}
-			
-			//Submit the sharing service
-			Thread.sleep(forTimeInterval: 1)
-			try AppleScriptBridge.shared.pressCommandReturn()
 		} else {
 			return try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: file.path, isFile: true)
+		}
+	}
+}
+
+private let autoSubmitNSSharingServiceDelegate = AutoSubmitNSSharingServiceDelegate()
+
+private class AutoSubmitNSSharingServiceDelegate: NSObject, NSSharingServiceDelegate {
+	private var timer: Timer?
+	
+	private func startTimer() {
+		//Ignore if the timer already exists
+		guard timer == nil else { return }
+		
+		//Set a timer to try and submit every second
+		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runSubmit), userInfo: nil, repeats: true)
+	}
+	
+	private func stopTimer() {
+		timer?.invalidate()
+		timer = nil
+	}
+	
+	func sharingService(_ sharingService: NSSharingService, willShareItems items: [Any]) {
+		startTimer()
+		
+	}
+	
+	func sharingService(_ sharingService: NSSharingService, didShareItems: [Any]) {
+		stopTimer()
+	}
+	
+	func sharingService(_ sharingService: NSSharingService, didFailToShareItems: [Any], error: Error) {
+		stopTimer()
+	}
+	
+	@objc private func runSubmit() {
+		do {
+			try AppleScriptBridge.shared.pressCommandReturn()
+		} catch {
+			stopTimer()
 		}
 	}
 }

@@ -913,7 +913,7 @@ class ConnectionManager {
 				
 				send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: nstCode.rawValue, details: error.message, to: client)
 			} else if let error = error as? ForwardsSupportError {
-				send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: NSTCreateChat.scriptError.rawValue, details: error.errorDescription, to: client)
+				send(basicResponseOfCode: .createChat, requestID: requestID, resultCode: NSTCreateChat.notSupported.rawValue, details: error.errorDescription, to: client)
 			}
 			
 			return

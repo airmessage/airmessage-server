@@ -93,6 +93,7 @@ enum NSTCreateChat: Int32 {
 	case scriptError = 1 //Some unknown AppleScript error
 	case badRequest = 2 //Invalid data received
 	case unauthorized = 3 //System rejected request to send message
+	case notSupported = 4 //Operation not supported by this server
 }
 
 enum NSTInitiateFaceTimeCall: Int32 {
