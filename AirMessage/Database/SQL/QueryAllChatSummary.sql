@@ -4,6 +4,7 @@ SELECT
 	chat.service_name AS "chat.service_name",
 	message.text AS "message.text",
 	message.date AS "message.date",
+	message.is_from_me AS "message.is_from_me",
 	handle.id AS "handle.id",
 	sub2.member_list AS member_list,
 	GROUP_CONCAT(attachment.mime_type) AS attachment_list
@@ -33,6 +34,6 @@ JOIN chat ON chat.ROWID = sub2.chat_id
 JOIN message ON message.ROWID = sub2.message_id
 LEFT JOIN message_attachment_join ON message_attachment_join.message_id = sub2.message_id
 LEFT JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
-JOIN handle ON message.handle_id = handle.ROWID
+LEFT JOIN handle ON message.handle_id = handle.ROWID
 GROUP BY chat.ROWID
 ORDER BY message.date DESC

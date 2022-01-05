@@ -267,7 +267,7 @@ class DatabaseConverter {
 		} else {
 			lastMessageSendStyle = nil
 		}
-		let lastMessageSender = row[indices["handle.id"]!] as! String?
+		let lastMessageSender: String? = (row[indices["message.is_from_me"]!] as! Int64 != 0) ? nil : (row[indices["handle.id"]!] as! String)
 		let lastMessageAttachments = (row[indices["attachment_list"]!] as! String?)
 			.map { $0.components(separatedBy: ",") } ?? []
 		
