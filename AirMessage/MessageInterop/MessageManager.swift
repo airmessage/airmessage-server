@@ -27,19 +27,23 @@ class MessageManager {
 	}
 	
 	static func send(message: String, toNewChat addresses: [String], onService service: String) throws {
-		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
-			//NSSharingService only supports iMessage
-			guard service == "iMessage" else {
-				throw ForwardsSupportError(noSupportVer: "11.0")
-			}
-			
-			DispatchQueue.main.sync {
-				//Open the sharing service
-				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
-				service.delegate = autoSubmitNSSharingServiceDelegate
-				service.recipients = addresses
-				service.perform(withItems: [message])
+			if addresses.count == 1 {
+				//Send the message directly to the user
+				return try AppleScriptBridge.shared.sendMessage(toDirect: addresses[0], service: service, message: message, isFile: false)
+			} else {
+				//NSSharingService only supports iMessage
+				guard service == "iMessage" else {
+					throw ForwardsSupportError(noSupportVer: "11.0")
+				}
+				
+				DispatchQueue.main.sync {
+					//Open the sharing service
+					let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+					service.delegate = autoSubmitNSSharingServiceDelegate
+					service.recipients = addresses
+					service.perform(withItems: [message])
+				}
 			}
 		} else {
 			try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: message, isFile: false)
@@ -47,19 +51,23 @@ class MessageManager {
 	}
 	
 	static func send(file: URL, toNewChat addresses: [String], onService service: String) throws {
-		//Use NSSharingService on macOS 11+
 		if #available(macOS 11.0, *) {
-			//NSSharingService only supports iMessage
-			guard service == "iMessage" else {
-				throw ForwardsSupportError(noSupportVer: "11.0")
-			}
-			
-			DispatchQueue.main.sync {
-				//Open the sharing service
-				let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
-				service.delegate = autoSubmitNSSharingServiceDelegate
-				service.recipients = addresses
-				service.perform(withItems: [file])
+			if addresses.count == 1 {
+				//Send the message directly to the user
+				return try AppleScriptBridge.shared.sendMessage(toDirect: addresses[0], service: service, message: file.path, isFile: true)
+			} else {
+				//NSSharingService only supports iMessage
+				guard service == "iMessage" else {
+					throw ForwardsSupportError(noSupportVer: "11.0")
+				}
+				
+				DispatchQueue.main.sync {
+					//Open the sharing service
+					let service = NSSharingService(named: NSSharingService.Name.composeMessage)!
+					service.delegate = autoSubmitNSSharingServiceDelegate
+					service.recipients = addresses
+					service.perform(withItems: [file])
+				}
 			}
 		} else {
 			return try AppleScriptBridge.shared.sendMessage(toNewChat: addresses, service: service, message: file.path, isFile: true)
