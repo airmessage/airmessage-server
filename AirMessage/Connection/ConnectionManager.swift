@@ -501,6 +501,10 @@ class ConnectionManager {
 				groupArray.append(row)
 			}
 			
+			if groupArray.isEmpty {
+				continue
+			}
+			
 			//Check for errors
 			if let error = groupArray.first(where: { $0.isError }) {
 				switch error {
