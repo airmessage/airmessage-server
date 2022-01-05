@@ -479,9 +479,9 @@ class ConnectionManager {
 			dataProxy.send(message: responsePacker.data, to: client, encrypt: true, onSent: nil)
 		}
 		
-		var messageIterator: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow>.Iterator
+		var messageIterator: DatabaseManager.LazyMessageIterator
 		do {
-			messageIterator = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages).makeIterator()
+			messageIterator = try DatabaseManager.shared.fetchMessagesLazy(since: timeSinceMessages)
 		} catch {
 			LogManager.log("Encountered an error while preparing to read mass retrieval messages: \(error)", level: .notice)
 			SentrySDK.capture(error: error)
@@ -489,13 +489,16 @@ class ConnectionManager {
 		}
 		var messageResponseIndex: Int32 = 1
 		var previousLooseModifiers: [ModifierInfo] = []
-		while true {
+		var messageIteratorComplete = false
+		while !messageIteratorComplete {
 			//Get next 20 results
-			let groupArray: [DatabaseManager.FailableDatabaseMessageRow] = (0..<20).compactMap { i in messageIterator.next() }
-			
-			//Break if we're done
-			if groupArray.isEmpty {
-				break
+			var groupArray: [DatabaseManager.FailableDatabaseMessageRow] = []
+			for _ in 0..<20 {
+				guard let row = messageIterator.next() else {
+					messageIteratorComplete = true
+					break
+				}
+				groupArray.append(row)
 			}
 			
 			//Check for errors

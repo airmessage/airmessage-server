@@ -454,7 +454,7 @@ class DatabaseManager {
 	/**
 	 Returns a lazy iterator over a sequence of `FailableDatabaseMessageRow`
 	 */
-	public func fetchMessagesLazy(since timeLowerUNIX: Int64? = nil) throws -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<Statement>.Elements, DatabaseManager.FailableDatabaseMessageRow?>>, DatabaseManager.FailableDatabaseMessageRow> {
+	public func fetchMessagesLazy(since timeLowerUNIX: Int64? = nil) throws -> LazyMessageIterator {
 		//Fetch the messages
 		let stmt: Statement
 		do {
@@ -469,10 +469,37 @@ class DatabaseManager {
 			}
 		}
 		
-		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
-		return stmt.lazy.compactMap { [dbConnection] row -> FailableDatabaseMessageRow in
-			//Make sure we still have a reference to the database
-			guard let db = dbConnection else {
+		//Return a lazy iterator
+		return LazyMessageIterator(databaseManager: self, stmt: stmt)
+	}
+	
+	class LazyMessageIterator: IteratorProtocol {
+		private let databaseManager: DatabaseManager
+		private let stmt: Statement
+		private let indices: [String: Int]
+		
+		init(databaseManager: DatabaseManager, stmt: Statement) {
+			self.databaseManager = databaseManager
+			self.stmt = stmt
+			indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		}
+		
+		func next() -> FailableDatabaseMessageRow? {
+			//Get the next message row
+			let row: [Binding?]?
+			do {
+				row = try stmt.failableNext()
+			} catch {
+				//Finish iteration if an error occurred
+				LogManager.log("Encountered an error while lazily iterating over messages: \(error)", level: .notice)
+				return nil
+			}
+			
+			//No more rows, finish the iterator
+			guard let row = row else { return nil }
+			
+			//Make sure we're still connected to the database
+			guard let db = databaseManager.dbConnection else {
 				return .deallocError
 			}
 			
