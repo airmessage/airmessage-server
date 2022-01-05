@@ -12,7 +12,7 @@ class DraggableAppView: NSImageView {
 	override func mouseDown(with event: NSEvent) {
 		guard #available(macOS 10.13, *) else { return }
 		
-		let url = URL(fileURLWithPath: Bundle.main.resourcePath!)
+		let url = Bundle.main.resourceURL!
 		let path = url.deletingLastPathComponent().deletingLastPathComponent().absoluteString
 		
 		let pasteboardItem = NSPasteboardItem()
