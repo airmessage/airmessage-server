@@ -253,14 +253,14 @@ class ConnectionManager {
 	}
 	
 	///Sends a FaceTime caller as a push notification
-	public func sendPushNotification(faceTimerCaller: String?) {
+	public func sendPushNotification(faceTimeCaller: String?) {
 		//Make sure we have an active data proxy
 		guard let dataProxy = dataProxy, dataProxy.supportsPushNotifications else { return }
 		
 		//Serialize the data
 		var packer = AirPacker()
 		packer.pack(int: PushNotificationPayloadType.faceTime.rawValue)
-		packer.pack(optionalString: faceTimerCaller)
+		packer.pack(optionalString: faceTimeCaller)
 		
 		//Send the push notification
 		ConnectionManager.sendPushNotificationPayload(dataProxy, data: packer.data)

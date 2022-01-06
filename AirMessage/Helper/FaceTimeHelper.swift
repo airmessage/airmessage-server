@@ -97,14 +97,14 @@ class FaceTimeHelper {
 		}) else { return }
 		
 		if let incomingCaller = incomingCaller {
-			LogManager.log("Detected new incoming FaceTimer caller: \(incomingCaller)", level: .info)
+			LogManager.log("Detected new incoming FaceTime caller: \(incomingCaller)", level: .info)
 		} else {
 			LogManager.log("No new incoming FaceTime caller", level: .info)
 		}
 		
 		//Notify clients
 		ConnectionManager.shared.send(faceTimeCaller: incomingCaller)
-		ConnectionManager.shared.sendPushNotification(faceTimerCaller: incomingCaller)
+		ConnectionManager.shared.sendPushNotification(faceTimeCaller: incomingCaller)
 	}
 	
 	///Accepts or rejects a pending incoming call
