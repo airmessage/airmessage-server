@@ -395,8 +395,9 @@ private class UpdateDownloadURLDelegate: ForwardCompatURLSessionDelegate, URLSes
 		}
 		
 		do {
-			//Get Applications directory
-			let destinationFolder = try FileManager.default.url(for: .applicationDirectory, in: .localDomainMask, appropriateFor: nil, create: false)
+			//Get the application's current path (AirMessage.app/Contents/Resources)
+			let activeAppPath = Bundle.main.resourceURL!.deletingLastPathComponent().deletingLastPathComponent()
+			let destinationFolder = activeAppPath.deletingLastPathComponent()
 			
 			//Get the temporary directory
 			let temporaryDirectory = try FileManager.default.url(
@@ -426,8 +427,8 @@ private class UpdateDownloadURLDelegate: ForwardCompatURLSessionDelegate, URLSes
 				return
 			}
 			
-			//Get target file in Applications
-			let targetAppFile = destinationFolder.appendingPathComponent(updateAppFile.lastPathComponent, isDirectory: false)
+			//Get target file
+			let targetAppFile = activeAppPath
 			LogManager.log("Targeting update location \(targetAppFile.path)", level: .info)
 			
 			//Delete old zip file

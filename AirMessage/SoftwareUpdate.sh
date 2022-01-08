@@ -30,5 +30,5 @@ sleep 1
 #Open the new app
 for i in 1 2 3 4 5
 do
-	open /Applications/AirMessage.app && break || sleep 1
+	open "$dstFile" && break || sleep 1
 done
