@@ -7,6 +7,7 @@ tell application "FaceTime" to activate
 tell application "System Events"
 	tell process "FaceTime"
 		set windowReady to false
+		
 		repeat while not windowReady
 			if exists window 1 then
 				repeat with buttonEl in buttons of window 1
@@ -16,8 +17,11 @@ tell application "System Events"
 					end if
 				end repeat
 			end if
+			
 			delay 0.1
 		end repeat
+		
+		delay 0.2
 	end tell
 end tell
 
