@@ -15,7 +15,7 @@
 "action.preferences"="Préférences…";
 "action.switch_to_account"="Utiliser un compte";
 "action.receive_beta_updates"="Recevoir les mises à jour bêta";
-"action.facetime_integration"="Intégration avec FaceTime";
+"action.facetime_integration"="Intégration avec FaceTime (Expérimental)";
 "action.connect_account"="Connecter un compte (recommandé)";
 "action.configure_manually"="Configurer manuellement";
 "action.open_full_disk_access"="Ouvrir les paramètres d'accès complet au disque";

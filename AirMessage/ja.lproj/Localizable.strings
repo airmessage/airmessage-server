@@ -23,7 +23,7 @@
 "action.edit_password"="パスワードの編集…";
 "action.auto_update"="アップデートを自動的に確認する";
 "action.beta_update"="ベータ版のアップデートを受け取る";
-"action.facetime_integration"="FaceTimeとの連携";
+"action.facetime_integration"="FaceTimeとの連携（実験的）";
 "action.remind_me_later"="後で通知";
 "action.install_update"="アップデートをインストール";
 "action.check_for_updates"="アップデートの確認…";

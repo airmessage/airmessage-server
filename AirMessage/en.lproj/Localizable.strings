@@ -23,7 +23,7 @@
 "action.edit_password"="Edit Password…";
 "action.auto_update"="Check for updates automatically";
 "action.beta_update"="Receive beta updates";
-"action.facetime_integration"="Enable FaceTime integration";
+"action.facetime_integration"="Enable FaceTime integration (Experimental)";
 "action.remind_me_later"="Remind Me Later";
 "action.install_update"="Install Update";
 "action.check_for_updates"="Check for Updates…";
