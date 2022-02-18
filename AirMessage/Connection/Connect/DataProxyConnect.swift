@@ -379,13 +379,12 @@ class DataProxyConnect: DataProxy {
 					} else if encryptionValue == -101 {
 						isSecure = false
 						isEncrypted = false
-					} else {
+					} else if encryptionValue == -102 {
 						isSecure = true
 						isEncrypted = false
-						
-						if encryptionValue != -102 {
-							messagePacker.backtrack(size: UInt8.self)
-						}
+					} else {
+						LogManager.log("Received unknown encryption value: \(encryptionValue)", level: .notice)
+						break
 					}
 					
 					var payload = try messagePacker.unpackData()
