@@ -7,6 +7,7 @@
 
 import Foundation
 import os
+import Sentry
 
 enum LogLevel {
 	case debug
@@ -61,11 +62,35 @@ private let standardDateFormatter: DateFormatter = {
 }()
 
 private struct FileLogger: TextOutputStream {
-	var file: URL
+	let file: URL
 	
 	func write(_ string: String) {
-		let fileHandle = try! FileHandle(forWritingTo: file)
+		let fileRestored: Bool
+		let fileHandle: FileHandle
+		do {
+			fileHandle = try FileHandle(forWritingTo: file)
+			fileRestored = false
+		} catch CocoaError.fileNoSuchFile {
+			//Create the file
+			guard FileManager.default.createFile(atPath: file.path, contents: nil) else {
+				print("Failed to recreate log file at \(file.path), exiting")
+				SentrySDK.capture(message: "Failed to recreate log file at \(file.path)")
+				exit(1)
+			}
+			
+			//Get a new file handle
+			fileHandle = try! FileHandle(forWritingTo: file)
+			fileRestored = true
+		} catch {
+			print("Failed to acquire handle to file at \(file.path), exiting")
+			SentrySDK.capture(error: error)
+			exit(1)
+		}
+		
 		try! fileHandle.seekToEndCompat()
+		if fileRestored {
+			try! fileHandle.writeCompat(contentsOf: "[earlier entries from this log file have been lost]\n".data(using: .utf8)!)
+		}
 		try! fileHandle.writeCompat(contentsOf: string.data(using: .utf8)!)
 	}
 }
@@ -93,7 +118,8 @@ class LogManager {
 		
 		guard FileManager.default.createFile(atPath: logFile.path, contents: nil) else {
 			print("Failed to create log file at \(logFile.path), exiting")
-			exit(0)
+			SentrySDK.capture(message: "Failed to create log file at \(logFile.path)")
+			exit(1)
 		}
 		
 		//Create the file logger
