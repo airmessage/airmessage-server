@@ -168,32 +168,34 @@ class AccountConnectViewController: NSViewController {
 				
 				//Get the user info
 				getFirebaseUserData(idToken: idToken) { [weak self] result, error in
-					guard let self = self else { return }
-					
-					//Check for errors
-					if let error = error {
-						LogManager.log("Failed to get user data: \(error)", level: .info)
-						self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
-						return
+					DispatchQueue.main.async {
+						guard let self = self else { return }
+						
+						//Check for errors
+						if let error = error {
+							LogManager.log("Failed to get user data: \(error)", level: .info)
+							self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
+							return
+						}
+						
+						let result = result!
+						guard !result.users.isEmpty else {
+							LogManager.log("Failed to get user data: no users returned", level: .info)
+							self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
+							return
+						}
+						let user = result.users[0]
+						
+						//Set the data proxy and connect
+						self.isConnecting = true
+						self.currentUserID = userID
+						self.currentEmailAddress = user.email
+						
+						let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: userID, idToken: idToken)
+						self.currentDataProxy = proxy
+						ConnectionManager.shared.setProxy(proxy)
+						ConnectionManager.shared.start()
 					}
-					
-					let result = result!
-					guard !result.users.isEmpty else {
-						LogManager.log("Failed to get user data: no users returned", level: .info)
-						self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
-						return
-					}
-					let user = result.users[0]
-					
-					//Set the data proxy and connect
-					self.isConnecting = true
-					self.currentUserID = userID
-					self.currentEmailAddress = user.email
-					
-					let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: userID, idToken: idToken)
-					self.currentDataProxy = proxy
-					ConnectionManager.shared.setProxy(proxy)
-					ConnectionManager.shared.start()
 				}
 			}
 		}
