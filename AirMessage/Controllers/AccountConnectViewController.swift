@@ -72,14 +72,16 @@ class AccountConnectViewController: NSViewController {
 		let url = URL(string:"http://localhost:\(port)")!
 		if #available(macOS 10.15, *) {
 			//Open URL in an authentication session
-			let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "airmessageauth") { [self] callbackURL, error in
+			let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "airmessageauth") { [weak self] callbackURL, error in
 				DispatchQueue.main.async {
+					guard let self = self, self.view.window != nil else { return }
+					
 					//Remove the session
-					currentAuthSession = nil
+					self.currentAuthSession = nil
 					
 					//Check the response
 					guard error == nil, let callbackURL = callbackURL else {
-						dismiss(self)
+						self.dismiss(self)
 						return
 					}
 					
@@ -88,7 +90,7 @@ class AccountConnectViewController: NSViewController {
 						  let scheme = components.scheme,
 						  let params = components.queryItems else {
 							  LogManager.log("Unable to parse authentication response URL: \(url)", level: .notice)
-							  dismiss(self)
+							  self.dismiss(self)
 							  return
 						  }
 					
@@ -97,12 +99,12 @@ class AccountConnectViewController: NSViewController {
 						  components.path == "firebase",
 						  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
 							  LogManager.log("Unable to validate authentication response URL: \(url)", level: .notice)
-							  dismiss(self)
+							  self.dismiss(self)
 							  return
 						  }
 					
 					//Start connecting
-					startConnection(refreshToken: refreshToken)
+					self.startConnection(refreshToken: refreshToken)
 				}
 			}
 			session.presentationContextProvider = self
