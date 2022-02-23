@@ -140,7 +140,9 @@ class PreferencesManager {
 	}
 	
 	var password: String {
-		keychainValues[KeychainAccount.password.rawValue] ?? ""
+		runOnMain {
+			keychainValues[KeychainAccount.password.rawValue] ?? ""
+		}
 	}
 	
 	func setPassword(_ password: String) throws {
@@ -148,6 +150,8 @@ class PreferencesManager {
 	}
 	
 	var installationID: String {
-		keychainValues[KeychainAccount.installationID.rawValue]!
+		runOnMain {
+			keychainValues[KeychainAccount.installationID.rawValue]!
+		}
 	}
 }
