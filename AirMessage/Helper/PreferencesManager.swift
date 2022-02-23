@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import Sentry
 
 let defaultServerPort = 1359
 
@@ -101,47 +102,52 @@ class PreferencesManager {
 		case installationID = "airmessage-installation"
 	}
 	
-	private var cacheMap = [String: String]()
+	private var keychainInitialized = false
+	private var keychainValues = [String: String]()
 	
-	private func getValue(for account: KeychainAccount) -> String? {
-		runOnMain {
-			if let cacheValue = cacheMap[account.rawValue] {
-				return cacheValue
-			} else {
-				let keychainValue = try! KeychainManager.getValue(for: account.rawValue)
-				cacheMap[account.rawValue] = keychainValue
-				return keychainValue
+	func initializeKeychain() throws {
+		try runOnMain {
+			guard !keychainInitialized else { return }
+			
+			do {
+				//Load all Keychain accounts into the cache map
+				for account in KeychainAccount.allCases {
+					keychainValues[account.rawValue] = try KeychainManager.getValue(for: account.rawValue)
+				}
+				
+				//Generate an installation ID if one isn't present
+				if keychainValues[KeychainAccount.installationID.rawValue] == nil {
+					let generatedInstallationID = UUID().uuidString
+					try setValue(generatedInstallationID, for: KeychainAccount.installationID)
+				}
+				
+				keychainInitialized = true
+			} catch {
+				LogManager.log("Failed to load Keychain values: \(error.localizedDescription)", level: .notice)
+				SentrySDK.capture(error: error)
+				
+				//Rethrow error
+				throw error
 			}
 		}
 	}
 	
-	private func setValue(_ value: String, for account: KeychainAccount) {
-		runOnMainAsync {
-			try! KeychainManager.setValue(value, for: account.rawValue)
-			self.cacheMap[account.rawValue] = value
+	private func setValue(_ value: String, for account: KeychainAccount) throws {
+		try runOnMain {
+			try KeychainManager.setValue(value, for: account.rawValue)
+			keychainValues[account.rawValue] = value
 		}
 	}
 	
 	var password: String {
-		get {
-			self.getValue(for: KeychainAccount.password) ?? ""
-		}
-		set(newValue) {
-			setValue(newValue, for: KeychainAccount.password)
-		}
+		keychainValues[KeychainAccount.password.rawValue] ?? ""
+	}
+	
+	func setPassword(_ password: String) throws {
+		try setValue(password, for: KeychainAccount.password)
 	}
 	
 	var installationID: String {
-		get {
-			runOnMain {
-				if let installationID = getValue(for: KeychainAccount.installationID) {
-					return installationID
-				} else {
-					let generatedInstallationID = UUID().uuidString
-					setValue(generatedInstallationID, for: KeychainAccount.installationID)
-					return generatedInstallationID
-				}
-			}
-		}
+		keychainValues[KeychainAccount.installationID.rawValue]!
 	}
 }

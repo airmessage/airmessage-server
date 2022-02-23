@@ -22,6 +22,7 @@ enum ServerState: Int {
 	case errorInternal = 101 //Internal error
 	case errorExternal = 102 //External error
 	case errorInternet = 103 //No internet connection
+	case errorKeychain = 104 //Keychain error
 	
 	case errorTCPPort = 200 //Port unavailable
 	case errorTCPInternal = 201 //Internal TCP error
@@ -53,6 +54,8 @@ enum ServerState: Int {
 				return NSLocalizedString("message.status.error.external", comment: "")
 			case .errorInternet:
 				return NSLocalizedString("message.status.error.internet", comment: "")
+			case .errorKeychain:
+				return NSLocalizedString("message.status.error.keychain", comment: "")
 			case .errorTCPPort:
 				return NSLocalizedString("message.status.error.port_unavailable", comment: "")
 			case .errorTCPInternal:

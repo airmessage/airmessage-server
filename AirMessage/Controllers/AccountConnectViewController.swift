@@ -191,7 +191,7 @@ class AccountConnectViewController: NSViewController {
 						self.currentUserID = userID
 						self.currentEmailAddress = user.email
 						
-						let proxy = DataProxyConnect(installationID: PreferencesManager.shared.installationID, userID: userID, idToken: idToken)
+						let proxy = DataProxyConnect(userID: userID, idToken: idToken)
 						self.currentDataProxy = proxy
 						ConnectionManager.shared.setProxy(proxy)
 						ConnectionManager.shared.start()

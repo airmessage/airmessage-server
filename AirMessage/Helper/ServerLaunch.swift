@@ -18,12 +18,11 @@ func setDataProxyAuto() -> Bool {
 			ConnectionManager.shared.setProxy(DataProxyTCP(port: PreferencesManager.shared.serverPort))
 			return true
 		case .connect:
-			let installationID = PreferencesManager.shared.installationID
 			guard let userID = PreferencesManager.shared.connectUserID else {
 				LogManager.log("Couldn't set default data proxy - no Connect user ID", level: .notice)
 				return false
 			}
-			ConnectionManager.shared.setProxy(DataProxyConnect(installationID: installationID, userID: userID))
+			ConnectionManager.shared.setProxy(DataProxyConnect(userID: userID))
 			return true
 		case .unknown:
 			return false

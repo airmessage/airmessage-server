@@ -7,6 +7,7 @@
 
 import Foundation
 import Security
+import AppKit
 
 private let keychainService = "AirMessage"
 
@@ -110,6 +111,15 @@ class KeychainManager {
 		guard status == errSecSuccess || status == errSecItemNotFound else {
 			throw KeychainError.from(status: status)
 		}
+	}
+	
+	///Gets an NSAlert to notify the user of a Keychain access error
+	public static func getErrorAlert(_ error: Error) -> NSAlert {
+		let alert = NSAlert()
+		alert.alertStyle = .critical
+		alert.messageText = NSLocalizedString("message.keychain.error", comment: "")
+		alert.informativeText = error.localizedDescription
+		return alert
 	}
 }
 

@@ -40,9 +40,20 @@ class ConnectionManager {
 	 Starts the server
 	 */
 	func start() {
+		//Make sure we have a data proxy
 		guard let proxy = dataProxy else {
 			LogManager.log("Tried to start connection manager, but no proxy is assigned", level: .error)
 			NotificationNames.postUpdateUIState(ServerState.stopped)
+			NotificationNames.postUpdateConnectionCount(0)
+			return
+		}
+		
+		//Make sure Keychain is initialized
+		do {
+			try PreferencesManager.shared.initializeKeychain()
+		} catch {
+			LogManager.log("Failed to initialize Keychain: \(error.localizedDescription)", level: .notice)
+			NotificationNames.postUpdateUIState(ServerState.errorKeychain)
 			NotificationNames.postUpdateConnectionCount(0)
 			return
 		}

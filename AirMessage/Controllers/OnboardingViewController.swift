@@ -26,6 +26,22 @@ class OnboardingViewController: NSViewController {
 		window.titleVisibility = .hidden
 	}
 	
+	override func shouldPerformSegue(withIdentifier identifier: NSStoryboardSegue.Identifier, sender: Any?) -> Bool {
+		if identifier == "PasswordEntry" {
+			//Make sure Keychain is initialized
+			do {
+				try PreferencesManager.shared.initializeKeychain()
+			} catch {
+				KeychainManager.getErrorAlert(error).beginSheetModal(for: self.view.window!)
+				return false
+			}
+			
+			return true
+		} else {
+			return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
+		}
+	}
+	
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
 		if segue.identifier == "PasswordEntry" {
 			let passwordEntry = segue.destinationController as! PasswordEntryViewController
@@ -33,8 +49,14 @@ class OnboardingViewController: NSViewController {
 			//Password is required for manual setup
 			passwordEntry.isRequired = true
 			passwordEntry.onSubmit = { [weak self] password in
+				guard let self = self else { return }
 				//Save password and reset server port
-				PreferencesManager.shared.password = password
+				do {
+					try PreferencesManager.shared.setPassword(password)
+				} catch {
+					KeychainManager.getErrorAlert(error).beginSheetModal(for: self.view.window!)
+					return
+				}
 				PreferencesManager.shared.serverPort = defaultServerPort
 				
 				//Set the account type
@@ -50,9 +72,7 @@ class OnboardingViewController: NSViewController {
 				launchServer()
 				
 				//Close window
-				if let self = self {
-					self.view.window!.close()
-				}
+				self.view.window!.close()
 			}
 		} else if segue.identifier == "AccountConnect" {
 			let accountConnect = segue.destinationController as! AccountConnectViewController

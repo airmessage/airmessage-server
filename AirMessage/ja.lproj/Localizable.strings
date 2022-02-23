@@ -58,6 +58,8 @@
 "message.intro.title"="AirMessage Server へようこそ！";
 "message.intro.body"="AirMessage Server はメニューバーにあります。アイコンをクリックして、サーバーの状態や設定を確認します。開始するには、サーバーの設定方法を選択してください。";
 
+"message.keychain.error"="キーチェーンからの読み込みに失敗しました";
+
 "message.grant.full_disk_access"="AirMessageへのフルディスクアクセスの許可";
 "message.grant.full_disk_access.explanation"="AirMessage Server はメッセージを読むために、フルディスクアクセスが必要です。";
 "message.grant.full_disk_access.step1"="• ウィンドウの左下にあるロックをクリックします";
@@ -84,6 +86,7 @@
 "message.status.error.internal"="内部エラーが発生しました";
 "message.status.error.external"="外部エラーが発生しました";
 "message.status.error.internet"="インターネットに接続できません";
+"message.status.error.keychain"="キーチェーンにアクセスできませんでした";
 "message.status.error.port_unavailable"="ポートが既に使用されている";
 "message.status.error.port_error"="ポートの準備が失敗しました";
 "message.status.error.bad_request"="通信エラーが発生しました";

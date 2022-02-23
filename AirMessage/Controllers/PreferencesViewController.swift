@@ -213,6 +213,22 @@ class PreferencesViewController: NSViewController {
 		}
 	}
 	
+	override func shouldPerformSegue(withIdentifier identifier: NSStoryboardSegue.Identifier, sender: Any?) -> Bool {
+		if identifier == "PasswordEntry" {
+			//Make sure Keychain is initialized
+			do {
+				try PreferencesManager.shared.initializeKeychain()
+			} catch {
+				KeychainManager.getErrorAlert(error).beginSheetModal(for: self.view.window!)
+				return false
+			}
+			
+			return true
+		} else {
+			return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
+		}
+	}
+	
 	override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
 		if segue.identifier == "PasswordEntry" {
 			let passwordEntry = segue.destinationController as! PasswordEntryViewController
@@ -221,7 +237,11 @@ class PreferencesViewController: NSViewController {
 			passwordEntry.isRequired = PreferencesManager.shared.accountType == .direct
 			passwordEntry.onSubmit = { password in
 				//Save password
-				PreferencesManager.shared.password = password
+				do {
+					try PreferencesManager.shared.setPassword(password)
+				} catch {
+					KeychainManager.getErrorAlert(error).beginSheetModal(for: self.view.window!)
+				}
 			}
 		}
 	}

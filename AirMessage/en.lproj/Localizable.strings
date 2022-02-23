@@ -58,6 +58,8 @@
 "message.intro.title"="Welcome to AirMessage Server!";
 "message.intro.body"="AirMessage Server lives in your menu bar. Click the icon to check server status and configuration. To get started, please choose how you would like to set up your server.";
 
+"message.keychain.error"="Failed to load Keychain data";
+
 "message.grant.full_disk_access"="Grant Full Disk Access to AirMessage";
 "message.grant.full_disk_access.explanation"="AirMessage Server needs Full Disk Access in order to read your messages";
 "message.grant.full_disk_access.step1"="• Click the lock in the bottom-left corner of the window";
@@ -84,6 +86,7 @@
 "message.status.error.internal"="An Internal Error Occurred";
 "message.status.error.external"="An External Error Occurred";
 "message.status.error.internet"="No Internet Connection";
+"message.status.error.keychain"="Couldn't Access Keychain";
 "message.status.error.port_unavailable"="Port Already In Use";
 "message.status.error.port_error"="Failed to Prepare Port";
 "message.status.error.bad_request"="Communications Error";

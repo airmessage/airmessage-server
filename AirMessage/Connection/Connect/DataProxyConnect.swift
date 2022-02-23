@@ -19,7 +19,6 @@ class DataProxyConnect: DataProxy {
 	var connections: Set<ClientConnection> { Set(connectionsMap.values) }
 	let connectionsLock = ReadWriteLock()
 	
-	private let installationID: String
 	private let userID: String
 	private var idToken: String?
 	
@@ -36,8 +35,7 @@ class DataProxyConnect: DataProxy {
 	
 	private var isActive = false
 	
-	init(installationID: String, userID: String, idToken: String? = nil) {
-		self.installationID = installationID
+	init(userID: String, idToken: String? = nil) {
 		self.userID = userID
 		self.idToken = idToken
 	}

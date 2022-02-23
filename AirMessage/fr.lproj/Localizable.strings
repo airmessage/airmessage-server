@@ -58,6 +58,8 @@
 "message.intro.title"="Bienvenue à AirMessage Server!";
 "message.intro.body"="AirMessage Server se place dans votre barre de menu. Cliquez sur l'icône pour vérifier l'état et la configuration du serveur. Pour commencer, veuillez choisir la manière dont vous souhaitez configurer votre serveur.";
 
+"message.keychain.error"="Échec du chargement des données du trousseau";
+
 "message.grant.full_disk_access"="Accorder l'accès complet au disque à AirMessage";
 "message.grant.full_disk_access.explanation"="AirMessage Server a besoin d'un accès complet au disque pour lire vos messages";
 "message.grant.full_disk_access.step1"="• Cliquez sur le cadenas dans le coin inférieur gauche de la fenêtre";
@@ -84,6 +86,7 @@
 "message.status.error.internal"="Une erreur interne s'est produite";
 "message.status.error.external"="Une erreur externe s'est produite";
 "message.status.error.internet"="Impossible de se connecter à l'internet";
+"message.status.error.keychain"="Impossible d'accéder au trousseau";
 "message.status.error.port_unavailable"="Le port n'est pas disponible";
 "message.status.error.port_error"="Échec de la préparation du port";
 "message.status.error.bad_request"="Erreur de communication";
