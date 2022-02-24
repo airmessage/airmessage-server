@@ -371,11 +371,16 @@ class DatabaseManager {
 	/**
 	 Fetches an array of conversations from their GUID, returning an array of mixed available and unavailable conversations
 	 */
-	public func fetchConversationArray(in guidArray: [String]) throws -> [BaseConversationInfo] {
+	public func fetchBaseConversations(in guidArray: [String]) throws -> [BaseConversationInfo] {
 		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 		
 		let query = try! String(contentsOf: Bundle.main.url(forResource: "QuerySpecificChatDetails", withExtension: "sql", subdirectory: "SQL")!)
-		let stmt = try dbConnection.prepare(query, guidArray)
+		
+		//Update the query to take as many parameters as we have
+		let queryParameterTemplate = Array(repeating: "?", count: guidArray.count).joined(separator: ", ")
+		let queryMultipleParams = query.replacingOccurrences(of: "?", with: queryParameterTemplate)
+		
+		let stmt = try dbConnection.prepare(queryMultipleParams, guidArray)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
 		//Fetch available conversations and map them to ConverationInfos

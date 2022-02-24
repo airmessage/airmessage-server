@@ -6,5 +6,5 @@ SELECT
 FROM chat
 	JOIN chat_handle_join ON chat.ROWID = chat_handle_join.chat_id
 	JOIN handle ON chat_handle_join.handle_id = handle.ROWID
-WHERE chat.guid IN(?)
+WHERE chat.guid IN (?)
 GROUP BY chat.ROWID

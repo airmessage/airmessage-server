@@ -685,7 +685,7 @@ class ConnectionManager {
 		//Fetch conversations from the database
 		let resultConversations: [BaseConversationInfo]
 		do {
-			resultConversations = try DatabaseManager.shared.fetchConversationArray(in: chatGUIDArray)
+			resultConversations = try DatabaseManager.shared.fetchBaseConversations(in: chatGUIDArray)
 		} catch {
 			LogManager.log("Failed to read conversations from database: \(error)", level: .error)
 			SentrySDK.capture(error: error)
