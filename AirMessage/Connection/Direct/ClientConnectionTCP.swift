@@ -100,6 +100,11 @@ class ClientConnectionTCP: ClientConnection {
 		delegate?.clientConnectionTCPDidInvalidate(self)
 	}
 	
+	func reset() {
+		//Remove registration
+		registration = nil
+	}
+	
 	/**
 	 Writes the provided data to the client
 	 - Parameters:
@@ -118,6 +123,7 @@ class ClientConnectionTCP: ClientConnection {
 		do {
 			try handle.writeCompat(contentsOf: output)
 		} catch {
+			LogManager.log("An error occurred while writing client data to \(address): \(error.localizedDescription)", level: .notice)
 			return false
 		}
 		

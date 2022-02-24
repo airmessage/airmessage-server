@@ -14,7 +14,8 @@ class DataProxyTCP: DataProxy {
 	let name = "Direct"
 	let requiresPersistence = true
 	let supportsPushNotifications = false
-	private(set) var connections: Set<ClientConnection> = []
+	private var connectionsMap: [Int32: ClientConnectionTCP] = [:]
+	var connections: Set<ClientConnection> { Set(Array(connectionsMap.values)) }
 	let connectionsLock = ReadWriteLock()
 	
 	private let serverPort: Int
@@ -128,19 +129,32 @@ class DataProxyTCP: DataProxy {
 						return
 				}
 				
-				LogManager.log("Client connected from \(clientAddress)", level: .info)
-				
 				//Add the client to the list
 				guard let self = self else { break }
-				let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
-				let client = ClientConnectionTCP(id: clientFD, handle: fileHandle, address: clientAddress, delegate: self)
-				let connectionCount = self.connectionsLock.withWriteLock { () -> Int in
-					self.connections.insert(client)
-					return self.connections.count
+				let (connectionCount, client, isClientNew) = self.connectionsLock.withWriteLock { () -> (Int, ClientConnectionTCP, Bool) in
+					if let existingClient = self.connectionsMap[clientFD] {
+						//Reset the existing client
+						existingClient.reset()
+						
+						return (self.connectionsMap.count, existingClient, false)
+					} else {
+						//Create a new client
+						let fileHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
+						let newClient = ClientConnectionTCP(id: clientFD, handle: fileHandle, address: clientAddress, delegate: self)
+						self.connectionsMap[clientFD] = newClient
+						
+						return (self.connectionsMap.count, newClient, true)
+					}
 				}
 				
-				//Start the client process
-				client.start(on: self.connectionQueue)
+				if isClientNew {
+					LogManager.log("Client connected from \(clientAddress)", level: .info)
+					
+					//Start the client process
+					client.start(on: self.connectionQueue)
+				} else {
+					LogManager.log("Client reconnected from \(clientAddress)", level: .info)
+				}
 				
 				//Notify the delegate
 				self.delegate?.dataProxy(self, didConnectClient: client, totalCount: connectionCount)
@@ -198,11 +212,16 @@ class DataProxyTCP: DataProxy {
 				guard let self = self else { return }
 				
 				//Copy the connections set
-				let connections = self.connectionsLock.withReadLock { self.connections }
+				let connections = self.connectionsLock.withReadLock { self.connectionsMap.values }
 				
 				//Send the data to all clients
 				for client in connections {
-					(client as! ClientConnectionTCP).write(data: preparedData, isEncrypted: encrypt)
+					//If this data is encrypted, don't send it to unregistered clients
+					if encrypt && client.registration == nil {
+						continue
+					}
+					
+					client.write(data: preparedData, isEncrypted: encrypt)
 				}
 			}
 			
@@ -244,7 +263,7 @@ extension DataProxyTCP: ClientConnectionTCPDelegate {
 	func clientConnectionTCPDidInvalidate(_ client: ClientConnectionTCP) {
 		//Remove the client from the list
 		let connectionCount = connectionsLock.withWriteLock { () -> Int in
-			connections.remove(client)
+			connectionsMap[client.id] = nil
 			return connections.count
 		}
 		
