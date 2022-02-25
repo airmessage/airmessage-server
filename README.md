@@ -14,7 +14,7 @@ Other AirMessage repositories:
 
 AirMessage Server requires Xcode 12+ to build, as well as [Node.js](https://nodejs.org) and [OpenSSL](https://www.openssl.org).
 
-To generate a universal OpenSSL binary to link, run `Configure.sh` in the `OpenSSL` directory.
+To generate a universal OpenSSL binary to link, run `Configure.command` in the `OpenSSL` directory.
 
 AirMessage Server uses a configuration file to associate with online services like Firebase and Sentry.
 The app will not build without valid configuration files, so to get started quickly, you can copy the provided default files to use a pre-configured Firebase project, or you may provide your own Firebase configuration file:

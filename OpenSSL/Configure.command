@@ -6,7 +6,9 @@
 #  Created by Cole Feuer on 2021-11-27.
 #  
 
-OPENSSL_VERSION=3.0.0
+cd "$(dirname "$0")"
+
+OPENSSL_VERSION=3.0.1
 
 #Download OpenSSL
 echo "Downloading OpenSSL version $OPENSSL_VERSION..."

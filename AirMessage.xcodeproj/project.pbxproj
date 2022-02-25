@@ -336,8 +336,7 @@
 		EDC822952697B769007A8DF9 /* package-lock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "package-lock.json"; sourceTree = "<group>"; };
 		EDC8985A2752BEEE0081BDB7 /* Zlib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Zlib; sourceTree = "<group>"; };
 		EDC898602752BF290081BDB7 /* OpenSSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDC8986C2752BF4C0081BDB7 /* CopyHeaders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CopyHeaders.sh; sourceTree = "<group>"; };
-		EDC8986D2752BF4C0081BDB7 /* Configure.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Configure.sh; sourceTree = "<group>"; };
+		EDC8986D2752BF4C0081BDB7 /* Configure.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Configure.command; sourceTree = "<group>"; };
 		EDC8986F2752BF4C0081BDB7 /* pem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pem2.h; sourceTree = "<group>"; };
 		EDC898702752BF4C0081BDB7 /* kdf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdf.h; sourceTree = "<group>"; };
 		EDC898712752BF4C0081BDB7 /* fipskey.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fipskey.h.in; sourceTree = "<group>"; };
@@ -775,8 +774,7 @@
 		EDC898612752BF290081BDB7 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
-				EDC8986D2752BF4C0081BDB7 /* Configure.sh */,
-				EDC8986C2752BF4C0081BDB7 /* CopyHeaders.sh */,
+				EDC8986D2752BF4C0081BDB7 /* Configure.command */,
 				EDC8986E2752BF4C0081BDB7 /* Headers */,
 				EDC899112752BF4D0081BDB7 /* libcrypto.a */,
 				EDC899122752BF4D0081BDB7 /* module.modulemap */,
