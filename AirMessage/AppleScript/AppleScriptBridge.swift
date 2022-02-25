@@ -8,6 +8,7 @@
 import Foundation
 import AppKit
 import Carbon
+import Sentry
 
 class AppleScriptBridge {
 	enum ScriptSourceCategory: String {
@@ -17,9 +18,23 @@ class AppleScriptBridge {
 	}
 	
 	private static func getScript(_ name: String, ofCategory category: ScriptSourceCategory) -> NSAppleScript {
-		NSAppleScript.init(
-			contentsOf: Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource/\(category.rawValue)")!,
-			error: nil)!
+		let resourceName = "AppleScriptSource/\(category.rawValue)/\(name).applescript"
+		
+		guard let url = Bundle.main.url(forResource: name, withExtension: "applescript", subdirectory: "AppleScriptSource/\(category.rawValue)") else {
+			let message = "Failed to load resource: \(resourceName)"
+			LogManager.log(message, level: .error)
+			SentrySDK.capture(message: message)
+			exit(EXIT_FAILURE)
+		}
+		
+		guard let appleScript = NSAppleScript(contentsOf: url, error: nil) else {
+			let message = "Failed to initialize AppleScript: \(resourceName)"
+			LogManager.log(message, level: .error)
+			SentrySDK.capture(message: message)
+			exit(EXIT_FAILURE)
+		}
+		
+		return appleScript
 	}
 	
 	@discardableResult
