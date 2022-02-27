@@ -12,10 +12,12 @@ import Foundation
  */
 func loadBundleCertificates() -> [SecCertificate] {
 	//Get all local root certificates
-	return Bundle.main.urls(forResourcesWithExtension: "der", subdirectory: "Certificates")!
+	let certificatesDir = Bundle.main.resourceURL!.appendingPathComponent("Certificates", isDirectory: true)
+	let certificates = try! FileManager.default.contentsOfDirectory(at: certificatesDir, includingPropertiesForKeys: nil)
 		.map { fileURL in
-			return SecCertificateCreateWithData(nil, try! Data(contentsOf: fileURL) as CFData)!
+			SecCertificateCreateWithData(nil, try! Data(contentsOf: fileURL) as CFData)!
 	}
+	return certificates
 }
 
 /**
