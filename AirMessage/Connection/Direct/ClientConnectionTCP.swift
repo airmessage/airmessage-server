@@ -113,6 +113,9 @@ class ClientConnectionTCP: ClientConnection {
 	 */
 	@discardableResult
 	func write(data: Data, isEncrypted: Bool) -> Bool {
+		//Make sure this client is still running
+		guard isRunning.value else { return false }
+		
 		//Create the packet structure
 		var output = Data(capacity: MemoryLayout<Int32>.size + MemoryLayout<Bool>.size + data.count)
 		withUnsafeBytes(of: Int32(data.count).bigEndian) { output.append(contentsOf: $0) }
