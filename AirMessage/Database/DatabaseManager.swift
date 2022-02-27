@@ -361,11 +361,18 @@ class DatabaseManager {
 			return nil
 		}
 		
-		//Return the file
-		let filename = row[0] as! String
-		let type = row[1] as? String
+		//Read the query result
+		let path = row[0] as! String?
+		let type = row[1] as! String?
 		let name = row[2] as! String
-		return AttachmentFile(url: DatabaseConverter.createURL(dbPath: filename), type: type, name: name)
+		
+		//Return nil if there is no file path
+		guard let path = path else {
+			return nil
+		}
+		
+		//Return the file
+		return AttachmentFile(url: DatabaseConverter.createURL(dbPath: path), type: type, name: name)
 	}
 	
 	/**
