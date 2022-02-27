@@ -48,6 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		statusButton.image = NSImage(named: NSImage.Name("StatusBarIcon"))
 		
 		let statusBarMenu = NSMenu()
+		statusBarMenu.autoenablesItems = false
 		menuItemPrimary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
 		menuItemSecondary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
 		statusBarMenu.addItem(NSMenuItem.separator())
