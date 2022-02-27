@@ -24,7 +24,7 @@ class DataProxyTCP: DataProxy {
 	private let writeQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.tcp.write", qos: .utility) //Write requests
 	
 	private var serverRunning = false
-	private var serverSocketFD: Int32?
+	private var serverSocketHandle: FileHandle?
 	
 	init(port: Int) {
 		serverPort = port
@@ -35,17 +35,21 @@ class DataProxyTCP: DataProxy {
 		guard !serverRunning else { return }
 		
 		//Create the socket
-		let socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
-		guard socketFD != -1 else {
-			LogManager.log("Failed to create socket: \(errno)", level: .error)
-			
-			delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
-			return
+		let socketHandle: FileHandle
+		do {
+			let socketFD = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
+			guard socketFD != -1 else {
+				LogManager.log("Failed to create socket: \(errno)", level: .error)
+				
+				delegate?.dataProxy(self, didStopWithState: .errorTCPPort, isRecoverable: false)
+				return
+			}
+			socketHandle = FileHandle(fileDescriptor: socketFD, closeOnDealloc: true)
 		}
 		
 		//Configure the socket
 		var opt: Int32 = -1
-		let setOptResult = setsockopt(socketFD, SOL_SOCKET, SO_REUSEADDR, &opt, socklen_t(MemoryLayout<Int32>.size))
+		let setOptResult = setsockopt(socketHandle.fileDescriptor, SOL_SOCKET, SO_REUSEADDR, &opt, socklen_t(MemoryLayout<Int32>.size))
 		guard setOptResult == 0 else {
 			LogManager.log("Failed to set socket opt: \(errno)", level: .error)
 			
@@ -58,9 +62,9 @@ class DataProxyTCP: DataProxy {
 		address.sin_family = sa_family_t(AF_INET)
 		address.sin_addr.s_addr = INADDR_ANY
 		address.sin_port = in_port_t(Int16(serverPort).bigEndian)
-		let bindResult = withUnsafePointer(to: address) { ptr in
+		let bindResult = withUnsafePointer(to: &address) { ptr in
 			ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
-				bind(socketFD, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
+				bind(socketHandle.fileDescriptor, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
 			}
 		}
 		guard bindResult == 0 else {
@@ -71,7 +75,7 @@ class DataProxyTCP: DataProxy {
 		}
 		
 		//Set the socket to passive mode
-		let listenResult = listen(socketFD, 8)
+		let listenResult = listen(socketHandle.fileDescriptor, 8)
 		guard listenResult == 0 else {
 			LogManager.log("Failed to listen socket: \(errno)", level: .error)
 			
@@ -84,7 +88,7 @@ class DataProxyTCP: DataProxy {
 			while true {
 				var addr = sockaddr()
 				var addrLen: socklen_t = socklen_t(MemoryLayout<sockaddr_in>.size)
-				let clientFD = accept(socketFD, &addr, &addrLen)
+				let clientFD = accept(socketHandle.fileDescriptor, &addr, &addrLen)
 				guard clientFD != -1 else {
 					guard let self = self else { return }
 					
@@ -161,14 +165,14 @@ class DataProxyTCP: DataProxy {
 			}
 		}
 		
-		serverSocketFD = socketFD
+		serverSocketHandle = socketHandle
 		serverRunning = true
 		delegate?.dataProxyDidStart(self)
 	}
 	
 	func stopServer() {
 		//Ignore if the server isn't running
-		guard serverRunning, let serverSocketFD = serverSocketFD else { return }
+		guard serverRunning else { return }
 		serverRunning = false
 		
 		//Disconnect clients
@@ -178,7 +182,8 @@ class DataProxyTCP: DataProxy {
 		NotificationNames.postUpdateConnectionCount(0)
 		
 		//Close the file handle
-		close(serverSocketFD)
+		try? serverSocketHandle?.closeCompat()
+		serverSocketHandle = nil
 		
 		//Notify the delegate
 		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
