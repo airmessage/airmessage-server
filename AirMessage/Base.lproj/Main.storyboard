@@ -491,7 +491,10 @@ DQ
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hDo-y4-bKW">
-                                <rect key="frame" x="234" y="13" width="53" height="32"/>
+                                <rect key="frame" x="193" y="13" width="94" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="vcl-En-gux"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xu7-77-KBd">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -507,7 +510,10 @@ DQ
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bji-OY-umh">
-                                <rect key="frame" x="160" y="13" width="76" height="32"/>
+                                <rect key="frame" x="101" y="13" width="94" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="3qT-I5-opO"/>
+                                </constraints>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HDc-b8-hR3">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
