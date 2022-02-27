@@ -10,7 +10,7 @@ import Foundation
 struct FileDownloadRequestCreateError: LocalizedError {
 	let path: String
 	
-	var errorDescription: String {
+	var errorDescription: String? {
 		"Failed to create file at \(path)"
 	}
 }

@@ -10,7 +10,7 @@ import Foundation
 /**
  An error that represents an AppleScript execution error
  */
-struct AppleScriptExecutionError: Error, LocalizedError {
+struct AppleScriptExecutionError: Error, LocalizedError, CustomNSError {
 	let errorDict: [String: Any]
 	init(error: NSDictionary) {
 		errorDict = error as! [String: Any]
@@ -23,9 +23,17 @@ struct AppleScriptExecutionError: Error, LocalizedError {
 		(errorDict[NSAppleScript.errorMessage] as? String) ?? "AppleScript execution error"
 	}
 	
-	public var errorDescription: String {
+	//LocalizedError
+	
+	var errorDescription: String? {
 		"AppleScript error \(code): \(message)"
 	}
+	
+	//CustomNSError
+	
+	static let errorDomain = "AppleScriptErrorDomain"
+	var errorCode: Int { code }
+	var errorUserInfo: [String: Any] { errorDict }
 }
 
 /**
@@ -37,7 +45,7 @@ struct ForwardsSupportError: Error, LocalizedError {
 		self.noSupportVer = noSupportVer
 	}
 	
-	public var errorDescription: String {
+	public var errorDescription: String? {
 		"Not supported beyond macOS \(noSupportVer) (running \(ProcessInfo.processInfo.operatingSystemVersionString))"
 	}
 }

@@ -144,7 +144,7 @@ enum FirebaseRequestError: Error {
 	case requestError(cause: Error)
 	case responseError
 	
-	public var errorDescription: String {
+	public var errorDescription: String? {
 		switch self {
 			case .serializationError:
 				return "Data serialization error"
