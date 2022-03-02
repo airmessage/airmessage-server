@@ -39,9 +39,9 @@ class UpdateHelper {
 		//Download update data
 		var request: URLRequest
 		if PreferencesManager.shared.betaUpdates {
-			request = URLRequest(url: UpdateHelper.betaUpdateURL)
+			request = URLRequest(url: UpdateHelper.betaUpdateURL, cachePolicy: .reloadIgnoringLocalCacheData)
 		} else {
-			request = URLRequest(url: UpdateHelper.stableUpdateURL)
+			request = URLRequest(url: UpdateHelper.stableUpdateURL, cachePolicy: .reloadIgnoringLocalCacheData)
 		}
 		
 		//For some reason this doesn't trigger an authentication challenge
