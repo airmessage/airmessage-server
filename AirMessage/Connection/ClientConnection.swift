@@ -5,7 +5,7 @@
 import Foundation
 
 class ClientConnection {
-	var id: Int32
+	let id: Int32
 	
 	//Overridable by subclasses
 	var readableID: String { String(id) }
@@ -104,17 +104,5 @@ class ClientConnection {
 		let type = timer.userInfo as! TimerType
 		timerDict[type]?.callback(self)
 		timerDict[type] = nil
-	}
-}
-
-//MARK: Hashable
-
-extension ClientConnection: Hashable {
-	func hash(into hasher: inout Hasher) {
-		hasher.combine(id)
-	}
-	
-	static func ==(lhs: ClientConnection, rhs: ClientConnection) -> Bool {
-		lhs.id == lhs.id
 	}
 }

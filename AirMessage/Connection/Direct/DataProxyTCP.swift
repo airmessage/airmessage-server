@@ -15,7 +15,7 @@ class DataProxyTCP: DataProxy {
 	let requiresPersistence = true
 	let supportsPushNotifications = false
 	private var connectionsMap: [Int32: ClientConnectionTCP] = [:]
-	var connections: Set<ClientConnection> { Set(Array(connectionsMap.values)) }
+	var connections: [ClientConnection] { Array(connectionsMap.values) }
 	let connectionsLock = ReadWriteLock()
 	
 	private let serverPort: Int

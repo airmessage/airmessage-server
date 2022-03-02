@@ -16,7 +16,7 @@ class DataProxyConnect: DataProxy {
 	let requiresPersistence = false
 	let supportsPushNotifications = true
 	private var connectionsMap: [Int32: ClientConnection] = [:]
-	var connections: Set<ClientConnection> { Set(connectionsMap.values) }
+	var connections: [ClientConnection] { Array(connectionsMap.values) }
 	let connectionsLock = ReadWriteLock()
 	
 	private let userID: String

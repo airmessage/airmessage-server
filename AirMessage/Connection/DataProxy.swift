@@ -28,7 +28,7 @@ protocol DataProxy: AnyObject {
 	/**
 	 Gets a list of connected clients
 	 */
-	var connections: Set<ClientConnection> { get }
+	var connections: [ClientConnection] { get }
 	var connectionsLock: ReadWriteLock { get }
 	
 	/**

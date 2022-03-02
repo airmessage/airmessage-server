@@ -14,12 +14,12 @@ class ConnectionManager {
 	private let fileDownloadRequestMapLock = ReadWriteLock()
 	private var fileDownloadRequestMap: [Int16: FileDownloadRequest] = [:]
 	
-	/// Gets a set of connections in a thread-safe manner
-	var connections: Set<ClientConnection>? {
+	/// Gets an array of connections in a thread-safe manner
+	var connections: [ClientConnection]? {
 		guard let dataProxy = dataProxy else { return nil }
 		
 		return dataProxy.connectionsLock.withReadLock {
-			dataProxy.connections
+			Array(dataProxy.connections)
 		}
 	}
 	
