@@ -27,10 +27,20 @@ class PreferencesManager {
 		case connectEmailAddress
 	}
 	
+	///Registers default preferences values
+	func registerPreferences() {
+		UserDefaults.standard.register(defaults: [
+			UDKeys.serverPort.rawValue: defaultServerPort,
+			UDKeys.checkUpdates.rawValue: true,
+			UDKeys.betaUpdates.rawValue: false,
+			UDKeys.faceTimeIntegration.rawValue: false,
+			UDKeys.accountType.rawValue: AccountType.unknown.rawValue
+		])
+	}
+	
 	var serverPort: Int {
 		get {
-			let port = UserDefaults.standard.integer(forKey: UDKeys.serverPort.rawValue)
-			return port == 0 ? defaultServerPort : port
+			UserDefaults.standard.integer(forKey: UDKeys.serverPort.rawValue)
 		}
 		set(newValue) {
 			UserDefaults.standard.set(newValue, forKey: UDKeys.serverPort.rawValue)
@@ -66,11 +76,8 @@ class PreferencesManager {
 	
 	var accountType: AccountType {
 		get {
-			if UserDefaults.standard.object(forKey: UDKeys.accountType.rawValue) != nil {
-				return AccountType.init(rawValue: UserDefaults.standard.integer(forKey: UDKeys.accountType.rawValue)) ?? AccountType.unknown
-			} else {
-				return AccountType.unknown
-			}
+			AccountType(rawValue: UserDefaults.standard.integer(forKey: UDKeys.accountType.rawValue))
+				?? AccountType.unknown
 		}
 		set(newValue) {
 			UserDefaults.standard.set(newValue.rawValue, forKey: UDKeys.accountType.rawValue)

@@ -41,6 +41,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			options.dsn = Bundle.main.infoDictionary!["SENTRY_DSN"] as? String
 		}
 		
+		//Initialize preferences
+		PreferencesManager.shared.registerPreferences()
+		
 		//Register status bar item
 		statusBarItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 		
