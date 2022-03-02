@@ -50,6 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		let statusBarMenu = NSMenu()
 		statusBarMenu.autoenablesItems = false
 		menuItemPrimary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
+		menuItemPrimary.isEnabled = false
 		menuItemSecondary = statusBarMenu.addItem(withTitle: "", action: nil, keyEquivalent: "")
 		statusBarMenu.addItem(NSMenuItem.separator())
 		menuItemPreferences = statusBarMenu.addItem(withTitle: NSLocalizedString("action.preferences", comment: ""), action: #selector(onOpenPreferences), keyEquivalent: "")
