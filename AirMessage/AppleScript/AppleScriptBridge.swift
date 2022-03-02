@@ -258,10 +258,10 @@ class AppleScriptBridge {
 	///Centers the FaceTime window and the mouse cursor in the middle of the screen
 	func centerFaceTimeWindow() throws {
 		//Get the middle of the screen
-		let screen = NSScreen.main!
-		let rect = screen.frame
-		let moveX = rect.size.width / 2
-		let moveY = rect.size.height / 2
+		let displayID = CGMainDisplayID()
+		let bounds = CGDisplayBounds(displayID)
+		let moveX = bounds.width / 2
+		let moveY = bounds.height / 2
 		
 		let params = NSAppleEventDescriptor.list()
 		params.insert(NSAppleEventDescriptor(int32: Int32(moveX)), at: 1)
@@ -274,7 +274,7 @@ class AppleScriptBridge {
 		}
 		
 		//Move the cursor to the middle of the screen
-		CGDisplayMoveCursorToPoint(0, CGPoint(x: moveX, y: moveY))
+		CGDisplayMoveCursorToPoint(displayID, CGPoint(x: moveX, y: moveY))
 	}
 	
 	///Checks for incoming calls, returning the current caller name, or nil if there is no incoming call

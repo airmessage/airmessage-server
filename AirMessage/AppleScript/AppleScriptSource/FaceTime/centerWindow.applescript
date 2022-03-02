@@ -11,7 +11,9 @@ on main(moveX, moveY)
 			repeat while not windowReady
 				if exists window 1 then
 					repeat with buttonEl in buttons of window 1
-						if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
+						if (exists attribute "AXIdentifier" of buttonEl) and¬
+							((value of attribute "AXIdentifier" of buttonEl contains "NS") or¬
+							(value of attribute "AXIdentifier" of buttonEl = "toggleSidebarButton")) then
 							set windowReady to true
 							exit repeat
 						end if

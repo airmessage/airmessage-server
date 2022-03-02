@@ -107,23 +107,6 @@ class FaceTimeHelper {
 		ConnectionManager.shared.sendPushNotification(faceTimeCaller: incomingCaller)
 	}
 	
-	///Accepts or rejects a pending incoming call
-	static func handleCall(_ incomingCaller: String, accept: Bool) -> Bool {
-		//Make sure we're handling the right call
-		guard lastIncomingCaller.value == incomingCaller else {
-			return false
-		}
-		
-		//Accept the call
-		do {
-			return try AppleScriptBridge.shared.handleIncomingCall(accept: accept)
-		} catch {
-			LogManager.log("Failed to handle incoming FaceTime call (\(accept ? "accept" : "reject")): \(error)", level: .notice)
-			SentrySDK.capture(error: error)
-			return false
-		}
-	}
-	
 	enum InitiateCallResult {
 		case accepted(link: String)
 		case rejected

@@ -1415,6 +1415,16 @@ class ConnectionManager {
 		}
 		
 		if accept {
+			//Center the window in the middle of the screen
+			do {
+				try AppleScriptBridge.shared.centerFaceTimeWindow()
+			} catch {
+				LogManager.log("Failed to center FaceTime window: \(error)", level: .error)
+				SentrySDK.capture(error: error)
+				sendError(errorDetails: error.localizedDescription)
+				return
+			}
+			
 			//Generate a link for the call
 			let faceTimeLink: String
 			do {
