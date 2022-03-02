@@ -27,10 +27,8 @@ end tell
 
 tell application "System Events"
 	tell process "FaceTime"
-		--Minimize window
-		keystroke "m" using command down
-		
-		set originalClipboard to the clipboard
+		--Clear the clipboard
+		set the clipboard to ""
 		
 		--Click "Create Link" button
 		set linkButton to button 1 of window 1
@@ -39,9 +37,10 @@ tell application "System Events"
 		click menu item 1 of menu of linkButton
 		
 		repeat
-			if the clipboard is not originalClipboard
+			if the clipboard is not ""
 				return the clipboard
 			end if
+			delay 0.1
 		end repeat
 	end tell
 end tell

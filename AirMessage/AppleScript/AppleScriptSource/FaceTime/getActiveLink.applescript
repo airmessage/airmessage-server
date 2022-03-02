@@ -27,10 +27,11 @@ tell application "System Events"
 			end if
 		end repeat
 		
-		--Minimize window
-		keystroke "m" using command down
+		--Wait for sidebar to open
+		delay 1
 		
-		set originalClipboard to the clipboard
+		--Clear the clipboard
+		set the clipboard to ""
 
 		--Click "share link" button
 		set linkButton to button 2 of last group of list 1 of list 1 of scroll area 2 of window 1
@@ -39,9 +40,10 @@ tell application "System Events"
 		click menu item 1 of menu of linkButton
 		
 		repeat
-			if the clipboard is not originalClipboard
+			if the clipboard is not ""
 				return the clipboard
 			end if
+			delay 0.1
 		end repeat
 	end tell
 end tell
