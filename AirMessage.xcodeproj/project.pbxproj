@@ -1626,7 +1626,7 @@
 					"$(PROJECT_DIR)/OpenSSL",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-all_load",
@@ -1667,7 +1667,7 @@
 					"$(PROJECT_DIR)/OpenSSL",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 3.0.1;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-all_load",
