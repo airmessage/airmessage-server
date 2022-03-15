@@ -41,7 +41,7 @@ tell application "System Events"
 		
 		repeat
 			if the clipboard is not ""
-				return the clipboard
+				return the clipboard as string
 			end if
 			delay 0.1
 		end repeat
