@@ -36,9 +36,12 @@ tell application "System Events"
 		delay 0.1
 		click menu item 1 of menu of linkButton
 		
+		set startTime to (current date)
 		repeat
-			if the clipboard is not ""
+			if the clipboard is not "" then
 				return the clipboard as string
+			else if (current date) - startTime > 20 then
+				error "Clipboard timed out"
 			end if
 			delay 0.1
 		end repeat
