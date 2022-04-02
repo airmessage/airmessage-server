@@ -187,18 +187,22 @@ class DataProxyConnect: DataProxy {
 	//MARK: Ping timer
 	
 	private func startPingTimer() {
-		//Cancel the old timer
-		pingTimer?.invalidate()
-		
-		//Create the new timer
-		let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
-		RunLoop.main.add(timer, forMode: .common)
-		pingTimer = timer
+		processingQueue.sync {
+			//Cancel the old timer
+			pingTimer?.invalidate()
+			
+			//Create the new timer
+			let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
+			RunLoop.main.add(timer, forMode: .common)
+			pingTimer = timer
+		}
 	}
 	
 	private func stopPingTimer() {
-		pingTimer?.invalidate()
-		pingTimer = nil
+		processingQueue.sync {
+			pingTimer?.invalidate()
+			pingTimer = nil
+		}
 	}
 	
 	@objc private func onPingTimer() {
@@ -209,18 +213,22 @@ class DataProxyConnect: DataProxy {
 	//MARK: Handshake Timer
 	
 	private func startHandshakeTimer() {
-		//Cancel the old timer
-		handshakeTimer?.invalidate()
-		
-		//Create the new timer
-		let timer = Timer(timeInterval: ConnectConstants.handshakeTimeout, target: self, selector: #selector(onHandshakeTimer), userInfo: nil, repeats: false)
-		RunLoop.main.add(timer, forMode: .common)
-		handshakeTimer = timer
+		processingQueue.sync {
+			//Cancel the old timer
+			handshakeTimer?.invalidate()
+			
+			//Create the new timer
+			let timer = Timer(timeInterval: ConnectConstants.handshakeTimeout, target: self, selector: #selector(onHandshakeTimer), userInfo: nil, repeats: false)
+			RunLoop.main.add(timer, forMode: .common)
+			handshakeTimer = timer
+		}
 	}
 	
 	private func stopHandshakeTimer() {
-		handshakeTimer?.invalidate()
-		handshakeTimer = nil
+		processingQueue.sync {
+			handshakeTimer?.invalidate()
+			handshakeTimer = nil
+		}
 	}
 	
 	@objc private func onHandshakeTimer() {
