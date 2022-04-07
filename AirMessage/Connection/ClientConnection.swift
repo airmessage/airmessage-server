@@ -50,7 +50,7 @@ class ClientConnection {
 	
 	deinit {
 		//Ensure timers are cleaned up
-		cancelAllTimers()
+		assert(timerDict.isEmpty, "Client connection was deinitialized with active timers")
 	}
 	
 	//MARK: Timers

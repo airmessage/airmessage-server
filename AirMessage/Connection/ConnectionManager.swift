@@ -9,6 +9,8 @@ import Sentry
 class ConnectionManager {
 	public static let shared = ConnectionManager()
 	
+	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".connection.timer", qos: .utility, attributes: .concurrent)
+	
 	private var dataProxy: DataProxy?
 	private var keepaliveTimer: Timer?
 	private let fileDownloadRequestMapLock = ReadWriteLock()
@@ -84,8 +86,10 @@ class ConnectionManager {
 		//Start ping response timers
 		dataProxy.connectionsLock.withReadLock {
 			for connection in dataProxy.connections {
-				connection.startTimer(ofType: .pingExpiry, interval: CommConst.pingTimeout) { [weak self] client in
-					self?.dataProxy?.disconnect(client: client)
+				timerQueue.sync {
+					connection.startTimer(ofType: .pingExpiry, interval: CommConst.pingTimeout) { [weak self] client in
+						self?.dataProxy?.disconnect(client: client)
+					}
 				}
 			}
 		}
@@ -283,7 +287,9 @@ class ConnectionManager {
 	
 	private func handleMessageAuthentication(dataProxy: DataProxy, packer messagePacker: inout AirPacker, from client: C) throws {
 		//Cancel the handshake expiry timer
-		client.cancelTimer(ofType: .handshakeExpiry)
+		timerQueue.sync {
+			client.cancelTimer(ofType: .handshakeExpiry)
+		}
 		
 		//Sends an authorization rejected message and closes the connection
 		func rejectAuthorization(with code: NSTAuth) {
@@ -1595,9 +1601,11 @@ extension ConnectionManager: DataProxyDelegate {
 		dataProxy.send(message: packer.data, to: client, encrypt: false, onSent: nil)
 		
 		//Start the expiry timer
-		client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout) { [weak self] client in
-			LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
-			self?.dataProxy?.disconnect(client: client)
+		timerQueue.sync {
+			client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout) { [weak self] client in
+				LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
+				self?.dataProxy?.disconnect(client: client)
+			}
 		}
 	}
 	
@@ -1606,7 +1614,9 @@ extension ConnectionManager: DataProxyDelegate {
 		NotificationNames.postUpdateConnectionCount(totalCount)
 		
 		//Clean up pending timers
-		client.cancelAllTimers()
+		timerQueue.sync {
+			client.cancelAllTimers()
+		}
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didReceive data: Data, from client: C, wasEncrypted: Bool) {
