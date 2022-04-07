@@ -1569,6 +1569,16 @@ extension ConnectionManager: DataProxyDelegate {
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didConnectClient client: C, totalCount: Int) {
+		//Record a breadcrumb
+		let crumb = Breadcrumb()
+		crumb.level = .info
+		crumb.category = "network"
+		crumb.message = "Client connected"
+		crumb.data = [
+			"Client ID": client.id
+		]
+		SentrySDK.addBreadcrumb(crumb: crumb)
+		
 		//Send an update
 		NotificationNames.postUpdateConnectionCount(totalCount)
 		
@@ -1610,6 +1620,16 @@ extension ConnectionManager: DataProxyDelegate {
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didDisconnectClient client: C, totalCount: Int) {
+		//Record a breadcrumb
+		let crumb = Breadcrumb()
+		crumb.level = .info
+		crumb.category = "network"
+		crumb.message = "Client disconnected"
+		crumb.data = [
+			"Client ID": client.id
+		]
+		SentrySDK.addBreadcrumb(crumb: crumb)
+		
 		//Send an update
 		NotificationNames.postUpdateConnectionCount(totalCount)
 		
@@ -1647,6 +1667,7 @@ extension ConnectionManager: DataProxyDelegate {
 			crumb.category = "network"
 			crumb.message = "Received new message"
 			crumb.data = [
+				"Client ID": client.id,
 				"Message type": messageTypeRaw,
 				"Message length": messageLength
 			]
