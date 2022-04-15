@@ -220,6 +220,8 @@
 		EDD70D6C2699F56E00E8DC06 /* ServerLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */; };
 		EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */; };
 		EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */; };
+		EDDD36D8280994BB0001FDC3 /* CompressionHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDD36D7280994BB0001FDC3 /* CompressionHelperTests.swift */; };
+		EDDD36DA280999C40001FDC3 /* ContentTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDD36D9280999C40001FDC3 /* ContentTypeHelperTests.swift */; };
 		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
@@ -239,6 +241,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = EDC8985F2752BF290081BDB7;
 			remoteInfo = OpenSSL;
+		};
+		EDDD36D2280992030001FDC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED28095025A20332009E7636;
+			remoteInfo = AirMessage;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -510,6 +519,9 @@
 		EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerLaunch.swift; sourceTree = "<group>"; };
 		EDDA7B84274315BD0027A82C /* DBFetchGrouping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBFetchGrouping.swift; sourceTree = "<group>"; };
 		EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNormalizationHelper.swift; sourceTree = "<group>"; };
+		EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirMessageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDDD36D7280994BB0001FDC3 /* CompressionHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressionHelperTests.swift; sourceTree = "<group>"; };
+		EDDD36D9280999C40001FDC3 /* ContentTypeHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeHelperTests.swift; sourceTree = "<group>"; };
 		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
@@ -544,6 +556,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDC899B92752BF4D0081BDB7 /* libcrypto.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDDD36CB280992030001FDC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +635,7 @@
 				ED9FBBBF27E139A30037DF16 /* Packages */,
 				ED28095325A20332009E7636 /* AirMessage */,
 				EDC898612752BF290081BDB7 /* OpenSSL */,
+				EDDD36CF280992030001FDC3 /* AirMessageTests */,
 				ED28095225A20332009E7636 /* Products */,
 				ED9FBBC427E13F430037DF16 /* Frameworks */,
 			);
@@ -626,6 +646,7 @@
 			children = (
 				ED28095125A20332009E7636 /* AirMessage.app */,
 				EDC898602752BF290081BDB7 /* OpenSSL.framework */,
+				EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -971,6 +992,15 @@
 			path = AppleScript;
 			sourceTree = "<group>";
 		};
+		EDDD36CF280992030001FDC3 /* AirMessageTests */ = {
+			isa = PBXGroup;
+			children = (
+				EDDD36D9280999C40001FDC3 /* ContentTypeHelperTests.swift */,
+				EDDD36D7280994BB0001FDC3 /* CompressionHelperTests.swift */,
+			);
+			path = AirMessageTests;
+			sourceTree = "<group>";
+		};
 		EDEDFFE52756E10A0088F2E3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -1191,13 +1221,31 @@
 			productReference = EDC898602752BF290081BDB7 /* OpenSSL.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		EDDD36CD280992030001FDC3 /* AirMessageTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDDD36D6280992030001FDC3 /* Build configuration list for PBXNativeTarget "AirMessageTests" */;
+			buildPhases = (
+				EDDD36CA280992030001FDC3 /* Sources */,
+				EDDD36CB280992030001FDC3 /* Frameworks */,
+				EDDD36CC280992030001FDC3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EDDD36D3280992030001FDC3 /* PBXTargetDependency */,
+			);
+			name = AirMessageTests;
+			productName = AirMessageTests;
+			productReference = EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		ED28094925A20332009E7636 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					ED28095025A20332009E7636 = {
@@ -1206,6 +1254,10 @@
 					};
 					EDC8985F2752BF290081BDB7 = {
 						CreatedOnToolsVersion = 13.1;
+					};
+					EDDD36CD280992030001FDC3 = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = ED28095025A20332009E7636;
 					};
 				};
 			};
@@ -1234,6 +1286,7 @@
 			targets = (
 				ED28095025A20332009E7636 /* AirMessage */,
 				EDC8985F2752BF290081BDB7 /* OpenSSL */,
+				EDDD36CD280992030001FDC3 /* AirMessageTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1256,6 +1309,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EDC8985E2752BF290081BDB7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDDD36CC280992030001FDC3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1394,6 +1454,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDDD36CA280992030001FDC3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDDD36D8280994BB0001FDC3 /* CompressionHelperTests.swift in Sources */,
+				EDDD36DA280999C40001FDC3 /* ContentTypeHelperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1401,6 +1470,11 @@
 			isa = PBXTargetDependency;
 			target = EDC8985F2752BF290081BDB7 /* OpenSSL */;
 			targetProxy = EDC898642752BF290081BDB7 /* PBXContainerItemProxy */;
+		};
+		EDDD36D3280992030001FDC3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED28095025A20332009E7636 /* AirMessage */;
+			targetProxy = EDDD36D2280992030001FDC3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1689,6 +1763,46 @@
 			};
 			name = Release;
 		};
+		EDDD36D4280992030001FDC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.AirMessageTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirMessage.app/Contents/MacOS/AirMessage";
+			};
+			name = Debug;
+		};
+		EDDD36D5280992030001FDC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.AirMessageTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirMessage.app/Contents/MacOS/AirMessage";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1715,6 +1829,15 @@
 			buildConfigurations = (
 				EDC898692752BF290081BDB7 /* Debug */,
 				EDC8986A2752BF290081BDB7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDDD36D6280992030001FDC3 /* Build configuration list for PBXNativeTarget "AirMessageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDDD36D4280992030001FDC3 /* Debug */,
+				EDDD36D5280992030001FDC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -9,7 +9,6 @@ import Foundation
 
 /**
  Runs a simple comparison of 2 MIME types, returning if they overlap
- Parameters must be in the format of `type/subtype`
  */
 func compareMIMETypes(_ value1: String, _ value2: String) -> Bool {
 	//Handle case where either type is a complete wildcard
@@ -20,6 +19,11 @@ func compareMIMETypes(_ value1: String, _ value2: String) -> Bool {
 	//Split MIME types into type and subtype
 	let split1 = value1.split(separator: "/", maxSplits: 2)
 	let split2 = value2.split(separator: "/", maxSplits: 2)
+	
+	//Make sure that we have 2 splits
+	guard split1.count == 2 && split2.count == 2 else {
+		return false
+	}
 	
 	//If the subtype of either value is a wildcard, compare their main types
 	if split1[1] == "*" || split2[1] == "*" {
