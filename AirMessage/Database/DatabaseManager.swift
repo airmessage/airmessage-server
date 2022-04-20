@@ -556,6 +556,7 @@ class DatabaseManager {
 	public func fetchLiteThread(chatGUID: String, before: Int64?) throws -> [ConversationItem] {
 		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 		
+		//Filter by chat and optionally message ID
 		var fetchWhere: String = "chat.GUID = ?"
 		var fetchBindings: [Binding?] = [chatGUID]
 		if let before = before {
@@ -563,26 +564,70 @@ class DatabaseManager {
 			fetchBindings.append(before)
 		}
 		
+		//Fetch messages from newest to oldest
 		let stmt = try fetchMessages(
 			using: dbConnection,
 			where: fetchWhere,
 			sort: "message.ROWID DESC",
-			limit: 24,
 			bindings: fetchBindings
 		)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
-		return try stmt.map { row in
-			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
-		}.compactMap { row -> ConversationItem? in
-			switch row {
+		/*
+		 Messages are iterated in reverse order.
+		 In order to properly apply modifiers, we'll keep track of any modifiers
+		 that we hit in a dictionary keyed by their message GUID.
+		 We can pull in these modifiers when we reach the target message.
+		 
+		 This does mean that if a message and its modifiers are queried for in
+		 separate requests, the modifiers will be dropped.
+		 */
+		var conversationItemArray: [ConversationItem] = []
+		var isolatedModifierDict: [String: [ModifierInfo]] = [:]
+		
+		//Collect up to 24 message items
+		while conversationItemArray.count < 24 {
+			let row = try stmt.failableNext()
+			
+			//End of iterator, exit loop
+			guard let row = row else {
+				break
+			}
+			
+			//Process the message row
+			let messageRow = try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
+			guard let messageRow = messageRow else { continue }
+			
+			switch messageRow {
 				case .message(let conversationItem):
-					return conversationItem
-				default:
-					//Discard modifiers
-					return nil
+					if var message = conversationItem as? MessageInfo {
+						//Apply any modifiers
+						if let modifierArray = isolatedModifierDict[message.guid] {
+							for modifier in modifierArray {
+								switch modifier {
+									case let tapback as TapbackModifierInfo:
+										message.tapbacks.append(tapback)
+									case let sticker as StickerModifierInfo:
+										message.stickers.append(sticker)
+									default:
+										break
+								}
+							}
+						}
+						
+						//Save the message
+						conversationItemArray.append(message)
+					} else {
+						//Save the conversation item
+						conversationItemArray.append(conversationItem)
+					}
+				case .modifier(let modifier):
+					//Record the modifier for later reference
+					isolatedModifierDict[modifier.messageGUID] = (isolatedModifierDict[modifier.messageGUID] ?? []) + [modifier]
 			}
 		}
+		
+		return conversationItemArray
 	}
 }
 
