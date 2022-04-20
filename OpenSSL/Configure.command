@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 #  Configure.sh
 #  AirMessage
@@ -8,7 +8,7 @@
 
 cd "$(dirname "$0")"
 
-OPENSSL_VERSION=3.0.1
+OPENSSL_VERSION=3.0.2
 
 #Download OpenSSL
 echo "Downloading OpenSSL version $OPENSSL_VERSION..."
