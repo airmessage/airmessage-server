@@ -237,7 +237,7 @@ class DatabaseManager {
 	 - Returns: The executed statement
 	 - Throws: SQL execution errors
 	 */
-	private func fetchMessages(using db: Connection, where queryWhere: String? = nil, sort querySort: String? = nil, limit queryLimit: Int? = nil) throws -> Statement {
+	private func fetchMessages(using db: Connection, where queryWhere: String? = nil, sort querySort: String? = nil, limit queryLimit: Int? = nil, bindings queryBindings: [Binding?] = []) throws -> Statement {
 		var rows: [String] = [
 			"message.ROWID",
 			"message.guid",
@@ -285,7 +285,7 @@ class DatabaseManager {
 						   rows.map { "\($0) AS \"\($0)\"" }.joined(separator: ", "),
 						   extraClauses.joined(separator: " ")
 		)
-		return try db.prepare(query)
+		return try db.prepare(query, queryBindings)
 	}
 	
 	//MARK: Requests
@@ -300,7 +300,7 @@ class DatabaseManager {
 		let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 		let timeUpper = convertDBTime(fromUNIX: timeUpperUNIX)
 		
-		let stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower) AND message.date < \(timeUpper)")
+		let stmt = try fetchMessages(using: dbConnection, where: "message.date > ? AND message.date < ?", bindings: [timeLower, timeUpper])
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		let rows = try stmt.map { row in
 			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
@@ -314,7 +314,7 @@ class DatabaseManager {
 	public func fetchGrouping(fromID idLower: Int64) throws -> DBFetchGrouping {
 		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 		
-		let stmt = try fetchMessages(using: dbConnection, where: "message.ROWID > \(idLower)")
+		let stmt = try fetchMessages(using: dbConnection, where: "message.ROWID > ?", bindings: [idLower])
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		let rows = try stmt.map { row in
 			try DatabaseConverter.processMessageRow(row, withIndices: indices, ofDB: dbConnection)
@@ -475,7 +475,7 @@ class DatabaseManager {
 			if let timeLowerUNIX = timeLowerUNIX {
 				let timeLower = convertDBTime(fromUNIX: timeLowerUNIX)
 				
-				stmt = try fetchMessages(using: dbConnection, where: "message.date > \(timeLower)")
+				stmt = try fetchMessages(using: dbConnection, where: "message.date > ?", bindings: [timeLower])
 			} else {
 				stmt = try fetchMessages(using: dbConnection)
 			}
@@ -556,11 +556,19 @@ class DatabaseManager {
 	public func fetchLiteThread(chatGUID: String, before: Int64?) throws -> [ConversationItem] {
 		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 		
+		var fetchWhere: String = "chat.GUID = ?"
+		var fetchBindings: [Binding?] = [chatGUID]
+		if let before = before {
+			fetchWhere += " AND message.ROWID < ?"
+			fetchBindings.append(before)
+		}
+		
 		let stmt = try fetchMessages(
 			using: dbConnection,
-			where: "chat.GUID = \"\(chatGUID)\"" + (before.map { " AND message.ROWID < \($0)" } ?? ""),
+			where: fetchWhere,
 			sort: "message.ROWID DESC",
-			limit: 24
+			limit: 24,
+			bindings: fetchBindings
 		)
 		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 		
