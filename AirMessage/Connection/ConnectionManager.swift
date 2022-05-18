@@ -9,7 +9,7 @@ import Sentry
 class ConnectionManager {
 	public static let shared = ConnectionManager()
 	
-	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".connection.timer", qos: .utility, attributes: .concurrent)
+	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".connection.timer", qos: .utility)
 	
 	private var dataProxy: DataProxy?
 	private var keepaliveTimer: Timer?
