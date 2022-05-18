@@ -22,13 +22,25 @@ extension FileHandle {
 	}
 	
 	func writeCompat(contentsOf data: Data) throws {
-		if #available(macOS 10.15.4, *) {
-			try write(contentsOf: data)
-		} else {
-			//FileHandle.write(_:) raises an NSException if the write fails
-			try ObjC.catchException {
+		var swiftError: Error? = nil
+		
+		try ObjC.catchException {
+			if #available(macOS 10.15.4, *) {
+				//Absorb NSError, since ObjC.catchException can't handle it
+				do {
+					try write(contentsOf: data)
+				} catch {
+					swiftError = error
+				}
+			} else {
+				//FileHandle.write(_:) raises an NSException if the write fails
 				write(data)
 			}
+		}
+		
+		//Throw error if needed
+		if let swiftError = swiftError {
+			throw swiftError
 		}
 	}
 	
