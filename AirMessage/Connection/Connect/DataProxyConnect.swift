@@ -31,7 +31,7 @@ class DataProxyConnect: DataProxy {
 	//The max num of attempts before capping the delay time - not before giving up
 	private static let connectionRecoveryCountMax = 8
 	
-	private let processingQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.connect.processing", qos: .utility, attributes: .concurrent)
+	private let processingQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".proxy.connect.processing", qos: .utility)
 	
 	private var isActive = false
 	
@@ -76,22 +76,24 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	func stopServer() {
-		//Ignore if we're not connected
-		guard isActive, let socket = webSocket else { return }
-		
-		//Cancel the handshake timer
-		stopHandshakeTimer()
-		
-		//Clear connected clients
-		connectionsLock.withWriteLock {
-			connectionsMap.removeAll()
+		processingQueue.sync {
+			//Ignore if we're not connected
+			guard isActive, let socket = webSocket else { return }
+			
+			//Cancel the handshake timer
+			stopHandshakeTimer()
+			
+			//Clear connected clients
+			connectionsLock.withWriteLock {
+				connectionsMap.removeAll()
+			}
+			NotificationNames.postUpdateConnectionCount(0)
+			
+			//Disconect
+			socket.disconnect()
+			isActive = false
+			delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 		}
-		NotificationNames.postUpdateConnectionCount(0)
-		
-		//Disconect
-		socket.disconnect()
-		isActive = false
-		delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 	}
 	
 	deinit {
@@ -187,22 +189,24 @@ class DataProxyConnect: DataProxy {
 	//MARK: Ping timer
 	
 	private func startPingTimer() {
-		processingQueue.sync {
-			//Cancel the old timer
-			pingTimer?.invalidate()
-			
-			//Create the new timer
-			let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
-			RunLoop.main.add(timer, forMode: .common)
-			pingTimer = timer
-		}
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
+		//Cancel the old timer
+		pingTimer?.invalidate()
+		
+		//Create the new timer
+		let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
+		RunLoop.main.add(timer, forMode: .common)
+		pingTimer = timer
 	}
 	
 	private func stopPingTimer() {
-		processingQueue.sync {
-			pingTimer?.invalidate()
-			pingTimer = nil
-		}
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
+		pingTimer?.invalidate()
+		pingTimer = nil
 	}
 	
 	@objc private func onPingTimer() {
@@ -213,22 +217,24 @@ class DataProxyConnect: DataProxy {
 	//MARK: Handshake Timer
 	
 	private func startHandshakeTimer() {
-		processingQueue.sync {
-			//Cancel the old timer
-			handshakeTimer?.invalidate()
-			
-			//Create the new timer
-			let timer = Timer(timeInterval: ConnectConstants.handshakeTimeout, target: self, selector: #selector(onHandshakeTimer), userInfo: nil, repeats: false)
-			RunLoop.main.add(timer, forMode: .common)
-			handshakeTimer = timer
-		}
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
+		//Cancel the old timer
+		handshakeTimer?.invalidate()
+		
+		//Create the new timer
+		let timer = Timer(timeInterval: ConnectConstants.handshakeTimeout, target: self, selector: #selector(onHandshakeTimer), userInfo: nil, repeats: false)
+		RunLoop.main.add(timer, forMode: .common)
+		handshakeTimer = timer
 	}
 	
 	private func stopHandshakeTimer() {
-		processingQueue.sync {
-			handshakeTimer?.invalidate()
-			handshakeTimer = nil
-		}
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
+		handshakeTimer?.invalidate()
+		handshakeTimer = nil
 	}
 	
 	@objc private func onHandshakeTimer() {

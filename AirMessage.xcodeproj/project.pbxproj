@@ -55,6 +55,7 @@
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
+		ED8D56482846E00000B6DB6B /* AssertionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D56472846E00000B6DB6B /* AssertionHelper.swift */; };
 		ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */; };
 		ED8F3A75274950770069F25D /* ContentTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A74274950770069F25D /* ContentTypeHelper.swift */; };
 		ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A782749A05D0069F25D /* MessageError.swift */; };
@@ -322,6 +323,7 @@
 		ED891A3C25A30749002230EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A3E25A30754002230EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED891A4725A30BC6002230EB /* PasswordGrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGrade.swift; sourceTree = "<group>"; };
+		ED8D56472846E00000B6DB6B /* AssertionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertionHelper.swift; sourceTree = "<group>"; };
 		ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAttachmentsFilter.swift; sourceTree = "<group>"; };
 		ED8F3A74274950770069F25D /* ContentTypeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTypeHelper.swift; sourceTree = "<group>"; };
 		ED8F3A782749A05D0069F25D /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
@@ -737,11 +739,13 @@
 		ED891A4625A30BAE002230EB /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				ED8D56472846E00000B6DB6B /* AssertionHelper.swift */,
 				EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */,
 				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
 				ED8F3A74274950770069F25D /* ContentTypeHelper.swift */,
 				2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */,
 				ED44738A26A46B68006F5F0E /* DispatchHelper.swift */,
+				ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */,
 				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
 				ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */,
 				ED44738626A387DD006F5F0E /* KeychainManager.swift */,
@@ -753,7 +757,6 @@
 				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
 				ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */,
 				2EAEEF4C32417D436F7ADC16 /* UpdateHelper.swift */,
-				ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1444,6 +1447,7 @@
 				2EAEEADDCBE7124BBDB9CDF4 /* CommConst.swift in Sources */,
 				2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */,
 				EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */,
+				ED8D56482846E00000B6DB6B /* AssertionHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
