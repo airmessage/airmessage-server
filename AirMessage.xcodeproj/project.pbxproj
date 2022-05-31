@@ -1849,7 +1849,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnsundell/ink.git";
 			requirement = {
-				kind = upToNextMinorVersion;
+				kind = upToNextMajorVersion;
 				minimumVersion = 0.5.1;
 			};
 		};
@@ -1857,8 +1857,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/Zip.git";
 			requirement = {
-				kind = revision;
-				revision = 059e7346082d02de16220cd79df7db18ddeba8c3;
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.1.2;
 			};
 		};
 		ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -1881,7 +1881,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream.git";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 4.0.0;
 			};
 		};
