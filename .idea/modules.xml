@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/airmessage-mac.iml" filepath="$PROJECT_DIR$/.idea/airmessage-mac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AirMessage.iml" filepath="$PROJECT_DIR$/.idea/AirMessage.iml" />
     </modules>
   </component>
 </project>
