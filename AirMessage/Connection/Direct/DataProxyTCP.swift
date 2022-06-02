@@ -190,8 +190,8 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	deinit {
-		//Make sure we stop the server when we go out of scope
-		stopServer()
+		//Ensure the server proxy isn't running when we go out of scope
+		assert(!serverRunning, "DataProxyTCP was deinitialized while active")
 	}
 	
 	func send(message data: Data, to client: ClientConnection?, encrypt: Bool, onSent: (() -> ())?) {

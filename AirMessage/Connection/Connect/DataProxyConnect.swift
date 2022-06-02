@@ -23,10 +23,11 @@ class DataProxyConnect: DataProxy {
 	private var idToken: String?
 	
 	private var webSocket: WebSocket?
-	private var handshakeTimer: Timer?
-	private var pingTimer: Timer?
+	private var handshakeTimer: DispatchSourceTimer?
+	private var pingTimer: DispatchSourceTimer?
+	private static let pingFrequency: TimeInterval = 5 * 60
 	
-	private var connectionRecoveryTimer: Timer?
+	private var connectionRecoveryTimer: DispatchSourceTimer?
 	private var connectionRecoveryCount = 0
 	//The max num of attempts before capping the delay time - not before giving up
 	private static let connectionRecoveryCountMax = 8
@@ -40,12 +41,24 @@ class DataProxyConnect: DataProxy {
 		self.idToken = idToken
 	}
 	
-	@objc func startServer() {
+	deinit {
+		//Ensure the server proxy isn't running when we go out of scope
+		assert(!isActive, "DataProxyConnect was deinitialized while active")
+		
+		//Ensure timers are cleaned up
+		assert(pingTimer == nil, "DataProxyConnect was deinitialized with an active ping timer")
+		assert(handshakeTimer == nil, "DataProxyConnect was deinitialized with an active handshake timer")
+		assert(connectionRecoveryTimer == nil, "DataProxyConnect was deinitialized with an active connection recovery timer")
+	}
+	
+	func startServer() {
 		//Ignore if we're already connecting or connected
 		guard !isActive else { return }
 		
 		//Cancel any active connection recover timers (in case the user initiated a reconnect)
-		stopConnectionRecoveryTimer()
+		processingQueue.sync {
+			stopConnectionRecoveryTimer()
+		}
 		
 		//Build the URL
 		var queryItems = [
@@ -76,12 +89,11 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	func stopServer() {
+		//Ignore if we're not running
+		guard isActive else { return }
+		
 		processingQueue.sync {
-			//Ignore if we're not connected
-			guard isActive, let socket = webSocket else { return }
-			
-			//Cancel the handshake timer
-			stopHandshakeTimer()
+			let socket = webSocket!
 			
 			//Clear connected clients
 			connectionsLock.withWriteLock {
@@ -89,16 +101,12 @@ class DataProxyConnect: DataProxy {
 			}
 			NotificationNames.postUpdateConnectionCount(0)
 			
-			//Disconect
+			//Disconnect
 			socket.disconnect()
-			isActive = false
 			delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 		}
-	}
-	
-	deinit {
-		//Make sure we stop the server when we go out of scope
-		stopServer()
+		
+		isActive = false
 	}
 	
 	func send(message data: Data, to client: ClientConnection?, encrypt: Bool, onSent: (() -> ())?) {
@@ -193,11 +201,13 @@ class DataProxyConnect: DataProxy {
 		assertDispatchQueue(processingQueue)
 		
 		//Cancel the old timer
-		pingTimer?.invalidate()
+		pingTimer?.cancel()
 		
 		//Create the new timer
-		let timer = Timer(timeInterval: 5 * 60, target: self, selector: #selector(onPingTimer), userInfo: nil, repeats: true)
-		RunLoop.main.add(timer, forMode: .common)
+		let timer = DispatchSource.makeTimerSource(queue: processingQueue)
+		timer.schedule(deadline: .now() + DataProxyConnect.pingFrequency, repeating: DataProxyConnect.pingFrequency)
+		timer.setEventHandler(handler: onPingTimer)
+		timer.resume()
 		pingTimer = timer
 	}
 	
@@ -205,11 +215,14 @@ class DataProxyConnect: DataProxy {
 		//Make sure we're on the processing queue
 		assertDispatchQueue(processingQueue)
 		
-		pingTimer?.invalidate()
+		pingTimer?.cancel()
 		pingTimer = nil
 	}
 	
-	@objc private func onPingTimer() {
+	private func onPingTimer() {
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
 		//Ping
 		webSocket?.write(ping: Data())
 	}
@@ -221,11 +234,13 @@ class DataProxyConnect: DataProxy {
 		assertDispatchQueue(processingQueue)
 		
 		//Cancel the old timer
-		handshakeTimer?.invalidate()
+		handshakeTimer?.cancel()
 		
 		//Create the new timer
-		let timer = Timer(timeInterval: ConnectConstants.handshakeTimeout, target: self, selector: #selector(onHandshakeTimer), userInfo: nil, repeats: false)
-		RunLoop.main.add(timer, forMode: .common)
+		let timer = DispatchSource.makeTimerSource(queue: processingQueue)
+		timer.schedule(deadline: .now() + ConnectConstants.handshakeTimeout, repeating: .never)
+		timer.setEventHandler(handler: onHandshakeTimer)
+		timer.resume()
 		handshakeTimer = timer
 	}
 	
@@ -233,28 +248,40 @@ class DataProxyConnect: DataProxy {
 		//Make sure we're on the processing queue
 		assertDispatchQueue(processingQueue)
 		
-		handshakeTimer?.invalidate()
+		handshakeTimer?.cancel()
 		handshakeTimer = nil
 	}
 	
-	@objc private func onHandshakeTimer() {
+	private func onHandshakeTimer() {
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
 		//Disconnect
 		webSocket?.disconnect()
+		
+		//Clean up
+		stopHandshakeTimer()
 	}
 	
 	//MARK: Connection recovery timer
 	
 	private func startConnectionRecoveryTimer() {
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
 		//Cancel the old timer
-		connectionRecoveryTimer?.invalidate()
+		connectionRecoveryTimer?.cancel()
 		
 		//Wait an exponentially increasing wait period + a random delay
 		let randomOffset: TimeInterval = Double(arc4random()) / Double(UInt32.max)
 		let delay: TimeInterval = pow(2, Double(connectionRecoveryCount)) + randomOffset
 		
 		//Create the new timer
-		let timer = Timer(timeInterval: delay, target: self, selector: #selector(startServer), userInfo: nil, repeats: false)
-		RunLoop.main.add(timer, forMode: .common)
+		//startServer() must be invoked from the main thread
+		let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+		timer.schedule(deadline: .now() + delay, repeating: .never)
+		timer.setEventHandler(handler: startServer)
+		timer.resume()
 		connectionRecoveryTimer = timer
 		
 		//Add to the attempt counter
@@ -264,7 +291,10 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	private func stopConnectionRecoveryTimer() {
-		connectionRecoveryTimer?.invalidate()
+		//Make sure we're on the processing queue
+		assertDispatchQueue(processingQueue)
+		
+		connectionRecoveryTimer?.cancel()
 		connectionRecoveryTimer = nil
 	}
 	

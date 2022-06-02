@@ -24,7 +24,7 @@ class FileDownloadRequest {
 	
 	private(set) var packetsWritten = 0
 	
-	private var timeoutTimer: Timer?
+	private var timeoutTimer: DispatchSourceTimer?
 	var timeoutCallback: (() -> Void)?
 	
 	private let fileDirURL: URL //The container directory of the file
@@ -32,6 +32,8 @@ class FileDownloadRequest {
 	let fileHandle: FileHandle
 	
 	private let decompressPipe: CompressionPipeInflate
+	
+	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".download.timer", qos: .utility)
 	
 	/**
 	 Initializes a new file download request
@@ -89,24 +91,30 @@ class FileDownloadRequest {
 	 Starts or resets the timeout timer, which invokes `timeoutCallback`
 	 */
 	func startTimeoutTimer() {
-		//Cancel the old timer
-		timeoutTimer?.invalidate()
-		
-		//Create the new timer
-		let timer = Timer(timeInterval: FileDownloadRequest.timeout, target: self, selector: #selector(onTimeout), userInfo: nil, repeats: false)
-		RunLoop.main.add(timer, forMode: .common)
-		timeoutTimer = timer
+		timerQueue.sync {
+			//Cancel the old timer
+			timeoutTimer?.cancel()
+			
+			//Create the new timer
+			let timer = DispatchSource.makeTimerSource(queue: timerQueue)
+			timer.schedule(deadline: .now() + FileDownloadRequest.timeout, repeating: .never)
+			timer.setEventHandler(handler: onTimeout)
+			timer.resume()
+			timeoutTimer = timer
+		}
 	}
 	
 	/**
 	 Cancels the current timeout timer
 	 */
 	func stopTimeoutTimer() {
-		timeoutTimer?.invalidate()
-		timeoutTimer = nil
+		timerQueue.sync {
+			timeoutTimer?.cancel()
+			timeoutTimer = nil
+		}
 	}
 	
-	@objc func onTimeout() {
+	private func onTimeout() {
 		timeoutTimer = nil
 		timeoutCallback?()
 	}

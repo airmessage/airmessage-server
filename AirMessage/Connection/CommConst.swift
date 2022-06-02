@@ -13,7 +13,7 @@ class CommConst {
 	//Timeouts
 	static let handshakeTimeout: TimeInterval = 10 //10 seconds
 	static let pingTimeout: TimeInterval = 30 //30 seconds
-	static let keepAliveMillis: TimeInterval = 30 * 60 //30 minutes
+	static let keepAliveInterval: TimeInterval = 30 * 60 //30 minutes
 	
 	static let maxPacketAllocation = 50 * 1024 * 1024 //50 MB
 	
