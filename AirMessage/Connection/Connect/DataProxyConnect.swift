@@ -52,6 +52,8 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	func startServer() {
+		assertDispatchQueue(DispatchQueue.main)
+		
 		//Ignore if we're already connecting or connected
 		guard !isActive else { return }
 		
@@ -89,6 +91,8 @@ class DataProxyConnect: DataProxy {
 	}
 	
 	func stopServer() {
+		assertDispatchQueue(DispatchQueue.main)
+		
 		//Ignore if we're not running
 		guard isActive else { return }
 		

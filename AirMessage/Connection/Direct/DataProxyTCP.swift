@@ -31,6 +31,8 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	func startServer() {
+		assertDispatchQueue(DispatchQueue.main)
+		
 		//Ignore if the server is already running
 		guard !serverRunning else { return }
 		
@@ -171,6 +173,8 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	func stopServer() {
+		assertDispatchQueue(DispatchQueue.main)
+		
 		//Ignore if the server isn't running
 		guard serverRunning else { return }
 		serverRunning = false
