@@ -10,6 +10,7 @@ class ConnectionManager {
 	public static let shared = ConnectionManager()
 	
 	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".connection.timer", qos: .utility)
+	private let timerQueueKey = DispatchSpecificKey<Bool>()
 	
 	private var dataProxy: DataProxy?
 	private var keepaliveTimer: DispatchSourceTimer?
@@ -27,6 +28,10 @@ class ConnectionManager {
 	
 	private var useAuthentication: Bool {
 		!PreferencesManager.shared.password.isEmpty
+	}
+	
+	init() {
+		timerQueue.setSpecific(key: timerQueueKey, value: true)
 	}
 	
 	/**
@@ -1044,20 +1049,18 @@ class ConnectionManager {
 				
 				//Set the timer callback
 				downloadRequest.timeoutCallback = { [weak self, weak client] in
-					DispatchQueue.global(qos: .default).async { [weak self, weak client] in
-						//Clean up leftover files
-						try? downloadRequest.cleanUp()
-						
-						//Clean up task reference
-						guard let self = self else { return }
-						self.fileDownloadRequestMapLock.withWriteLock {
-							self.fileDownloadRequestMap[requestID] = nil
-						}
-						
-						//Send a message to the client
-						guard let client = client, client.isConnected.value else { return }
-						self.send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.requestTimeout.rawValue, details: nil, to: client)
+					//Clean up leftover files
+					try? downloadRequest.cleanUp()
+					
+					//Clean up task reference
+					guard let self = self else { return }
+					self.fileDownloadRequestMapLock.withWriteLock {
+						self.fileDownloadRequestMap[requestID] = nil
 					}
+					
+					//Send a message to the client
+					guard let client = client, client.isConnected.value else { return }
+					self.send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.requestTimeout.rawValue, details: nil, to: client)
 				}
 			} catch DownloadRequestCreateError.alreadyExists {
 				send(basicResponseOfCode: .sendResult, requestID: requestID, resultCode: NSTSendResult.badRequest.rawValue, details: "Request ID \(requestID) already exists", to: client)
@@ -1563,7 +1566,7 @@ extension ConnectionManager: DataProxyDelegate {
 		NotificationNames.postUpdateConnectionCount(0)
 		
 		//Stop the keepalive timer
-		timerQueue.sync {
+		runOnQueue(queue: timerQueue, key: timerQueueKey) {
 			keepaliveTimer?.cancel()
 			keepaliveTimer = nil
 		}
@@ -1618,7 +1621,7 @@ extension ConnectionManager: DataProxyDelegate {
 		dataProxy.send(message: packer.data, to: client, encrypt: false, onSent: nil)
 		
 		//Start the expiry timer
-		timerQueue.sync {
+		runOnQueue(queue: timerQueue, key: timerQueueKey) {
 			client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout, queue: timerQueue) { [weak self] client in
 				LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
 				self?.dataProxy?.disconnect(client: client)
@@ -1641,7 +1644,7 @@ extension ConnectionManager: DataProxyDelegate {
 		NotificationNames.postUpdateConnectionCount(totalCount)
 		
 		//Clean up pending timers
-		timerQueue.sync {
+		runOnQueue(queue: timerQueue, key: timerQueueKey) {
 			client.cancelAllTimers()
 		}
 	}
