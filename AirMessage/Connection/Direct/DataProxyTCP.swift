@@ -63,7 +63,7 @@ class DataProxyTCP: DataProxy {
 		var address = sockaddr_in()
 		address.sin_family = sa_family_t(AF_INET)
 		address.sin_addr.s_addr = INADDR_ANY
-		address.sin_port = in_port_t(Int16(serverPort).bigEndian)
+		address.sin_port = in_port_t(UInt16(serverPort).bigEndian)
 		let bindResult = withUnsafePointer(to: &address) { ptr in
 			ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
 				bind(socketHandle.fileDescriptor, ptr, socklen_t(MemoryLayout<sockaddr_in>.size))
