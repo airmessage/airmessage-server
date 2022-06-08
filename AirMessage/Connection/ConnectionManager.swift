@@ -9,9 +9,6 @@ import Sentry
 class ConnectionManager {
 	public static let shared = ConnectionManager()
 	
-	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".connection.timer", qos: .utility)
-	private let timerQueueKey = DispatchSpecificKey<Bool>()
-	
 	private var dataProxy: DataProxy?
 	private var keepaliveTimer: DispatchSourceTimer?
 	private let fileDownloadRequestMapLock = ReadWriteLock()
@@ -28,10 +25,6 @@ class ConnectionManager {
 	
 	private var useAuthentication: Bool {
 		!PreferencesManager.shared.password.isEmpty
-	}
-	
-	init() {
-		timerQueue.setSpecific(key: timerQueueKey, value: true)
 	}
 	
 	/**
@@ -86,7 +79,7 @@ class ConnectionManager {
 		guard let dataProxy = dataProxy else { return }
 		
 		//Make sure we're running on the timer queue
-		assertDispatchQueue(timerQueue)
+		assertDispatchQueue(CustomQueue.timerQueue)
 		
 		//Send a ping to all clients
 		ConnectionManager.sendMessageHeaderOnly(dataProxy, to: nil, ofType: NHT.ping, encrypt: false)
@@ -94,7 +87,7 @@ class ConnectionManager {
 		//Start ping response timers
 		dataProxy.connectionsLock.withReadLock {
 			for connection in dataProxy.connections {
-				connection.startTimer(ofType: .pingExpiry, interval: CommConst.pingTimeout, queue: timerQueue) { [weak self] client in
+				connection.startTimer(ofType: .pingExpiry, interval: CommConst.pingTimeout) { [weak self] client in
 					self?.dataProxy?.disconnect(client: client)
 				}
 			}
@@ -293,9 +286,7 @@ class ConnectionManager {
 	
 	private func handleMessageAuthentication(dataProxy: DataProxy, packer messagePacker: inout AirPacker, from client: C) throws {
 		//Cancel the handshake expiry timer
-		timerQueue.sync {
-			client.cancelTimer(ofType: .handshakeExpiry, queue: timerQueue)
-		}
+		client.cancelTimer(ofType: .handshakeExpiry)
 		
 		//Sends an authorization rejected message and closes the connection
 		func rejectAuthorization(with code: NSTAuth) {
@@ -1548,8 +1539,8 @@ extension ConnectionManager: DataProxyDelegate {
 		
 		//Start the keepalive timer
 		if dataProxy.requiresPersistence {
-			timerQueue.sync {
-				let timer = DispatchSource.makeTimerSource(queue: timerQueue)
+			CustomQueue.timerQueue.sync {
+				let timer = DispatchSource.makeTimerSource(queue: CustomQueue.timerQueue)
 				timer.schedule(deadline: .now() + CommConst.keepAliveInterval, repeating: CommConst.keepAliveInterval)
 				timer.setEventHandler(handler: runKeepalive)
 				timer.resume()
@@ -1566,7 +1557,7 @@ extension ConnectionManager: DataProxyDelegate {
 		NotificationNames.postUpdateConnectionCount(0)
 		
 		//Stop the keepalive timer
-		runOnQueue(queue: timerQueue, key: timerQueueKey) {
+		runOnQueue(queue: CustomQueue.timerQueue, key: CustomQueue.timerQueueKey) {
 			keepaliveTimer?.cancel()
 			keepaliveTimer = nil
 		}
@@ -1621,11 +1612,9 @@ extension ConnectionManager: DataProxyDelegate {
 		dataProxy.send(message: packer.data, to: client, encrypt: false, onSent: nil)
 		
 		//Start the expiry timer
-		runOnQueue(queue: timerQueue, key: timerQueueKey) {
-			client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout, queue: timerQueue) { [weak self] client in
-				LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
-				self?.dataProxy?.disconnect(client: client)
-			}
+		client.startTimer(ofType: .handshakeExpiry, interval: CommConst.handshakeTimeout) { [weak self] client in
+			LogManager.log("Handshake response for client \(client.readableID) timed out, disconnecting", level: .debug)
+			self?.dataProxy?.disconnect(client: client)
 		}
 	}
 	
@@ -1644,9 +1633,7 @@ extension ConnectionManager: DataProxyDelegate {
 		NotificationNames.postUpdateConnectionCount(totalCount)
 		
 		//Clean up pending timers
-		runOnQueue(queue: timerQueue, key: timerQueueKey) {
-			client.cancelAllTimers()
-		}
+		client.cancelAllTimers()
 	}
 	
 	func dataProxy(_ dataProxy: DataProxy, didReceive data: Data, from client: C, wasEncrypted: Bool) {

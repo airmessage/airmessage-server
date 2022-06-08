@@ -46,6 +46,7 @@
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
 		ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */; };
+		ED7CC006285110E9005C6B58 /* CustomQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7CC005285110E9005C6B58 /* CustomQueue.swift */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
@@ -311,6 +312,7 @@
 		ED44738C26A46F86006F5F0E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCompat.swift; sourceTree = "<group>"; };
+		ED7CC005285110E9005C6B58 /* CustomQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomQueue.swift; sourceTree = "<group>"; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		ED853E0B2744291400DCF446 /* ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjC.m; sourceTree = "<group>"; };
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				EDD5E49C269F9957005EB8EE /* NotificationNames.swift */,
 				2EAEEBFCA1ECBFD06B75BC96 /* ServerState.swift */,
 				ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */,
+				ED7CC005285110E9005C6B58 /* CustomQueue.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -1405,6 +1408,7 @@
 				2EAEE219E5D7D101E272E53A /* PreferencesManager.swift in Sources */,
 				ED15912526AC76C2008F5304 /* MessageManager.swift in Sources */,
 				EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */,
+				ED7CC006285110E9005C6B58 /* CustomQueue.swift in Sources */,
 				EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */,
 				EDF76651274FC9DE0008F730 /* PackingError.swift in Sources */,
 				ED8F3A7E2749A3D50069F25D /* AppleScriptCodes.swift in Sources */,

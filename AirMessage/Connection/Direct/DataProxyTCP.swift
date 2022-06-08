@@ -181,7 +181,7 @@ class DataProxyTCP: DataProxy {
 		
 		//Disconnect clients
 		for client in connections {
-			(client as! ClientConnectionTCP).stop(cleanup: false)
+			(client as! ClientConnectionTCP).stop()
 		}
 		NotificationNames.postUpdateConnectionCount(0)
 		
@@ -244,7 +244,7 @@ class DataProxyTCP: DataProxy {
 	}
 	
 	func disconnect(client: ClientConnection) {
-		(client as! ClientConnectionTCP).stop(cleanup: true)
+		(client as! ClientConnectionTCP).stop()
 	}
 }
 

@@ -56,7 +56,7 @@ class ClientConnectionTCP: ClientConnection {
 						//Log and disconnect
 						LogManager.log("Rejecting large packet (size \(contentLen))", level: .notice)
 						
-						self.stop(cleanup: true)
+						self.stop()
 						break
 					}
 					
@@ -67,12 +67,12 @@ class ClientConnectionTCP: ClientConnection {
 			} catch {
 				//Log and disconnect
 				LogManager.log("An error occurred while reading client data: \(error)", level: .notice)
-				self?.stop(cleanup: false)
+				self?.stop()
 			}
 		}
 	}
 	
-	func stop(cleanup: Bool) {
+	func stop() {
 		//Return if we're not running
 		guard isRunning.with({ value in
 			//If we're running, change the property to not running
@@ -93,6 +93,9 @@ class ClientConnectionTCP: ClientConnection {
 			LogManager.log("An error occurred while closing a client handle: \(error)", level: .notice)
 		}
 		
+		//Cancel timers
+		cancelAllTimers()
+		
 		//Log a message
 		LogManager.log("Client disconnected from \(address)", level: .info)
 		
@@ -103,6 +106,9 @@ class ClientConnectionTCP: ClientConnection {
 	func reset() {
 		//Remove registration
 		registration = nil
+		
+		//Cancel timers
+		cancelAllTimers()
 	}
 	
 	/**
@@ -134,7 +140,8 @@ class ClientConnectionTCP: ClientConnection {
 	}
 	
 	deinit {
-		stop(cleanup: false)
+		//Ensure this connection isn't running when we go out of scope
+		assert(!isRunning.value, "ClientConnectionTCP was deinitialized while active")
 	}
 	
 	enum ReadError: Error {

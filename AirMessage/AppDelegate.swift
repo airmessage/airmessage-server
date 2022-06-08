@@ -41,6 +41,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			options.dsn = Bundle.main.infoDictionary!["SENTRY_DSN"] as? String
 		}
 		
+		//Initialize custom queues
+		CustomQueue.register()
+		
 		//Initialize preferences
 		PreferencesManager.shared.registerPreferences()
 		

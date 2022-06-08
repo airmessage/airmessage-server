@@ -33,8 +33,6 @@ class FileDownloadRequest {
 	
 	private let decompressPipe: CompressionPipeInflate
 	
-	private let timerQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".download.timer", qos: .utility)
-	
 	/**
 	 Initializes a new file download request
 	 - Parameters:
@@ -91,12 +89,12 @@ class FileDownloadRequest {
 	 Starts or resets the timeout timer, which invokes `timeoutCallback`
 	 */
 	func startTimeoutTimer() {
-		timerQueue.sync {
+		CustomQueue.timerQueue.sync {
 			//Cancel the old timer
 			timeoutTimer?.cancel()
 			
 			//Create the new timer
-			let timer = DispatchSource.makeTimerSource(queue: timerQueue)
+			let timer = DispatchSource.makeTimerSource(queue: CustomQueue.timerQueue)
 			timer.schedule(deadline: .now() + FileDownloadRequest.timeout, repeating: .never)
 			timer.setEventHandler(handler: onTimeout)
 			timer.resume()
@@ -108,7 +106,7 @@ class FileDownloadRequest {
 	 Cancels the current timeout timer
 	 */
 	func stopTimeoutTimer() {
-		timerQueue.sync {
+		CustomQueue.timerQueue.sync {
 			timeoutTimer?.cancel()
 			timeoutTimer = nil
 		}
