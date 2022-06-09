@@ -9,14 +9,22 @@ import Foundation
 import AppKit
 
 class OnboardingViewController: NSViewController {
-    //Keep in memory on older versions of OS X
+    //Keep in memory for older versions of OS X
     private static var onboardingWindowController: NSWindowController!
     
     static func open() {
+		//If we're already showing the window, just focus it
+		if let window = onboardingWindowController?.window, window.isVisible {
+			window.makeKeyAndOrderFront(self)
+			NSApp.activate(ignoringOtherApps: true)
+			return
+		}
+		
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let windowController = storyboard.instantiateController(withIdentifier: "Onboarding") as! NSWindowController
         windowController.showWindow(nil)
         onboardingWindowController = windowController
+		NSApp.activate(ignoringOtherApps: true)
     }
     
 	override func viewWillAppear() {
