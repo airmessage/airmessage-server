@@ -579,98 +579,100 @@ class ConnectionManager {
 			}
 			
 			//Assemble and filter attachments
-			let messageAttachments = conversationItems
-				.compactMap { $0 as? MessageInfo }
-				.flatMap { message in
-					message.attachments.filter { attachment in
-						attachmentsFilter?.apply(to: attachment, ofDate: message.date) ?? true
+			if let attachmentsFilter = attachmentsFilter {
+				let messageAttachments = conversationItems
+					.compactMap { $0 as? MessageInfo }
+					.flatMap { message in
+						message.attachments.filter { attachment in
+							attachmentsFilter.apply(to: attachment, ofDate: message.date)
+						}
 					}
-				}
-			for attachment in messageAttachments {
-				//Make sure the file exists
-				guard let attachmentURL = attachment.localURL,
-					  FileManager.default.fileExists(atPath: attachmentURL.path) else {
-					continue
-				}
-				
-				//Try to normalize the file
-				let fileURL: URL
-				let fileType: String?
-				let fileName: String
-				let fileNeedsCleanup: Bool
-				if let normalizedDetails = normalizeFile(url: attachmentURL, ext: attachmentURL.pathExtension) {
-					fileURL = normalizedDetails.url
-					fileType = normalizedDetails.type
-					fileName = normalizedDetails.name
-					fileNeedsCleanup = true
-				} else {
-					fileURL = attachmentURL
-					fileType = attachment.type
-					fileName = attachment.name
-					fileNeedsCleanup = false
-				}
-				
-				//Clean up
-				defer {
-					if fileNeedsCleanup {
-						try? FileManager.default.removeItem(at: fileURL)
+				for attachment in messageAttachments {
+					//Make sure the file exists
+					guard let attachmentURL = attachment.localURL,
+						  FileManager.default.fileExists(atPath: attachmentURL.path) else {
+						continue
 					}
-				}
-				
-				//Read the file
-				var fileResponseIndex: Int32 = 0
-				do {
-					let compressionPipe = try CompressionPipeDeflate(chunkSize: Int(CommConst.defaultFileChunkSize))
 					
-					let fileHandle = try FileHandle(forReadingFrom: fileURL)
+					//Try to normalize the file
+					let fileURL: URL
+					let fileType: String?
+					let fileName: String
+					let fileNeedsCleanup: Bool
+					if let normalizedDetails = normalizeFile(url: attachmentURL, ext: attachmentURL.pathExtension) {
+						fileURL = normalizedDetails.url
+						fileType = normalizedDetails.type
+						fileName = normalizedDetails.name
+						fileNeedsCleanup = true
+					} else {
+						fileURL = attachmentURL
+						fileType = attachment.type
+						fileName = attachment.name
+						fileNeedsCleanup = false
+					}
 					
-					var doBreak: Bool
-					repeat {
-						doBreak = try autoreleasepool {
-							//Read data
-							var data = try fileHandle.readCompat(upToCount: Int(CommConst.defaultFileChunkSize))
-							let isEOF = data.count == 0
-							
-							//Compress the data
-							let dataOut = try compressionPipe.pipe(data: &data, isLast: isEOF)
-							
-							//Make sure the client is still connected
-							guard client.isConnected.value else { return true }
-							
-							//Build and send the request
-							do {
-								guard let dataProxy = dataProxy else { return true }
+					//Clean up
+					defer {
+						if fileNeedsCleanup {
+							try? FileManager.default.removeItem(at: fileURL)
+						}
+					}
+					
+					//Read the file
+					var fileResponseIndex: Int32 = 0
+					do {
+						let compressionPipe = try CompressionPipeDeflate(chunkSize: Int(CommConst.defaultFileChunkSize))
+						
+						let fileHandle = try FileHandle(forReadingFrom: fileURL)
+						
+						var doBreak: Bool
+						repeat {
+							doBreak = try autoreleasepool {
+								//Read data
+								var data = try fileHandle.readCompat(upToCount: Int(CommConst.defaultFileChunkSize))
+								let isEOF = data.count == 0
 								
-								var packer = AirPacker()
-								packer.pack(int: NHT.massRetrievalFile.rawValue)
+								//Compress the data
+								let dataOut = try compressionPipe.pipe(data: &data, isLast: isEOF)
 								
-								packer.pack(short: requestID)
-								packer.pack(int: fileResponseIndex)
+								//Make sure the client is still connected
+								guard client.isConnected.value else { return true }
 								
-								//Include extra information with the initial response
-								if fileResponseIndex == 0 {
-									packer.pack(string: attachment.name) //Original file name
-									packer.pack(optionalString: fileName) //Converted file name
-									packer.pack(optionalString: fileType) //Converted file type
+								//Build and send the request
+								do {
+									guard let dataProxy = dataProxy else { return true }
+									
+									var packer = AirPacker()
+									packer.pack(int: NHT.massRetrievalFile.rawValue)
+									
+									packer.pack(short: requestID)
+									packer.pack(int: fileResponseIndex)
+									
+									//Include extra information with the initial response
+									if fileResponseIndex == 0 {
+										packer.pack(string: attachment.name) //Original file name
+										packer.pack(optionalString: fileName) //Converted file name
+										packer.pack(optionalString: fileType) //Converted file type
+									}
+									
+									packer.pack(bool: isEOF) //Is last message
+									
+									packer.pack(string: attachment.guid) //Attachment GUID
+									packer.pack(payload: dataOut) //Data
+									
+									dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
 								}
 								
-								packer.pack(bool: isEOF) //Is last message
+								fileResponseIndex += 1
 								
-								packer.pack(string: attachment.guid) //Attachment GUID
-								packer.pack(payload: dataOut) //Data
-								
-								dataProxy.send(message: packer.data, to: client, encrypt: true, onSent: nil)
+								//Break if we reached the end of the file
+								return isEOF
 							}
-							
-							fileResponseIndex += 1
-							
-							//Break if we reached the end of the file
-							return isEOF
-						}
-					} while !doBreak
-				} catch {
-					LogManager.log("Failed to read / compress data for mass retrieval attachment file \(fileURL.path) (\(attachment.guid)): \(error)", level: .notice)
-					return
+						} while !doBreak
+					} catch {
+						LogManager.log("Failed to read / compress data for mass retrieval attachment file \(fileURL.path) (\(attachment.guid)): \(error)", level: .notice)
+						return
+					}
 				}
 			}
 			
