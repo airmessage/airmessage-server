@@ -8,7 +8,7 @@
 
 cd "$(dirname "$0")"
 
-OPENSSL_VERSION=3.0.3
+OPENSSL_VERSION=3.0.4
 
 #Download OpenSSL
 echo "Downloading OpenSSL version $OPENSSL_VERSION..."
