@@ -76,6 +76,8 @@
 "message.grant.accessibility_access.step1"="• ウィンドウの左下にあるロックをクリックします";
 "message.grant.accessibility_access.step2"="• AirMessage をアクセシビリティリストに追加します";
 
+"message.grant.upgrade_warning"="古いバージョンからアップグレードする場合は、AirMessage をリストから完全に削除してから、再度追加する必要があるあるかもしれません。";
+
 "message.status.setup"="セットアップを待っています";
 "message.status.starting"="サーバー起動中…";
 "message.status.connecting"="接続中…";

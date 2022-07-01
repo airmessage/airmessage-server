@@ -76,6 +76,8 @@
 "message.grant.accessibility_access.step1"="• Click the lock in the bottom-left corner of the window";
 "message.grant.accessibility_access.step2"="• Add AirMessage to the Accessibility list";
 
+"message.grant.upgrade_warning"="If you're upgrading from an older version, you may need to fully remove AirMessage from the list before you add it again.";
+
 "message.status.setup"="Waiting for Setup";
 "message.status.starting"="Server Starting…";
 "message.status.connecting"="Trying to Connect…";

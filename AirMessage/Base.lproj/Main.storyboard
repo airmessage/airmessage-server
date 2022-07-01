@@ -1115,15 +1115,15 @@ DQ
         <scene sceneID="bkz-yt-8qH">
             <objects>
                 <viewController id="2am-CR-TqS" customClass="FullDiskAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="CWi-KJ-5Pc">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="727"/>
+                    <view key="view" misplaced="YES" id="CWi-KJ-5Pc">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="771"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0xr-yx-pAS">
-                                <rect key="frame" x="20" y="20" width="400" height="687"/>
+                                <rect key="frame" x="20" y="20" width="400" height="731"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8eW-NU-Jdd">
-                                        <rect key="frame" x="-2" y="666" width="288" height="21"/>
+                                        <rect key="frame" x="-2" y="710" width="288" height="21"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Full Disk Access to AirMessage" id="nxf-aY-KhM">
                                             <font key="font" textStyle="title2" name=".SFNS-Regular"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1134,7 +1134,7 @@ DQ
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="n0l-AX-yD6">
-                                        <rect key="frame" x="-2" y="618" width="404" height="32"/>
+                                        <rect key="frame" x="-2" y="662" width="404" height="32"/>
                                         <textFieldCell key="cell" title="AirMessage Server needs Full Disk Access in order to read your messages." id="Y8k-7T-NTB">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1145,17 +1145,17 @@ DQ
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k3G-tF-7yb">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="602"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="646"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Lh-FI-ldc">
-                                                <rect key="frame" x="0.0" y="244" width="400" height="358"/>
+                                                <rect key="frame" x="0.0" y="288" width="400" height="358"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="1Lh-FI-ldc" secondAttribute="height" multiplier="1560:1398" id="CXr-it-Rdu"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="FullDiskAccess" id="WlY-DG-v1X"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kOe-xi-WuA">
-                                                <rect key="frame" x="-7" y="201" width="222" height="32"/>
+                                                <rect key="frame" x="-7" y="245" width="222" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Open Full Disk Access Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7h3-J8-a3C">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1171,10 +1171,10 @@ DQ
                                                 </connections>
                                             </button>
                                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OwF-lO-yDi">
-                                                <rect key="frame" x="0.0" y="0.0" width="386" height="192"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="400" height="236"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5bt-Lh-CQ6">
-                                                        <rect key="frame" x="0.0" y="80" width="386" height="112"/>
+                                                        <rect key="frame" x="0.0" y="124" width="386" height="112"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HV6-L0-zQb">
                                                                 <rect key="frame" x="-2" y="96" width="338" height="16"/>
@@ -1234,6 +1234,17 @@ DQ
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7ct-rK-AJE">
+                                                        <rect key="frame" x="-2" y="80" width="404" height="28"/>
+                                                        <textFieldCell key="cell" title="If you're upgrading from an older version, you may need to fully remove AirMessage from the list before you add it again." id="xMg-0A-zxL">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.upgrade_warning"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
                                                     <box titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="OmP-N6-dEe">
                                                         <rect key="frame" x="-3" y="-4" width="70" height="70"/>
                                                         <view key="contentView" id="U56-1A-LNg">
@@ -1259,8 +1270,10 @@ DQ
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -1490,7 +1503,7 @@ DQ
         <scene sceneID="d7c-M2-DyW">
             <objects>
                 <viewController id="hja-eM-bID" customClass="AutomationAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="iW0-A4-GC8">
+                    <view key="view" misplaced="YES" id="iW0-A4-GC8">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="603"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -1609,7 +1622,7 @@ DQ
                 </viewController>
                 <customObject id="bnK-X4-hwq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1459" y="1448"/>
+            <point key="canvasLocation" x="1459" y="1426"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="BWc-qD-bnd">
@@ -1825,15 +1838,15 @@ DQ
         <scene sceneID="5ep-ML-nt2">
             <objects>
                 <viewController id="hJV-Pf-rNN" customClass="AccessibilityAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="TJL-1G-Ah3">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="699"/>
+                    <view key="view" misplaced="YES" id="TJL-1G-Ah3">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="743"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FYd-xd-V0v">
-                                <rect key="frame" x="20" y="20" width="400" height="659"/>
+                                <rect key="frame" x="20" y="20" width="400" height="703"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="egj-zm-1Sb">
-                                        <rect key="frame" x="-2" y="638" width="318" height="21"/>
+                                        <rect key="frame" x="-2" y="682" width="318" height="21"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Grant Accessibility Access to AirMessage" id="1jx-92-aBu">
                                             <font key="font" textStyle="title2" name=".SFNS-Regular"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1844,7 +1857,7 @@ DQ
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6KL-A9-4Z2">
-                                        <rect key="frame" x="-2" y="590" width="404" height="32"/>
+                                        <rect key="frame" x="-2" y="634" width="404" height="32"/>
                                         <textFieldCell key="cell" title="AirMessage Server needs Accessibility access in order to send messages and make FaceTime calls." id="CJA-f6-sbH">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1855,17 +1868,17 @@ DQ
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1B7-bN-g1x">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="574"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="618"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hpP-V6-eZG">
-                                                <rect key="frame" x="0.0" y="216" width="400" height="358"/>
+                                                <rect key="frame" x="0.0" y="260" width="400" height="358"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="hpP-V6-eZG" secondAttribute="height" multiplier="1560:1398" id="f6r-O7-8zj"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AccessibilityAccess" id="YEF-4N-3OP"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wDK-rc-vLd">
-                                                <rect key="frame" x="-7" y="173" width="200" height="32"/>
+                                                <rect key="frame" x="-7" y="217" width="200" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Open Accessibility Settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LsO-Mc-daD">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1878,10 +1891,10 @@ DQ
                                                 </connections>
                                             </button>
                                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSJ-Sc-H8j">
-                                                <rect key="frame" x="0.0" y="36" width="363" height="128"/>
+                                                <rect key="frame" x="0.0" y="36" width="400" height="172"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="La2-p6-qad">
-                                                        <rect key="frame" x="0.0" y="80" width="363" height="48"/>
+                                                        <rect key="frame" x="0.0" y="124" width="363" height="48"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qbp-Gn-59l">
                                                                 <rect key="frame" x="-2" y="32" width="338" height="16"/>
@@ -1915,6 +1928,17 @@ DQ
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
+                                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q6k-QM-FVi">
+                                                        <rect key="frame" x="-2" y="80" width="404" height="28"/>
+                                                        <textFieldCell key="cell" title="If you're upgrading from an older version, you may need to fully remove AirMessage from the list before you add it again." id="Jd9-Rh-peR">
+                                                            <font key="font" metaFont="smallSystem"/>
+                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="message.grant.upgrade_warning"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
                                                     <box titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Z58-u1-eIN">
                                                         <rect key="frame" x="-3" y="-4" width="70" height="70"/>
                                                         <view key="contentView" id="Uvh-xc-kqi">
@@ -1940,8 +1964,10 @@ DQ
                                                 <visibilityPriorities>
                                                     <integer value="1000"/>
                                                     <integer value="1000"/>
+                                                    <integer value="1000"/>
                                                 </visibilityPriorities>
                                                 <customSpacing>
+                                                    <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                     <real value="3.4028234663852886e+38"/>
                                                 </customSpacing>
@@ -2002,7 +2028,7 @@ DQ
                 </viewController>
                 <customObject id="2Kv-8U-1ao" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2029" y="1494"/>
+            <point key="canvasLocation" x="2029" y="1496"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
