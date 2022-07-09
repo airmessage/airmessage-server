@@ -31,7 +31,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 	 */
 	guard #available(macOS 10.13, *) else { return nil }
 	
-	if ext == "heic" {
+	if ext.caseInsensitiveCompare("heic") == .orderedSame {
 		LogManager.log("Converting file \(inputFile.lastPathComponent) from HEIC", level: .info)
 		
 		//Get a temporary file
@@ -54,7 +54,7 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		let newFileName = inputFile.deletingPathExtension().lastPathComponent + ".jpeg"
 		
 		return NormalizedFile(url: tempFile, type: "image/jpeg", name: newFileName)
-	} else if ext == "caf" {
+	} else if ext.caseInsensitiveCompare("caf") == .orderedSame {
 		LogManager.log("Converting file \(inputFile.lastPathComponent) from CAF", level: .info)
 		
 		//Get a temporary file
