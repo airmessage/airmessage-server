@@ -47,6 +47,139 @@
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
 		ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */; };
 		ED7CC006285110E9005C6B58 /* CustomQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7CC005285110E9005C6B58 /* CustomQueue.swift */; };
+		ED81BF24287A2C8300546775 /* IMCore11.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BF23287A2C8300546775 /* IMCore11.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BF28287A2CA600546775 /* IMCore11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81BF21287A2C8300546775 /* IMCore11.framework */; };
+		ED81BF29287A2CA600546775 /* IMCore11.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = ED81BF21287A2C8300546775 /* IMCore11.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED81BFAF287A2D7600546775 /* IMSPIHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDB287A29BD00546775 /* IMSPIHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB0287A2D7600546775 /* NSObject-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD84287A29BB00546775 /* NSObject-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB1287A2D7600546775 /* IMAttachmentMessagePartChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7A287A29BB00546775 /* IMAttachmentMessagePartChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB2287A2D7600546775 /* IMItemsController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDFB287A29BD00546775 /* IMItemsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB3287A2D7600546775 /* IMGroupTitleChangeChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD89287A29BB00546775 /* IMGroupTitleChangeChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB4287A2D7600546775 /* IMIDStatusController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAA287A29BC00546775 /* IMIDStatusController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB5287A2D7600546775 /* IMLocationShareActionChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB1287A29BC00546775 /* IMLocationShareActionChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB6287A2D7600546775 /* IMEmoteMessageChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD82287A29BB00546775 /* IMEmoteMessageChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB7287A2D7600546775 /* IMHostAppExtensionContextProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD95287A29BC00546775 /* IMHostAppExtensionContextProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB8287A2D7600546775 /* IMVisibleAssociatedMessageHost-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC2287A29BC00546775 /* IMVisibleAssociatedMessageHost-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFB9287A2D7600546775 /* IMBalloonAppExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD0287A29BD00546775 /* IMBalloonAppExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBA287A2D7600546775 /* IMDDController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDA287A29BD00546775 /* IMDDController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBB287A2D7600546775 /* IMMessageAttributionChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE9287A29BD00546775 /* IMMessageAttributionChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBC287A2D7600546775 /* IMMessageItem-IMItemsController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB6287A29BC00546775 /* IMMessageItem-IMItemsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBD287A2D7600546775 /* IMDaemonListenerProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDEA287A29BD00546775 /* IMDaemonListenerProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBE287A2D7600546775 /* IMSuggestionsService.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDEB287A29BD00546775 /* IMSuggestionsService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFBF287A2D7600546775 /* CDStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF8287A29BD00546775 /* CDStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC0287A2D7600546775 /* IMBalloonPluginDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDFA287A29BD00546775 /* IMBalloonPluginDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC1287A2D7600546775 /* IMSendProgressDelegate-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD81287A29BB00546775 /* IMSendProgressDelegate-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC2287A2D7600546775 /* IMMessageAcknowledgmentStringHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF7287A29BD00546775 /* IMMessageAcknowledgmentStringHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC3287A2D7600546775 /* IMMessagePartChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC0287A29BC00546775 /* IMMessagePartChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC4287A2D7600546775 /* IMPeopleCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDC287A29BD00546775 /* IMPeopleCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC5287A2D7600546775 /* IMItem-IMItemsController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBC287A29BC00546775 /* IMItem-IMItemsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC6287A2D7600546775 /* IMTranscriptPluginChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD86287A29BB00546775 /* IMTranscriptPluginChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC7287A2D7600546775 /* IMAssociatedStickerChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC5287A29BC00546775 /* IMAssociatedStickerChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC8287A2D7600546775 /* IMAnimatedEmojiMessagePartChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDEC287A29BD00546775 /* IMAnimatedEmojiMessagePartChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFC9287A2D7600546775 /* CLLocationManagerDelegate-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB3287A29BC00546775 /* CLLocationManagerDelegate-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCA287A2D7600546775 /* IMParticipantChangeChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBF287A29BC00546775 /* IMParticipantChangeChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCB287A2D7600546775 /* IMMessageChatItem-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD90287A29BB00546775 /* IMMessageChatItem-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCC287A2D7600546775 /* IMPluginChatItemProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB2287A29BC00546775 /* IMPluginChatItemProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCD287A2D7600546775 /* IMAppExtensionContext.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD1287A29BD00546775 /* IMAppExtensionContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCE287A2D7600546775 /* IDSIDQueryController-IMCoreIDSLookupAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF3287A29BD00546775 /* IDSIDQueryController-IMCoreIDSLookupAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFCF287A2D7600546775 /* IMTimingCollection-IMCoreSetupTimingAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9E287A29BC00546775 /* IMTimingCollection-IMCoreSetupTimingAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD0287A2D7600546775 /* IMChatRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBD287A29BC00546775 /* IMChatRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD1287A2D7600546775 /* IMExpressiveSendAsTextChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD91287A29BB00546775 /* IMExpressiveSendAsTextChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD2287A2D7600546775 /* IMTranscriptPluginBreadcrumbChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD7287A29BD00546775 /* IMTranscriptPluginBreadcrumbChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD3287A2D7600546775 /* IMDaemonListener.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD4287A29BD00546775 /* IMDaemonListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD4287A2D7600546775 /* IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA8287A29BC00546775 /* IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD5287A2D7600546775 /* IMAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF2287A29BD00546775 /* IMAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD6287A2D7600546775 /* IMRemoteDaemonProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8E287A29BB00546775 /* IMRemoteDaemonProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD7287A2D7600546775 /* IMLocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7D287A29BB00546775 /* IMLocationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD8287A2D7600546775 /* IMSPIMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB5287A29BC00546775 /* IMSPIMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFD9287A2D7600546775 /* IMRemoteAppExtensionContext.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE8287A29BD00546775 /* IMRemoteAppExtensionContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDA287A2D7600546775 /* IMAggregateAcknowledgmentChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDF287A29BD00546775 /* IMAggregateAcknowledgmentChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDB287A2D7600546775 /* IMAudioMessageChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD87287A29BB00546775 /* IMAudioMessageChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDC287A2D7600546775 /* IMParticipantChangeItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB8287A29BC00546775 /* IMParticipantChangeItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDD287A2D7600546775 /* IMSendProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9B287A29BC00546775 /* IMSendProgress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDE287A2D7600546775 /* IMService-IMService_GetService.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCD287A29BD00546775 /* IMService-IMService_GetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFDF287A2D7600546775 /* IMServiceAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD88287A29BB00546775 /* IMServiceAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE0287A2D7600546775 /* IMMessageAcknowledgmentChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC8287A29BC00546775 /* IMMessageAcknowledgmentChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE1287A2D7600546775 /* IMPluginPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC9287A29BC00546775 /* IMPluginPayload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE2287A2D7600546775 /* IMReusableBalloonPluginController-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA5287A29BC00546775 /* IMReusableBalloonPluginController-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE3287A2D7600546775 /* IMBalloonPluginManager.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC1287A29BC00546775 /* IMBalloonPluginManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE4287A2D7600546775 /* IMTypingPluginChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF6287A29BD00546775 /* IMTypingPluginChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE5287A2D7600546775 /* IMTranscriptPluginStatusChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCC287A29BC00546775 /* IMTranscriptPluginStatusChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE6287A2D7600546775 /* IMItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA0287A29BC00546775 /* IMItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE7287A2D7600546775 /* IMMessageActionItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7B287A29BB00546775 /* IMMessageActionItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE8287A2D7600546775 /* IMActionsController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9D287A29BC00546775 /* IMActionsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFE9287A2D7600546775 /* NSFastEnumeration-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE1287A29BD00546775 /* NSFastEnumeration-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFEA287A2D7600546775 /* NSString-IMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCA287A29BC00546775 /* NSString-IMAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFEB287A2D7600546775 /* FMFSessionDelegate-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD9287A29BD00546775 /* FMFSessionDelegate-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFEC287A2D7600546775 /* IMItem-IMChat_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD85287A29BB00546775 /* IMItem-IMChat_Internal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFED287A2D7600546775 /* IMTranscriptChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD93287A29BC00546775 /* IMTranscriptChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFEE287A2D7600546775 /* IMAssociatedMessageItem-IMItemsController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE3287A29BD00546775 /* IMAssociatedMessageItem-IMItemsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFEF287A2D7600546775 /* IMHostAppExtensionContext.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE2287A29BD00546775 /* IMHostAppExtensionContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF0287A2D7600546775 /* IMParentalControls.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCB287A29BC00546775 /* IMParentalControls.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF1287A2D7600546775 /* IMDateChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDED287A29BD00546775 /* IMDateChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF2287A2D7600546775 /* IMParentalControlsService.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD99287A29BC00546775 /* IMParentalControlsService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF3287A2D7600546775 /* IMDirectlyObservableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF1287A29BD00546775 /* IMDirectlyObservableObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF4287A2D7600546775 /* IMMe.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9C287A29BC00546775 /* IMMe.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF5287A2D7600546775 /* IMCoreAutomationHook.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9F287A29BC00546775 /* IMCoreAutomationHook.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF6287A2D7600546775 /* IMSystemMonitorListener-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCF287A29BD00546775 /* IMSystemMonitorListener-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF7287A2D7600546775 /* IMChatItemRules-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD94287A29BC00546775 /* IMChatItemRules-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF8287A2D7600546775 /* IMLocationManager-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD5287A29BD00546775 /* IMLocationManager-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFF9287A2D7600546775 /* IMChatHistoryController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD9A287A29BC00546775 /* IMChatHistoryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFA287A2D7600546775 /* IMBalloonPluginAttributionController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7F287A29BB00546775 /* IMBalloonPluginAttributionController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFB287A2D7600546775 /* IMDaemonController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA9287A29BC00546775 /* IMDaemonController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFC287A2D7600546775 /* IMAutomation.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA7287A29BC00546775 /* IMAutomation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFD287A2D7600546775 /* NSString-IMCoreIDSLookupAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC3287A29BC00546775 /* NSString-IMCoreIDSLookupAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFE287A2D7600546775 /* IMExpirableMessageChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD83287A29BB00546775 /* IMExpirableMessageChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81BFFF287A2D7600546775 /* IMPerson.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF9287A29BD00546775 /* IMPerson.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C000287A2D7600546775 /* IMLocatingChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7E287A29BB00546775 /* IMLocatingChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C001287A2D7600546775 /* IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDCE287A29BD00546775 /* IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C002287A2D7600546775 /* IMTextMessagePartChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBB287A29BC00546775 /* IMTextMessagePartChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C003287A2D7600546775 /* IMBalloonPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB9287A29BC00546775 /* IMBalloonPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C004287A2D7600546775 /* NSSecureCoding-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDEE287A29BD00546775 /* NSSecureCoding-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C005287A2D7600546775 /* IMErrorMessagePartChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDD287A29BD00546775 /* IMErrorMessagePartChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C006287A2D7600546775 /* IMMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE7287A29BD00546775 /* IMMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C007287A2D7600546775 /* IMHandleRegistrarInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8B287A29BB00546775 /* IMHandleRegistrarInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C008287A2D7600546775 /* IMGroupActionChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA2287A29BC00546775 /* IMGroupActionChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C009287A2D7600546775 /* IMAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC4287A29BC00546775 /* IMAttachment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00A287A2D7600546775 /* IMServiceChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8F287A29BB00546775 /* IMServiceChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00B287A2D7600546775 /* IMMessageItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB7287A29BC00546775 /* IMMessageItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00C287A2D7600546775 /* IMMessageActionChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD97287A29BC00546775 /* IMMessageActionChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00D287A2D7600546775 /* IMGroupActionItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF5287A29BD00546775 /* IMGroupActionItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00E287A2D7600546775 /* IMTypingChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA6287A29BC00546775 /* IMTypingChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C00F287A2D7600546775 /* IMPeople.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAB287A29BC00546775 /* IMPeople.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C010287A2D7600546775 /* IMMessageItem-IMChat_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD7C287A29BB00546775 /* IMMessageItem-IMChat_Internal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C011287A2D7600546775 /* IMFMFSession.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8D287A29BB00546775 /* IMFMFSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C012287A2D7600546775 /* IMMessageEffectControlChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB4287A29BC00546775 /* IMMessageEffectControlChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C013287A2D7600546775 /* IMPersonRegistrar.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDEF287A29BD00546775 /* IMPersonRegistrar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C014287A2D7600546775 /* IMSenderChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAC287A29BC00546775 /* IMSenderChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C015287A2D7600546775 /* IMItemChatContext.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD92287A29BB00546775 /* IMItemChatContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C016287A2D7600546775 /* IMMessageStatusChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBE287A29BC00546775 /* IMMessageStatusChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C017287A2D7600546775 /* NSArray-IMChatItems.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD6287A29BD00546775 /* NSArray-IMChatItems.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C018287A2D7600546775 /* NSArray-IMTranscriptChatItems.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD98287A29BC00546775 /* NSArray-IMTranscriptChatItems.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C019287A2D7600546775 /* IMMessageItem-IMCoreDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD2287A29BD00546775 /* IMMessageItem-IMCoreDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01A287A2D7600546775 /* IMBalloonBrowserPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAE287A29BC00546775 /* IMBalloonBrowserPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01B287A2D7600546775 /* IMAutomationMessageSend.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE4287A29BD00546775 /* IMAutomationMessageSend.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01C287A2D7600546775 /* IMFileTransferCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8C287A29BB00546775 /* IMFileTransferCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01D287A2D7600546775 /* IMAssociatedMessageChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAD287A29BC00546775 /* IMAssociatedMessageChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01E287A2D7600546775 /* IMMessageChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC7287A29BC00546775 /* IMMessageChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C01F287A2D7600546775 /* IMAccountController.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE6287A29BD00546775 /* IMAccountController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C020287A2D7600546775 /* IMAssociatedMessageItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD80287A29BB00546775 /* IMAssociatedMessageItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C021287A2D7600546775 /* IMHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD8A287A29BB00546775 /* IMHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C022287A2D7600546775 /* IMMessageEditChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD8287A29BD00546775 /* IMMessageEditChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C023287A2D7600546775 /* IMServiceImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA4287A29BC00546775 /* IMServiceImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C024287A2D7600546775 /* IMMessageItemChatContext.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA3287A29BC00546775 /* IMMessageItemChatContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C025287A2D7600546775 /* IMRemoteAppExtensionContextProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF0287A29BD00546775 /* IMRemoteAppExtensionContextProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C026287A2D7600546775 /* IMStickerRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDA1287A29BC00546775 /* IMStickerRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C027287A2D7600546775 /* IMAppExtensionContextProtocol-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDDE287A29BD00546775 /* IMAppExtensionContextProtocol-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C028287A2D7600546775 /* IMServiceAgentImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDC6287A29BC00546775 /* IMServiceAgentImpl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C029287A2D7600546775 /* IMHandleRegistrar.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDAF287A29BC00546775 /* IMHandleRegistrar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02A287A2D7600546775 /* IMAddressBook.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDE0287A29BD00546775 /* IMAddressBook.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02B287A2D7600546775 /* IMChatItem.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDBA287A29BC00546775 /* IMChatItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02C287A2D7600546775 /* IMBalloonPluginController-Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDF4287A29BD00546775 /* IMBalloonPluginController-Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02D287A2D7600546775 /* IMChat.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD79287A29BB00546775 /* IMChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02E287A2D7600546775 /* IMAutomationGroupChat.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD3287A29BD00546775 /* IMAutomationGroupChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C02F287A2D7600546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB0287A29BC00546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C030287A2DCD00546775 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81BF1A287A2C2100546775 /* IMCore.framework */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
@@ -234,9 +367,18 @@
 		EDF7664E274FC8560008F730 /* BytePacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7664D274FC8560008F730 /* BytePacker.swift */; };
 		EDF76651274FC9DE0008F730 /* PackingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF76650274FC9DE0008F730 /* PackingError.swift */; };
 		EDF7665827516CBE0008F730 /* LocalizeStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */; };
+		EDF7665E2879F43700FBDF1E /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7665D2879F43700FBDF1E /* Agent.swift */; };
+		EDF766602879F45700FBDF1E /* Launcher.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF7665F2879F45700FBDF1E /* Launcher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		ED81BF2A287A2CA600546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81BF20287A2C8300546775;
+			remoteInfo = IMCore11;
+		};
 		EDC898642752BF290081BDB7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED28094925A20332009E7636 /* Project object */;
@@ -254,6 +396,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		ED81BE93287A2A9200546775 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED81BF29287A2CA600546775 /* IMCore11.framework in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDC8986B2752BF290081BDB7 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -313,6 +466,138 @@
 		ED675FF126890FBF00DB7B95 /* AirMessage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessage-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCompat.swift; sourceTree = "<group>"; };
 		ED7CC005285110E9005C6B58 /* CustomQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomQueue.swift; sourceTree = "<group>"; };
+		ED81BD79287A29BB00546775 /* IMChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMChat.h; sourceTree = "<group>"; };
+		ED81BD7A287A29BB00546775 /* IMAttachmentMessagePartChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAttachmentMessagePartChatItem.h; sourceTree = "<group>"; };
+		ED81BD7B287A29BB00546775 /* IMMessageActionItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageActionItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BD7C287A29BB00546775 /* IMMessageItem-IMChat_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageItem-IMChat_Internal.h"; sourceTree = "<group>"; };
+		ED81BD7D287A29BB00546775 /* IMLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMLocationManager.h; sourceTree = "<group>"; };
+		ED81BD7E287A29BB00546775 /* IMLocatingChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMLocatingChatItem.h; sourceTree = "<group>"; };
+		ED81BD7F287A29BB00546775 /* IMBalloonPluginAttributionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonPluginAttributionController.h; sourceTree = "<group>"; };
+		ED81BD80287A29BB00546775 /* IMAssociatedMessageItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMAssociatedMessageItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BD81287A29BB00546775 /* IMSendProgressDelegate-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMSendProgressDelegate-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD82287A29BB00546775 /* IMEmoteMessageChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMEmoteMessageChatItem.h; sourceTree = "<group>"; };
+		ED81BD83287A29BB00546775 /* IMExpirableMessageChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMExpirableMessageChatItem.h; sourceTree = "<group>"; };
+		ED81BD84287A29BB00546775 /* NSObject-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD85287A29BB00546775 /* IMItem-IMChat_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMItem-IMChat_Internal.h"; sourceTree = "<group>"; };
+		ED81BD86287A29BB00546775 /* IMTranscriptPluginChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTranscriptPluginChatItem.h; sourceTree = "<group>"; };
+		ED81BD87287A29BB00546775 /* IMAudioMessageChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAudioMessageChatItem.h; sourceTree = "<group>"; };
+		ED81BD88287A29BB00546775 /* IMServiceAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMServiceAgent.h; sourceTree = "<group>"; };
+		ED81BD89287A29BB00546775 /* IMGroupTitleChangeChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMGroupTitleChangeChatItem.h; sourceTree = "<group>"; };
+		ED81BD8A287A29BB00546775 /* IMHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMHandle.h; sourceTree = "<group>"; };
+		ED81BD8B287A29BB00546775 /* IMHandleRegistrarInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMHandleRegistrarInternal.h; sourceTree = "<group>"; };
+		ED81BD8C287A29BB00546775 /* IMFileTransferCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMFileTransferCenter.h; sourceTree = "<group>"; };
+		ED81BD8D287A29BB00546775 /* IMFMFSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMFMFSession.h; sourceTree = "<group>"; };
+		ED81BD8E287A29BB00546775 /* IMRemoteDaemonProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMRemoteDaemonProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD8F287A29BB00546775 /* IMServiceChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMServiceChatItem.h; sourceTree = "<group>"; };
+		ED81BD90287A29BB00546775 /* IMMessageChatItem-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageChatItem-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD91287A29BB00546775 /* IMExpressiveSendAsTextChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMExpressiveSendAsTextChatItem.h; sourceTree = "<group>"; };
+		ED81BD92287A29BB00546775 /* IMItemChatContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMItemChatContext.h; sourceTree = "<group>"; };
+		ED81BD93287A29BC00546775 /* IMTranscriptChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTranscriptChatItem.h; sourceTree = "<group>"; };
+		ED81BD94287A29BC00546775 /* IMChatItemRules-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMChatItemRules-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD95287A29BC00546775 /* IMHostAppExtensionContextProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMHostAppExtensionContextProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BD97287A29BC00546775 /* IMMessageActionChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageActionChatItem.h; sourceTree = "<group>"; };
+		ED81BD98287A29BC00546775 /* NSArray-IMTranscriptChatItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray-IMTranscriptChatItems.h"; sourceTree = "<group>"; };
+		ED81BD99287A29BC00546775 /* IMParentalControlsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMParentalControlsService.h; sourceTree = "<group>"; };
+		ED81BD9A287A29BC00546775 /* IMChatHistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMChatHistoryController.h; sourceTree = "<group>"; };
+		ED81BD9B287A29BC00546775 /* IMSendProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMSendProgress.h; sourceTree = "<group>"; };
+		ED81BD9C287A29BC00546775 /* IMMe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMe.h; sourceTree = "<group>"; };
+		ED81BD9D287A29BC00546775 /* IMActionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMActionsController.h; sourceTree = "<group>"; };
+		ED81BD9E287A29BC00546775 /* IMTimingCollection-IMCoreSetupTimingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMTimingCollection-IMCoreSetupTimingAdditions.h"; sourceTree = "<group>"; };
+		ED81BD9F287A29BC00546775 /* IMCoreAutomationHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMCoreAutomationHook.h; sourceTree = "<group>"; };
+		ED81BDA0287A29BC00546775 /* IMItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDA1287A29BC00546775 /* IMStickerRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMStickerRegistry.h; sourceTree = "<group>"; };
+		ED81BDA2287A29BC00546775 /* IMGroupActionChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMGroupActionChatItem.h; sourceTree = "<group>"; };
+		ED81BDA3287A29BC00546775 /* IMMessageItemChatContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageItemChatContext.h; sourceTree = "<group>"; };
+		ED81BDA4287A29BC00546775 /* IMServiceImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMServiceImpl.h; sourceTree = "<group>"; };
+		ED81BDA5287A29BC00546775 /* IMReusableBalloonPluginController-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMReusableBalloonPluginController-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDA6287A29BC00546775 /* IMTypingChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTypingChatItem.h; sourceTree = "<group>"; };
+		ED81BDA7287A29BC00546775 /* IMAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAutomation.h; sourceTree = "<group>"; };
+		ED81BDA8287A29BC00546775 /* IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDA9287A29BC00546775 /* IMDaemonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMDaemonController.h; sourceTree = "<group>"; };
+		ED81BDAA287A29BC00546775 /* IMIDStatusController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMIDStatusController.h; sourceTree = "<group>"; };
+		ED81BDAB287A29BC00546775 /* IMPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPeople.h; sourceTree = "<group>"; };
+		ED81BDAC287A29BC00546775 /* IMSenderChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMSenderChatItem.h; sourceTree = "<group>"; };
+		ED81BDAD287A29BC00546775 /* IMAssociatedMessageChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAssociatedMessageChatItem.h; sourceTree = "<group>"; };
+		ED81BDAE287A29BC00546775 /* IMBalloonBrowserPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonBrowserPlugin.h; sourceTree = "<group>"; };
+		ED81BDAF287A29BC00546775 /* IMHandleRegistrar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMHandleRegistrar.h; sourceTree = "<group>"; };
+		ED81BDB0287A29BC00546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMGroupTitleChangeItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDB1287A29BC00546775 /* IMLocationShareActionChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMLocationShareActionChatItem.h; sourceTree = "<group>"; };
+		ED81BDB2287A29BC00546775 /* IMPluginChatItemProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMPluginChatItemProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDB3287A29BC00546775 /* CLLocationManagerDelegate-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocationManagerDelegate-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDB4287A29BC00546775 /* IMMessageEffectControlChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageEffectControlChatItem.h; sourceTree = "<group>"; };
+		ED81BDB5287A29BC00546775 /* IMSPIMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMSPIMessage.h; sourceTree = "<group>"; };
+		ED81BDB6287A29BC00546775 /* IMMessageItem-IMItemsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageItem-IMItemsController.h"; sourceTree = "<group>"; };
+		ED81BDB7287A29BC00546775 /* IMMessageItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDB8287A29BC00546775 /* IMParticipantChangeItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMParticipantChangeItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDB9287A29BC00546775 /* IMBalloonPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonPlugin.h; sourceTree = "<group>"; };
+		ED81BDBA287A29BC00546775 /* IMChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMChatItem.h; sourceTree = "<group>"; };
+		ED81BDBB287A29BC00546775 /* IMTextMessagePartChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTextMessagePartChatItem.h; sourceTree = "<group>"; };
+		ED81BDBC287A29BC00546775 /* IMItem-IMItemsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMItem-IMItemsController.h"; sourceTree = "<group>"; };
+		ED81BDBD287A29BC00546775 /* IMChatRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMChatRegistry.h; sourceTree = "<group>"; };
+		ED81BDBE287A29BC00546775 /* IMMessageStatusChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageStatusChatItem.h; sourceTree = "<group>"; };
+		ED81BDBF287A29BC00546775 /* IMParticipantChangeChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMParticipantChangeChatItem.h; sourceTree = "<group>"; };
+		ED81BDC0287A29BC00546775 /* IMMessagePartChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessagePartChatItem.h; sourceTree = "<group>"; };
+		ED81BDC1287A29BC00546775 /* IMBalloonPluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonPluginManager.h; sourceTree = "<group>"; };
+		ED81BDC2287A29BC00546775 /* IMVisibleAssociatedMessageHost-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMVisibleAssociatedMessageHost-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDC3287A29BC00546775 /* NSString-IMCoreIDSLookupAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString-IMCoreIDSLookupAdditions.h"; sourceTree = "<group>"; };
+		ED81BDC4287A29BC00546775 /* IMAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAttachment.h; sourceTree = "<group>"; };
+		ED81BDC5287A29BC00546775 /* IMAssociatedStickerChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAssociatedStickerChatItem.h; sourceTree = "<group>"; };
+		ED81BDC6287A29BC00546775 /* IMServiceAgentImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMServiceAgentImpl.h; sourceTree = "<group>"; };
+		ED81BDC7287A29BC00546775 /* IMMessageChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageChatItem.h; sourceTree = "<group>"; };
+		ED81BDC8287A29BC00546775 /* IMMessageAcknowledgmentChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageAcknowledgmentChatItem.h; sourceTree = "<group>"; };
+		ED81BDC9287A29BC00546775 /* IMPluginPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPluginPayload.h; sourceTree = "<group>"; };
+		ED81BDCA287A29BC00546775 /* NSString-IMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString-IMAdditions.h"; sourceTree = "<group>"; };
+		ED81BDCB287A29BC00546775 /* IMParentalControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMParentalControls.h; sourceTree = "<group>"; };
+		ED81BDCC287A29BC00546775 /* IMTranscriptPluginStatusChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTranscriptPluginStatusChatItem.h; sourceTree = "<group>"; };
+		ED81BDCD287A29BD00546775 /* IMService-IMService_GetService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMService-IMService_GetService.h"; sourceTree = "<group>"; };
+		ED81BDCE287A29BD00546775 /* IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTranscriptChatItemRules.h; sourceTree = "<group>"; };
+		ED81BDCF287A29BD00546775 /* IMSystemMonitorListener-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMSystemMonitorListener-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDD0287A29BD00546775 /* IMBalloonAppExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonAppExtension.h; sourceTree = "<group>"; };
+		ED81BDD1287A29BD00546775 /* IMAppExtensionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAppExtensionContext.h; sourceTree = "<group>"; };
+		ED81BDD2287A29BD00546775 /* IMMessageItem-IMCoreDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessageItem-IMCoreDescription.h"; sourceTree = "<group>"; };
+		ED81BDD3287A29BD00546775 /* IMAutomationGroupChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAutomationGroupChat.h; sourceTree = "<group>"; };
+		ED81BDD4287A29BD00546775 /* IMDaemonListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMDaemonListener.h; sourceTree = "<group>"; };
+		ED81BDD5287A29BD00546775 /* IMLocationManager-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMLocationManager-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDD6287A29BD00546775 /* NSArray-IMChatItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray-IMChatItems.h"; sourceTree = "<group>"; };
+		ED81BDD7287A29BD00546775 /* IMTranscriptPluginBreadcrumbChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTranscriptPluginBreadcrumbChatItem.h; sourceTree = "<group>"; };
+		ED81BDD8287A29BD00546775 /* IMMessageEditChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageEditChatItem.h; sourceTree = "<group>"; };
+		ED81BDD9287A29BD00546775 /* FMFSessionDelegate-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMFSessionDelegate-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDDA287A29BD00546775 /* IMDDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMDDController.h; sourceTree = "<group>"; };
+		ED81BDDB287A29BD00546775 /* IMSPIHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMSPIHandle.h; sourceTree = "<group>"; };
+		ED81BDDC287A29BD00546775 /* IMPeopleCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPeopleCollection.h; sourceTree = "<group>"; };
+		ED81BDDD287A29BD00546775 /* IMErrorMessagePartChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMErrorMessagePartChatItem.h; sourceTree = "<group>"; };
+		ED81BDDE287A29BD00546775 /* IMAppExtensionContextProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMAppExtensionContextProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDDF287A29BD00546775 /* IMAggregateAcknowledgmentChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAggregateAcknowledgmentChatItem.h; sourceTree = "<group>"; };
+		ED81BDE0287A29BD00546775 /* IMAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAddressBook.h; sourceTree = "<group>"; };
+		ED81BDE1287A29BD00546775 /* NSFastEnumeration-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFastEnumeration-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDE2287A29BD00546775 /* IMHostAppExtensionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMHostAppExtensionContext.h; sourceTree = "<group>"; };
+		ED81BDE3287A29BD00546775 /* IMAssociatedMessageItem-IMItemsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMAssociatedMessageItem-IMItemsController.h"; sourceTree = "<group>"; };
+		ED81BDE4287A29BD00546775 /* IMAutomationMessageSend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAutomationMessageSend.h; sourceTree = "<group>"; };
+		ED81BDE6287A29BD00546775 /* IMAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAccountController.h; sourceTree = "<group>"; };
+		ED81BDE7287A29BD00546775 /* IMMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessage.h; sourceTree = "<group>"; };
+		ED81BDE8287A29BD00546775 /* IMRemoteAppExtensionContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMRemoteAppExtensionContext.h; sourceTree = "<group>"; };
+		ED81BDE9287A29BD00546775 /* IMMessageAttributionChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageAttributionChatItem.h; sourceTree = "<group>"; };
+		ED81BDEA287A29BD00546775 /* IMDaemonListenerProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMDaemonListenerProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDEB287A29BD00546775 /* IMSuggestionsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMSuggestionsService.h; sourceTree = "<group>"; };
+		ED81BDEC287A29BD00546775 /* IMAnimatedEmojiMessagePartChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAnimatedEmojiMessagePartChatItem.h; sourceTree = "<group>"; };
+		ED81BDED287A29BD00546775 /* IMDateChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMDateChatItem.h; sourceTree = "<group>"; };
+		ED81BDEE287A29BD00546775 /* NSSecureCoding-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSecureCoding-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDEF287A29BD00546775 /* IMPersonRegistrar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPersonRegistrar.h; sourceTree = "<group>"; };
+		ED81BDF0287A29BD00546775 /* IMRemoteAppExtensionContextProtocol-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMRemoteAppExtensionContextProtocol-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDF1287A29BD00546775 /* IMDirectlyObservableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMDirectlyObservableObject.h; sourceTree = "<group>"; };
+		ED81BDF2287A29BD00546775 /* IMAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMAccount.h; sourceTree = "<group>"; };
+		ED81BDF3287A29BD00546775 /* IDSIDQueryController-IMCoreIDSLookupAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IDSIDQueryController-IMCoreIDSLookupAdditions.h"; sourceTree = "<group>"; };
+		ED81BDF4287A29BD00546775 /* IMBalloonPluginController-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMBalloonPluginController-Protocol.h"; sourceTree = "<group>"; };
+		ED81BDF5287A29BD00546775 /* IMGroupActionItem-IMTranscriptChatItemRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMGroupActionItem-IMTranscriptChatItemRules.h"; sourceTree = "<group>"; };
+		ED81BDF6287A29BD00546775 /* IMTypingPluginChatItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMTypingPluginChatItem.h; sourceTree = "<group>"; };
+		ED81BDF7287A29BD00546775 /* IMMessageAcknowledgmentStringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessageAcknowledgmentStringHelper.h; sourceTree = "<group>"; };
+		ED81BDF8287A29BD00546775 /* CDStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDStructures.h; sourceTree = "<group>"; };
+		ED81BDF9287A29BD00546775 /* IMPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMPerson.h; sourceTree = "<group>"; };
+		ED81BDFA287A29BD00546775 /* IMBalloonPluginDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBalloonPluginDataSource.h; sourceTree = "<group>"; };
+		ED81BDFB287A29BD00546775 /* IMItemsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMItemsController.h; sourceTree = "<group>"; };
+		ED81BF1A287A2C2100546775 /* IMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IMCore.framework; path = ../../../../../../System/Library/PrivateFrameworks/IMCore.framework; sourceTree = "<group>"; };
+		ED81BF21287A2C8300546775 /* IMCore11.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IMCore11.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED81BF23287A2C8300546775 /* IMCore11.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMCore11.h; sourceTree = "<group>"; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		ED853E0B2744291400DCF446 /* ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjC.m; sourceTree = "<group>"; };
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
@@ -536,7 +821,11 @@
 		EDF76650274FC9DE0008F730 /* PackingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackingError.swift; sourceTree = "<group>"; };
 		EDF76652275161440008F730 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		EDF76653275161460008F730 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ja; path = ja.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libAirMessageKitAgent.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizeStoryboard.swift; sourceTree = "<group>"; };
+		EDF7665C2879F43600FBDF1E /* AirMessageKitAgent-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirMessageKitAgent-Bridging-Header.h"; sourceTree = "<group>"; };
+		EDF7665D2879F43700FBDF1E /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		EDF7665F2879F45700FBDF1E /* Launcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Launcher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -555,6 +844,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED81BF1E287A2C8300546775 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C030287A2DCD00546775 /* IMCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDC8985D2752BF290081BDB7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -567,6 +864,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDF766512879F40200FBDF1E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81BF28287A2CA600546775 /* IMCore11.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +946,8 @@
 				ED28095325A20332009E7636 /* AirMessage */,
 				EDC898612752BF290081BDB7 /* OpenSSL */,
 				EDDD36CF280992030001FDC3 /* AirMessageTests */,
+				EDF766542879F40200FBDF1E /* AirMessageKitAgent */,
+				ED81BD71287A297200546775 /* IMCore11 */,
 				ED28095225A20332009E7636 /* Products */,
 				ED9FBBC427E13F430037DF16 /* Frameworks */,
 			);
@@ -652,6 +959,8 @@
 				ED28095125A20332009E7636 /* AirMessage.app */,
 				EDC898602752BF290081BDB7 /* OpenSSL.framework */,
 				EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */,
+				EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */,
+				ED81BF21287A2C8300546775 /* IMCore11.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -703,6 +1012,143 @@
 				ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */,
 			);
 			path = Connection;
+			sourceTree = "<group>";
+		};
+		ED81BD71287A297200546775 /* IMCore11 */ = {
+			isa = PBXGroup;
+			children = (
+				ED81BDF8287A29BD00546775 /* CDStructures.h */,
+				ED81BDB3287A29BC00546775 /* CLLocationManagerDelegate-Protocol.h */,
+				ED81BDD9287A29BD00546775 /* FMFSessionDelegate-Protocol.h */,
+				ED81BDF3287A29BD00546775 /* IDSIDQueryController-IMCoreIDSLookupAdditions.h */,
+				ED81BDF2287A29BD00546775 /* IMAccount.h */,
+				ED81BDE6287A29BD00546775 /* IMAccountController.h */,
+				ED81BD9D287A29BC00546775 /* IMActionsController.h */,
+				ED81BDE0287A29BD00546775 /* IMAddressBook.h */,
+				ED81BDDF287A29BD00546775 /* IMAggregateAcknowledgmentChatItem.h */,
+				ED81BDEC287A29BD00546775 /* IMAnimatedEmojiMessagePartChatItem.h */,
+				ED81BDD1287A29BD00546775 /* IMAppExtensionContext.h */,
+				ED81BDDE287A29BD00546775 /* IMAppExtensionContextProtocol-Protocol.h */,
+				ED81BDAD287A29BC00546775 /* IMAssociatedMessageChatItem.h */,
+				ED81BDE3287A29BD00546775 /* IMAssociatedMessageItem-IMItemsController.h */,
+				ED81BD80287A29BB00546775 /* IMAssociatedMessageItem-IMTranscriptChatItemRules.h */,
+				ED81BDC5287A29BC00546775 /* IMAssociatedStickerChatItem.h */,
+				ED81BDC4287A29BC00546775 /* IMAttachment.h */,
+				ED81BD7A287A29BB00546775 /* IMAttachmentMessagePartChatItem.h */,
+				ED81BD87287A29BB00546775 /* IMAudioMessageChatItem.h */,
+				ED81BDA7287A29BC00546775 /* IMAutomation.h */,
+				ED81BDD3287A29BD00546775 /* IMAutomationGroupChat.h */,
+				ED81BDE4287A29BD00546775 /* IMAutomationMessageSend.h */,
+				ED81BDD0287A29BD00546775 /* IMBalloonAppExtension.h */,
+				ED81BDAE287A29BC00546775 /* IMBalloonBrowserPlugin.h */,
+				ED81BDB9287A29BC00546775 /* IMBalloonPlugin.h */,
+				ED81BD7F287A29BB00546775 /* IMBalloonPluginAttributionController.h */,
+				ED81BDF4287A29BD00546775 /* IMBalloonPluginController-Protocol.h */,
+				ED81BDFA287A29BD00546775 /* IMBalloonPluginDataSource.h */,
+				ED81BDC1287A29BC00546775 /* IMBalloonPluginManager.h */,
+				ED81BD79287A29BB00546775 /* IMChat.h */,
+				ED81BD9A287A29BC00546775 /* IMChatHistoryController.h */,
+				ED81BDBA287A29BC00546775 /* IMChatItem.h */,
+				ED81BD94287A29BC00546775 /* IMChatItemRules-Protocol.h */,
+				ED81BDBD287A29BC00546775 /* IMChatRegistry.h */,
+				ED81BD9F287A29BC00546775 /* IMCoreAutomationHook.h */,
+				ED81BDA9287A29BC00546775 /* IMDaemonController.h */,
+				ED81BDD4287A29BD00546775 /* IMDaemonListener.h */,
+				ED81BDEA287A29BD00546775 /* IMDaemonListenerProtocol-Protocol.h */,
+				ED81BDED287A29BD00546775 /* IMDateChatItem.h */,
+				ED81BDDA287A29BD00546775 /* IMDDController.h */,
+				ED81BDF1287A29BD00546775 /* IMDirectlyObservableObject.h */,
+				ED81BD82287A29BB00546775 /* IMEmoteMessageChatItem.h */,
+				ED81BDDD287A29BD00546775 /* IMErrorMessagePartChatItem.h */,
+				ED81BD83287A29BB00546775 /* IMExpirableMessageChatItem.h */,
+				ED81BD91287A29BB00546775 /* IMExpressiveSendAsTextChatItem.h */,
+				ED81BD8C287A29BB00546775 /* IMFileTransferCenter.h */,
+				ED81BD8D287A29BB00546775 /* IMFMFSession.h */,
+				ED81BDA2287A29BC00546775 /* IMGroupActionChatItem.h */,
+				ED81BDF5287A29BD00546775 /* IMGroupActionItem-IMTranscriptChatItemRules.h */,
+				ED81BD89287A29BB00546775 /* IMGroupTitleChangeChatItem.h */,
+				ED81BDB0287A29BC00546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h */,
+				ED81BD8A287A29BB00546775 /* IMHandle.h */,
+				ED81BDAF287A29BC00546775 /* IMHandleRegistrar.h */,
+				ED81BD8B287A29BB00546775 /* IMHandleRegistrarInternal.h */,
+				ED81BDE2287A29BD00546775 /* IMHostAppExtensionContext.h */,
+				ED81BD95287A29BC00546775 /* IMHostAppExtensionContextProtocol-Protocol.h */,
+				ED81BDAA287A29BC00546775 /* IMIDStatusController.h */,
+				ED81BD85287A29BB00546775 /* IMItem-IMChat_Internal.h */,
+				ED81BDBC287A29BC00546775 /* IMItem-IMItemsController.h */,
+				ED81BDA0287A29BC00546775 /* IMItem-IMTranscriptChatItemRules.h */,
+				ED81BD92287A29BB00546775 /* IMItemChatContext.h */,
+				ED81BDFB287A29BD00546775 /* IMItemsController.h */,
+				ED81BD7E287A29BB00546775 /* IMLocatingChatItem.h */,
+				ED81BDD5287A29BD00546775 /* IMLocationManager-Protocol.h */,
+				ED81BD7D287A29BB00546775 /* IMLocationManager.h */,
+				ED81BDB1287A29BC00546775 /* IMLocationShareActionChatItem.h */,
+				ED81BDA8287A29BC00546775 /* IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h */,
+				ED81BD9C287A29BC00546775 /* IMMe.h */,
+				ED81BDE7287A29BD00546775 /* IMMessage.h */,
+				ED81BDC8287A29BC00546775 /* IMMessageAcknowledgmentChatItem.h */,
+				ED81BDF7287A29BD00546775 /* IMMessageAcknowledgmentStringHelper.h */,
+				ED81BD97287A29BC00546775 /* IMMessageActionChatItem.h */,
+				ED81BD7B287A29BB00546775 /* IMMessageActionItem-IMTranscriptChatItemRules.h */,
+				ED81BDE9287A29BD00546775 /* IMMessageAttributionChatItem.h */,
+				ED81BD90287A29BB00546775 /* IMMessageChatItem-Protocol.h */,
+				ED81BDC7287A29BC00546775 /* IMMessageChatItem.h */,
+				ED81BDD8287A29BD00546775 /* IMMessageEditChatItem.h */,
+				ED81BDB4287A29BC00546775 /* IMMessageEffectControlChatItem.h */,
+				ED81BD7C287A29BB00546775 /* IMMessageItem-IMChat_Internal.h */,
+				ED81BDD2287A29BD00546775 /* IMMessageItem-IMCoreDescription.h */,
+				ED81BDB6287A29BC00546775 /* IMMessageItem-IMItemsController.h */,
+				ED81BDB7287A29BC00546775 /* IMMessageItem-IMTranscriptChatItemRules.h */,
+				ED81BDA3287A29BC00546775 /* IMMessageItemChatContext.h */,
+				ED81BDC0287A29BC00546775 /* IMMessagePartChatItem.h */,
+				ED81BDBE287A29BC00546775 /* IMMessageStatusChatItem.h */,
+				ED81BDCB287A29BC00546775 /* IMParentalControls.h */,
+				ED81BD99287A29BC00546775 /* IMParentalControlsService.h */,
+				ED81BDBF287A29BC00546775 /* IMParticipantChangeChatItem.h */,
+				ED81BDB8287A29BC00546775 /* IMParticipantChangeItem-IMTranscriptChatItemRules.h */,
+				ED81BDAB287A29BC00546775 /* IMPeople.h */,
+				ED81BDDC287A29BD00546775 /* IMPeopleCollection.h */,
+				ED81BDF9287A29BD00546775 /* IMPerson.h */,
+				ED81BDEF287A29BD00546775 /* IMPersonRegistrar.h */,
+				ED81BDB2287A29BC00546775 /* IMPluginChatItemProtocol-Protocol.h */,
+				ED81BDC9287A29BC00546775 /* IMPluginPayload.h */,
+				ED81BDE8287A29BD00546775 /* IMRemoteAppExtensionContext.h */,
+				ED81BDF0287A29BD00546775 /* IMRemoteAppExtensionContextProtocol-Protocol.h */,
+				ED81BD8E287A29BB00546775 /* IMRemoteDaemonProtocol-Protocol.h */,
+				ED81BDA5287A29BC00546775 /* IMReusableBalloonPluginController-Protocol.h */,
+				ED81BDAC287A29BC00546775 /* IMSenderChatItem.h */,
+				ED81BD9B287A29BC00546775 /* IMSendProgress.h */,
+				ED81BD81287A29BB00546775 /* IMSendProgressDelegate-Protocol.h */,
+				ED81BDCD287A29BD00546775 /* IMService-IMService_GetService.h */,
+				ED81BD88287A29BB00546775 /* IMServiceAgent.h */,
+				ED81BDC6287A29BC00546775 /* IMServiceAgentImpl.h */,
+				ED81BD8F287A29BB00546775 /* IMServiceChatItem.h */,
+				ED81BDA4287A29BC00546775 /* IMServiceImpl.h */,
+				ED81BDDB287A29BD00546775 /* IMSPIHandle.h */,
+				ED81BDB5287A29BC00546775 /* IMSPIMessage.h */,
+				ED81BDA1287A29BC00546775 /* IMStickerRegistry.h */,
+				ED81BDEB287A29BD00546775 /* IMSuggestionsService.h */,
+				ED81BDCF287A29BD00546775 /* IMSystemMonitorListener-Protocol.h */,
+				ED81BDBB287A29BC00546775 /* IMTextMessagePartChatItem.h */,
+				ED81BD9E287A29BC00546775 /* IMTimingCollection-IMCoreSetupTimingAdditions.h */,
+				ED81BD93287A29BC00546775 /* IMTranscriptChatItem.h */,
+				ED81BDCE287A29BD00546775 /* IMTranscriptChatItemRules.h */,
+				ED81BDD7287A29BD00546775 /* IMTranscriptPluginBreadcrumbChatItem.h */,
+				ED81BD86287A29BB00546775 /* IMTranscriptPluginChatItem.h */,
+				ED81BDCC287A29BC00546775 /* IMTranscriptPluginStatusChatItem.h */,
+				ED81BDA6287A29BC00546775 /* IMTypingChatItem.h */,
+				ED81BDF6287A29BD00546775 /* IMTypingPluginChatItem.h */,
+				ED81BDC2287A29BC00546775 /* IMVisibleAssociatedMessageHost-Protocol.h */,
+				ED81BDD6287A29BD00546775 /* NSArray-IMChatItems.h */,
+				ED81BD98287A29BC00546775 /* NSArray-IMTranscriptChatItems.h */,
+				ED81BDE1287A29BD00546775 /* NSFastEnumeration-Protocol.h */,
+				ED81BD84287A29BB00546775 /* NSObject-Protocol.h */,
+				ED81BDEE287A29BD00546775 /* NSSecureCoding-Protocol.h */,
+				ED81BDCA287A29BC00546775 /* NSString-IMAdditions.h */,
+				ED81BDC3287A29BC00546775 /* NSString-IMCoreIDSLookupAdditions.h */,
+				ED81BF23287A2C8300546775 /* IMCore11.h */,
+			);
+			path = IMCore11;
 			sourceTree = "<group>";
 		};
 		ED853E0A274428F300DCF446 /* ObjC */ = {
@@ -775,6 +1221,7 @@
 		ED9FBBC427E13F430037DF16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED81BF1A287A2C2100546775 /* IMCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1028,9 +1475,156 @@
 			path = Packer;
 			sourceTree = "<group>";
 		};
+		EDF766542879F40200FBDF1E /* AirMessageKitAgent */ = {
+			isa = PBXGroup;
+			children = (
+				EDF7665D2879F43700FBDF1E /* Agent.swift */,
+				EDF7665C2879F43600FBDF1E /* AirMessageKitAgent-Bridging-Header.h */,
+				EDF7665F2879F45700FBDF1E /* Launcher.m */,
+			);
+			path = AirMessageKitAgent;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		ED81BF1C287A2C8300546775 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81BFCA287A2D7600546775 /* IMParticipantChangeChatItem.h in Headers */,
+				ED81C014287A2D7600546775 /* IMSenderChatItem.h in Headers */,
+				ED81C026287A2D7600546775 /* IMStickerRegistry.h in Headers */,
+				ED81BFF0287A2D7600546775 /* IMParentalControls.h in Headers */,
+				ED81BFFB287A2D7600546775 /* IMDaemonController.h in Headers */,
+				ED81C009287A2D7600546775 /* IMAttachment.h in Headers */,
+				ED81BF24287A2C8300546775 /* IMCore11.h in Headers */,
+				ED81C01F287A2D7600546775 /* IMAccountController.h in Headers */,
+				ED81BFC2287A2D7600546775 /* IMMessageAcknowledgmentStringHelper.h in Headers */,
+				ED81BFBF287A2D7600546775 /* CDStructures.h in Headers */,
+				ED81BFB0287A2D7600546775 /* NSObject-Protocol.h in Headers */,
+				ED81C00C287A2D7600546775 /* IMMessageActionChatItem.h in Headers */,
+				ED81BFE8287A2D7600546775 /* IMActionsController.h in Headers */,
+				ED81BFAF287A2D7600546775 /* IMSPIHandle.h in Headers */,
+				ED81BFCD287A2D7600546775 /* IMAppExtensionContext.h in Headers */,
+				ED81C023287A2D7600546775 /* IMServiceImpl.h in Headers */,
+				ED81BFB4287A2D7600546775 /* IMIDStatusController.h in Headers */,
+				ED81BFB8287A2D7600546775 /* IMVisibleAssociatedMessageHost-Protocol.h in Headers */,
+				ED81BFF8287A2D7600546775 /* IMLocationManager-Protocol.h in Headers */,
+				ED81BFD2287A2D7600546775 /* IMTranscriptPluginBreadcrumbChatItem.h in Headers */,
+				ED81BFCF287A2D7600546775 /* IMTimingCollection-IMCoreSetupTimingAdditions.h in Headers */,
+				ED81BFC6287A2D7600546775 /* IMTranscriptPluginChatItem.h in Headers */,
+				ED81C027287A2D7600546775 /* IMAppExtensionContextProtocol-Protocol.h in Headers */,
+				ED81BFF9287A2D7600546775 /* IMChatHistoryController.h in Headers */,
+				ED81BFD9287A2D7600546775 /* IMRemoteAppExtensionContext.h in Headers */,
+				ED81BFFA287A2D7600546775 /* IMBalloonPluginAttributionController.h in Headers */,
+				ED81C007287A2D7600546775 /* IMHandleRegistrarInternal.h in Headers */,
+				ED81BFC1287A2D7600546775 /* IMSendProgressDelegate-Protocol.h in Headers */,
+				ED81BFD7287A2D7600546775 /* IMLocationManager.h in Headers */,
+				ED81BFB6287A2D7600546775 /* IMEmoteMessageChatItem.h in Headers */,
+				ED81BFE7287A2D7600546775 /* IMMessageActionItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81C00D287A2D7600546775 /* IMGroupActionItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFD4287A2D7600546775 /* IMLocationShareStatusChangeItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFD3287A2D7600546775 /* IMDaemonListener.h in Headers */,
+				ED81C029287A2D7600546775 /* IMHandleRegistrar.h in Headers */,
+				ED81BFE5287A2D7600546775 /* IMTranscriptPluginStatusChatItem.h in Headers */,
+				ED81BFF6287A2D7600546775 /* IMSystemMonitorListener-Protocol.h in Headers */,
+				ED81BFB5287A2D7600546775 /* IMLocationShareActionChatItem.h in Headers */,
+				ED81BFEA287A2D7600546775 /* NSString-IMAdditions.h in Headers */,
+				ED81C02B287A2D7600546775 /* IMChatItem.h in Headers */,
+				ED81C017287A2D7600546775 /* NSArray-IMChatItems.h in Headers */,
+				ED81C003287A2D7600546775 /* IMBalloonPlugin.h in Headers */,
+				ED81BFBB287A2D7600546775 /* IMMessageAttributionChatItem.h in Headers */,
+				ED81BFF4287A2D7600546775 /* IMMe.h in Headers */,
+				ED81BFEC287A2D7600546775 /* IMItem-IMChat_Internal.h in Headers */,
+				ED81C002287A2D7600546775 /* IMTextMessagePartChatItem.h in Headers */,
+				ED81C000287A2D7600546775 /* IMLocatingChatItem.h in Headers */,
+				ED81C02E287A2D7600546775 /* IMAutomationGroupChat.h in Headers */,
+				ED81BFFC287A2D7600546775 /* IMAutomation.h in Headers */,
+				ED81BFCE287A2D7600546775 /* IDSIDQueryController-IMCoreIDSLookupAdditions.h in Headers */,
+				ED81BFF7287A2D7600546775 /* IMChatItemRules-Protocol.h in Headers */,
+				ED81BFE3287A2D7600546775 /* IMBalloonPluginManager.h in Headers */,
+				ED81BFC0287A2D7600546775 /* IMBalloonPluginDataSource.h in Headers */,
+				ED81C02D287A2D7600546775 /* IMChat.h in Headers */,
+				ED81C020287A2D7600546775 /* IMAssociatedMessageItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81C02A287A2D7600546775 /* IMAddressBook.h in Headers */,
+				ED81BFD5287A2D7600546775 /* IMAccount.h in Headers */,
+				ED81BFE9287A2D7600546775 /* NSFastEnumeration-Protocol.h in Headers */,
+				ED81BFC4287A2D7600546775 /* IMPeopleCollection.h in Headers */,
+				ED81C02C287A2D7600546775 /* IMBalloonPluginController-Protocol.h in Headers */,
+				ED81BFB7287A2D7600546775 /* IMHostAppExtensionContextProtocol-Protocol.h in Headers */,
+				ED81C00A287A2D7600546775 /* IMServiceChatItem.h in Headers */,
+				ED81BFB9287A2D7600546775 /* IMBalloonAppExtension.h in Headers */,
+				ED81BFBD287A2D7600546775 /* IMDaemonListenerProtocol-Protocol.h in Headers */,
+				ED81BFE4287A2D7600546775 /* IMTypingPluginChatItem.h in Headers */,
+				ED81BFE2287A2D7600546775 /* IMReusableBalloonPluginController-Protocol.h in Headers */,
+				ED81BFDD287A2D7600546775 /* IMSendProgress.h in Headers */,
+				ED81C004287A2D7600546775 /* NSSecureCoding-Protocol.h in Headers */,
+				ED81C022287A2D7600546775 /* IMMessageEditChatItem.h in Headers */,
+				ED81C013287A2D7600546775 /* IMPersonRegistrar.h in Headers */,
+				ED81C006287A2D7600546775 /* IMMessage.h in Headers */,
+				ED81C00B287A2D7600546775 /* IMMessageItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFD0287A2D7600546775 /* IMChatRegistry.h in Headers */,
+				ED81BFEF287A2D7600546775 /* IMHostAppExtensionContext.h in Headers */,
+				ED81C00F287A2D7600546775 /* IMPeople.h in Headers */,
+				ED81BFBC287A2D7600546775 /* IMMessageItem-IMItemsController.h in Headers */,
+				ED81BFEE287A2D7600546775 /* IMAssociatedMessageItem-IMItemsController.h in Headers */,
+				ED81C02F287A2D7600546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFEB287A2D7600546775 /* FMFSessionDelegate-Protocol.h in Headers */,
+				ED81BFDA287A2D7600546775 /* IMAggregateAcknowledgmentChatItem.h in Headers */,
+				ED81BFB1287A2D7600546775 /* IMAttachmentMessagePartChatItem.h in Headers */,
+				ED81C015287A2D7600546775 /* IMItemChatContext.h in Headers */,
+				ED81BFC7287A2D7600546775 /* IMAssociatedStickerChatItem.h in Headers */,
+				ED81BFDB287A2D7600546775 /* IMAudioMessageChatItem.h in Headers */,
+				ED81C024287A2D7600546775 /* IMMessageItemChatContext.h in Headers */,
+				ED81C019287A2D7600546775 /* IMMessageItem-IMCoreDescription.h in Headers */,
+				ED81BFBA287A2D7600546775 /* IMDDController.h in Headers */,
+				ED81BFC3287A2D7600546775 /* IMMessagePartChatItem.h in Headers */,
+				ED81BFE0287A2D7600546775 /* IMMessageAcknowledgmentChatItem.h in Headers */,
+				ED81C012287A2D7600546775 /* IMMessageEffectControlChatItem.h in Headers */,
+				ED81C028287A2D7600546775 /* IMServiceAgentImpl.h in Headers */,
+				ED81BFDF287A2D7600546775 /* IMServiceAgent.h in Headers */,
+				ED81BFE1287A2D7600546775 /* IMPluginPayload.h in Headers */,
+				ED81BFF5287A2D7600546775 /* IMCoreAutomationHook.h in Headers */,
+				ED81BFB3287A2D7600546775 /* IMGroupTitleChangeChatItem.h in Headers */,
+				ED81C01C287A2D7600546775 /* IMFileTransferCenter.h in Headers */,
+				ED81C008287A2D7600546775 /* IMGroupActionChatItem.h in Headers */,
+				ED81BFD1287A2D7600546775 /* IMExpressiveSendAsTextChatItem.h in Headers */,
+				ED81BFDC287A2D7600546775 /* IMParticipantChangeItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFF2287A2D7600546775 /* IMParentalControlsService.h in Headers */,
+				ED81BFD6287A2D7600546775 /* IMRemoteDaemonProtocol-Protocol.h in Headers */,
+				ED81C01A287A2D7600546775 /* IMBalloonBrowserPlugin.h in Headers */,
+				ED81C001287A2D7600546775 /* IMTranscriptChatItemRules.h in Headers */,
+				ED81BFDE287A2D7600546775 /* IMService-IMService_GetService.h in Headers */,
+				ED81C018287A2D7600546775 /* NSArray-IMTranscriptChatItems.h in Headers */,
+				ED81BFC9287A2D7600546775 /* CLLocationManagerDelegate-Protocol.h in Headers */,
+				ED81C010287A2D7600546775 /* IMMessageItem-IMChat_Internal.h in Headers */,
+				ED81C01E287A2D7600546775 /* IMMessageChatItem.h in Headers */,
+				ED81C00E287A2D7600546775 /* IMTypingChatItem.h in Headers */,
+				ED81C01D287A2D7600546775 /* IMAssociatedMessageChatItem.h in Headers */,
+				ED81BFCB287A2D7600546775 /* IMMessageChatItem-Protocol.h in Headers */,
+				ED81BFBE287A2D7600546775 /* IMSuggestionsService.h in Headers */,
+				ED81BFFD287A2D7600546775 /* NSString-IMCoreIDSLookupAdditions.h in Headers */,
+				ED81BFC8287A2D7600546775 /* IMAnimatedEmojiMessagePartChatItem.h in Headers */,
+				ED81BFE6287A2D7600546775 /* IMItem-IMTranscriptChatItemRules.h in Headers */,
+				ED81BFED287A2D7600546775 /* IMTranscriptChatItem.h in Headers */,
+				ED81C025287A2D7600546775 /* IMRemoteAppExtensionContextProtocol-Protocol.h in Headers */,
+				ED81BFCC287A2D7600546775 /* IMPluginChatItemProtocol-Protocol.h in Headers */,
+				ED81C016287A2D7600546775 /* IMMessageStatusChatItem.h in Headers */,
+				ED81BFFF287A2D7600546775 /* IMPerson.h in Headers */,
+				ED81BFFE287A2D7600546775 /* IMExpirableMessageChatItem.h in Headers */,
+				ED81BFC5287A2D7600546775 /* IMItem-IMItemsController.h in Headers */,
+				ED81C01B287A2D7600546775 /* IMAutomationMessageSend.h in Headers */,
+				ED81BFF3287A2D7600546775 /* IMDirectlyObservableObject.h in Headers */,
+				ED81C011287A2D7600546775 /* IMFMFSession.h in Headers */,
+				ED81BFF1287A2D7600546775 /* IMDateChatItem.h in Headers */,
+				ED81C005287A2D7600546775 /* IMErrorMessagePartChatItem.h in Headers */,
+				ED81BFD8287A2D7600546775 /* IMSPIMessage.h in Headers */,
+				ED81C021287A2D7600546775 /* IMHandle.h in Headers */,
+				ED81BFB2287A2D7600546775 /* IMItemsController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDC8985B2752BF290081BDB7 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1176,6 +1770,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDF7664F2879F40200FBDF1E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1208,6 +1809,24 @@
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
 			productType = "com.apple.product-type.application";
+		};
+		ED81BF20287A2C8300546775 /* IMCore11 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED81BF25287A2C8300546775 /* Build configuration list for PBXNativeTarget "IMCore11" */;
+			buildPhases = (
+				ED81BF1C287A2C8300546775 /* Headers */,
+				ED81BF1D287A2C8300546775 /* Sources */,
+				ED81BF1E287A2C8300546775 /* Frameworks */,
+				ED81BF1F287A2C8300546775 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IMCore11;
+			productName = IMCore11;
+			productReference = ED81BF21287A2C8300546775 /* IMCore11.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		EDC8985F2752BF290081BDB7 /* OpenSSL */ = {
 			isa = PBXNativeTarget;
@@ -1245,6 +1864,25 @@
 			productReference = EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		EDF766522879F40200FBDF1E /* AirMessageKitAgent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDF766592879F40200FBDF1E /* Build configuration list for PBXNativeTarget "AirMessageKitAgent" */;
+			buildPhases = (
+				EDF7664F2879F40200FBDF1E /* Headers */,
+				EDF766502879F40200FBDF1E /* Sources */,
+				EDF766512879F40200FBDF1E /* Frameworks */,
+				ED81BE93287A2A9200546775 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED81BF2B287A2CA600546775 /* PBXTargetDependency */,
+			);
+			name = AirMessageKitAgent;
+			productName = AirMessageKitAgent;
+			productReference = EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1258,12 +1896,19 @@
 						CreatedOnToolsVersion = 12.3;
 						LastSwiftMigration = 1250;
 					};
+					ED81BF20287A2C8300546775 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					EDC8985F2752BF290081BDB7 = {
 						CreatedOnToolsVersion = 13.1;
 					};
 					EDDD36CD280992030001FDC3 = {
 						CreatedOnToolsVersion = 13.3.1;
 						TestTargetID = ED28095025A20332009E7636;
+					};
+					EDF766522879F40200FBDF1E = {
+						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -1293,6 +1938,8 @@
 				ED28095025A20332009E7636 /* AirMessage */,
 				EDC8985F2752BF290081BDB7 /* OpenSSL */,
 				EDDD36CD280992030001FDC3 /* AirMessageTests */,
+				EDF766522879F40200FBDF1E /* AirMessageKitAgent */,
+				ED81BF20287A2C8300546775 /* IMCore11 */,
 			);
 		};
 /* End PBXProject section */
@@ -1311,6 +1958,13 @@
 				ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */,
 				EDC58E042756F59200935C49 /* Certificates in Resources */,
 				2EAEEB68DD2F52A48268E94A /* SQL in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81BF1F287A2C8300546775 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1455,6 +2109,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED81BF1D287A2C8300546775 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDC8985C2752BF290081BDB7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1471,9 +2132,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDF766502879F40200FBDF1E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDF766602879F45700FBDF1E /* Launcher.m in Sources */,
+				EDF7665E2879F43700FBDF1E /* Agent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		ED81BF2B287A2CA600546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81BF20287A2C8300546775 /* IMCore11 */;
+			targetProxy = ED81BF2A287A2CA600546775 /* PBXContainerItemProxy */;
+		};
 		EDC898652752BF290081BDB7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = EDC8985F2752BF290081BDB7 /* OpenSSL */;
@@ -1689,6 +2364,78 @@
 			};
 			name = Release;
 		};
+		ED81BF26287A2C8300546775 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.imcore11;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ED81BF27287A2C8300546775 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.imcore11;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		EDC898692752BF290081BDB7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1811,6 +2558,55 @@
 			};
 			name = Release;
 		};
+		EDF7665A2879F40200FBDF1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "AirMessageKitAgent/AirMessageKitAgent-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EDF7665B2879F40200FBDF1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "AirMessageKitAgent/AirMessageKitAgent-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1832,6 +2628,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		ED81BF25287A2C8300546775 /* Build configuration list for PBXNativeTarget "IMCore11" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED81BF26287A2C8300546775 /* Debug */,
+				ED81BF27287A2C8300546775 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EDC898682752BF290081BDB7 /* Build configuration list for PBXNativeTarget "OpenSSL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1846,6 +2651,15 @@
 			buildConfigurations = (
 				EDDD36D4280992030001FDC3 /* Debug */,
 				EDDD36D5280992030001FDC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDF766592879F40200FBDF1E /* Build configuration list for PBXNativeTarget "AirMessageKitAgent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDF7665A2879F40200FBDF1E /* Debug */,
+				EDF7665B2879F40200FBDF1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
