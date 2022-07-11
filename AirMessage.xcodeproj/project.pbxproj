@@ -40,6 +40,9 @@
 		ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* OnboardingViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
+		ED42ECDF287C217B00D8FA1A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED42ECDE287C217B00D8FA1A /* main.swift */; };
+		ED42ECE3287C218D00D8FA1A /* AirMessageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; };
+		ED42ECE4287C218D00D8FA1A /* AirMessageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */; };
 		ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */; };
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
@@ -179,7 +182,27 @@
 		ED81C02D287A2D7600546775 /* IMChat.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BD79287A29BB00546775 /* IMChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ED81C02E287A2D7600546775 /* IMAutomationGroupChat.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDD3287A29BD00546775 /* IMAutomationGroupChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ED81C02F287A2D7600546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BDB0287A29BC00546775 /* IMGroupTitleChangeItem-IMTranscriptChatItemRules.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ED81C030287A2DCD00546775 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81BF1A287A2C2100546775 /* IMCore.framework */; };
+		ED81C05C287AECEA00546775 /* SystemBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C05B287AECEA00546775 /* SystemBridge.swift */; };
+		ED81C05D287AECEA00546775 /* SystemBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C05B287AECEA00546775 /* SystemBridge.swift */; };
+		ED81C063287B271800546775 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81BF1A287A2C2100546775 /* IMCore.framework */; };
+		ED81C0AA287B3B5D00546775 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0A9287B3B5D00546775 /* AppDelegate.swift */; };
+		ED81C0AC287B3B5D00546775 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0AB287B3B5D00546775 /* ViewController.swift */; };
+		ED81C0AE287B3B5E00546775 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED81C0AD287B3B5E00546775 /* Assets.xcassets */; };
+		ED81C0B1287B3B5E00546775 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED81C0AF287B3B5E00546775 /* Main.storyboard */; };
+		ED81C0CF287B403300546775 /* TestXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0CE287B403300546775 /* TestXPC.swift */; };
+		ED81C0DE287B7EEF00546775 /* AMIPCMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0DD287B7EEF00546775 /* AMIPCMessage.swift */; };
+		ED81C0E0287B83AD00546775 /* AMIPCBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0DF287B83AD00546775 /* AMIPCBridge.swift */; };
+		ED81C0E4287BB8A400546775 /* AMIPCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0E3287BB8A400546775 /* AMIPCType.swift */; };
+		ED81C0E5287C111700546775 /* libAirMessageKitIPC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */; };
+		ED81C0F0287C146400546775 /* AirMessageKit.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81C0EF287C146400546775 /* AirMessageKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED81C0F3287C146400546775 /* AirMessageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; };
+		ED81C0F4287C146400546775 /* AirMessageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED81C0F9287C148300546775 /* MessagesLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C0F8287C148300546775 /* MessagesLauncher.swift */; };
+		ED81C0FF287C156D00546775 /* libAirMessageKitIPC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */; };
+		ED81C103287C15AF00546775 /* AMKContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81C102287C15AF00546775 /* AMKContext.swift */; };
+		ED81C106287C192400546775 /* AirMessageKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; };
+		ED81C107287C192400546775 /* AirMessageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED81C10C287C1A7200546775 /* libAirMessageKitAgent.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
 		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
 		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
@@ -372,12 +395,54 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		ED42ECE5287C218D00D8FA1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81C0EC287C146400546775;
+			remoteInfo = AirMessageKit;
+		};
 		ED81BF2A287A2CA600546775 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED28094925A20332009E7636 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = ED81BF20287A2C8300546775;
 			remoteInfo = IMCore11;
+		};
+		ED81C0E6287C111700546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81C0D3287B7ECB00546775;
+			remoteInfo = AirMessageKitIPC;
+		};
+		ED81C0F1287C146400546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81C0EC287C146400546775;
+			remoteInfo = AirMessageKit;
+		};
+		ED81C100287C156D00546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81C0D3287B7ECB00546775;
+			remoteInfo = AirMessageKitIPC;
+		};
+		ED81C108287C192500546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED81C0EC287C146400546775;
+			remoteInfo = AirMessageKit;
+		};
+		ED81C10D287C1A7200546775 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDF766522879F40200FBDF1E;
+			remoteInfo = AirMessageKitAgent;
 		};
 		EDC898642752BF290081BDB7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -396,6 +461,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		ED42ECDA287C217B00D8FA1A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		ED42ECE7287C218D00D8FA1A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED42ECE4287C218D00D8FA1A /* AirMessageKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED81BE93287A2A9200546775 /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,12 +492,55 @@
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED81C048287A663600546775 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed XPC Services";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0B9287B3B8200546775 /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed XPC Services";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C10A287C192500546775 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED81C107287C192400546775 /* AirMessageKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C10F287C1A7200546775 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				ED81C10C287C1A7200546775 /* libAirMessageKitAgent.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDC8986B2752BF290081BDB7 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				ED81C0F4287C146400546775 /* AirMessageKit.framework in Embed Frameworks */,
 				EDC898672752BF290081BDB7 /* OpenSSL.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -457,6 +585,9 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
+		ED42ECDC287C217B00D8FA1A /* AirMessageKitTestCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AirMessageKitTestCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED42ECDE287C217B00D8FA1A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		ED42ECE8287C241B00D8FA1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateRecovery.swift; sourceTree = "<group>"; };
 		ED440E0F269FB51F00BFBEE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		ED44738626A387DD006F5F0E /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -598,6 +729,22 @@
 		ED81BF1A287A2C2100546775 /* IMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IMCore.framework; path = ../../../../../../System/Library/PrivateFrameworks/IMCore.framework; sourceTree = "<group>"; };
 		ED81BF21287A2C8300546775 /* IMCore11.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IMCore11.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED81BF23287A2C8300546775 /* IMCore11.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMCore11.h; sourceTree = "<group>"; };
+		ED81C05B287AECEA00546775 /* SystemBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBridge.swift; sourceTree = "<group>"; };
+		ED81C0A7287B3B5D00546775 /* AirMessageKitTestClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirMessageKitTestClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED81C0A9287B3B5D00546775 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ED81C0AB287B3B5D00546775 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ED81C0AD287B3B5E00546775 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ED81C0B0287B3B5E00546775 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		ED81C0B2287B3B5E00546775 /* AirMessageKitTestClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessageKitTestClient.entitlements; sourceTree = "<group>"; };
+		ED81C0CE287B403300546775 /* TestXPC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestXPC.swift; sourceTree = "<group>"; };
+		ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAirMessageKitIPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED81C0DD287B7EEF00546775 /* AMIPCMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMIPCMessage.swift; sourceTree = "<group>"; };
+		ED81C0DF287B83AD00546775 /* AMIPCBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMIPCBridge.swift; sourceTree = "<group>"; };
+		ED81C0E3287BB8A400546775 /* AMIPCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMIPCType.swift; sourceTree = "<group>"; };
+		ED81C0ED287C146400546775 /* AirMessageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AirMessageKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED81C0EF287C146400546775 /* AirMessageKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirMessageKit.h; sourceTree = "<group>"; };
+		ED81C0F8287C148300546775 /* MessagesLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLauncher.swift; sourceTree = "<group>"; };
+		ED81C102287C15AF00546775 /* AMKContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AMKContext.swift; sourceTree = "<group>"; };
 		ED853E062744218900DCF446 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		ED853E0B2744291400DCF446 /* ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjC.m; sourceTree = "<group>"; };
 		ED853E0D2744291E00DCF446 /* ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjC.h; sourceTree = "<group>"; };
@@ -841,6 +988,15 @@
 				ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
+				ED81C0F3287C146400546775 /* AirMessageKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED42ECD9287C217B00D8FA1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED42ECE3287C218D00D8FA1A /* AirMessageKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,7 +1004,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED81C030287A2DCD00546775 /* IMCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0A4287B3B5D00546775 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C106287C192400546775 /* AirMessageKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0D2287B7ECB00546775 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0EA287C146400546775 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0FF287C156D00546775 /* libAirMessageKitIPC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -871,7 +1049,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED81C0E5287C111700546775 /* libAirMessageKitIPC.a in Frameworks */,
 				ED81BF28287A2CA600546775 /* IMCore11.framework in Frameworks */,
+				ED81C063287B271800546775 /* IMCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,6 +1128,10 @@
 				EDDD36CF280992030001FDC3 /* AirMessageTests */,
 				EDF766542879F40200FBDF1E /* AirMessageKitAgent */,
 				ED81BD71287A297200546775 /* IMCore11 */,
+				ED81C0A8287B3B5D00546775 /* AirMessageKitTestClient */,
+				ED81C0D5287B7ECB00546775 /* AirMessageKitIPC */,
+				ED81C0EE287C146400546775 /* AirMessageKit */,
+				ED42ECDD287C217B00D8FA1A /* AirMessageKitTestCLI */,
 				ED28095225A20332009E7636 /* Products */,
 				ED9FBBC427E13F430037DF16 /* Frameworks */,
 			);
@@ -961,6 +1145,10 @@
 				EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */,
 				EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */,
 				ED81BF21287A2C8300546775 /* IMCore11.framework */,
+				ED81C0A7287B3B5D00546775 /* AirMessageKitTestClient.app */,
+				ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */,
+				ED81C0ED287C146400546775 /* AirMessageKit.framework */,
+				ED42ECDC287C217B00D8FA1A /* AirMessageKitTestCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1012,6 +1200,14 @@
 				ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */,
 			);
 			path = Connection;
+			sourceTree = "<group>";
+		};
+		ED42ECDD287C217B00D8FA1A /* AirMessageKitTestCLI */ = {
+			isa = PBXGroup;
+			children = (
+				ED42ECDE287C217B00D8FA1A /* main.swift */,
+			);
+			path = AirMessageKitTestCLI;
 			sourceTree = "<group>";
 		};
 		ED81BD71287A297200546775 /* IMCore11 */ = {
@@ -1149,6 +1345,40 @@
 				ED81BF23287A2C8300546775 /* IMCore11.h */,
 			);
 			path = IMCore11;
+			sourceTree = "<group>";
+		};
+		ED81C0A8287B3B5D00546775 /* AirMessageKitTestClient */ = {
+			isa = PBXGroup;
+			children = (
+				ED42ECE8287C241B00D8FA1A /* Info.plist */,
+				ED81C0A9287B3B5D00546775 /* AppDelegate.swift */,
+				ED81C0AB287B3B5D00546775 /* ViewController.swift */,
+				ED81C0AD287B3B5E00546775 /* Assets.xcassets */,
+				ED81C0AF287B3B5E00546775 /* Main.storyboard */,
+				ED81C0B2287B3B5E00546775 /* AirMessageKitTestClient.entitlements */,
+				ED81C0CE287B403300546775 /* TestXPC.swift */,
+			);
+			path = AirMessageKitTestClient;
+			sourceTree = "<group>";
+		};
+		ED81C0D5287B7ECB00546775 /* AirMessageKitIPC */ = {
+			isa = PBXGroup;
+			children = (
+				ED81C0DF287B83AD00546775 /* AMIPCBridge.swift */,
+				ED81C0DD287B7EEF00546775 /* AMIPCMessage.swift */,
+				ED81C0E3287BB8A400546775 /* AMIPCType.swift */,
+			);
+			path = AirMessageKitIPC;
+			sourceTree = "<group>";
+		};
+		ED81C0EE287C146400546775 /* AirMessageKit */ = {
+			isa = PBXGroup;
+			children = (
+				ED81C0EF287C146400546775 /* AirMessageKit.h */,
+				ED81C0F8287C148300546775 /* MessagesLauncher.swift */,
+				ED81C102287C15AF00546775 /* AMKContext.swift */,
+			);
+			path = AirMessageKit;
 			sourceTree = "<group>";
 		};
 		ED853E0A274428F300DCF446 /* ObjC */ = {
@@ -1481,6 +1711,7 @@
 				EDF7665D2879F43700FBDF1E /* Agent.swift */,
 				EDF7665C2879F43600FBDF1E /* AirMessageKitAgent-Bridging-Header.h */,
 				EDF7665F2879F45700FBDF1E /* Launcher.m */,
+				ED81C05B287AECEA00546775 /* SystemBridge.swift */,
 			);
 			path = AirMessageKitAgent;
 			sourceTree = "<group>";
@@ -1622,6 +1853,21 @@
 				ED81BFD8287A2D7600546775 /* IMSPIMessage.h in Headers */,
 				ED81C021287A2D7600546775 /* IMHandle.h in Headers */,
 				ED81BFB2287A2D7600546775 /* IMItemsController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0D0287B7ECB00546775 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0E8287C146400546775 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0F0287C146400546775 /* AirMessageKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1790,11 +2036,13 @@
 				ED28094F25A20332009E7636 /* Resources */,
 				EDC8986B2752BF290081BDB7 /* Embed Frameworks */,
 				ED9C293B27567C0000EA07C8 /* Upload Symbols to Sentry */,
+				ED81C048287A663600546775 /* Embed XPC Services */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				EDC898652752BF290081BDB7 /* PBXTargetDependency */,
+				ED81C0F2287C146400546775 /* PBXTargetDependency */,
 			);
 			name = AirMessage;
 			packageProductDependencies = (
@@ -1809,6 +2057,25 @@
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
 			productType = "com.apple.product-type.application";
+		};
+		ED42ECDB287C217B00D8FA1A /* AirMessageKitTestCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED42ECE2287C217B00D8FA1A /* Build configuration list for PBXNativeTarget "AirMessageKitTestCLI" */;
+			buildPhases = (
+				ED42ECD8287C217B00D8FA1A /* Sources */,
+				ED42ECD9287C217B00D8FA1A /* Frameworks */,
+				ED42ECDA287C217B00D8FA1A /* CopyFiles */,
+				ED42ECE7287C218D00D8FA1A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED42ECE6287C218D00D8FA1A /* PBXTargetDependency */,
+			);
+			name = AirMessageKitTestCLI;
+			productName = AirMessageKitTestCLI;
+			productReference = ED42ECDC287C217B00D8FA1A /* AirMessageKitTestCLI */;
+			productType = "com.apple.product-type.tool";
 		};
 		ED81BF20287A2C8300546775 /* IMCore11 */ = {
 			isa = PBXNativeTarget;
@@ -1826,6 +2093,64 @@
 			name = IMCore11;
 			productName = IMCore11;
 			productReference = ED81BF21287A2C8300546775 /* IMCore11.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		ED81C0A6287B3B5D00546775 /* AirMessageKitTestClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED81C0B3287B3B5E00546775 /* Build configuration list for PBXNativeTarget "AirMessageKitTestClient" */;
+			buildPhases = (
+				ED81C0A3287B3B5D00546775 /* Sources */,
+				ED81C0A4287B3B5D00546775 /* Frameworks */,
+				ED81C0A5287B3B5D00546775 /* Resources */,
+				ED81C0B9287B3B8200546775 /* Embed XPC Services */,
+				ED81C10A287C192500546775 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED81C109287C192500546775 /* PBXTargetDependency */,
+			);
+			name = AirMessageKitTestClient;
+			productName = AirMessageKitTestClient;
+			productReference = ED81C0A7287B3B5D00546775 /* AirMessageKitTestClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+		ED81C0D3287B7ECB00546775 /* AirMessageKitIPC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED81C0DA287B7ECB00546775 /* Build configuration list for PBXNativeTarget "AirMessageKitIPC" */;
+			buildPhases = (
+				ED81C0D0287B7ECB00546775 /* Headers */,
+				ED81C0D1287B7ECB00546775 /* Sources */,
+				ED81C0D2287B7ECB00546775 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AirMessageKitIPC;
+			productName = AirMessageKitIPC;
+			productReference = ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		ED81C0EC287C146400546775 /* AirMessageKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED81C0F5287C146400546775 /* Build configuration list for PBXNativeTarget "AirMessageKit" */;
+			buildPhases = (
+				ED81C0E8287C146400546775 /* Headers */,
+				ED81C0E9287C146400546775 /* Sources */,
+				ED81C0EA287C146400546775 /* Frameworks */,
+				ED81C0EB287C146400546775 /* Resources */,
+				ED81C10F287C1A7200546775 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED81C101287C156D00546775 /* PBXTargetDependency */,
+				ED81C10E287C1A7200546775 /* PBXTargetDependency */,
+			);
+			name = AirMessageKit;
+			productName = AirMessageKit;
+			productReference = ED81C0ED287C146400546775 /* AirMessageKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		EDC8985F2752BF290081BDB7 /* OpenSSL */ = {
@@ -1877,6 +2202,7 @@
 			);
 			dependencies = (
 				ED81BF2B287A2CA600546775 /* PBXTargetDependency */,
+				ED81C0E7287C111700546775 /* PBXTargetDependency */,
 			);
 			name = AirMessageKitAgent;
 			productName = AirMessageKitAgent;
@@ -1889,15 +2215,29 @@
 		ED28094925A20332009E7636 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					ED28095025A20332009E7636 = {
 						CreatedOnToolsVersion = 12.3;
 						LastSwiftMigration = 1250;
 					};
+					ED42ECDB287C217B00D8FA1A = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					ED81BF20287A2C8300546775 = {
 						CreatedOnToolsVersion = 13.4.1;
+					};
+					ED81C0A6287B3B5D00546775 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					ED81C0D3287B7ECB00546775 = {
+						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
+					};
+					ED81C0EC287C146400546775 = {
+						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1340;
 					};
 					EDC8985F2752BF290081BDB7 = {
 						CreatedOnToolsVersion = 13.1;
@@ -1940,6 +2280,10 @@
 				EDDD36CD280992030001FDC3 /* AirMessageTests */,
 				EDF766522879F40200FBDF1E /* AirMessageKitAgent */,
 				ED81BF20287A2C8300546775 /* IMCore11 */,
+				ED81C0A6287B3B5D00546775 /* AirMessageKitTestClient */,
+				ED81C0D3287B7ECB00546775 /* AirMessageKitIPC */,
+				ED81C0EC287C146400546775 /* AirMessageKit */,
+				ED42ECDB287C217B00D8FA1A /* AirMessageKitTestCLI */,
 			);
 		};
 /* End PBXProject section */
@@ -1962,6 +2306,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		ED81BF1F287A2C8300546775 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0A5287B3B5D00546775 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0AE287B3B5E00546775 /* Assets.xcassets in Resources */,
+				ED81C0B1287B3B5E00546775 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0EB287C146400546775 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2046,6 +2406,7 @@
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
 				EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */,
+				ED81C05C287AECEA00546775 /* SystemBridge.swift in Sources */,
 				ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */,
 				EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */,
 				EDD5E49D269F9957005EB8EE /* NotificationNames.swift in Sources */,
@@ -2109,10 +2470,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED42ECD8287C217B00D8FA1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED42ECDF287C217B00D8FA1A /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED81BF1D287A2C8300546775 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0A3287B3B5D00546775 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0AC287B3B5D00546775 /* ViewController.swift in Sources */,
+				ED81C0AA287B3B5D00546775 /* AppDelegate.swift in Sources */,
+				ED81C0CF287B403300546775 /* TestXPC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0D1287B7ECB00546775 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0DE287B7EEF00546775 /* AMIPCMessage.swift in Sources */,
+				ED81C0E0287B83AD00546775 /* AMIPCBridge.swift in Sources */,
+				ED81C0E4287BB8A400546775 /* AMIPCType.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED81C0E9287C146400546775 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED81C0F9287C148300546775 /* MessagesLauncher.swift in Sources */,
+				ED81C103287C15AF00546775 /* AMKContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2137,6 +2535,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDF766602879F45700FBDF1E /* Launcher.m in Sources */,
+				ED81C05D287AECEA00546775 /* SystemBridge.swift in Sources */,
 				EDF7665E2879F43700FBDF1E /* Agent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2144,10 +2543,40 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		ED42ECE6287C218D00D8FA1A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81C0EC287C146400546775 /* AirMessageKit */;
+			targetProxy = ED42ECE5287C218D00D8FA1A /* PBXContainerItemProxy */;
+		};
 		ED81BF2B287A2CA600546775 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = ED81BF20287A2C8300546775 /* IMCore11 */;
 			targetProxy = ED81BF2A287A2CA600546775 /* PBXContainerItemProxy */;
+		};
+		ED81C0E7287C111700546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81C0D3287B7ECB00546775 /* AirMessageKitIPC */;
+			targetProxy = ED81C0E6287C111700546775 /* PBXContainerItemProxy */;
+		};
+		ED81C0F2287C146400546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81C0EC287C146400546775 /* AirMessageKit */;
+			targetProxy = ED81C0F1287C146400546775 /* PBXContainerItemProxy */;
+		};
+		ED81C101287C156D00546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81C0D3287B7ECB00546775 /* AirMessageKitIPC */;
+			targetProxy = ED81C100287C156D00546775 /* PBXContainerItemProxy */;
+		};
+		ED81C109287C192500546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED81C0EC287C146400546775 /* AirMessageKit */;
+			targetProxy = ED81C108287C192500546775 /* PBXContainerItemProxy */;
+		};
+		ED81C10E287C1A7200546775 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDF766522879F40200FBDF1E /* AirMessageKitAgent */;
+			targetProxy = ED81C10D287C1A7200546775 /* PBXContainerItemProxy */;
 		};
 		EDC898652752BF290081BDB7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2178,6 +2607,14 @@
 				EDF76653275161460008F730 /* ja */,
 			);
 			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+		ED81C0AF287B3B5E00546775 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED81C0B0287B3B5E00546775 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		ED891A3A25A30701002230EB /* Localizable.strings */ = {
@@ -2313,6 +2750,7 @@
 		ED28096225A20333009E7636 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -2340,6 +2778,7 @@
 		ED28096325A20333009E7636 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -2360,6 +2799,34 @@
 				PRODUCT_NAME = AirMessage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AirMessage/AirMessage-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		ED42ECE0287C217B00D8FA1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		ED42ECE1287C217B00D8FA1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -2431,6 +2898,189 @@
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		ED81C0B4287B3B5E00546775 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = AirMessageKitTestClient/AirMessageKitTestClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AirMessageKitTestClient/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessagekittestclient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		ED81C0B5287B3B5E00546775 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = AirMessageKitTestClient/AirMessageKitTestClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AirMessageKitTestClient/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessagekittestclient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		ED81C0DB287B7ECB00546775 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					arm64e,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				EXECUTABLE_PREFIX = lib;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		ED81C0DC287B7ECB00546775 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					arm64e,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				EXECUTABLE_PREFIX = lib;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		ED81C0F6287C146400546775 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessagekit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ED81C0F7287C146400546775 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessagekit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2561,6 +3211,10 @@
 		EDF7665A2879F40200FBDF1E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					arm64e,
+					x86_64,
+				);
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -2575,17 +3229,26 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AirMessageKitAgent/AirMessageKitAgent-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 			};
 			name = Debug;
 		};
 		EDF7665B2879F40200FBDF1E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					arm64e,
+					x86_64,
+				);
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -2604,6 +3267,10 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AirMessageKitAgent/AirMessageKitAgent-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 			};
 			name = Release;
 		};
@@ -2628,11 +3295,47 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		ED42ECE2287C217B00D8FA1A /* Build configuration list for PBXNativeTarget "AirMessageKitTestCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED42ECE0287C217B00D8FA1A /* Debug */,
+				ED42ECE1287C217B00D8FA1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		ED81BF25287A2C8300546775 /* Build configuration list for PBXNativeTarget "IMCore11" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ED81BF26287A2C8300546775 /* Debug */,
 				ED81BF27287A2C8300546775 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED81C0B3287B3B5E00546775 /* Build configuration list for PBXNativeTarget "AirMessageKitTestClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED81C0B4287B3B5E00546775 /* Debug */,
+				ED81C0B5287B3B5E00546775 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED81C0DA287B7ECB00546775 /* Build configuration list for PBXNativeTarget "AirMessageKitIPC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED81C0DB287B7ECB00546775 /* Debug */,
+				ED81C0DC287B7ECB00546775 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED81C0F5287C146400546775 /* Build configuration list for PBXNativeTarget "AirMessageKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED81C0F6287C146400546775 /* Debug */,
+				ED81C0F7287C146400546775 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

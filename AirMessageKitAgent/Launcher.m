@@ -7,9 +7,11 @@
 
 #include "AirMessageKitAgent-Swift.h"
 
+Agent* agent;
+
 __attribute__((constructor))
-static void launcherConstructor(int argc, const char **argv)
- {
+static void launcherConstructor(int argc, const char **argv) {
 	//Start AirMessageKit agent
-	[Agent startAgent];
+	agent = [Agent new];
+	[agent startAgent];
 }
