@@ -8,7 +8,7 @@
 import Foundation
 
 ///Runs work on the main thread synchronously, skipping the dispatch queue if we're already on the main thread
-func runOnMain<T>(execute work: () throws -> T) rethrows -> T {
+public func runOnMain<T>(execute work: () throws -> T) rethrows -> T {
 	if Thread.isMainThread {
 		return try work()
 	} else {
@@ -17,7 +17,7 @@ func runOnMain<T>(execute work: () throws -> T) rethrows -> T {
 }
 
 /// Runs work on the main thread asynchronously, skipping the dispatch queue if we're already on the main thread
-func runOnMainAsync(execute work: @escaping () -> Void) {
+public func runOnMainAsync(execute work: @escaping () -> Void) {
 	if Thread.isMainThread {
 		work()
 	} else {
@@ -26,7 +26,7 @@ func runOnMainAsync(execute work: @escaping () -> Void) {
 }
 
 ///Runs work on the specified queue synchronously, skipping the dispatch queue if the key matches
-func runOnQueue<T, K>(queue: DispatchQueue, key: DispatchSpecificKey<K>, execute work: () throws -> T) rethrows -> T {
+public func runOnQueue<T, K>(queue: DispatchQueue, key: DispatchSpecificKey<K>, execute work: () throws -> T) rethrows -> T {
 	if DispatchQueue.getSpecific(key: key) != nil {
 		return try work()
 	} else {
@@ -35,7 +35,7 @@ func runOnQueue<T, K>(queue: DispatchQueue, key: DispatchSpecificKey<K>, execute
 }
 
 ///Runs work on the specified queue asynchronously, skipping the dispatch queue if the key matches
-func runOnQueueAsync<K>(queue: DispatchQueue, key: DispatchSpecificKey<K>, execute work: @escaping () -> Void) {
+public func runOnQueueAsync<K>(queue: DispatchQueue, key: DispatchSpecificKey<K>, execute work: @escaping () -> Void) {
 	if DispatchQueue.getSpecific(key: key) != nil {
 		return work()
 	} else {

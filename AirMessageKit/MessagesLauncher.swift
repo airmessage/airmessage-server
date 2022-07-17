@@ -17,8 +17,7 @@ public class MessagesLauncher {
 	}
 	
 	///Launches a new Messages process
-	public func launch(machPort: UInt32) throws {
-		print("Launch with mach port \(machPort) (\(NSMachPort(machPort: machPort))")
+	public func launch(withSockFile sockFile: URL) throws {
 		let bundle = Bundle(for: type(of: self))
 		let dylibPath = bundle.resourcePath! + "/libAirMessageKitAgent.dylib"
 		guard FileManager.default.fileExists(atPath: dylibPath) else {
@@ -30,8 +29,7 @@ public class MessagesLauncher {
 		process.executableURL = URL(fileURLWithPath: "/System/Applications/Messages.app/Contents/MacOS/Messages")
 		process.environment = [
 			"DYLD_INSERT_LIBRARIES": dylibPath,
-			"AIRMESSAGEKIT_IPC_MACH": String(machPort),
-			"AIRMESSAGEKIT_TASK_PORT": String(mach_task_self_),
+			"AIRMESSAGEKIT_SOCK_FILE": sockFile.path
 		]
 		try process.run()
 		

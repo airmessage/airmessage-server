@@ -23,59 +23,35 @@ class Agent: NSObject {
 			return
 		}
 		
-		//Get the Mach port to connect to
-		guard let machPortStr = ProcessInfo.processInfo.environment["AIRMESSAGEKIT_IPC_MACH"] else {
-			try! FileHandle.standardError.write(contentsOf: Data("AIRMESSAGEKIT_IPC_MACH is not available, exiting".utf8))
+		//Get the pipe directory to connect to
+		guard let sockFileRaw = ProcessInfo.processInfo.environment["AIRMESSAGEKIT_SOCK_FILE"] else {
+			try! FileHandle.standardError.write(contentsOf: Data("AIRMESSAGEKIT_SOCK_FILE is not available, exiting".utf8))
 			return
 		}
-		
-		guard let machPortRaw = UInt32(machPortStr) else {
-			try! FileHandle.standardError.write(contentsOf: Data("AIRMESSAGEKIT_IPC_MACH value \(machPortStr) is not valid, exiting".utf8))
-			return
-		}
-		
-		//Get the parent process id
-		guard let parentTaskPortStr = ProcessInfo.processInfo.environment["AIRMESSAGEKIT_TASK_PORT"] else {
-			try! FileHandle.standardError.write(contentsOf: Data("AIRMESSAGEKIT_TASK_PORT is not available, exiting".utf8))
-			return
-		}
-		
-		guard let parentTaskPort = mach_port_t(parentTaskPortStr) else {
-			try! FileHandle.standardError.write(contentsOf: Data("AIRMESSAGEKIT_TASK_PORT value \(parentTaskPortStr) is not valid, exiting".utf8))
-			return
-		}
-		
-		print("Checking")
 		
 		//Set the shared agent
 		Agent.sharedInstance = self
 		
-		print("Checking for ports under task port: \(parentTaskPort)")
-		
-		var ports: thread_act_array_t?
-		var portsCount = mach_msg_type_number_t(0)
-		guard mach_ports_lookup(parentTaskPort, &ports, &portsCount) == KERN_SUCCESS else {
-			fatalError("Unable to lookup ports")
-		}
-		guard let port = ports?.pointee else {
-			fatalError("Unable to get port")
-		}
-		print("Got port: \(port) (\(portsCount) results)")
-		
 		//Initialize IPC
-		ipcBridge = AMIPCBridge(forRemotePort: NSMachPort(machPort: machPortRaw))
+		ipcBridge = AMIPCBridge(withSocketFile: URL(fileURLWithPath: sockFileRaw))
 		ipcBridge.delegate = self
-		
-		//Send a registration message
-		print("Send connected message...")
-		try! ipcBridge.notifyRegistration()
-		print("Sent connected message!")
+		ipcBridge.connectClient()
 	}
 }
 
 extension Agent: AMIPCBridgeDelegate {
-	func bridgeDelegate(onReceiveRegister port: UInt32) {
-		//Client implementation, ignore
+	func bridgeDelegateOnConnect() {
+		print("Agent is connected!")
+		
+		print("Send connected message...")
+		ipcBridge.send(message: AMIPCMessage(withPayload: .connected)) { err in
+			print("Sent connected message with result \(err)")
+		}
+	}
+	
+	func bridgeDelegate(onError error: Error) {
+		print("Encountered bridge delegate error \(error)")
+		print(Thread.callStackSymbols)
 	}
 	
 	func bridgeDelegate(onReceive message: AMIPCMessage) {

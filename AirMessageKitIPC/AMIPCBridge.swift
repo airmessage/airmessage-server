@@ -6,8 +6,15 @@
 //
 
 import Foundation
+import LocalUtils
 
 public typealias SendMessageCallback = (AMIPCMessage?, Error?) -> Void
+
+public enum AMSocketError: Error {
+	case invalidPath
+	case socketError(POSIXErrorCode?)
+	case timeoutError
+}
 
 public enum AMIPCError: Error {
 	case noRemote
@@ -16,17 +23,22 @@ public enum AMIPCError: Error {
 
 struct AMIPCBridgePendingRequest {
 	var callback: SendMessageCallback
-	var timer: Timer
+	var timer: DispatchSourceTimer
 }
 
-///Handles passing AMIPCMessages over a Mach port bridge
-@objc public class AMIPCBridge: NSObject {
-	//The time interval to use when sending messages
-	private static let messageDeadline: TimeInterval = 10
+///Handles passing AMIPCMessages over an inter-process bridge
+public class AMIPCBridge {
+	private static let clientWaitTimeout: TimeInterval = 20
+	private static let requestTimeout: TimeInterval = 20
 	
-	//IPC mach port
-	public private(set) var localPort: NSMachPort
-	public var remotePort: NSMachPort?
+	private let socketFile: URL
+	
+	//Dispatch queues
+	private let serverQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".amipc.server", qos: .utility, attributes: [.concurrent])
+	private let requestQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".amipc.request", qos: .utility)
+	private let readQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! + ".amipc.read", qos: .utility)
+	
+	private var socketHandle: FileHandle?
 	
 	//The next ID to use for message requests
 	private var nextID: UInt32 = 0
@@ -35,167 +47,296 @@ struct AMIPCBridgePendingRequest {
 	
 	public weak var delegate: AMIPCBridgeDelegate?
 	
-	public static func getMachPort() -> UInt32 {
-		var rcv_port: mach_port_name_t = 0
+	public init(withSocketFile socketFile: URL) {
+		self.socketFile = socketFile
+	}
+	
+	///Starts the server and waits for a specified timeout for a client to connect
+	public func receiveClient() {
+		//Create the socket
+		let socketFD = socket(AF_UNIX, SOCK_STREAM, 0)
+		guard socketFD != -1 else {
+			delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+			return
+		}
+		
+		do {
+			//Prepare the socket address
+			var address = sockaddr_un()
 			
-		guard mach_port_allocate(mach_task_self_, MACH_PORT_RIGHT_RECEIVE, &rcv_port) == KERN_SUCCESS else {
-			fatalError("Failed to setup receive port")
+			let filePath = socketFile.path
+			let filePathLength = filePath.withCString { Int(strlen($0)) }
+			guard filePathLength < MemoryLayout.size(ofValue: address.sun_path) else {
+				delegate?.bridgeDelegate(onError: AMSocketError.invalidPath)
+				return
+			}
+			
+			address.sun_family = sa_family_t(AF_UNIX)
+			_ = withUnsafeMutablePointer(to: &address.sun_path.0) { destPr in
+				socketFile.path.withCString { stringPtr in
+					strncpy(destPr, stringPtr, filePathLength)
+				}
+			}
+			
+			//Bind the socket
+			let addressSize = socklen_t(MemoryLayout.size(ofValue: address.sun_family) + filePathLength)
+			let bindResult = withUnsafePointer(to: &address) { ptr in
+				ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
+					bind(socketFD, ptr, addressSize)
+				}
+			}
+			guard bindResult == 0 else {
+				delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				return
+			}
+			
+			//Start listening on the socket
+			let listenResult = listen(socketFD, 1)
+			guard listenResult == 0 else {
+				delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				return
+			}
 		}
 		
-		guard mach_port_insert_right(mach_task_self_, rcv_port, rcv_port, .init(MACH_MSG_TYPE_MAKE_SEND)) == KERN_SUCCESS else {
-			fatalError("failed to add send right")
+		//Start the timeout timer
+		let timer = DispatchSource.makeTimerSource(queue: serverQueue)
+		timer.schedule(deadline: .now() + AMIPCBridge.clientWaitTimeout, repeating: .never)
+		timer.setEventHandler {
+			//Close the server socket
+			close(socketFD)
+			print("Client accept timed out!")
 		}
-		mach_port_insert_member(<#T##task: ipc_space_t##ipc_space_t#>, <#T##name: mach_port_name_t##mach_port_name_t#>, <#T##pset: mach_port_name_t##mach_port_name_t#>)
+		timer.resume()
 		
-		return rcv_port
+		serverQueue.async { [weak self] in
+			print("Accepting client...")
+			//Accept the first client
+			let clientFD = accept(socketFD, nil, nil)
+			print("Client accepted!")
+			
+			//Cancel the timer
+			timer.cancel()
+			
+			guard let self = self else { return }
+			
+			//Make sure the accept succeeded
+			guard clientFD != -1 else {
+				print("Client accept failed!")
+				self.delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				return
+			}
+			
+			//Close the server socket to stop listening for new connections
+			guard close(socketFD) == 0 else {
+				self.delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				return
+			}
+			
+			//Set the socket handle
+			let socketHandle = FileHandle(fileDescriptor: clientFD, closeOnDealloc: true)
+			self.requestQueue.sync {
+				self.socketHandle = socketHandle
+			}
+			
+			//Notify that we've connected successfully
+			self.delegate?.bridgeDelegateOnConnect()
+			
+			//Start reading incoming messages
+			self.readIncomingMessages(forFileHandle: socketHandle)
+		}
 	}
 	
-	public init(forRemotePort remotePort: NSMachPort? = nil, withLocalPort localPort: NSMachPort = NSMachPort(machPort: AMIPCBridge.getMachPort())) {
-		self.localPort = localPort
-		self.remotePort = remotePort
-		
-		super.init()
-		
-		//Set the port delegate
-		self.localPort.setDelegate(self)
-		
-		//Add the port to the run loop
-		self.localPort.schedule(in: RunLoop.current, forMode: .default)
-		
-		//Register ports
-		registerPorts()
-	}
-	
-	public func registerPorts() {
-		var server_port = mach_port_t(localPort.machPort)
-		mach_ports_register(mach_task_self_, &server_port, 1)
-	}
-	
-	///Notifies the remote of this connection
-	public func notifyRegistration() throws {
-		guard let remotePort = remotePort else {
-			throw AMIPCError.noRemote
+	///Starts the client and attempts to connect to the server
+	public func connectClient() {
+		//Create the socket
+		let socketFD = socket(AF_UNIX, SOCK_STREAM, 0)
+		guard socketFD != -1 else {
+			delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+			return
 		}
 		
-		let portMessage = PortMessage(send: remotePort, receive: nil, components: [localPort.machPort])
-		portMessage.msgid = AMIPCType.register.rawValue
-		portMessage.send(before: Date.init(timeIntervalSinceNow: AMIPCBridge.messageDeadline))
-	}
-	
-	///Send a message via fire-and-forget
-	public func send(message: AMIPCMessage) throws {
-		guard let remotePort = remotePort else {
-			throw AMIPCError.noRemote
+		//Prepare the socket address
+		var address = sockaddr_un()
+		
+		let filePath = socketFile.path
+		let filePathLength = filePath.withCString { strlen($0) }
+		guard filePathLength < MemoryLayout.size(ofValue: address.sun_path) else {
+			delegate?.bridgeDelegate(onError: AMSocketError.invalidPath)
+			return
 		}
 		
-		//Send the message
-		let portMessage = PortMessage(send: remotePort, receive: nil, components: [try message.encodeToData()])
-		portMessage.msgid = AMIPCType.notify.rawValue
-		portMessage.send(before: Date.init(timeIntervalSinceNow: AMIPCBridge.messageDeadline))
+		address.sun_family = sa_family_t(AF_UNIX)
+		_ = withUnsafeMutablePointer(to: &address.sun_path.0) { destPr in
+			socketFile.path.withCString { stringPtr in
+				strncpy(destPr, stringPtr, filePathLength)
+			}
+		}
+		
+		serverQueue.async { [weak self] in
+			print("Start client connection to \(filePath)...")
+			
+			//Connect the socket
+			let addressSize = socklen_t(MemoryLayout.size(ofValue: address.sun_family) + filePathLength)
+			let connectResult = withUnsafePointer(to: &address) { ptr in
+				ptr.withMemoryRebound(to: sockaddr.self, capacity: 1) { ptr in
+					connect(socketFD, ptr, addressSize)
+				}
+			}
+			
+			guard let self = self else { return }
+			
+			guard connectResult == 0 else {
+				print("Got connect result \(connectResult) with code \(POSIXError.Code(rawValue: errno)!))")
+				self.delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				return
+			}
+			
+			print("Finish client connection!")
+			
+			//Set the socket handle
+			let socketHandle = FileHandle(fileDescriptor: socketFD, closeOnDealloc: true)
+			self.requestQueue.sync { [weak self] in
+				guard let self = self else { return }
+				self.socketHandle = socketHandle
+			}
+			
+			//Notify that we've connected successfully
+			self.delegate?.bridgeDelegateOnConnect()
+			
+			//Start reading incoming messages
+			self.readIncomingMessages(forFileHandle: socketHandle)
+		}
 	}
 	
-	///Send a message and wait for a response
+	///Loops infinitely and reads incoming messages on the file handle
+	private func readIncomingMessages(forFileHandle fileHandle: FileHandle) {
+		while true {
+			do {
+				//Read the message
+				let data = try AMIPCBridge.read(fromHandle: fileHandle)
+				
+				//Decode the message
+				let amMessage: AMIPCMessage
+				amMessage = try PropertyListDecoder().decode(AMIPCMessage.self, from: data)
+				
+				requestQueue.async { [weak self] in
+					guard let self = self else { return }
+					
+					//Find a matching pending request
+					if let request = self.pendingMessageDict[amMessage.id] {
+						//Clear the pending request
+						self.pendingMessageDict[amMessage.id] = nil
+						
+						//Cancel the timeout timer
+						request.timer.cancel()
+						
+						//Invoke the callback
+						request.callback(amMessage, nil)
+					} else {
+						//Notify the delegate of a new incoming message
+						self.delegate?.bridgeDelegate(onReceive: amMessage)
+					}
+				}
+			} catch {
+				//Invalidate the socket handle and report the error
+				requestQueue.async {
+					self.socketHandle = nil
+					try? fileHandle.closeCompat()
+					self.delegate?.bridgeDelegate(onError: AMSocketError.socketError(POSIXErrorCode(rawValue: errno)))
+				}
+				
+				break
+			}
+		}
+	}
+	
+	///Sends a message via fire-and-forget
+	/// - Parameters:
+	///   - message: The message to send
+	///   - callback: A callback invoked with an error if the message failed to send,
+	///				  or nil if the message was sent successfully
+	public func send(message: AMIPCMessage, callback: ((Error?) -> Void)? = nil) {
+		//Get the socket handle
+		guard let socketHandle = socketHandle else {
+			callback?(AMIPCError.noRemote)
+			return
+		}
+		
+		requestQueue.async {
+			do {
+				let data = try message.encodeToData()
+				try AMIPCBridge.write(data: data, toHandle: socketHandle)
+			} catch {
+				callback?(error)
+				return
+			}
+			
+			//OK
+			callback?(nil)
+		}
+	}
+	
+	///Sends a message and listens for a response
+	/// - Parameters:
+	///   - message: The message to send
+	///   - callback: A callback invoked with the response message, or an error if th message failed
 	public func send(message: AMIPCMessage, callback: @escaping SendMessageCallback) {
-		guard let remotePort = remotePort else {
+		//Get the socket handle
+		guard let socketHandle = socketHandle else {
 			callback(nil, AMIPCError.noRemote)
 			return
 		}
 		
-		let messageData: Data
-		do {
-			messageData = try message.encodeToData()
-		} catch {
-			callback(nil, error)
-			return
-		}
-		
-		//Send the message
-		let portMessage = PortMessage(send: remotePort, receive: localPort, components: [messageData])
-		portMessage.msgid = AMIPCType.request.rawValue
-		portMessage.send(before: Date.init(timeIntervalSinceNow: AMIPCBridge.messageDeadline))
-		
-		//Schedule a deadline
-		let timer = Timer.scheduledTimer(withTimeInterval: AMIPCBridge.messageDeadline, repeats: false) { [weak self] timer in
-			guard let self = self else { return }
-			
-			//Cancel the pending request and report a failure
-			self.pendingMessageDict[message.id] = nil
-			callback(nil, AMIPCError.timeout)
-		}
-		
-		//Register the request for a reply
-		pendingMessageDict[message.id] = AMIPCBridgePendingRequest(
-			callback: callback,
-			timer: timer
-		)
-	}
-}
-
-extension AMIPCBridge: NSMachPortDelegate {
-	public func handle(_ portMessage: PortMessage) {
-		//Map the port message ID
-		guard let type = AMIPCType(rawValue: portMessage.msgid) else {
-			print("Received unknown AMIPCBridge port message ID \(portMessage.msgid)")
-			return
-		}
-		
-		//Handle registrations
-		if type == .register {
-			//Decode the message
-			guard let components = portMessage.components,
-				  components.count == 1,
-				  let remotePortRaw = components[0] as? UInt32 else {
-				print("Received invalid AMIPCBridge register payload")
+		requestQueue.async {
+			//Send the message
+			do {
+				let data = try message.encodeToData()
+				try AMIPCBridge.write(data: data, toHandle: socketHandle)
+			} catch {
+				callback(nil, error)
 				return
 			}
 			
-			//Set the remote port
-			print("Received registration payload")
-			remotePort = NSMachPort(machPort: remotePortRaw)
-			
-			//Notify the delegate
-			delegate?.bridgeDelegate(onReceiveRegister: remotePortRaw)
-			
-			return
-		}
-		
-		//Decode the message
-		let amMessage: AMIPCMessage
-		do {
-			amMessage = try AMIPCMessage.fromPortMessage(portMessage)
-		} catch {
-			print("Failed to decode AMIPCBridge port message for \(type): \(error)")
-			return
-		}
-		
-		if type == .notify {
-			//Call the delegate
-			delegate?.bridgeDelegate(onReceive: amMessage)
-		} else if type == .request {
-			DispatchQueue.main.async { [weak self, amMessage] in
+			//Schedule a deadline
+			let timer = DispatchSource.makeTimerSource(queue: self.requestQueue)
+			timer.schedule(deadline: .now() + AMIPCBridge.requestTimeout, repeating: .never)
+			timer.setEventHandler { [weak self] in
 				guard let self = self else { return }
 				
-				//Find a matching pending request
-				guard let request = self.pendingMessageDict[amMessage.id] else {
-					return
-				}
-				
-				//Clear the pending request
-				self.pendingMessageDict[amMessage.id] = nil
-				
-				//Cancel the timeout timer
-				request.timer.invalidate()
-				
-				//Invoke the callback
-				request.callback(amMessage, nil)
+				//Cancel the pending request and report a failure
+				self.pendingMessageDict[message.id] = nil
+				callback(nil, AMIPCError.timeout)
 			}
+			timer.resume()
+			
+			//Register the request for a reply
+			self.pendingMessageDict[message.id] = AMIPCBridgePendingRequest(
+					callback: callback,
+					timer: timer
+			)
 		}
+	}
+	
+	///Writes a block of data to the receiver
+	private static func write(data: Data, toHandle handle: FileHandle) throws {
+		try handle.writeCompat(contentsOf: withUnsafeBytes(of: Int(data.count)) { Data($0) })
+		try handle.writeCompat(contentsOf: data)
+	}
+	
+	///Reads a block of data from the sender
+	private static func read(fromHandle handle: FileHandle) throws -> Data {
+		let length = try handle.readCompat(upToCount: MemoryLayout<Int>.size)
+				.withUnsafeBytes { $0.load(as: Int.self) }
+		return try handle.readCompat(upToCount: length)
 	}
 }
 
 public protocol AMIPCBridgeDelegate : AnyObject {
-	///Handles when a new client is registered
-	func bridgeDelegate(onReceiveRegister port: UInt32)
+	///Handles when a client is connected
+	func bridgeDelegateOnConnect()
+	
+	///Handles any errors
+	func bridgeDelegate(onError error: Error)
 	
 	///Handles when a receive value is received
 	func bridgeDelegate(onReceive message: AMIPCMessage)

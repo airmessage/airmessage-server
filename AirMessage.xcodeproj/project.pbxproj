@@ -47,7 +47,6 @@
 		ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */; };
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
-		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
 		ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */; };
 		ED7CC006285110E9005C6B58 /* CustomQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7CC005285110E9005C6B58 /* CustomQueue.swift */; };
 		ED81BF24287A2C8300546775 /* IMCore11.h in Headers */ = {isa = PBXBuildFile; fileRef = ED81BF23287A2C8300546775 /* IMCore11.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -204,15 +203,12 @@
 		ED81C107287C192400546775 /* AirMessageKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED81C0ED287C146400546775 /* AirMessageKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED81C10C287C1A7200546775 /* libAirMessageKitAgent.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = EDF766532879F40200FBDF1E /* libAirMessageKitAgent.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
-		ED853E0C2744291400DCF446 /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
-		ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
 		ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED86F6DC26A23A9D00BCD826 /* SystemHelper.swift */; };
 		ED87C51E275A996100EBB3C6 /* FaceTimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */; };
 		ED87C520275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87C51F275BB2B800EBB3C6 /* AccessibilityAccessViewController.swift */; };
 		ED891A3225A2FF08002230EB /* PasswordEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A3125A2FF08002230EB /* PasswordEntryViewController.swift */; };
 		ED891A3825A30701002230EB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = ED891A3A25A30701002230EB /* Localizable.strings */; };
 		ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED891A4725A30BC6002230EB /* PasswordGrade.swift */; };
-		ED8D56482846E00000B6DB6B /* AssertionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D56472846E00000B6DB6B /* AssertionHelper.swift */; };
 		ED8F3A7327494FA50069F25D /* AdvancedAttachmentsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7227494FA50069F25D /* AdvancedAttachmentsFilter.swift */; };
 		ED8F3A75274950770069F25D /* ContentTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A74274950770069F25D /* ContentTypeHelper.swift */; };
 		ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A782749A05D0069F25D /* MessageError.swift */; };
@@ -384,6 +380,12 @@
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
+		EDEA46C82882F5EB00DC45EB /* FileHandleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */; };
+		EDEA46C92882F5EB00DC45EB /* AssertionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D56472846E00000B6DB6B /* AssertionHelper.swift */; };
+		EDEA46CA2882F5EB00DC45EB /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
+		EDEA46CB2882F5FB00DC45EB /* libLocalUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDEA46BF2882F5AB00DC45EB /* libLocalUtils.a */; };
+		EDEA46CE2882F89500DC45EB /* ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = ED853E0B2744291400DCF446 /* ObjC.m */; };
+		EDEA46D0288326B400DC45EB /* libLocalUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDEA46BF2882F5AB00DC45EB /* libLocalUtils.a */; };
 		EDEDF9C9274152BD00C85506 /* AirPacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDF9C8274152BD00C85506 /* AirPacker.swift */; };
 		EDEDFFE42756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE32756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift */; };
 		EDEDFFE72756E1330088F2E3 /* CertificateTrust.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */; };
@@ -457,6 +459,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = ED28095025A20332009E7636;
 			remoteInfo = AirMessage;
+		};
+		EDEA46CC2882F5FB00DC45EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDEA46BE2882F5AB00DC45EB;
+			remoteInfo = LocalUtils;
+		};
+		EDEA46D1288326BB00DC45EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED28094925A20332009E7636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDEA46BE2882F5AB00DC45EB;
+			remoteInfo = LocalUtils;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -961,6 +977,8 @@
 		EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientListViewController.swift; sourceTree = "<group>"; };
 		EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTableCellView.swift; sourceTree = "<group>"; };
 		EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SoftwareUpdate.sh; sourceTree = "<group>"; };
+		EDEA46BF2882F5AB00DC45EB /* libLocalUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLocalUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDEA46CF2882F8E400DC45EB /* LocalUtils-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LocalUtils-Bridging-Header.h"; sourceTree = "<group>"; };
 		EDEDF9C8274152BD00C85506 /* AirPacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPacker.swift; sourceTree = "<group>"; };
 		EDEDFFE32756D01B0088F2E3 /* ForwardCompatURLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardCompatURLSessionDelegate.swift; sourceTree = "<group>"; };
 		EDEDFFE62756E1330088F2E3 /* CertificateTrust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateTrust.swift; sourceTree = "<group>"; };
@@ -985,6 +1003,7 @@
 				ED9C293A2756684200EA07C8 /* Sentry in Frameworks */,
 				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
 				EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */,
+				EDEA46CB2882F5FB00DC45EB /* libLocalUtils.a in Frameworks */,
 				ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
@@ -1019,6 +1038,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDEA46D0288326B400DC45EB /* libLocalUtils.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1039,6 +1059,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EDDD36CB280992030001FDC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDEA46BD2882F5AB00DC45EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1132,6 +1159,7 @@
 				ED81C0D5287B7ECB00546775 /* AirMessageKitIPC */,
 				ED81C0EE287C146400546775 /* AirMessageKit */,
 				ED42ECDD287C217B00D8FA1A /* AirMessageKitTestCLI */,
+				EDEA46C02882F5AB00DC45EB /* LocalUtils */,
 				ED28095225A20332009E7636 /* Products */,
 				ED9FBBC427E13F430037DF16 /* Frameworks */,
 			);
@@ -1149,6 +1177,7 @@
 				ED81C0D4287B7ECB00546775 /* libAirMessageKitIPC.a */,
 				ED81C0ED287C146400546775 /* AirMessageKit.framework */,
 				ED42ECDC287C217B00D8FA1A /* AirMessageKitTestCLI */,
+				EDEA46BF2882F5AB00DC45EB /* libLocalUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1162,7 +1191,6 @@
 				EDD70D682699F1AE00E8DC06 /* AppleScript */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
 				EDC8228A2697B75A007A8DF9 /* AuthSite */,
-				ED853E0E27442BCF00DCF446 /* Compat */,
 				ED3781F7273F399A00310EAD /* Connection */,
 				2EAEE649853E94A70D112B63 /* Constants */,
 				ED891A4425A30B77002230EB /* Controllers */,
@@ -1175,7 +1203,6 @@
 				EDF7665727516CBE0008F730 /* LocalizeStoryboard.swift */,
 				ED28095A25A20333009E7636 /* Main.storyboard */,
 				2EAEEACDB56ABC3A7FDFAC48 /* MessageInterop */,
-				ED853E0A274428F300DCF446 /* ObjC */,
 				EDF7664F274FC9CB0008F730 /* Packer */,
 				ED44738C26A46F86006F5F0E /* Secrets.xcconfig */,
 				EDEDFFE52756E10A0088F2E3 /* Security */,
@@ -1381,23 +1408,6 @@
 			path = AirMessageKit;
 			sourceTree = "<group>";
 		};
-		ED853E0A274428F300DCF446 /* ObjC */ = {
-			isa = PBXGroup;
-			children = (
-				ED853E0B2744291400DCF446 /* ObjC.m */,
-				ED853E0D2744291E00DCF446 /* ObjC.h */,
-			);
-			path = ObjC;
-			sourceTree = "<group>";
-		};
-		ED853E0E27442BCF00DCF446 /* Compat */ = {
-			isa = PBXGroup;
-			children = (
-				ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */,
-			);
-			path = Compat;
-			sourceTree = "<group>";
-		};
 		ED891A4425A30B77002230EB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1418,12 +1428,10 @@
 		ED891A4625A30BAE002230EB /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				ED8D56472846E00000B6DB6B /* AssertionHelper.swift */,
 				EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */,
 				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
 				ED8F3A74274950770069F25D /* ContentTypeHelper.swift */,
 				2EAEE803221D8E5C3BD8D507 /* CryptoHelper.swift */,
-				ED44738A26A46B68006F5F0E /* DispatchHelper.swift */,
 				ED87C51D275A996100EBB3C6 /* FaceTimeHelper.swift */,
 				EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */,
 				ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */,
@@ -1682,6 +1690,19 @@
 				EDDD36D7280994BB0001FDC3 /* CompressionHelperTests.swift */,
 			);
 			path = AirMessageTests;
+			sourceTree = "<group>";
+		};
+		EDEA46C02882F5AB00DC45EB /* LocalUtils */ = {
+			isa = PBXGroup;
+			children = (
+				ED8D56472846E00000B6DB6B /* AssertionHelper.swift */,
+				ED44738A26A46B68006F5F0E /* DispatchHelper.swift */,
+				ED853E0F27442BD900DCF446 /* FileHandleCompat.swift */,
+				ED853E0B2744291400DCF446 /* ObjC.m */,
+				ED853E0D2744291E00DCF446 /* ObjC.h */,
+				EDEA46CF2882F8E400DC45EB /* LocalUtils-Bridging-Header.h */,
+			);
+			path = LocalUtils;
 			sourceTree = "<group>";
 		};
 		EDEDFFE52756E10A0088F2E3 /* Security */ = {
@@ -2016,6 +2037,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDEA46BB2882F5AB00DC45EB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDF7664F2879F40200FBDF1E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2043,6 +2071,7 @@
 			dependencies = (
 				EDC898652752BF290081BDB7 /* PBXTargetDependency */,
 				ED81C0F2287C146400546775 /* PBXTargetDependency */,
+				EDEA46CD2882F5FB00DC45EB /* PBXTargetDependency */,
 			);
 			name = AirMessage;
 			packageProductDependencies = (
@@ -2126,6 +2155,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				EDEA46D2288326BB00DC45EB /* PBXTargetDependency */,
 			);
 			name = AirMessageKitIPC;
 			productName = AirMessageKitIPC;
@@ -2189,6 +2219,23 @@
 			productReference = EDDD36CE280992030001FDC3 /* AirMessageTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		EDEA46BE2882F5AB00DC45EB /* LocalUtils */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDEA46C72882F5AB00DC45EB /* Build configuration list for PBXNativeTarget "LocalUtils" */;
+			buildPhases = (
+				EDEA46BB2882F5AB00DC45EB /* Headers */,
+				EDEA46BC2882F5AB00DC45EB /* Sources */,
+				EDEA46BD2882F5AB00DC45EB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LocalUtils;
+			productName = LocalUtils;
+			productReference = EDEA46BF2882F5AB00DC45EB /* libLocalUtils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		EDF766522879F40200FBDF1E /* AirMessageKitAgent */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EDF766592879F40200FBDF1E /* Build configuration list for PBXNativeTarget "AirMessageKitAgent" */;
@@ -2246,6 +2293,9 @@
 						CreatedOnToolsVersion = 13.3.1;
 						TestTargetID = ED28095025A20332009E7636;
 					};
+					EDEA46BE2882F5AB00DC45EB = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					EDF766522879F40200FBDF1E = {
 						CreatedOnToolsVersion = 13.4.1;
 						LastSwiftMigration = 1340;
@@ -2284,6 +2334,7 @@
 				ED81C0D3287B7ECB00546775 /* AirMessageKitIPC */,
 				ED81C0EC287C146400546775 /* AirMessageKit */,
 				ED42ECDB287C217B00D8FA1A /* AirMessageKitTestCLI */,
+				EDEA46BE2882F5AB00DC45EB /* LocalUtils */,
 			);
 		};
 /* End PBXProject section */
@@ -2401,7 +2452,6 @@
 				EDF7664E274FC8560008F730 /* BytePacker.swift in Sources */,
 				EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */,
 				ED891A4825A30BC6002230EB /* PasswordGrade.swift in Sources */,
-				ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */,
 				ED86F6DD26A23A9D00BCD826 /* SystemHelper.swift in Sources */,
 				ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */,
 				ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */,
@@ -2432,10 +2482,8 @@
 				2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */,
 				ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */,
 				ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */,
-				ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */,
 				ED15912326AC5484008F5304 /* LogManager.swift in Sources */,
 				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
-				ED853E0C2744291400DCF446 /* ObjC.m in Sources */,
 				EDDA7B85274315BD0027A82C /* DBFetchGrouping.swift in Sources */,
 				2EAEEADDBFC2E5105676FC59 /* UpdateHelper.swift in Sources */,
 				2EAEE138CCE02FC00483B2E7 /* UpdateStruct.swift in Sources */,
@@ -2466,7 +2514,6 @@
 				2EAEEADDCBE7124BBDB9CDF4 /* CommConst.swift in Sources */,
 				2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */,
 				EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */,
-				ED8D56482846E00000B6DB6B /* AssertionHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2530,6 +2577,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDEA46BC2882F5AB00DC45EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDEA46C92882F5EB00DC45EB /* AssertionHelper.swift in Sources */,
+				EDEA46C82882F5EB00DC45EB /* FileHandleCompat.swift in Sources */,
+				EDEA46CA2882F5EB00DC45EB /* DispatchHelper.swift in Sources */,
+				EDEA46CE2882F89500DC45EB /* ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDF766502879F40200FBDF1E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2587,6 +2645,16 @@
 			isa = PBXTargetDependency;
 			target = ED28095025A20332009E7636 /* AirMessage */;
 			targetProxy = EDDD36D2280992030001FDC3 /* PBXContainerItemProxy */;
+		};
+		EDEA46CD2882F5FB00DC45EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDEA46BE2882F5AB00DC45EB /* LocalUtils */;
+			targetProxy = EDEA46CC2882F5FB00DC45EB /* PBXContainerItemProxy */;
+		};
+		EDEA46D2288326BB00DC45EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDEA46BE2882F5AB00DC45EB /* LocalUtils */;
+			targetProxy = EDEA46D1288326BB00DC45EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3208,6 +3276,45 @@
 			};
 			name = Release;
 		};
+		EDEA46C52882F5AB00DC45EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					arm64e,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				EXECUTABLE_PREFIX = lib;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "LocalUtils/LocalUtils-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EDEA46C62882F5AB00DC45EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					arm64e,
+				);
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T86T6AP696;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "LocalUtils/LocalUtils-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		EDF7665A2879F40200FBDF1E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3354,6 +3461,15 @@
 			buildConfigurations = (
 				EDDD36D4280992030001FDC3 /* Debug */,
 				EDDD36D5280992030001FDC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDEA46C72882F5AB00DC45EB /* Build configuration list for PBXNativeTarget "LocalUtils" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDEA46C52882F5AB00DC45EB /* Debug */,
+				EDEA46C62882F5AB00DC45EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

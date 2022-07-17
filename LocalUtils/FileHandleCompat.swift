@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension FileHandle {
+public extension FileHandle {
 	func readCompat(upToCount count: Int) throws -> Data {
 		if #available(macOS 10.15.4, *) {
 			return try read(upToCount: count) ?? Data()

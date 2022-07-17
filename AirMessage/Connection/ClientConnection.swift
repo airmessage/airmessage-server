@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LocalUtils
 
 class ClientConnection {
 	let id: Int32

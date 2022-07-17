@@ -10,7 +10,7 @@ import AirMessageKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-	let context = AMKContext()
+	let context = try! AMKContext()
 	
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		context.launch()

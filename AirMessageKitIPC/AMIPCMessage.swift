@@ -21,30 +21,14 @@ public struct AMIPCMessage: Codable {
 		self.payload = payload
 	}
 	
-	///Decodes a port message to an AirMessage IPC message
-	public static func fromPortMessage(_ portMessage: PortMessage) throws -> AMIPCMessage {
-		//Make sure the message has components
-		guard let components = portMessage.components else {
-			throw AMIPCMessageError.nilData
-		}
-		
-		//Make sure the message has a single component
-		guard components.count == 1 else {
-			throw AMIPCMessageError.emptyData
-		}
-		
-		//Make sure the message's component is data
-		guard let componentData = components[0] as? Data else {
-			throw AMIPCMessageError.dataFormat
-		}
-		
-		//Decode the message data to an AMIPCMessage
-		return try PropertyListDecoder().decode(AMIPCMessage.self, from: componentData)
+	///Decodes this message from data
+	public static func decodeFromData(_ data: Data) throws -> AMIPCMessage {
+		try PropertyListDecoder().decode(AMIPCMessage.self, from: data)
 	}
 	
 	///Encodes this message to Data
 	public func encodeToData() throws -> Data {
-		return try PropertyListEncoder().encode(self)
+		try PropertyListEncoder().encode(self)
 	}
 }
 
