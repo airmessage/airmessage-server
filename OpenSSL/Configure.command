@@ -10,6 +10,9 @@ cd "$(dirname "$0")"
 
 OPENSSL_VERSION=3.0.4
 
+#Clean up
+rm -rf Headers libcrypto.a
+
 #Download OpenSSL
 echo "Downloading OpenSSL version $OPENSSL_VERSION..."
 curl https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz --output openssl-$OPENSSL_VERSION.tar.gz --silent
