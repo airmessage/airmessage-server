@@ -50,8 +50,8 @@ class DataProxyTCP: DataProxy {
 		}
 		
 		//Configure the socket
-		var opt: Int32 = -1
-		let setOptResult = setsockopt(socketHandle.fileDescriptor, SOL_SOCKET, SO_REUSEADDR, &opt, socklen_t(MemoryLayout<Int32>.size))
+		var opt: Int32 = 1
+		let setOptResult = setsockopt(socketHandle.fileDescriptor, SOL_SOCKET, SO_REUSEADDR, &opt, socklen_t(MemoryLayout.size(ofValue: opt)))
 		guard setOptResult == 0 else {
 			LogManager.log("Failed to set socket opt: \(errno)", level: .error)
 			
@@ -97,6 +97,18 @@ class DataProxyTCP: DataProxy {
 					if self.serverRunning {
 						//If the user hasn't stopped the server, report the error
 						LogManager.log("Failed to accept new client: \(errno)", level: .notice)
+						self.delegate?.dataProxy(self, didStopWithState: .errorTCPInternal, isRecoverable: false)
+					}
+					return
+				}
+				
+				//Configure the socket to not raise SIGPIPE
+				var opt: Int32 = 1
+				let setOptResult = setsockopt(clientFD, SOL_SOCKET, SO_NOSIGPIPE, &opt, socklen_t(MemoryLayout.size(ofValue: opt)))
+				guard setOptResult == 0 else {
+					LogManager.log("Failed to set client socket opt: \(errno)", level: .error)
+					
+					if let self = self, self.serverRunning {
 						self.delegate?.dataProxy(self, didStopWithState: .errorTCPInternal, isRecoverable: false)
 					}
 					return
