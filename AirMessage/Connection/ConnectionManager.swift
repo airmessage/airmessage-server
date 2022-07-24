@@ -708,6 +708,12 @@ class ConnectionManager {
 	}
 	
 	private func handleMessageAttachmentRequest(packer messagePacker: inout AirPacker, from client: C) throws {
+		///Responds to this request with an error code
+		func sendFailedRequest(withCode code: NSTAttachmentRequest) {
+			guard let dataProxy = dataProxy else { return }
+			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: code)
+		}
+		
 		let requestID = try messagePacker.unpackShort() //The request ID to avoid collisions
 		let chunkSize = try messagePacker.unpackInt() //How many bytes to upload per packet
 		let attachmentGUID = try messagePacker.unpackString() //The GUID of the attachment file to download
@@ -732,24 +738,21 @@ class ConnectionManager {
 			SentrySDK.capture(error: error)
 			
 			//Send a response (I/O error)
-			guard let dataProxy = dataProxy else { return }
-			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .io)
+			sendFailedRequest(withCode: .io)
 			return
 		}
 		
 		//Check if the entry was found
 		guard let fileDetails = fileDetails else {
 			//Send a response (not found)
-			guard let dataProxy = dataProxy else { return }
-			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .notFound)
+			sendFailedRequest(withCode: .notFound)
 			return
 		}
 		
 		//Check if the file exists
 		guard FileManager.default.fileExists(atPath: fileDetails.url.path) else {
 			//Send a response (not saved)
-			guard let dataProxy = dataProxy else { return }
-			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .notSaved)
+			sendFailedRequest(withCode: .notSaved)
 			return
 		}
 		
@@ -784,13 +787,29 @@ class ConnectionManager {
 		let fileSize: Int64
 		do {
 			let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
-			fileSize = Int64(resourceValues.fileSize!)
+			
+			guard let fileSizeInt = resourceValues.fileSize else {
+				LogManager.log("Failed to get file size for attachment file \(fileURL.path) (\(attachmentGUID)): file size is nil", level: .notice)
+				
+				//Send a response (I/O)
+				sendFailedRequest(withCode: .io)
+				return
+			}
+			
+			guard let fileSizeInt64 = Int64.init(exactly: fileSizeInt) else {
+				LogManager.log("Failed to get file size for attachment file \(fileURL.path) (\(attachmentGUID)): file size \(fileSizeInt) is invalid", level: .notice)
+				
+				//Send a response (I/O)
+				sendFailedRequest(withCode: .io)
+				return
+			}
+			
+			fileSize = fileSizeInt64
 		} catch {
 			LogManager.log("Failed to get file size for attachment file \(fileURL.path) (\(attachmentGUID)): \(error)", level: .notice)
 			
 			//Send a response (I/O)
-			guard let dataProxy = dataProxy else { return }
-			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .io)
+			sendFailedRequest(withCode: .io)
 			return
 		}
 		
@@ -852,7 +871,7 @@ class ConnectionManager {
 			
 			//Send an error
 			guard let dataProxy = dataProxy else { return }
-			ConnectionManager.sendAttachmentReqFail(dataProxy, to: client, withReqID: requestID, withCode: .io)
+			sendFailedRequest(withCode: .io)
 			return
 		}
 	}
