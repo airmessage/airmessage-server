@@ -2,7 +2,7 @@ SELECT
 	chat.guid AS "chat.guid",
 	chat.display_name AS "chat.display_name",
 	chat.service_name AS "chat.service_name",
-	message.text AS "message.text",
+	message.attributedBody AS "message.attributedBody",
 	message.date AS "message.date",
 	message.is_from_me AS "message.is_from_me",
 	handle.id AS "handle.id",

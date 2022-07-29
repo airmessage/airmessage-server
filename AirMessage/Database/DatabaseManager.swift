@@ -244,7 +244,7 @@ class DatabaseManager {
 			"message.date",
 			"message.item_type",
 			"message.group_action_type",
-			"message.text",
+			"message.attributedBody",
 			"message.subject",
 			"message.error",
 			"message.date_read",

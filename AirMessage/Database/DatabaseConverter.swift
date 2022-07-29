@@ -154,7 +154,7 @@ class DatabaseConverter {
 			}
 			
 			//Message-specific parameters
-			let text = cleanMessageText(row[indices["message.text"]!] as! String?)
+			let text = parseAttributedBody(row[indices["message.attributedBody"]!] as! SQLite.Blob?, withLogID: guid)
 			let subject = row[indices["message.subject"]!] as! String?
 			let sendEffect: String?
 			if #available(macOS 10.12, *) {
@@ -260,7 +260,7 @@ class DatabaseConverter {
 			.components(separatedBy: ",")
 		
 		let lastMessageDate = row[indices["message.date"]!] as! Int64
-		let lastMessageText = cleanMessageText(row[indices["message.text"]!] as! String?)
+		let lastMessageText = parseAttributedBody(row[indices["message.attributedBody"]!] as! SQLite.Blob?)
 		let lastMessageSendStyle: String?
 		if #available(macOS 10.12, *) {
 			lastMessageSendStyle = row[indices["message.expressive_send_style_id"]!] as! String?
@@ -444,6 +444,28 @@ class DatabaseConverter {
 	}
 	
 	//MARK: Helpers
+	
+	///Parses an attributed body string and cleans it
+	static func parseAttributedBody(_ body: SQLite.Blob?, withLogID logID: String? = nil) -> String? {
+		//Skip if the body is nil
+		guard let body = body else {
+			return nil
+		}
+		
+		//Create an unarchiver
+		guard let unarchiver = NSUnarchiver(forReadingWith: Data.fromDatatypeValue(body)) else {
+			LogManager.log("Failed to create unarchiver for message \(logID ?? "unknown")", level: .notice)
+			return nil
+		}
+		
+		//Retrieve the archive contents
+		guard let attributedString = unarchiver.decodeObject() as? NSAttributedString else {
+			LogManager.log("Failed to decode object for message \(logID ?? "unknown")", level: .notice)
+			return nil
+		}
+		
+		return cleanMessageText(attributedString.string)
+	}
 	
 	///Cleans a message string found in the database
 	static func cleanMessageText(_ message: String?) -> String? {
