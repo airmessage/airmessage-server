@@ -15,7 +15,7 @@ on main(addressList, serviceType, message, isFile)
 		--Create the participants
 		set participantList to {}
 		repeat with address in addressList
-			set end of participantList to buddy address of targetService
+			set end of participantList to a reference to buddy address of targetService
 		end repeat
 		
 		--Create the chat
