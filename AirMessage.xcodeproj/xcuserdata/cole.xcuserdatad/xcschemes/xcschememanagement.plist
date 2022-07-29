@@ -12,21 +12,21 @@
 		<key>SQLite (Playground) 1.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<false />
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 		<key>SQLite (Playground) 2.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<false />
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
 		<key>SQLite (Playground).xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<false />
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
@@ -36,12 +36,12 @@
 		<key>ED28095025A20332009E7636</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>EDC8985F2752BF290081BDB7</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 	</dict>
 </dict>

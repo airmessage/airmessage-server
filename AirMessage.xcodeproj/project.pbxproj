@@ -1644,7 +1644,7 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AirMessage/Info.plist;
@@ -1653,7 +1653,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 4.0.1;
+				MARKETING_VERSION = 4.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1671,7 +1671,7 @@
 				CODE_SIGN_ENTITLEMENTS = AirMessage/AirMessage.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = T86T6AP696;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AirMessage/Info.plist;
@@ -1680,7 +1680,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 4.0.1;
+				MARKETING_VERSION = 4.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
 				PROVISIONING_PROFILE_SPECIFIER = "";
