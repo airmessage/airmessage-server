@@ -870,7 +870,6 @@ class ConnectionManager {
 			guard client.isConnected.value else { return }
 			
 			//Send an error
-			guard let dataProxy = dataProxy else { return }
 			sendFailedRequest(withCode: .io)
 			return
 		}
