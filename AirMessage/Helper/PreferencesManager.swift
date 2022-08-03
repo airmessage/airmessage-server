@@ -141,7 +141,11 @@ class PreferencesManager {
 	
 	private func setValue(_ value: String, for account: KeychainAccount) throws {
 		try runOnMain {
-			try KeychainManager.setValue(value, for: account.rawValue)
+			if value.isEmpty {
+				try KeychainManager.removeValue(for: account.rawValue)
+			} else {
+				try KeychainManager.setValue(value, for: account.rawValue)
+			}
 			keychainValues[account.rawValue] = value
 		}
 	}
