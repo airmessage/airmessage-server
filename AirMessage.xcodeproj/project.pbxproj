@@ -45,6 +45,7 @@
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
 		ED44738926A459CA006F5F0E /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738826A459CA006F5F0E /* FirebaseAuthHelper.swift */; };
 		ED44738B26A46B68006F5F0E /* DispatchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738A26A46B68006F5F0E /* DispatchHelper.swift */; };
+		ED456D99289EFE1E00729CF6 /* WebSocketKit in Frameworks */ = {isa = PBXBuildFile; productRef = ED456D98289EFE1E00729CF6 /* WebSocketKit */; };
 		ED78BDCE2757A4190047EDC4 /* URLSessionCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED78BDCD2757A4190047EDC4 /* URLSessionCompat.swift */; };
 		ED7CC006285110E9005C6B58 /* CustomQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7CC005285110E9005C6B58 /* CustomQueue.swift */; };
 		ED853E072744218900DCF446 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED853E062744218900DCF446 /* ReadWriteLock.swift */; };
@@ -69,7 +70,6 @@
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
 		EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = EDB04DBD273DDFDA00673AE4 /* SQLite */; };
 		EDC1DAF8274DA24C00D32C6B /* AtomicValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */; };
-		EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = EDC1DAFA274DAB7700D32C6B /* Starscream */; };
 		EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */; };
 		EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */; };
 		EDC58E042756F59200935C49 /* Certificates in Resources */ = {isa = PBXBuildFile; fileRef = EDC58E032756F59200935C49 /* Certificates */; };
@@ -544,11 +544,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDC1DAFB274DAB7700D32C6B /* Starscream in Frameworks */,
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
 				ED9C293A2756684200EA07C8 /* Sentry in Frameworks */,
 				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
 				EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */,
+				ED456D99289EFE1E00729CF6 /* WebSocketKit in Frameworks */,
 				ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */,
 				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
@@ -1201,9 +1201,9 @@
 				ED98B3EE2711D8300029DD09 /* Ink */,
 				ED98B3F12711D84E0029DD09 /* Zip */,
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
-				EDC1DAFA274DAB7700D32C6B /* Starscream */,
 				ED9C29392756684200EA07C8 /* Sentry */,
 				ED9FBBC527E13F430037DF16 /* Zlib */,
+				ED456D98289EFE1E00729CF6 /* WebSocketKit */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -1283,8 +1283,8 @@
 				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
 				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
 				EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
-				EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */,
 				ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -1853,6 +1853,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tagavari/websocket-kit-osx10.git";
+			requirement = {
+				branch = osx10;
+				kind = branch;
+			};
+		};
 		ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnsundell/ink.git";
@@ -1885,14 +1893,6 @@
 				minimumVersion = 0.13.0;
 			};
 		};
-		EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/daltoniam/Starscream.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/httpswift/swifter.git";
@@ -1904,6 +1904,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ED456D98289EFE1E00729CF6 /* WebSocketKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */;
+			productName = WebSocketKit;
+		};
 		ED98B3EE2711D8300029DD09 /* Ink */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */;
@@ -1927,11 +1932,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
-		};
-		EDC1DAFA274DAB7700D32C6B /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EDC1DAF9274DAB7700D32C6B /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
 		};
 		EDDE47302688C2890029628B /* Swifter */ = {
 			isa = XCSwiftPackageProductDependency;
