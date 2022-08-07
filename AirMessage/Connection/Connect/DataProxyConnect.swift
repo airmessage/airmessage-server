@@ -413,13 +413,19 @@ class DataProxyConnect: DataProxy {
 		//Map the error code
 		let localError: ServerState
 		switch code {
-			case .normalClosure:
+			case .normalClosure, .unexpectedServerError:
 				localError = .errorInternet
 			case .protocolError, .policyViolation:
 				localError = .errorConnBadRequest
 			case .unknown(let rawCode):
-				//Custom AirMessage codes
 				switch rawCode {
+					//Other WebSocket close codes
+					case 1012, //Server error
+						1013, //Service restart
+						1014, //Try again later
+						1015: //Bad gateway
+						localError = .errorInternet
+					//Custom AirMessage codes
 					case ConnectCloseCode.incompatibleProtocol.rawValue:
 						localError = .errorConnOutdated
 					case ConnectCloseCode.accountValidation.rawValue:
