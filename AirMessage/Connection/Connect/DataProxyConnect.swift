@@ -7,6 +7,7 @@
 
 import Foundation
 import NIO
+import NIOSSL
 import NIOWebSocket
 import WebSocketKit
 import Sentry
@@ -90,7 +91,16 @@ class DataProxyConnect: DataProxy {
 		headers.add(name: "Origin", value: "app")
 		
 		//Create the WebSocket connection
-		WebSocket.connect(to: components.url!, headers: headers, configuration: WebSocketClient.Configuration(), on: eventLoopGroup, onUpgrade: { [weak self] webSocket in
+		var tlsConfiguration = TLSConfiguration.makeClientConfiguration()
+		if #available(macOS 10.13, *) {
+			
+		} else {
+			let certificates = CertificateTrust.certificateFiles.map { certificateURL in try! NIOSSLCertificate(file: certificateURL.path, format: .der) }
+			tlsConfiguration.additionalTrustRoots = [.certificates(certificates)]
+			tlsConfiguration.trustRoots = .certificates([])
+		}
+		
+		WebSocket.connect(to: components.url!, headers: headers, configuration: WebSocketClient.Configuration(tlsConfiguration: tlsConfiguration), on: eventLoopGroup, onUpgrade: { [weak self] webSocket in
 			//Report open event
 			self?.processingQueue.async { [weak self] in
 				guard let self = self else { return }

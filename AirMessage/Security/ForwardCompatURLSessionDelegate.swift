@@ -20,13 +20,10 @@ class ForwardCompatURLSessionDelegate: NSObject, URLSessionDelegate {
 		#endif
 		
 		if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-			//Get all local root certificates
-			let certificates = loadBundleCertificates()
-			
 			//We override server trust evaluation (`NSURLAuthenticationMethodServerTrust`) to allow the
 			//server to use a custom root certificate (`isrgrootx1.der`).
 			let trust = challenge.protectionSpace.serverTrust!
-			if evaluateCertificate(allowing: certificates, for: trust) {
+			if CertificateTrust.evaluateCertificate(allowing: CertificateTrust.secCertificates, for: trust) {
 				completionHandler(.useCredential, URLCredential(trust: trust))
 			} else {
 				completionHandler(.cancelAuthenticationChallenge, nil)
