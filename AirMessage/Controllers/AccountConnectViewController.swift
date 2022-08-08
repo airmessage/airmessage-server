@@ -231,7 +231,7 @@ class AccountConnectViewController: NSViewController {
 		}
 		alert.addButton(withTitle: NSLocalizedString("action.cancel", comment: ""))
 		alert.beginSheetModal(for: view.window!) { response in
-			if response == .alertSecondButtonReturn {
+			if response == .alertFirstButtonReturn {
 				//Reconnect and try again
 				self.isConnecting = true
 				ConnectionManager.shared.start()
