@@ -72,7 +72,7 @@ class DatabaseManager {
 	
 	private func runScan() {
 		guard let dbConnection = dbConnection else {
-			LogManager.log("Trying to run scan, but database is available", level: .error)
+			LogManager.log("Trying to run scan, but database is unavailable", level: .error)
 			return
 		}
 
