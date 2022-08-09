@@ -77,17 +77,24 @@ class DatabaseManager {
 		}
 
 		do {
-			//Build the WHERE clause and fetch messages
-			let whereClause: String
-			do {
-				if let id = _lastScannedMessageID.value {
-					//If we've scanned previously, only search for messages with a higher ID than last time
-					whereClause = "message.ROWID > \(id)"
-				} else {
-					//If we have no previous scan data, search for messages added since we first started scanning
-					whereClause = "message.date > \(initTime)"
-				}
+			//Resolve the last message ID to start scanning from
+			let lastMessageID: Int64
+			
+			//Try to use the cached value in memory
+			if let lastScannedMessageID = _lastScannedMessageID.value {
+				lastMessageID = lastScannedMessageID
+			} else {
+				//Query the value from the database
+				//If no value is returned, the table is empty, and 0 is used
+				//because the first actual ID is always 1
+				let id = (try dbConnection.scalar("SELECT MAX(ROWID) from message") as! Int64?) ?? 0
+				
+				lastMessageID = id
+				_lastScannedMessageID.value = id
 			}
+			
+			//Build the WHERE clause and fetch messages
+			let whereClause = "message.ROWID > \(lastMessageID)"
 			let stmt = try fetchMessages(using: dbConnection, where: whereClause)
 			let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
 			let rows = try stmt.map { row -> (id: Int64, messageRow: DatabaseMessageRow?) in
@@ -103,25 +110,17 @@ class DatabaseManager {
 			//Collect new additions
 			let (conversationItems, looseModifiers) = DatabaseConverter.groupMessageRows(rows.map { $0.messageRow }).destructured
 			
-			//Set to the latest message ID, only we hit a new max
-			var updatedMessageID: Int64?
-			
 			//Update the latest message ID
+			let updatedMessageID: Int64?
 			if rows.isEmpty {
 				updatedMessageID = nil
 			} else {
-				_lastScannedMessageID.with { value in
-					let maxID = rows.reduce(Int64.min) { lastID, row in
-						max(lastID, row.id)
-					}
-					
-					if value == nil || maxID > value! {
-						value = maxID
-						updatedMessageID = maxID
-					} else {
-						updatedMessageID = nil
-					}
+				let maxID = rows.reduce(Int64.min) { lastID, row in
+					max(lastID, row.id)
 				}
+				
+				_lastScannedMessageID.value = maxID
+				updatedMessageID = maxID
 			}
 			
 			//Check for updated message states
