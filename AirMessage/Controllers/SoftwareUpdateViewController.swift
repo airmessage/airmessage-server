@@ -108,6 +108,8 @@ class SoftwareUpdateViewController: NSViewController {
 								alertMessage = NSLocalizedString("message.update.error.invalid_package", comment: "")
 							case .internalError:
 								alertMessage = NSLocalizedString("message.update.error.internal", comment: "")
+							case .readOnlyVolume:
+								alertMessage = NSLocalizedString("message.update.error.readonly_volume", comment: "")
 						}
 						
 						let alert = NSAlert()

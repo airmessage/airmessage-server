@@ -124,6 +124,7 @@
 "message.update.error.download"="Impossible de télécharger la mise à jour";
 "message.update.error.invalid_package"="Des données de mise à jour non valides ont été reçues";
 "message.update.error.internal"="Une erreur interne s'est produite lors du traitement de cette mise à jour";
+"message.update.error.readonly_volume"="Veuillez déplacer AirMessage dans le dossier Applications et réessayer";
 "message.update.error.os_compat"="Veuillez mettre à jour vers macOS %d.%d.%d et réessayer";
 
 "message.register.error.title"="Impossible d'enregistrer cet ordinateur";

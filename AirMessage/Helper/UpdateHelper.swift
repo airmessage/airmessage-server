@@ -400,12 +400,19 @@ private class UpdateDownloadURLDelegate: ForwardCompatURLSessionDelegate, URLSes
 			let destinationFolder = activeAppPath.deletingLastPathComponent()
 			
 			//Get the temporary directory
-			let temporaryDirectory = try FileManager.default.url(
-					for: .itemReplacementDirectory,
-					in: .userDomainMask,
-					appropriateFor: destinationFolder,
-					create: true
-			)
+			let temporaryDirectory: URL
+			do {
+				temporaryDirectory = try FileManager.default.url(
+						for: .itemReplacementDirectory,
+						in: .userDomainMask,
+						appropriateFor: destinationFolder,
+						create: true
+				)
+			} catch CocoaError.fileWriteVolumeReadOnly {
+				LogManager.log("Can't apply update, app volume is read-only", level: .notice)
+				notifyError(code: UpdateErrorCode.readOnlyVolume, message: "App volume is read-only")
+				return
+			}
 			
 			//Get the download targets
 			let zippedFile = temporaryDirectory.appendingPathComponent(UUID().uuidString + ".zip", isDirectory: false)

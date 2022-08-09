@@ -124,6 +124,7 @@
 "message.update.error.download"="Couldn't download update file";
 "message.update.error.invalid_package"="An invalid update package was received";
 "message.update.error.internal"="An internal error occurred while processing this update";
+"message.update.error.readonly_volume"="Please move AirMessage to the Applications folder and try again";
 "message.update.error.os_compat"="Please update to macOS %d.%d.%d and try again.";
 
 "message.register.error.title"="Failed to register this computer";

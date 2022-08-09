@@ -8,4 +8,5 @@ enum UpdateErrorCode: Int {
 	case download = 0
 	case badPackage = 1
 	case internalError = 2
+	case readOnlyVolume = 3
 }
