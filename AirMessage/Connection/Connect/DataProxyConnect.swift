@@ -99,8 +99,12 @@ class DataProxyConnect: DataProxy {
 			tlsConfiguration.additionalTrustRoots = [.certificates(certificates)]
 			tlsConfiguration.trustRoots = .certificates([])
 		}
+		let webSocketConfiguration = WebSocketClient.Configuration(
+			tlsConfiguration: tlsConfiguration,
+			maxFrameSize: 1024 * 1024 * 100 //100 MB
+		)
 		
-		WebSocket.connect(to: components.url!, headers: headers, configuration: WebSocketClient.Configuration(tlsConfiguration: tlsConfiguration), on: eventLoopGroup, onUpgrade: { [weak self] webSocket in
+		WebSocket.connect(to: components.url!, headers: headers, configuration: webSocketConfiguration, on: eventLoopGroup, onUpgrade: { [weak self] webSocket in
 			//Report open event
 			self?.processingQueue.async { [weak self] in
 				guard let self = self else { return }
