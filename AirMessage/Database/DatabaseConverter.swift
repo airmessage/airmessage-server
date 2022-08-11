@@ -459,7 +459,17 @@ class DatabaseConverter {
 		}
 		
 		//Retrieve the archive contents
-		guard let attributedString = unarchiver.decodeObject() as? NSAttributedString else {
+		var decodedObject: Any?
+		do {
+			try ObjC.catchException {
+				decodedObject = unarchiver.decodeObject()
+			}
+		} catch {
+			LogManager.log("Encountered an exception while decoding object for message \(logID ?? "unknown"): \(error)", level: .notice)
+			return nil
+		}
+		
+		guard let attributedString = decodedObject as? NSAttributedString else {
 			LogManager.log("Failed to decode object for message \(logID ?? "unknown")", level: .notice)
 			return nil
 		}
