@@ -40,6 +40,8 @@
 		ED28095725A20332009E7636 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED28095625A20332009E7636 /* OnboardingViewController.swift */; };
 		ED28095925A20333009E7636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED28095825A20333009E7636 /* Assets.xcassets */; };
 		ED28095C25A20333009E7636 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED28095A25A20333009E7636 /* Main.storyboard */; };
+		ED31446E28A7ECC4009FC28C /* ArchiveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED31446D28A7ECC4009FC28C /* ArchiveHelper.swift */; };
+		ED31447028A7F284009FC28C /* ProcessHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED31446F28A7F284009FC28C /* ProcessHelper.swift */; };
 		ED440E0D269FAC6E00BFBEE5 /* ServerStateRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */; };
 		ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = ED440E10269FB51F00BFBEE5 /* Localizable.stringsdict */; };
 		ED44738726A387DD006F5F0E /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44738626A387DD006F5F0E /* KeychainManager.swift */; };
@@ -64,7 +66,6 @@
 		ED8F3A7E2749A3D50069F25D /* AppleScriptCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */; };
 		ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */; };
 		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
-		ED98B3F22711D84E0029DD09 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3F12711D84E0029DD09 /* Zip */; };
 		ED9C293A2756684200EA07C8 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = ED9C29392756684200EA07C8 /* Sentry */; };
 		ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */ = {isa = PBXBuildFile; productRef = ED9FBBC527E13F430037DF16 /* Zlib */; };
 		EDADEB1926A0E3D9001DA84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADEB1826A0E3D9001DA84A /* StorageManager.swift */; };
@@ -304,6 +305,8 @@
 		ED28095B25A20333009E7636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED28095D25A20333009E7636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED28095E25A20333009E7636 /* AirMessage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirMessage.entitlements; sourceTree = "<group>"; };
+		ED31446D28A7ECC4009FC28C /* ArchiveHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveHelper.swift; sourceTree = "<group>"; };
+		ED31446F28A7F284009FC28C /* ProcessHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessHelper.swift; sourceTree = "<group>"; };
 		ED440E0C269FAC6E00BFBEE5 /* ServerStateRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateRecovery.swift; sourceTree = "<group>"; };
 		ED440E0F269FB51F00BFBEE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		ED44738626A387DD006F5F0E /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -546,7 +549,6 @@
 			files = (
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
 				ED9C293A2756684200EA07C8 /* Sentry in Frameworks */,
-				ED98B3F22711D84E0029DD09 /* Zip in Frameworks */,
 				EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */,
 				ED456D99289EFE1E00729CF6 /* WebSocketKit in Frameworks */,
 				ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */,
@@ -742,6 +744,7 @@
 		ED891A4625A30BAE002230EB /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				ED31446D28A7ECC4009FC28C /* ArchiveHelper.swift */,
 				ED8D56472846E00000B6DB6B /* AssertionHelper.swift */,
 				EDC1DAF7274DA24C00D32C6B /* AtomicValue.swift */,
 				2EAEE35ACA7C4D8977E66420 /* CompressionHelper.swift */,
@@ -755,6 +758,7 @@
 				ED15912226AC5484008F5304 /* LogManager.swift */,
 				ED891A4725A30BC6002230EB /* PasswordGrade.swift */,
 				2EAEEE327A491386A20EC729 /* PreferencesManager.swift */,
+				ED31446F28A7F284009FC28C /* ProcessHelper.swift */,
 				ED853E062744218900DCF446 /* ReadWriteLock.swift */,
 				EDD70D6B2699F56E00E8DC06 /* ServerLaunch.swift */,
 				EDADEB1826A0E3D9001DA84A /* StorageManager.swift */,
@@ -1199,7 +1203,6 @@
 			packageProductDependencies = (
 				EDDE47302688C2890029628B /* Swifter */,
 				ED98B3EE2711D8300029DD09 /* Ink */,
-				ED98B3F12711D84E0029DD09 /* Zip */,
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
 				ED9C29392756684200EA07C8 /* Sentry */,
 				ED9FBBC527E13F430037DF16 /* Zlib */,
@@ -1281,7 +1284,6 @@
 			packageReferences = (
 				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
 				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
-				ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */,
 				EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */,
@@ -1417,6 +1419,7 @@
 				2EAEE232C464EF7328584EA2 /* AccountType.swift in Sources */,
 				ED1E5684269A50360019CCD5 /* DraggableAppView.swift in Sources */,
 				ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */,
+				ED31446E28A7ECC4009FC28C /* ArchiveHelper.swift in Sources */,
 				ED853E1027442BD900DCF446 /* FileHandleCompat.swift in Sources */,
 				ED15912326AC5484008F5304 /* LogManager.swift in Sources */,
 				2EAEE84D6A21D1570484C26A /* ServerState.swift in Sources */,
@@ -1452,6 +1455,7 @@
 				2EAEE263C6403206657014EB /* EncryptionManager.swift in Sources */,
 				EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */,
 				ED8D56482846E00000B6DB6B /* AssertionHelper.swift in Sources */,
+				ED31447028A7F284009FC28C /* ProcessHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1869,14 +1873,6 @@
 				minimumVersion = 0.5.1;
 			};
 		};
-		ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/marmelroy/Zip.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 2.1.2;
-			};
-		};
 		ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
@@ -1913,11 +1909,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */;
 			productName = Ink;
-		};
-		ED98B3F12711D84E0029DD09 /* Zip */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = ED98B3F02711D84E0029DD09 /* XCRemoteSwiftPackageReference "Zip" */;
-			productName = Zip;
 		};
 		ED9C29392756684200EA07C8 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;

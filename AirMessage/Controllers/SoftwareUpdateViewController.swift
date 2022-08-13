@@ -6,7 +6,6 @@ import Foundation
 import AppKit
 import WebKit
 import Ink
-import Zip
 
 class SoftwareUpdateViewController: NSViewController {
 	//Outlets

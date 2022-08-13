@@ -4,7 +4,6 @@
 
 import Foundation
 import AppKit
-import Zip
 import Sentry
 
 class UpdateHelper {
@@ -423,7 +422,7 @@ private class UpdateDownloadURLDelegate: ForwardCompatURLSessionDelegate, URLSes
 			LogManager.log("Downloaded and moved update file to \(zippedFile.path)", level: .info)
 			
 			//Unzip file
-			try Zip.unzipFile(zippedFile, destination: unzippedFolder, overwrite: true, password: nil)
+			try decompressArchive(fromURL: zippedFile, to: unzippedFolder)
 			LogManager.log("Decompressed update file to \(unzippedFolder.path)", level: .info)
 			
 			//Find app file

@@ -41,11 +41,10 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		let process = Process()
 		process.executableURL = URL(fileURLWithPath: "/usr/bin/sips")
 		process.arguments = ["--setProperty", "format", "jpeg", inputFile.path, "--out", tempFile.path]
-		let processResult = runProcessLogError(process)
-		
-		//Check the process result
-		guard processResult else {
-			LogManager.log("Failed to convert file \(inputFile.path) from HEIC to JPEG", level: .info)
+		do {
+			try runProcessCatchError(process)
+		} catch {
+			LogManager.log("Failed to convert file \(inputFile.path) from HEIC to JPEG: \(error)", level: .info)
 			try? FileManager.default.removeItem(at: tempFile) //Clean up immediately
 			return nil
 		}
@@ -64,11 +63,10 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 		let process = Process()
 		process.executableURL = URL(fileURLWithPath: "/usr/bin/afconvert")
 		process.arguments = ["-f", "mp4f", "-d", "aac", inputFile.path, "-o", tempFile.path]
-		let processResult = runProcessLogError(process)
-		
-		//Check the process result
-		guard processResult else {
-			LogManager.log("Failed to convert file \(inputFile.path) from CAF to MP4", level: .info)
+		do {
+			try runProcessCatchError(process)
+		} catch {
+			LogManager.log("Failed to convert file \(inputFile.path) from CAF to MP4: \(error)", level: .info)
 			try? FileManager.default.removeItem(at: tempFile) //Clean up immediately
 			return nil
 		}
@@ -80,48 +78,4 @@ func normalizeFile(url inputFile: URL, ext: String) -> NormalizedFile? {
 	} else {
 		return nil
 	}
-}
-
-/**
- Starts a process, waits for it to finish, and logs any errors the process encountered while running
- - Parameters:
-   - process: The process to start and monitor
- - Returns: Whether the process ran successfully
- */
-@available(macOS 10.13, *)
-private func runProcessLogError(_ process: Process) -> Bool {
-	//Capture the process' error pipe
-	let errorPipe = Pipe()
-	process.standardOutput = nil
-	process.standardError = errorPipe
-	
-	//Start the process
-	do {
-		try process.run()
-	} catch {
-		LogManager.log("An error occurred while running process: \(error)", level: .info)
-		SentrySDK.capture(error: error)
-		return false
-	}
-	
-	//Wait for the process to exit
-	process.waitUntilExit()
-	
-	//Check the output code
-	guard process.terminationStatus == 0 else {
-		let errorFileHandle = errorPipe.fileHandleForReading
-		
-		let errorMessage: String?
-		if let data = try? errorFileHandle.readToEndCompat(), !data.isEmpty {
-			errorMessage = String(data: data, encoding: .utf8)
-		} else {
-			errorMessage = nil
-		}
-		
-		LogManager.log("An error occurred while running process: \(errorMessage ?? "Unknown error")", level: .info)
-		SentrySDK.capture(message: "An error occurred while running process: \(errorMessage ?? "Unknown error")")
-		return false
-	}
-	
-	return true
 }
