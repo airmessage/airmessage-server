@@ -106,10 +106,23 @@ class DataProxyConnect: DataProxy {
 		
 		WebSocket.connect(to: components.url!, headers: headers, configuration: webSocketConfiguration, on: eventLoopGroup, onUpgrade: { [weak self] webSocket in
 			//Report open event
-			self?.processingQueue.async { [weak self] in
-				guard let self = self else { return }
+			let webSocketOK = self?.processingQueue.sync { [weak self] () -> Bool in
+				guard let self = self else { return false }
+				
+				//Ignore if the connection has been cancelled in the meantime
+				guard self.isActive else { return false }
+				
 				self.webSocket = webSocket
 				self.onWSConnect()
+				
+				return true
+			}
+			
+			//If we've decided we don't want this connection anymore, disconnect
+			//it and discard it silently
+			guard let webSocketOK = webSocketOK, webSocketOK else {
+				_ = webSocket.close()
+				return
 			}
 			
 			//Set the listeners
@@ -149,16 +162,18 @@ class DataProxyConnect: DataProxy {
 		guard isActive else { return }
 		
 		processingQueue.sync {
-			let socket = webSocket!
-			
 			//Clear connected clients
 			connectionsLock.withWriteLock {
 				connectionsMap.removeAll()
 			}
 			NotificationNames.postUpdateConnectionCount(0)
 			
-			//Disconnect
-			_ = socket.close()
+			//Socket can be nil between calls to startServer()
+			//and WebSocket.connect's result handler
+			if let socket = webSocket {
+				_ = socket.close()
+			}
+			
 			delegate?.dataProxy(self, didStopWithState: .stopped, isRecoverable: false)
 		}
 		
