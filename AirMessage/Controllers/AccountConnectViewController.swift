@@ -18,8 +18,12 @@ class AccountConnectViewController: NSViewController {
 	
 	private var server: HttpServer!
 	
+	private var _currentAuthSession: Any? = nil
 	@available(macOS 10.15, *)
-	private lazy var currentAuthSession: ASWebAuthenticationSession? = nil
+	fileprivate var currentAuthSession: ASWebAuthenticationSession? {
+		get { _currentAuthSession as! ASWebAuthenticationSession? }
+		set { _currentAuthSession = newValue }
+	}
 	
 	private var isConnecting = false
 	private var currentDataProxy: DataProxyConnect!
