@@ -154,7 +154,7 @@ class DatabaseConverter {
 			}
 			
 			//Message-specific parameters
-			let text = parseAttributedBody(row[indices["message.attributedBody"]!] as! SQLite.Blob?, withLogID: guid)
+			let text = parseAttributedBody(withSQLiteBlob: row[indices["message.attributedBody"]!] as! SQLite.Blob?, withLogID: guid)
 			let subject = row[indices["message.subject"]!] as! String?
 			let sendEffect: String?
 			if #available(macOS 10.12, *) {
@@ -236,6 +236,77 @@ class DatabaseConverter {
 		return ActivityStatusModifierInfo(messageGUID: messageGUID, state: state, dateRead: convertDBTime(fromDB: dateRead))
 	}
 	
+	enum MessageSummaryParseError: Error {
+		case typeError(Any)
+	}
+	
+	/**
+	 Processes message summary data into an array of edit history
+	 - Parameter data: The data to parse
+	 - Returns: The array of edit history in chronological order
+	 */
+	private static func parseMessageSummary(_ data: Data) throws -> [String] {
+		//Parse the property list from memory
+		let propertyList = try PropertyListSerialization.propertyList(from: data, format: nil)
+		
+		//Make sure the type is a dictionary
+		guard let propertyListDict = propertyList as? [String: Any] else {
+			throw MessageSummaryParseError.typeError(propertyList)
+		}
+		
+		//Get the message history dictionary
+		guard let messageHistoryDictionary = propertyListDict["ec"] as? [String: Any] else {
+			throw MessageSummaryParseError.typeError(propertyList)
+		}
+		
+		//Get the first item of the message history dictionary
+		guard let messageHistoryArray = messageHistoryDictionary["0"] as? [[String: Any]] else {
+			throw MessageSummaryParseError.typeError(propertyList)
+		}
+		
+		//Parse items
+		return try messageHistoryArray.compactMap { (entryDictionary) -> String? in
+			guard let data = entryDictionary["t"] as? Data else {
+				throw MessageSummaryParseError.typeError(propertyList)
+			}
+			
+			return try parseAttributedBody(withData: data)
+		}
+	}
+	
+	/**
+	 Processes a message row with edited content to an `EditedStatusModifierInfo`
+	 - Parameters:
+	   - row: The row to process
+	   - indices: The index dict to use to reference row columns
+	 - Returns: A `EditedStatusModifierInfo` that represents the information held in this row
+	 */
+	static func processEditedStatusRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> EditedStatusModifierInfo {
+		//Read the row data
+		let messageGUID = row[indices["message.guid"]!] as! String
+		
+		let partCount = row[indices["message.part_count"]!] as! Int64
+		let summaryInfo = row[indices["message.message_summary_info"]!] as! SQLite.Blob
+		
+		//Removed messages have a part count of 0
+		let isRemoved = partCount == 0
+		
+		//Parse the summary value
+		let editHistory: [String]
+		do {
+			editHistory = try parseMessageSummary(Data.fromDatatypeValue(summaryInfo))
+		} catch {
+			LogManager.log("Encountered an exception while decoding summary for message \(messageGUID): \(error)", level: .notice)
+			editHistory = []
+		}
+		
+		return EditedStatusModifierInfo(
+				messageGUID: messageGUID,
+				isRemoved: isRemoved,
+				editHistory: editHistory
+		)
+	}
+	
 	/**
 	 Processes a chat database row into a `ConversationInfo`
 	 */
@@ -260,7 +331,7 @@ class DatabaseConverter {
 			.components(separatedBy: ",")
 		
 		let lastMessageDate = row[indices["message.date"]!] as! Int64
-		let lastMessageText = parseAttributedBody(row[indices["message.attributedBody"]!] as! SQLite.Blob?)
+		let lastMessageText = parseAttributedBody(withSQLiteBlob: row[indices["message.attributedBody"]!] as! SQLite.Blob?)
 		let lastMessageSendStyle: String?
 		if #available(macOS 10.12, *) {
 			lastMessageSendStyle = row[indices["message.expressive_send_style_id"]!] as! String?
@@ -445,36 +516,45 @@ class DatabaseConverter {
 	
 	//MARK: Helpers
 	
-	///Parses an attributed body string and cleans it
-	static func parseAttributedBody(_ body: SQLite.Blob?, withLogID logID: String? = nil) -> String? {
+	enum AttributedBodyParseError: Error {
+		case unarchiverError
+		case typeError(Any?)
+	}
+	
+	///Parses attributed body data and cleans it
+	static func parseAttributedBody(withData data: Data) throws -> String? {
+		//Create an unarchiver
+		guard let unarchiver = NSUnarchiver(forReadingWith: data) else {
+			throw AttributedBodyParseError.unarchiverError
+		}
+		
+		//Retrieve the archive contents
+		var decodedObject: Any?
+		try ObjC.catchException {
+			decodedObject = unarchiver.decodeObject()
+		}
+		
+		guard let attributedString = decodedObject as? NSAttributedString else {
+			throw AttributedBodyParseError.typeError(decodedObject)
+		}
+		
+		return cleanMessageText(attributedString.string)
+	}
+	
+	///Parses attributed body data from the database and cleans it
+	static func parseAttributedBody(withSQLiteBlob body: SQLite.Blob?, withLogID logID: String? = nil) -> String? {
 		//Skip if the body is nil
 		guard let body = body else {
 			return nil
 		}
 		
-		//Create an unarchiver
-		guard let unarchiver = NSUnarchiver(forReadingWith: Data.fromDatatypeValue(body)) else {
-			LogManager.log("Failed to create unarchiver for message \(logID ?? "unknown")", level: .notice)
-			return nil
-		}
-		
-		//Retrieve the archive contents
-		var decodedObject: Any?
+		//Parse the body
 		do {
-			try ObjC.catchException {
-				decodedObject = unarchiver.decodeObject()
-			}
+			return try parseAttributedBody(withData: Data.fromDatatypeValue(body))
 		} catch {
 			LogManager.log("Encountered an exception while decoding object for message \(logID ?? "unknown"): \(error)", level: .notice)
 			return nil
 		}
-		
-		guard let attributedString = decodedObject as? NSAttributedString else {
-			LogManager.log("Failed to decode object for message \(logID ?? "unknown")", level: .notice)
-			return nil
-		}
-		
-		return cleanMessageText(attributedString.string)
 	}
 	
 	///Cleans a message string found in the database

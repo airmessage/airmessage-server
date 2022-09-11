@@ -262,6 +262,21 @@ struct TapbackModifierInfo: ModifierInfo {
 	}
 }
 
+struct EditedStatusModifierInfo: ModifierInfo {
+	static let itemType: Int32 = 3
+	let messageGUID: String
+	
+	let isRemoved: Bool //Whether this message has been unsent
+	let editHistory: [String] //An array of previous modifications, ordered from oldest to newest
+	
+	func pack(to packer: inout AirPacker) {
+		packBase(to: &packer)
+		
+		packer.pack(bool: isRemoved)
+		packer.pack(stringArray: editHistory)
+	}
+}
+
 //MARK: - FaceTime
 
 struct CallHistoryEntry: Packable {

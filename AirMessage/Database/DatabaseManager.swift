@@ -35,9 +35,12 @@ class DatabaseManager {
 		let state: MessageInfo.State
 	}
 	private var messageStateDict: [Int64: MessageTrackingState] = [:] //chat ID: message state
+	private var lastEditedMessageCheckTime: Int64
 	
 	private init() {
-		initTime = getDBTime()
+		let timeNow = getDBTime()
+		initTime = timeNow
+		lastEditedMessageCheckTime = timeNow
 	}
 	
 	deinit {
@@ -126,13 +129,16 @@ class DatabaseManager {
 			//Check for updated message states
 			let messageStateUpdates = try updateMessageStates()
 			
+			//Check for updated edited messages
+			let editedMessageUpdates = try updateEditedMessages()
+			
 			//Send message updates
 			if !conversationItems.isEmpty {
 				ConnectionManager.shared.send(messageUpdate: conversationItems)
 			}
 			
 			//Send modifier updates
-			let combinedModifiers = looseModifiers + messageStateUpdates
+			let combinedModifiers = looseModifiers + messageStateUpdates + editedMessageUpdates
 			if !combinedModifiers.isEmpty {
 				ConnectionManager.shared.send(modifierUpdate: combinedModifiers)
 			}
@@ -224,6 +230,23 @@ class DatabaseManager {
 		
 		//Return the results
 		return resultArray
+	}
+	
+	/**
+	 Runs a check for any updated message edits
+	 - Returns: An array of edit status updates
+	 - Throws: SQL execution errors
+	 */
+	private func updateEditedMessages() throws -> [EditedStatusModifierInfo] {
+		//Fetch the message statuses
+		let statusArray = try fetchEditedMessages(fromDBTime: lastEditedMessageCheckTime)
+		
+		//Update the last check time
+		if !statusArray.isEmpty {
+			lastEditedMessageCheckTime = getDBTime()
+		}
+		
+		return statusArray
 	}
 	
 	//MARK: Fetch
@@ -337,6 +360,34 @@ class DatabaseManager {
 		
 		return stmt.map { row in
 			DatabaseConverter.processActivityStatusRow(row, withIndices: indices)
+		}
+	}
+	
+	/**
+	 Fetches an array of updated `EditedStatusModifierInfo` after a certain time
+	 */
+	public func fetchEditedMessages(fromTime timeLowerUNIX: Int64) throws -> [EditedStatusModifierInfo] {
+		try fetchEditedMessages(fromDBTime: convertDBTime(fromUNIX: timeLowerUNIX))
+	}
+	
+	public func fetchEditedMessages(fromDBTime timeLower: Int64) throws -> [EditedStatusModifierInfo] {
+		//Message edits and recalls are only supported on macOS 13+
+		guard #available(macOS 13.0, *) else {
+			return []
+		}
+		
+		//Make sure we're connected to the database
+		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
+		
+		//Get the most recent outgoing message for each conversation
+		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryEditedMessages", withExtension: "sql", subdirectory: "SQL")!)
+		let query = String(format: template, "") //Don't add any special WHERE clauses
+		let stmt = try dbConnection.prepare(query, timeLower)
+		let indices = DatabaseConverter.makeColumnIndexDict(stmt.columnNames)
+		
+		//Map the rows to objects
+		return stmt.map { row in
+			DatabaseConverter.processEditedStatusRow(row, withIndices: indices)
 		}
 	}
 	

@@ -381,9 +381,11 @@ class ConnectionManager {
 		//Execute the request
 		let resultGrouping: DBFetchGrouping
 		let resultActivityUpdates: [ActivityStatusModifierInfo]
+		let resultEditedUpdates: [EditedStatusModifierInfo]
 		do {
 			resultGrouping = try DatabaseManager.shared.fetchGrouping(fromTime: timeLower, to: timeUpper)
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
+			resultEditedUpdates = try DatabaseManager.shared.fetchEditedMessages(fromTime: timeLower)
 		} catch {
 			LogManager.log("Failed to fetch messages for time range \(timeLower) - \(timeUpper): \(error)", level: .notice)
 			SentrySDK.capture(error: error)
@@ -395,7 +397,7 @@ class ConnectionManager {
 			send(messageUpdate: resultGrouping.conversationItems, to: client)
 		}
 		
-		let resultModifiers: [ModifierInfo] = resultGrouping.looseModifiers + resultActivityUpdates
+		let resultModifiers: [ModifierInfo] = resultGrouping.looseModifiers + resultActivityUpdates + resultEditedUpdates
 		if !resultModifiers.isEmpty {
 			send(modifierUpdate: resultModifiers, to: client)
 		}
@@ -409,9 +411,11 @@ class ConnectionManager {
 		//Execute the request
 		let resultGrouping: DBFetchGrouping
 		let resultActivityUpdates: [ActivityStatusModifierInfo]
+		let resultEditedUpdates: [EditedStatusModifierInfo]
 		do {
 			resultGrouping = try DatabaseManager.shared.fetchGrouping(fromID: idLower)
 			resultActivityUpdates = try DatabaseManager.shared.fetchActivityStatus(fromTime: timeLower)
+			resultEditedUpdates = try DatabaseManager.shared.fetchEditedMessages(fromTime: timeLower)
 		} catch {
 			LogManager.log("Failed to fetch messages for ID range >\(idLower): \(error)", level: .notice)
 			SentrySDK.capture(error: error)
@@ -423,7 +427,7 @@ class ConnectionManager {
 			send(messageUpdate: resultGrouping.conversationItems, to: client)
 		}
 		
-		let resultModifiers: [ModifierInfo] = resultGrouping.looseModifiers + resultActivityUpdates
+		let resultModifiers: [ModifierInfo] = resultGrouping.looseModifiers + resultActivityUpdates + resultEditedUpdates
 		if !resultModifiers.isEmpty {
 			send(modifierUpdate: resultModifiers, to: client)
 		}
