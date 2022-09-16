@@ -16,7 +16,6 @@ tell application "System Events"
 							set windowReady to true
 							exit repeat
 						end if
-						on error
 					end try
 				end repeat
 			end if

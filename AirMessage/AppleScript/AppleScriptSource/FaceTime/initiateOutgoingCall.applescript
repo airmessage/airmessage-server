@@ -12,11 +12,10 @@ on main(addressList)
 				if exists window 1 then
 					repeat with buttonEl in buttons of window 1
 						try
-						if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
-							set windowReady to true
-							exit repeat
-						end if
-						on error
+							if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
+								set windowReady to true
+								exit repeat
+							end if
 						end try
 					end repeat
 				end if
