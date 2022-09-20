@@ -474,7 +474,7 @@ class DataProxyConnect: DataProxy {
 		
 		//Get if we can automatically recover from this error
 		var isRecoverable = false
-		if localError == .errorInternet {
+		if localError == .errorInternet || localError == .errorExternal {
 			let isSetupMode = DispatchQueue.main.sync {
 				//Run on main thread to avoid races
 				(NSApplication.shared.delegate as! AppDelegate).isSetupMode
