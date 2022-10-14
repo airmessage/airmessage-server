@@ -11,10 +11,12 @@ tell application "System Events"
 		repeat while not windowReady
 			if exists window 1 then
 				repeat with buttonEl in buttons of window 1
-					if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
-						set windowReady to true
-						exit repeat
-					end if
+					try
+						if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl contains "NS") then
+							set windowReady to true
+							exit repeat
+						end if
+					end try
 				end repeat
 			end if
 			
@@ -38,7 +40,7 @@ tell application "System Events"
 		
 		set startTime to (current date)
 		repeat
-			if the clipboard is not "" then
+			if (the clipboard) is not "" then
 				return the clipboard as string
 			else if (current date) - startTime > 20 then
 				error "Clipboard timed out"

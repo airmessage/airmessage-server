@@ -6,10 +6,12 @@ tell application "System Events"
 	tell process "FaceTime"
 		--If we're in a call, target the button with an AXIdentifier of "leaveButton"
 		repeat with buttonEl in buttons of window 1
-			if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl = "leaveButton") then
-				click buttonEl
-				return
-			end if
+			try
+				if (exists attribute "AXIdentifier" of buttonEl) and (value of attribute "AXIdentifier" of buttonEl = "leaveButton") then
+					click buttonEl
+					return
+				end if
+			end try
 		end repeat
 		
 		--If we're trying to make an outgoing call, target the "cancel" or "end" button
@@ -20,7 +22,7 @@ tell application "System Events"
 		if labelsCancel contains buttonName then
 			click targetButton
 			return
-		--The label is "end" if we're waiting for a pending outgoing call
+			--The label is "end" if we're waiting for a pending outgoing call
 		else if labelsEnd contains buttonName then
 			click targetButton
 			return
