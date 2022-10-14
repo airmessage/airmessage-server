@@ -6,7 +6,7 @@ import Foundation
 
 class CommConst {
 	static let version: Int32 = 5
-	static let subVersion: Int32 = 5
+	static let subVersion: Int32 = 6
 	
 	static let defaultFileChunkSize: Int64 = 1024 * 1024 //1 MB
 	
