@@ -171,6 +171,17 @@ class DatabaseConverter {
 			let dateRead = row[indices["message.date_read"]!] as! Int64
 			let attachments = try fetchAttachments(ofMessage: rowID, withChecksum: sender == nil, ofDB: db)
 			
+			let editHistory: [String]
+			let isRemoved: Bool
+			if #available(macOS 13.0, *) {
+				let status = processEditedRemovedStatus(row, withIndices: indices, withLogID: guid)
+				editHistory = status.editHistory
+				isRemoved = status.isRemoved
+			} else {
+				editHistory = []
+				isRemoved = false
+			}
+			
 			return .message(MessageInfo(
 					serverID: rowID,
 					guid: guid,
@@ -185,7 +196,9 @@ class DatabaseConverter {
 					sendEffect: sendEffect,
 					state: state,
 					error: error,
-					dateRead: convertDBTime(fromDB: dateRead)
+					dateRead: convertDBTime(fromDB: dateRead),
+					editHistory: editHistory,
+					isRemoved: isRemoved
 			))
 		} else if itemType == .groupAction {
 			let other = row[indices["other_handle.id"]!] as! String?
@@ -281,29 +294,16 @@ class DatabaseConverter {
 	   - indices: The index dict to use to reference row columns
 	 - Returns: A `EditedStatusModifierInfo` that represents the information held in this row
 	 */
+	@available(macOS 13.0, *)
 	static func processEditedStatusRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> EditedStatusModifierInfo {
 		//Read the row data
 		let messageGUID = row[indices["message.guid"]!] as! String
-		
-		let partCount = row[indices["message.part_count"]!] as! Int64
-		let summaryInfo = row[indices["message.message_summary_info"]!] as! SQLite.Blob
-		
-		//Removed messages have a part count of 0
-		let isRemoved = partCount == 0
-		
-		//Parse the summary value
-		let editHistory: [String]
-		do {
-			editHistory = try parseMessageSummary(Data.fromDatatypeValue(summaryInfo))
-		} catch {
-			LogManager.log("Encountered an exception while decoding summary for message \(messageGUID): \(error)", level: .notice)
-			editHistory = []
-		}
+		let status = processEditedRemovedStatus(row, withIndices: indices, withLogID: messageGUID)
 		
 		return EditedStatusModifierInfo(
 				messageGUID: messageGUID,
-				isRemoved: isRemoved,
-				editHistory: editHistory
+				editHistory: status.editHistory,
+				isRemoved: status.isRemoved
 		)
 	}
 	
@@ -573,6 +573,30 @@ class DatabaseConverter {
 		}
 	}
 	
+	///Gets a message's edited and removed status
+	@available(macOS 13.0, *)
+	static func processEditedRemovedStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedRemovedMessageStatus {
+		let partCount = row[indices["message.part_count"]!] as! Int64
+		let summaryInfo = row[indices["message.message_summary_info"]!] as! SQLite.Blob
+		
+		//Removed messages have a part count of 0
+		let isRemoved = partCount == 0
+		
+		//Parse the summary value
+		let editHistory: [String]
+		do {
+			editHistory = try parseMessageSummary(Data.fromDatatypeValue(summaryInfo))
+		} catch {
+			LogManager.log("Encountered an exception while decoding summary for message \(logID ?? "unknown"): \(error)", level: .notice)
+			editHistory = []
+		}
+		
+		return EditedRemovedMessageStatus(
+			editHistory: editHistory,
+			isRemoved: isRemoved
+		)
+	}
+	
 	/**
 	 Creats a URL from a filename path found in the database
 	 */
@@ -584,4 +608,9 @@ class DatabaseConverter {
 enum DatabaseMessageRow {
 	case message(ConversationItem)
 	case modifier(ModifierInfo)
+}
+
+struct EditedRemovedMessageStatus {
+	let editHistory: [String]
+	let isRemoved: Bool
 }

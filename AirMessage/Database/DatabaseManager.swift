@@ -256,6 +256,9 @@ class DatabaseManager {
 	 - Parameters:
 	   - db: The connection to query
 	   - queryWhere: A statement to be appended to the WHERE clause
+	   - querySort: A statement to be appended to the SORT clause
+	   - queryLimit: A statement to be appended to the LIMIT clause
+	   - queryBindings: Additional bindings to be provided to the execution context
 	 - Returns: The executed statement
 	 - Throws: SQL execution errors
 	 */
@@ -282,12 +285,21 @@ class DatabaseManager {
 			"chat.guid"
 		]
 		
+		//Send effects, stickers, and tapbacks
 		if #available(macOS 10.12, *) {
 			rows += [
 				"message.expressive_send_style_id",
 				"message.associated_message_guid",
 				"message.associated_message_type",
 				"message.associated_message_range_location"
+			]
+		}
+		
+		//Edits and deletes
+		if #available(macOS 13.0, *) {
+			rows += [
+				"message.part_count",
+				"message.message_summary_info"
 			]
 		}
 		

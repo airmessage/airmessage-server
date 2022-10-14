@@ -111,6 +111,8 @@ struct MessageInfo: ConversationItem {
 	let state: State
 	let error: Error
 	let dateRead: Int64
+	let editHistory: [String]
+	let isRemoved: Bool
 	
 	func pack(to packer: inout AirPacker) {
 		packBase(to: &packer)
@@ -125,6 +127,8 @@ struct MessageInfo: ConversationItem {
 		packer.pack(int: state.rawValue)
 		packer.pack(int: error.rawValue)
 		packer.pack(long: dateRead)
+		packer.pack(stringArray: editHistory)
+		packer.pack(bool: isRemoved)
 	}
 }
 
@@ -266,14 +270,14 @@ struct EditedStatusModifierInfo: ModifierInfo {
 	static let itemType: Int32 = 3
 	let messageGUID: String
 	
-	let isRemoved: Bool //Whether this message has been unsent
 	let editHistory: [String] //An array of previous modifications, ordered from oldest to newest
+	let isRemoved: Bool //Whether this message has been unsent
 	
 	func pack(to packer: inout AirPacker) {
 		packBase(to: &packer)
 		
-		packer.pack(bool: isRemoved)
 		packer.pack(stringArray: editHistory)
+		packer.pack(bool: isRemoved)
 	}
 }
 
