@@ -10,10 +10,12 @@ import Foundation
 /**
  An error that represents an AppleScript execution error
  */
-struct AppleScriptExecutionError: Error, LocalizedError, CustomNSError {
+struct AppleScriptError: Error, LocalizedError, CustomNSError {
 	let errorDict: [String: Any]
-	init(error: NSDictionary) {
+	let fileURL: URL?
+	init(error: NSDictionary, fileURL: URL? = nil) {
 		errorDict = error as! [String: Any]
+		self.fileURL = fileURL
 	}
 	
 	var code: Int {
@@ -26,7 +28,11 @@ struct AppleScriptExecutionError: Error, LocalizedError, CustomNSError {
 	//LocalizedError
 	
 	var errorDescription: String? {
-		"AppleScript error \(code): \(message)"
+		if let fileURL = fileURL {
+			return "AppleScript error \(code) for file \(fileURL): \(message)"
+		} else {
+			return "AppleScript error \(code): \(message)"
+		}
 	}
 	
 	//CustomNSError
@@ -34,6 +40,18 @@ struct AppleScriptExecutionError: Error, LocalizedError, CustomNSError {
 	static let errorDomain = "AppleScriptErrorDomain"
 	var errorCode: Int { code }
 	var errorUserInfo: [String: Any] { errorDict }
+}
+
+///An error that represents a failure to load an AppleScript file
+struct AppleScriptInitializationError: Error, LocalizedError {
+	let fileURL: URL
+	init(fileURL: URL) {
+		self.fileURL = fileURL
+	}
+	
+	public var errorDescription: String? {
+		"Failed to load AppleScript file \(fileURL)"
+	}
 }
 
 /**

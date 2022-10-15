@@ -85,7 +85,7 @@ class FaceTimeHelper {
 			LogManager.log("Failed to query incoming FaceTime call: \(error)", level: .error)
 			
 			//Ignore -25211 (permission not granted)
-			if let error = error as? AppleScriptExecutionError, error.code != -25211 {
+			if let error = error as? AppleScriptError, error.code != -25211 {
 				SentrySDK.capture(error: error)
 			}
 			return
