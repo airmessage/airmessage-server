@@ -9,6 +9,70 @@ import Foundation
 
 //https://firebase.google.com/docs/reference/rest/auth
 
+private let apiKey = Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String
+
+///Exchanges an IDP token for a Firebase token
+func exchangeFirebaseIDPToken(_ idToken: String, providerID: String, callbackURL: String, callback: @escaping (_ result: FirebaseIDPExchangeResult?, _ error: Error?) -> Void) {
+	//Send the request
+	let requestObject = FirebaseIDPExchangeRequest(
+		requestUri: callbackURL,
+		postBody: "id_token=\(idToken.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)&providerId=\(providerID.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)",
+		returnSecureToken: true,
+		returnIdpCredential: false
+	)
+	
+	let requestBody: Data
+	do {
+		requestBody = try JSONEncoder().encode(requestObject)
+	} catch {
+		callback(nil, error)
+		return
+	}
+	
+	let url = URL(string: "https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=\(apiKey)")!
+	var request = URLRequest(url: url)
+	request.httpMethod = "POST"
+	request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+	
+	let task = URLSession.sharedCompat.uploadTask(with: request, from: requestBody) { data, response, error in
+		if let error = error {
+			callback(nil, FirebaseRequestError.requestError(cause: error))
+			return
+		}
+		
+		guard let response = response as? HTTPURLResponse else {
+			callback(nil, FirebaseRequestError.serverError(code: nil))
+			return
+		}
+		
+		guard (200...299).contains(response.statusCode) else {
+			if let data = data,
+			   let dataString = String(data: data, encoding: .utf8) {
+				LogManager.log("Firebase authentication request error: \(dataString)", level: .error)
+			}
+			
+			callback(nil, FirebaseRequestError.serverError(code: response.statusCode))
+			return
+		}
+		
+		guard let mimeType = response.mimeType,
+			  mimeType == "application/json",
+			  let data = data else {
+			callback(nil, FirebaseRequestError.responseError)
+			return
+		}
+		
+		guard let result = try? JSONDecoder().decode(FirebaseIDPExchangeResult.self, from: data) else {
+			callback(nil, FirebaseRequestError.deserializationError)
+			return
+		}
+		
+		//Return the result
+		callback(result, nil)
+	}
+	task.resume()
+}
+
 /**
  Exchanges a Firebase refresh token for information about the user
  */
@@ -19,7 +83,7 @@ func exchangeFirebaseRefreshToken(_ refreshToken: String, callback: @escaping (_
 		return
 	}
 	
-	let url = URL(string: "https://securetoken.googleapis.com/v1/token?key=\(Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String)")!
+	let url = URL(string: "https://securetoken.googleapis.com/v1/token?key=\(apiKey)")!
 	var request = URLRequest(url: url)
 	request.httpMethod = "POST"
 	request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -72,7 +136,7 @@ func getFirebaseUserData(idToken: String, callback: @escaping (_ result: Firebas
 		return
 	}
 	
-	let url = URL(string: "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=\(Bundle.main.infoDictionary!["FIREBASE_API_KEY"] as! String)")!
+	let url = URL(string: "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=\(apiKey)")!
 	var request = URLRequest(url: url)
 	request.httpMethod = "POST"
 	request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -116,6 +180,21 @@ func getFirebaseUserData(idToken: String, callback: @escaping (_ result: Firebas
 		callback(result, nil)
 	}
 	task.resume()
+}
+
+struct FirebaseIDPExchangeRequest: Encodable {
+	let requestUri: String
+	let postBody: String
+	let returnSecureToken: Bool
+	let returnIdpCredential: Bool
+}
+
+struct FirebaseIDPExchangeResult: Decodable {
+	let idToken: String
+	let refreshToken: String
+	let expiresIn: String
+	let localId: String
+	let email: String
 }
 
 struct FirebaseTokenResult: Decodable {

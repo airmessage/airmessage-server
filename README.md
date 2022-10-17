@@ -12,7 +12,7 @@ Other AirMessage repositories:
 
 ## Getting started
 
-AirMessage Server requires Xcode 12+ to build, as well as [Node.js](https://nodejs.org) and [OpenSSL](https://www.openssl.org).
+AirMessage Server requires Xcode 12+ to build.
 
 To generate a universal OpenSSL binary to link, run `Configure.command` in the `OpenSSL` directory.
 

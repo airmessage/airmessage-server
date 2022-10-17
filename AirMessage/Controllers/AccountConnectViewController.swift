@@ -7,23 +7,19 @@
 
 import AppKit
 import AuthenticationServices
-import Swifter
+import AppAuth
 
-private let jsFuncConfirm = "confirmHandler"
+private let oidServiceConfiguration = OIDServiceConfiguration(
+	authorizationEndpoint: URL(string: "https://accounts.google.com/o/oauth2/auth")!,
+	  tokenEndpoint: URL(string: "https://oauth2.googleapis.com/token")!
+  )
 
 class AccountConnectViewController: NSViewController {
 	@IBOutlet weak var cancelButton: NSButton!
 	@IBOutlet weak var loadingProgressIndicator: NSProgressIndicator!
 	@IBOutlet weak var loadingLabel: NSTextField!
 	
-	private var server: HttpServer!
-	
-	private var _currentAuthSession: Any? = nil
-	@available(macOS 10.15, *)
-	fileprivate var currentAuthSession: ASWebAuthenticationSession? {
-		get { _currentAuthSession as! ASWebAuthenticationSession? }
-		set { _currentAuthSession = newValue }
-	}
+	let redirectHandler = OIDRedirectHTTPHandler(successURL: nil)
 	
 	private var isConnecting = false
 	private var currentDataProxy: DataProxyConnect!
@@ -41,82 +37,39 @@ class AccountConnectViewController: NSViewController {
 		super.viewDidAppear()
 		
 		//Start the HTTP server
-		server = HttpServer()
-		
-		server["/"] = shareFile(Bundle.main.resourcePath! + "/build/index.html")
-		server["/:path"] = shareFilesFromDirectory(Bundle.main.resourcePath! + "/build")
-		server.POST["/method"] = { request in
-			if #available(macOS 10.15, *) {
-				return .ok(.text("scheme"))
-			} else {
-				return .ok(.text("post"))
-			}
+		var httpListenerError: NSError?
+		let redirectURL = redirectHandler.startHTTPListener(&httpListenerError)
+		if let httpListenerError = httpListenerError {
+			try! { throw httpListenerError }()
 		}
-		server.POST["/submit"] = { request in
-			//Get the refresh token
-			guard let refreshToken = request.queryParams.first(where: { $0.0 == "refreshToken" })?.1 else {
-				LogManager.log("Ignoring invalid /submit request", level: .notice)
-				return .badRequest(nil)
+		
+		//Start the authorization flow
+		let request = OIDAuthorizationRequest(
+			configuration: oidServiceConfiguration,
+			clientId: (Bundle.main.infoDictionary!["GOOGLE_OAUTH_CLIENT_ID"] as! String),
+			clientSecret: (Bundle.main.infoDictionary!["GOOGLE_OAUTH_CLIENT_SECRET"] as! String),
+			scopes: [
+				"openid",
+				"https://www.googleapis.com/auth/userinfo.email",
+				"profile"
+			],
+			redirectURL: redirectURL,
+			responseType: "code",
+			additionalParameters: ["prompt": "select_account"]
+		)
+		
+		redirectHandler.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: view.window!) { [weak self] result, error in
+			guard let self = self else { return }
+			
+			//Surface errors to the user
+			if let error = error {
+				self.showError(message: error.localizedDescription, showReconnect: false)
+				return
 			}
 			
-			//Start connecting
-			DispatchQueue.main.async {
-				NSApp.activate(ignoringOtherApps: true)
-				self.startConnection(refreshToken: refreshToken)
-			}
-			
-			//Return OK
-			return .ok(.data(Data(), contentType: nil))
-		}
-		try! server.start(0)
-		let port = try! server.port()
-		
-		LogManager.log("Running local server on http://localhost:\(port)", level: .info)
-		
-		let url = URL(string:"http://localhost:\(port)")!
-		if #available(macOS 10.15, *) {
-			//Open URL in an authentication session
-			let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "airmessageauth") { [weak self] callbackURL, error in
-				DispatchQueue.main.async {
-					guard let self = self, self.view.window != nil else { return }
-					
-					//Remove the session
-					self.currentAuthSession = nil
-					
-					//Check the response
-					guard error == nil, let callbackURL = callbackURL else {
-						self.dismiss(self)
-						return
-					}
-					
-					//Parse the URL
-					guard let components = URLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
-						  let scheme = components.scheme,
-						  let params = components.queryItems else {
-							  LogManager.log("Unable to parse authentication response URL: \(url)", level: .notice)
-							  self.dismiss(self)
-							  return
-						  }
-					
-					//Check for authentication
-					guard scheme == "airmessageauth",
-						  components.path == "firebase",
-						  let refreshToken = params.first(where: { $0.name == "refreshToken" })?.value else {
-							  LogManager.log("Unable to validate authentication response URL: \(url)", level: .notice)
-							  self.dismiss(self)
-							  return
-						  }
-					
-					//Start connecting
-					self.startConnection(refreshToken: refreshToken)
-				}
-			}
-			session.presentationContextProvider = self
-			session.start()
-			currentAuthSession = session
-		} else {
-			//Open URL in the default web browser
-			NSWorkspace.shared.open(url)
+			//Start a connection with the ID token
+			let idToken = result!.lastTokenResponse!.idToken!
+			self.startConnection(idToken: idToken, callbackURL: redirectURL.absoluteString)
 		}
 		
 		//Update the view
@@ -124,21 +77,15 @@ class AccountConnectViewController: NSViewController {
 		loadingProgressIndicator.startAnimation(self)
 		
 		//Register for authentication and connection updates
-		NotificationCenter.default.addObserver(self, selector: #selector(onAuthenticate), name: NotificationNames.authenticate, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(onUpdateServerState), name: NotificationNames.updateServerState, object: nil)
 	}
 	
 	override func viewDidDisappear() {
-		//Stop the HTTP server
-		server.stop()
+		//Stop the server
+		redirectHandler.cancelHTTPListener()
 		
 		//Remove update listeners
 		NotificationCenter.default.removeObserver(self)
-		
-		//Cancel the authentication session
-		if #available(macOS 10.15, *) {
-			currentAuthSession?.cancel()
-		}
 	}
 	
 	/**
@@ -149,58 +96,36 @@ class AccountConnectViewController: NSViewController {
 		loadingLabel.isHidden = !loading
 	}
 	
-	private func startConnection(refreshToken: String) {
+	private func startConnection(idToken: String, callbackURL: String) {
 		//Set the loading state
 		setLoading(true)
 		
 		//Exchange the refresh token
-		exchangeFirebaseRefreshToken(refreshToken) { [weak self] result, error in
+		exchangeFirebaseIDPToken(idToken, providerID: "google.com", callbackURL: callbackURL) { [weak self] result, error in
 			DispatchQueue.main.async {
 				guard let self = self else { return }
 				
 				//Check for errors
 				if let error = error {
-					LogManager.log("Failed to exchange refresh token: \(error)", level: .info)
+					LogManager.log("Failed to exchange IDP token: \(error)", level: .info)
 					self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
 					return
 				}
 				
 				//If the error is nil, the result can't be nil
 				let result = result!
-				let userID = result.userId
+				let userID = result.localId
 				let idToken = result.idToken
 				
-				//Get the user info
-				getFirebaseUserData(idToken: idToken) { [weak self] result, error in
-					DispatchQueue.main.async {
-						guard let self = self else { return }
-						
-						//Check for errors
-						if let error = error {
-							LogManager.log("Failed to get user data: \(error)", level: .info)
-							self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
-							return
-						}
-						
-						let result = result!
-						guard !result.users.isEmpty else {
-							LogManager.log("Failed to get user data: no users returned", level: .info)
-							self.showError(message: NSLocalizedString("message.register.error.sign_in", comment: ""), showReconnect: false)
-							return
-						}
-						let user = result.users[0]
-						
-						//Set the data proxy and connect
-						self.isConnecting = true
-						self.currentUserID = userID
-						self.currentEmailAddress = user.email
-						
-						let proxy = DataProxyConnect(userID: userID, idToken: idToken)
-						self.currentDataProxy = proxy
-						ConnectionManager.shared.setProxy(proxy)
-						ConnectionManager.shared.start()
-					}
-				}
+				//Set the data proxy and connect
+				self.isConnecting = true
+				self.currentUserID = result.localId
+				self.currentEmailAddress = result.email
+				
+				let proxy = DataProxyConnect(userID: userID, idToken: idToken)
+				self.currentDataProxy = proxy
+				ConnectionManager.shared.setProxy(proxy)
+				ConnectionManager.shared.start()
 			}
 		}
 	}
@@ -235,7 +160,7 @@ class AccountConnectViewController: NSViewController {
 		}
 		alert.addButton(withTitle: NSLocalizedString("action.cancel", comment: ""))
 		alert.beginSheetModal(for: view.window!) { response in
-			if response == .alertFirstButtonReturn {
+			if showReconnect && response == .alertFirstButtonReturn {
 				//Reconnect and try again
 				self.isConnecting = true
 				ConnectionManager.shared.start()
@@ -244,11 +169,6 @@ class AccountConnectViewController: NSViewController {
 				self.dismiss(self)
 			}
 		}
-	}
-	
-	@objc private func onAuthenticate(notification: NSNotification) {
-		let refreshToken = notification.userInfo![NotificationNames.authenticateParam] as! String
-		startConnection(refreshToken: refreshToken)
 	}
 	
 	@objc private func onUpdateServerState(notification: NSNotification) {
@@ -269,12 +189,5 @@ class AccountConnectViewController: NSViewController {
 			
 			isConnecting = false
 		}
-	}
-}
-
-@available(macOS 10.15, *)
-extension AccountConnectViewController: ASWebAuthenticationPresentationContextProviding {
-	func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-		return view.window!
 	}
 }
