@@ -12,7 +12,7 @@ Other AirMessage repositories:
 
 ## Getting started
 
-AirMessage Server requires Xcode 12+ to build.
+As AirMessage Server runs on OS X 10.10, this repository targets Xcode 13. To compile with Xcode 14, change the deployment target to macOS 10.13.
 
 To generate a universal OpenSSL binary to link, run `Configure.command` in the `OpenSSL` directory.
 
