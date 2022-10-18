@@ -17,8 +17,7 @@ As AirMessage Server runs on OS X 10.10, this repository targets Xcode 13. To co
 To generate a universal OpenSSL binary to link, run `Configure.command` in the `OpenSSL` directory.
 
 AirMessage Server uses a configuration file to associate with online services like Firebase and Sentry.
-The app will not build without valid configuration files, so to get started quickly, you can copy the provided default files to use a pre-configured Firebase project, or you may provide your own Firebase configuration file:
-- `AirMessage/AuthSite/secrets.default.js` > `AirMessage/AuthSite/secrets.js`
+The app will not build without valid configuration files, so to get started quickly, you can copy the provided default file to use a pre-configured Firebase project, or you may provide your own Firebase configuration file:
 - `AirMessage/Secrets.default.xcconfig` > `AirMessage/Secrets.xcconfig`
 
 ## Building and running for AirMessage Connect
