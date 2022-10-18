@@ -59,17 +59,26 @@ class AccountConnectViewController: NSViewController {
 		)
 		
 		redirectHandler.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: view.window!) { [weak self] result, error in
-			guard let self = self else { return }
-			
-			//Surface errors to the user
-			if let error = error {
-				self.showError(message: error.localizedDescription, showReconnect: false)
-				return
+			DispatchQueue.main.async { [weak self] in
+				guard let self = self else { return }
+				
+				//Surface errors to the user
+				if let error = error as? NSError {
+					//Don't show cancellation errors
+					if error.domain == OIDGeneralErrorDomain
+						&& (error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue
+							|| error.code == OIDErrorCode.programCanceledAuthorizationFlow.rawValue) {
+						self.dismiss(self)
+					} else {
+						self.showError(message: error.localizedDescription, showReconnect: false)
+					}
+					return
+				}
+				
+				//Start a connection with the ID token
+				let idToken = result!.lastTokenResponse!.idToken!
+				self.startConnection(idToken: idToken, callbackURL: redirectURL.absoluteString)
 			}
-			
-			//Start a connection with the ID token
-			let idToken = result!.lastTokenResponse!.idToken!
-			self.startConnection(idToken: idToken, callbackURL: redirectURL.absoluteString)
 		}
 		
 		//Update the view
@@ -102,7 +111,7 @@ class AccountConnectViewController: NSViewController {
 		
 		//Exchange the refresh token
 		exchangeFirebaseIDPToken(idToken, providerID: "google.com", callbackURL: callbackURL) { [weak self] result, error in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
 				guard let self = self else { return }
 				
 				//Check for errors
