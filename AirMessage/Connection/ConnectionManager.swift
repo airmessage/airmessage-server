@@ -947,7 +947,7 @@ class ConnectionManager {
 		do {
 			chatID = try MessageManager.createChat(withAddresses: chatMembers, service: chatService)
 		} catch {
-			if let error = error as? AppleScriptExecutionError {
+			if let error = error as? AppleScriptError {
 				let nstCode: NSTCreateChat
 				switch error.code {
 					case AppleScriptCodes.errorUnauthorized:
@@ -976,7 +976,7 @@ class ConnectionManager {
 		do {
 			try action()
 		} catch {
-			if let error = error as? AppleScriptExecutionError {
+			if let error = error as? AppleScriptError {
 				let nstCode: NSTSendResult
 				switch error.code {
 					case AppleScriptCodes.errorUnauthorized:

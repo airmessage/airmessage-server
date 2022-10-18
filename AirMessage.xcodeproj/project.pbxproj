@@ -65,6 +65,7 @@
 		ED8F3A792749A05D0069F25D /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A782749A05D0069F25D /* MessageError.swift */; };
 		ED8F3A7E2749A3D50069F25D /* AppleScriptCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7D2749A3D50069F25D /* AppleScriptCodes.swift */; };
 		ED8F3A802749AC300069F25D /* FileDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F3A7F2749AC300069F25D /* FileDownloadRequest.swift */; };
+		ED92A10528FC928D00450754 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = ED92A10428FC928D00450754 /* AppAuth */; };
 		ED98B3EF2711D8300029DD09 /* Ink in Frameworks */ = {isa = PBXBuildFile; productRef = ED98B3EE2711D8300029DD09 /* Ink */; };
 		ED9C293A2756684200EA07C8 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = ED9C29392756684200EA07C8 /* Sentry */; };
 		ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */ = {isa = PBXBuildFile; productRef = ED9FBBC527E13F430037DF16 /* Zlib */; };
@@ -74,7 +75,6 @@
 		EDC1DAFE274DABA400D32C6B /* DataProxyConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */; };
 		EDC1DB03274DBF0A00D32C6B /* ConnectConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */; };
 		EDC58E042756F59200935C49 /* Certificates in Resources */ = {isa = PBXBuildFile; fileRef = EDC58E032756F59200935C49 /* Certificates */; };
-		EDC822962697B781007A8DF9 /* build in Resources */ = {isa = PBXBuildFile; fileRef = EDC8228B2697B769007A8DF9 /* build */; };
 		EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; };
 		EDC898672752BF290081BDB7 /* OpenSSL.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDC898602752BF290081BDB7 /* OpenSSL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDC899172752BF4D0081BDB7 /* pem2.h in Headers */ = {isa = PBXBuildFile; fileRef = EDC8986F2752BF4C0081BDB7 /* pem2.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -225,7 +225,6 @@
 		EDDA7B87274333540027A82C /* FileNormalizationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDA7B86274333540027A82C /* FileNormalizationHelper.swift */; };
 		EDDD36D8280994BB0001FDC3 /* CompressionHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDD36D7280994BB0001FDC3 /* CompressionHelperTests.swift */; };
 		EDDD36DA280999C40001FDC3 /* ContentTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDD36D9280999C40001FDC3 /* ContentTypeHelperTests.swift */; };
-		EDDE47312688C2890029628B /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = EDDE47302688C2890029628B /* Swifter */; };
 		EDE4F2AC26B5C3D50017D684 /* ClientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AB26B5C3D50017D684 /* ClientListViewController.swift */; };
 		EDE4F2AE26B6B4E90017D684 /* ClientTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4F2AD26B6B4E90017D684 /* ClientTableCellView.swift */; };
 		EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */ = {isa = PBXBuildFile; fileRef = EDE672FA2713755600AD6F52 /* SoftwareUpdate.sh */; };
@@ -340,17 +339,6 @@
 		EDC1DAFD274DABA400D32C6B /* DataProxyConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProxyConnect.swift; sourceTree = "<group>"; };
 		EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectConstants.swift; sourceTree = "<group>"; };
 		EDC58E032756F59200935C49 /* Certificates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Certificates; sourceTree = "<group>"; };
-		EDC8228B2697B769007A8DF9 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
-		EDC8228C2697B769007A8DF9 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
-		EDC8228D2697B769007A8DF9 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		EDC8228E2697B769007A8DF9 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		EDC8228F2697B769007A8DF9 /* secrets.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = secrets.js; sourceTree = "<group>"; };
-		EDC822902697B769007A8DF9 /* banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner.png; sourceTree = "<group>"; };
-		EDC822912697B769007A8DF9 /* index.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = index.css; sourceTree = "<group>"; };
-		EDC822922697B769007A8DF9 /* webpack.config.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = webpack.config.js; sourceTree = "<group>"; };
-		EDC822932697B769007A8DF9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		EDC822942697B769007A8DF9 /* secrets.default.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = secrets.default.js; sourceTree = "<group>"; };
-		EDC822952697B769007A8DF9 /* package-lock.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "package-lock.json"; sourceTree = "<group>"; };
 		EDC898602752BF290081BDB7 /* OpenSSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDC8986D2752BF4C0081BDB7 /* Configure.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Configure.command; sourceTree = "<group>"; };
 		EDC8986F2752BF4C0081BDB7 /* pem2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pem2.h; sourceTree = "<group>"; };
@@ -549,10 +537,10 @@
 			files = (
 				EDB04DBE273DDFDA00673AE4 /* SQLite in Frameworks */,
 				ED9C293A2756684200EA07C8 /* Sentry in Frameworks */,
+				ED92A10528FC928D00450754 /* AppAuth in Frameworks */,
 				EDC898662752BF290081BDB7 /* OpenSSL.framework in Frameworks */,
 				ED456D99289EFE1E00729CF6 /* WebSocketKit in Frameworks */,
 				ED9FBBC627E13F430037DF16 /* Zlib in Frameworks */,
-				EDDE47312688C2890029628B /* Swifter in Frameworks */,
 				ED98B3EF2711D8300029DD09 /* Ink in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,7 +654,6 @@
 				ED28095425A20332009E7636 /* AppDelegate.swift */,
 				EDD70D682699F1AE00E8DC06 /* AppleScript */,
 				ED28095825A20333009E7636 /* Assets.xcassets */,
-				EDC8228A2697B75A007A8DF9 /* AuthSite */,
 				ED853E0E27442BCF00DCF446 /* Compat */,
 				ED3781F7273F399A00310EAD /* Connection */,
 				2EAEE649853E94A70D112B63 /* Constants */,
@@ -790,24 +777,6 @@
 				EDC1DB02274DBF0A00D32C6B /* ConnectConstants.swift */,
 			);
 			path = Connect;
-			sourceTree = "<group>";
-		};
-		EDC8228A2697B75A007A8DF9 /* AuthSite */ = {
-			isa = PBXGroup;
-			children = (
-				EDC822932697B769007A8DF9 /* .gitignore */,
-				EDC822902697B769007A8DF9 /* banner.png */,
-				EDC8228B2697B769007A8DF9 /* build */,
-				EDC822912697B769007A8DF9 /* index.css */,
-				EDC8228D2697B769007A8DF9 /* index.html */,
-				EDC8228E2697B769007A8DF9 /* index.js */,
-				EDC822952697B769007A8DF9 /* package-lock.json */,
-				EDC8228C2697B769007A8DF9 /* package.json */,
-				EDC822942697B769007A8DF9 /* secrets.default.js */,
-				EDC8228F2697B769007A8DF9 /* secrets.js */,
-				EDC822922697B769007A8DF9 /* webpack.config.js */,
-			);
-			path = AuthSite;
 			sourceTree = "<group>";
 		};
 		EDC898612752BF290081BDB7 /* OpenSSL */ = {
@@ -1189,7 +1158,6 @@
 			buildPhases = (
 				ED28094D25A20332009E7636 /* Sources */,
 				ED28094E25A20332009E7636 /* Frameworks */,
-				ED67A8972688D62C00DB7B95 /* Compile Webpack */,
 				ED28094F25A20332009E7636 /* Resources */,
 				EDC8986B2752BF290081BDB7 /* Embed Frameworks */,
 				ED9C293B27567C0000EA07C8 /* Upload Symbols to Sentry */,
@@ -1201,12 +1169,12 @@
 			);
 			name = AirMessage;
 			packageProductDependencies = (
-				EDDE47302688C2890029628B /* Swifter */,
 				ED98B3EE2711D8300029DD09 /* Ink */,
 				EDB04DBD273DDFDA00673AE4 /* SQLite */,
 				ED9C29392756684200EA07C8 /* Sentry */,
 				ED9FBBC527E13F430037DF16 /* Zlib */,
 				ED456D98289EFE1E00729CF6 /* WebSocketKit */,
+				ED92A10428FC928D00450754 /* AppAuth */,
 			);
 			productName = AirMessage;
 			productReference = ED28095125A20332009E7636 /* AirMessage.app */;
@@ -1282,11 +1250,11 @@
 			);
 			mainGroup = ED28094825A20332009E7636;
 			packageReferences = (
-				EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */,
 				ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */,
 				EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
 				ED9C29382756684200EA07C8 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */,
+				ED92A10328FC928D00450754 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 			);
 			productRefGroup = ED28095225A20332009E7636 /* Products */;
 			projectDirPath = "";
@@ -1307,7 +1275,6 @@
 				EDE672FB27137F8600AD6F52 /* SoftwareUpdate.sh in Resources */,
 				EDD70D672699F00900E8DC06 /* AppleScriptSource in Resources */,
 				ED28095925A20333009E7636 /* Assets.xcassets in Resources */,
-				EDC822962697B781007A8DF9 /* build in Resources */,
 				ED891A3825A30701002230EB /* Localizable.strings in Resources */,
 				ED28095C25A20333009E7636 /* Main.storyboard in Resources */,
 				ED440E0E269FB51F00BFBEE5 /* Localizable.stringsdict in Resources */,
@@ -1333,33 +1300,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		ED67A8972688D62C00DB7B95 /* Compile Webpack */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/AirMessage/AuthSite/package.json",
-				"$(SRCROOT)/AirMessage/AuthSite/package-lock.json",
-				"$(SRCROOT)/AirMessage/AuthSite/secrets.js",
-				"$(SRCROOT)/AirMessage/AuthSite/webpack.config.js",
-				"$(SRCROOT)/AirMessage/AuthSite/index.js",
-				"$(SRCROOT)/AirMessage/AuthSite/index.css",
-				"$(SRCROOT)/AirMessage/AuthSite/index.html",
-				"$(SRCROOT)/AirMessage/AuthSite/banner.png",
-			);
-			name = "Compile Webpack";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/AirMessage/Authentication/connectsite/build",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/usr/local/bin:/opt/homebrew/bin\"\n\nif ! which npm > /dev/null; then\n  echo \"error: npm is not installed\"\n  exit 1\nfi\n\ncd AirMessage/AuthSite\nnpm install\nnpm run build\n";
-		};
 		ED9C293B27567C0000EA07C8 /* Upload Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
@@ -1656,7 +1596,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
@@ -1683,7 +1622,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MARKETING_VERSION = 4.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = me.tagavari.airmessageserver;
 				PRODUCT_NAME = AirMessage;
@@ -1865,6 +1803,14 @@
 				kind = branch;
 			};
 		};
+		ED92A10328FC928D00450754 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		ED98B3ED2711D8300029DD09 /* XCRemoteSwiftPackageReference "ink" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnsundell/ink.git";
@@ -1889,14 +1835,6 @@
 				minimumVersion = 0.13.0;
 			};
 		};
-		EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/httpswift/swifter.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1904,6 +1842,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED456D97289EFE1E00729CF6 /* XCRemoteSwiftPackageReference "websocket-kit-osx10" */;
 			productName = WebSocketKit;
+		};
+		ED92A10428FC928D00450754 /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED92A10328FC928D00450754 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
 		};
 		ED98B3EE2711D8300029DD09 /* Ink */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1923,11 +1866,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EDB04DBC273DDFDA00673AE4 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
 			productName = SQLite;
-		};
-		EDDE47302688C2890029628B /* Swifter */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EDDE472F2688C2890029628B /* XCRemoteSwiftPackageReference "swifter" */;
-			productName = Swifter;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

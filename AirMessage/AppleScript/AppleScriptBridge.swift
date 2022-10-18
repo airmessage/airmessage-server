@@ -27,10 +27,16 @@ class AppleScriptBridge {
 			exit(EXIT_FAILURE)
 		}
 		
-		guard let appleScript = NSAppleScript(contentsOf: url, error: nil) else {
-			let message = "Failed to initialize AppleScript: \(resourceName)"
-			LogManager.log(message, level: .error)
-			SentrySDK.capture(message: message)
+		var loadError: NSDictionary? = nil
+		guard let appleScript = NSAppleScript(contentsOf: url, error: &loadError) else {
+			try! {
+				//Throw unchecked AppleScript error
+				if let loadError = loadError {
+					throw AppleScriptError(error: loadError, fileURL: url)
+				} else {
+					throw AppleScriptInitializationError(fileURL: url)
+				}
+			}()
 			exit(EXIT_FAILURE)
 		}
 		
@@ -88,7 +94,7 @@ class AppleScriptBridge {
 		scriptCommonPressCommandReturn.executeAndReturnError(&scriptError)
 		if let error = scriptError {
 			LogManager.log("Failed to press command-return: \(error)", level: .debug)
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 	}
 	
@@ -130,7 +136,7 @@ class AppleScriptBridge {
 		let result = AppleScriptBridge.runScript(scriptMessagesCreateChat, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to create chat with \(addresses): \(error)", level: .error)
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.forKeyword(AEKeyword(keyAEKeyData))!.stringValue!
 		}
@@ -149,7 +155,7 @@ class AppleScriptBridge {
 		AppleScriptBridge.runScript(scriptMessagesSendMessageExisting, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to chat \(chatID): \(error)", level: .error)
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 	}
 	
@@ -167,7 +173,7 @@ class AppleScriptBridge {
 		AppleScriptBridge.runScript(scriptMessagesSendMessageDirect, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send direct message to \(address): \(error)", level: .error)
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 	}
 	
@@ -190,7 +196,7 @@ class AppleScriptBridge {
 		AppleScriptBridge.runScript(scriptMessagesSendMessageNew, params: params, error: &executeError)
 		if let error = executeError {
 			LogManager.log("Failed to send message to new chat \(addresses): \(error)", level: .error)
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 	}
 	
@@ -218,7 +224,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = scriptFaceTimeCreateNewLink.executeAndReturnError(&executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.stringValue!
 		}
@@ -229,7 +235,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = scriptFaceTimeGetActiveLink.executeAndReturnError(&executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.stringValue!
 		}
@@ -240,7 +246,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		scriptFaceTimeLeaveCall.executeAndReturnError(&executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 	}
 	
@@ -249,7 +255,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = scriptFaceTimeAcceptPendingUser.executeAndReturnError(&executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.booleanValue
 		}
@@ -270,7 +276,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		AppleScriptBridge.runScript(scriptFaceTimeCenterWindow, params: params, error: &executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		}
 		
 		//Move the cursor to the middle of the screen
@@ -283,7 +289,7 @@ class AppleScriptBridge {
 		let result = scriptFaceTimeQueryIncomingCall.executeAndReturnError(&executeError)
 		
 		if let error = executeError {
-			let appleScriptError = AppleScriptExecutionError(error: error)
+			let appleScriptError = AppleScriptError(error: error)
 			//Ignore error -1719 (invalid index) errors, as these can be caused by changing UI while the script is executing
 			if appleScriptError.code != -1719 {
 				throw appleScriptError
@@ -309,7 +315,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = AppleScriptBridge.runScript(scriptFaceTimeHandleIncomingCall, params: params, error: &executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.booleanValue
 		}
@@ -323,7 +329,7 @@ class AppleScriptBridge {
 		var executeError: NSDictionary? = nil
 		let result = AppleScriptBridge.runScript(scriptFaceTimeInitiateOutgoingCall, params: params, error: &executeError)
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return result.booleanValue
 		}
@@ -335,7 +341,7 @@ class AppleScriptBridge {
 		let result = scriptFaceTimeQueryOutgoingCall.executeAndReturnError(&executeError)
 		
 		if let error = executeError {
-			throw AppleScriptExecutionError(error: error)
+			throw AppleScriptError(error: error)
 		} else {
 			return OutgoingCallStatus(rawValue: result.stringValue!)!
 		}
