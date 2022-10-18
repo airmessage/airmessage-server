@@ -65,13 +65,19 @@ class AccountConnectViewController: NSViewController {
 				//Surface errors to the user
 				if let error = error as? NSError {
 					//Don't show cancellation errors
-					if error.domain == OIDGeneralErrorDomain
-						&& (error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue
-							|| error.code == OIDErrorCode.programCanceledAuthorizationFlow.rawValue) {
-						self.dismiss(self)
+					if error.domain == OIDGeneralErrorDomain {
+						if error.code == OIDErrorCode.userCanceledAuthorizationFlow.rawValue {
+							//If the user cancelled, dismiss the view controller
+							self.dismiss(self)
+						} else if error.code == OIDErrorCode.programCanceledAuthorizationFlow.rawValue {
+							//If we cancelled (for example, the user closed the window), do nothing
+							return
+						}
 					} else {
+						//Present the error to the user
 						self.showError(message: error.localizedDescription, showReconnect: false)
 					}
+					
 					return
 				}
 				
