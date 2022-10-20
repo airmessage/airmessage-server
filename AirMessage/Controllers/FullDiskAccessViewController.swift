@@ -9,6 +9,11 @@ import Foundation
 import AppKit
 
 class FullDiskAccessViewController: NSViewController {
+	@IBOutlet weak var imageView: NSImageView!
+	
+	//macOS 13 doesn't have a lock in System Settings
+	@IBOutlet weak var lockText: NSView! //OS X 10.10 to 12
+	
 	/*
 	Older versions of OS X don't support drag-and-drop for file URLs
 	*/
@@ -19,9 +24,15 @@ class FullDiskAccessViewController: NSViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if #available(macOS 10.13, *) {
+		//Use instructions for System Settings on macOS 13+
+		if #available(macOS 13.0, *) {
+			imageView.image = NSImage(named: "FullDiskAccess-13")
+			lockText.isHidden = true
+			yosemiteText.isHidden = true
+		} else if #available(macOS 10.13, *) {
 			yosemiteText.isHidden = true
 		} else {
+			//Dragging isn't supported
 			highSierraText.isHidden = true
 			highSierraDraggable.isHidden = true
 		}

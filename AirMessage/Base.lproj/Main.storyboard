@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1115,7 +1115,7 @@ DQ
         <scene sceneID="bkz-yt-8qH">
             <objects>
                 <viewController id="2am-CR-TqS" customClass="FullDiskAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" misplaced="YES" id="CWi-KJ-5Pc">
+                    <view key="view" id="CWi-KJ-5Pc">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="771"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -1248,11 +1248,11 @@ DQ
                                                     <box titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="OmP-N6-dEe">
                                                         <rect key="frame" x="-3" y="-4" width="70" height="70"/>
                                                         <view key="contentView" id="U56-1A-LNg">
-                                                            <rect key="frame" x="3" y="3" width="64" height="64"/>
+                                                            <rect key="frame" x="4" y="5" width="62" height="62"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wU4-sQ-5uY" customClass="DraggableAppView" customModule="AirMessage" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                                                    <rect key="frame" x="0.0" y="-2" width="64" height="64"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="64" id="MhO-by-EMQ"/>
                                                                         <constraint firstAttribute="width" constant="64" id="k84-s4-9r9"/>
@@ -1316,6 +1316,8 @@ DQ
                     <connections>
                         <outlet property="highSierraDraggable" destination="wU4-sQ-5uY" id="01Q-K3-nFB"/>
                         <outlet property="highSierraText" destination="1G3-zf-0z7" id="xXv-qD-XJn"/>
+                        <outlet property="imageView" destination="1Lh-FI-ldc" id="99C-1M-tFv"/>
+                        <outlet property="lockText" destination="HV6-L0-zQb" id="t0R-RQ-DTg"/>
                         <outlet property="yosemiteText" destination="ffc-F9-CTg" id="beC-15-3xa"/>
                     </connections>
                 </viewController>
@@ -1503,7 +1505,7 @@ DQ
         <scene sceneID="d7c-M2-DyW">
             <objects>
                 <viewController id="hja-eM-bID" customClass="AutomationAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" misplaced="YES" id="iW0-A4-GC8">
+                    <view key="view" id="iW0-A4-GC8">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="603"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -1619,6 +1621,10 @@ DQ
                             <constraint firstAttribute="bottom" secondItem="WAG-WG-Pry" secondAttribute="bottom" constant="20" symbolic="YES" id="WLX-MU-yqG"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="image" destination="JA5-Wi-uLE" id="CLt-aD-qPy"/>
+                        <outlet property="imageView" destination="JA5-Wi-uLE" id="FJ5-sD-6tr"/>
+                    </connections>
                 </viewController>
                 <customObject id="bnK-X4-hwq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1838,7 +1844,7 @@ DQ
         <scene sceneID="5ep-ML-nt2">
             <objects>
                 <viewController id="hJV-Pf-rNN" customClass="AccessibilityAccessViewController" customModule="AirMessage" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" misplaced="YES" id="TJL-1G-Ah3">
+                    <view key="view" id="TJL-1G-Ah3">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="743"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -1942,11 +1948,11 @@ DQ
                                                     <box titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Z58-u1-eIN">
                                                         <rect key="frame" x="-3" y="-4" width="70" height="70"/>
                                                         <view key="contentView" id="Uvh-xc-kqi">
-                                                            <rect key="frame" x="3" y="3" width="64" height="64"/>
+                                                            <rect key="frame" x="4" y="5" width="62" height="62"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ha-YC-I3Q" customClass="DraggableAppView" customModule="AirMessage" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                                                    <rect key="frame" x="0.0" y="-2" width="64" height="64"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="64" id="4ZJ-gv-ZfQ"/>
                                                                         <constraint firstAttribute="height" constant="64" id="sIm-CP-7QF"/>
@@ -2025,6 +2031,10 @@ DQ
                             <constraint firstAttribute="bottom" secondItem="FYd-xd-V0v" secondAttribute="bottom" constant="20" symbolic="YES" id="WnE-GC-7RL"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="hpP-V6-eZG" id="Ry0-SG-b02"/>
+                        <outlet property="lockText" destination="Qbp-Gn-59l" id="DEr-jx-Hzo"/>
+                    </connections>
                 </viewController>
                 <customObject id="2Kv-8U-1ao" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
