@@ -268,7 +268,13 @@ class DatabaseConverter {
 		}
 		
 		//Get the message history dictionary
-		guard let messageHistoryDictionary = propertyListDict["ec"] as? [String: Any] else {
+		let historyDict = propertyListDict["ec"]
+		
+		//Return an empty array if the key doesn't exist
+		guard let historyDict = historyDict else { return [] }
+		
+		//Convert the dictionary object to a concrete dictionary
+		guard let messageHistoryDictionary = historyDict as? [String: Any] else {
 			throw MessageSummaryParseError.typeError(propertyList)
 		}
 		
