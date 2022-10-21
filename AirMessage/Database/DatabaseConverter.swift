@@ -283,8 +283,8 @@ class DatabaseConverter {
 			throw MessageSummaryParseError.typeError(propertyList)
 		}
 		
-		//Parse items
-		return try messageHistoryArray.compactMap { (entryDictionary) -> String? in
+		//Parse items (skip the last item, since it matches the current message)
+		return try messageHistoryArray.dropLast(1).compactMap { (entryDictionary) -> String? in
 			guard let data = entryDictionary["t"] as? Data else {
 				throw MessageSummaryParseError.typeError(propertyList)
 			}
