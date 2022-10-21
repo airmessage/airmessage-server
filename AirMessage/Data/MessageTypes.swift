@@ -45,6 +45,7 @@ struct LiteConversationInfo: Packable {
 	let previewText: String?
 	let previewSendStyle: String?
 	let previewAttachments: [String]
+	let previewUnsent: Bool
 	
 	func pack(to packer: inout AirPacker) {
 		packer.pack(string: guid)
@@ -57,6 +58,7 @@ struct LiteConversationInfo: Packable {
 		packer.pack(optionalString: previewText)
 		packer.pack(optionalString: previewSendStyle)
 		packer.pack(stringArray: previewAttachments)
+		packer.pack(bool: previewUnsent)
 	}
 }
 

@@ -348,6 +348,14 @@ class DatabaseConverter {
 		let lastMessageAttachments = (row[indices["attachment_list"]!] as! String?)
 			.map { $0.components(separatedBy: ",") } ?? []
 		
+		let isUnsent: Bool
+		if #available(macOS 13.0, *) {
+			let partCount = row[indices["message.part_count"]!] as! Int64?
+			isUnsent = partCount == 0
+		} else {
+			isUnsent = false
+		}
+		
 		return LiteConversationInfo(
 			guid: guid,
 			service: service,
@@ -357,7 +365,8 @@ class DatabaseConverter {
 			previewSender: lastMessageSender,
 			previewText: lastMessageText,
 			previewSendStyle: lastMessageSendStyle,
-			previewAttachments: lastMessageAttachments
+			previewAttachments: lastMessageAttachments,
+			previewUnsent: isUnsent
 		)
 	}
 	

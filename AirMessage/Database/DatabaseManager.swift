@@ -596,11 +596,12 @@ class DatabaseManager {
 	public func fetchLiteConversations() throws -> [LiteConversationInfo] {
 		guard let dbConnection = dbConnection else { throw DatabaseDisconnectedError() }
 		
-		let extraRows: [String]
+		var extraRows = [String]()
 		if #available(macOS 10.12, *) {
-			extraRows = ["message.expressive_send_style_id"]
-		} else {
-			extraRows = []
+			extraRows.append("message.expressive_send_style_id")
+		}
+		if #available(macOS 13.0, *) {
+			extraRows.append("message.part_count")
 		}
 		
 		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatSummary", withExtension: "sql", subdirectory: "SQL")!)
