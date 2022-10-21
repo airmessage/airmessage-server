@@ -4,6 +4,7 @@
 
 import Foundation
 import SQLite
+import Sentry
 
 class DatabaseConverter {
 	enum MessageItemType: Int {
@@ -254,46 +255,6 @@ class DatabaseConverter {
 	}
 	
 	/**
-	 Processes message summary data into an array of edit history
-	 - Parameter data: The data to parse
-	 - Returns: The array of edit history in chronological order
-	 */
-	private static func parseMessageSummary(_ data: Data) throws -> [String] {
-		//Parse the property list from memory
-		let propertyList = try PropertyListSerialization.propertyList(from: data, format: nil)
-		
-		//Make sure the type is a dictionary
-		guard let propertyListDict = propertyList as? [String: Any] else {
-			throw MessageSummaryParseError.typeError(propertyList)
-		}
-		
-		//Get the message history dictionary
-		let historyDict = propertyListDict["ec"]
-		
-		//Return an empty array if the key doesn't exist
-		guard let historyDict = historyDict else { return [] }
-		
-		//Convert the dictionary object to a concrete dictionary
-		guard let messageHistoryDictionary = historyDict as? [String: Any] else {
-			throw MessageSummaryParseError.typeError(propertyList)
-		}
-		
-		//Get the first item of the message history dictionary
-		guard let messageHistoryArray = messageHistoryDictionary["0"] as? [[String: Any]] else {
-			throw MessageSummaryParseError.typeError(propertyList)
-		}
-		
-		//Parse items (skip the last item, since it matches the current message)
-		return try messageHistoryArray.dropLast(1).compactMap { (entryDictionary) -> String? in
-			guard let data = entryDictionary["t"] as? Data else {
-				throw MessageSummaryParseError.typeError(propertyList)
-			}
-			
-			return try parseAttributedBody(withData: data)
-		}
-	}
-	
-	/**
 	 Processes a message row with edited content to an `EditedStatusModifierInfo`
 	 - Parameters:
 	   - row: The row to process
@@ -350,8 +311,7 @@ class DatabaseConverter {
 		
 		let isUnsent: Bool
 		if #available(macOS 13.0, *) {
-			let partCount = row[indices["message.part_count"]!] as! Int64?
-			isUnsent = partCount == 0
+			isUnsent = processEditedUnsentStatus(row, withIndices: indices, withLogID: guid).isUnsent
 		} else {
 			isUnsent = false
 		}
@@ -590,25 +550,73 @@ class DatabaseConverter {
 	
 	///Gets a message's edited and removed status
 	@available(macOS 13.0, *)
-	static func processEditedUnsentStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedRemovedMessageStatus {
-		guard let partCount = row[indices["message.part_count"]!] as? Int64,
-			  let summaryInfo = row[indices["message.message_summary_info"]!] as? SQLite.Blob else {
-			return EditedRemovedMessageStatus(editHistory: [], isUnsent: false)
+	static func processEditedUnsentStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedUnsentMessageStatus {
+		guard let summaryInfo = row[indices["message.message_summary_info"]!] as? SQLite.Blob else {
+			return EditedUnsentMessageStatus(editHistory: [], isUnsent: false)
 		}
-		
-		//Unsent messages have a part count of 0
-		let isUnsent = partCount == 0
 		
 		//Parse the summary value
-		let editHistory: [String]
+		var isUnsent = false
+		var editHistory = [String]()
 		do {
-			editHistory = try parseMessageSummary(Data.fromDatatypeValue(summaryInfo))
+			//Parse the property list from memory
+			let propertyList = try PropertyListSerialization.propertyList(from: Data.fromDatatypeValue(summaryInfo), format: nil)
+			
+			//Make sure the type is a dictionary
+			guard let propertyListDict = propertyList as? [String: Any] else {
+				throw MessageSummaryParseError.typeError(propertyList)
+			}
+			
+			//Check for the removed array
+			if let removedArray = propertyListDict["rp"] {
+				do {
+					guard let removedArray = removedArray as? [Int] else {
+						throw MessageSummaryParseError.typeError(removedArray)
+					}
+					
+					guard removedArray.first == 0 else {
+						throw MessageSummaryParseError.typeError(removedArray)
+					}
+					
+					isUnsent = true
+				} catch {
+					LogManager.log("Encountered an exception while decoding removed summary for message \(logID ?? "unknown"): \(error)", level: .notice)
+					SentrySDK.capture(error: error)
+				}
+			}
+			
+			//Get the message history dictionary
+			if let historyDict = propertyListDict["ec"] {
+				do {
+					//Convert the dictionary object to a concrete dictionary
+					guard let messageHistoryDictionary = historyDict as? [String: Any] else {
+						throw MessageSummaryParseError.typeError(historyDict)
+					}
+					
+					//Get the first item of the message history dictionary
+					guard let messageHistoryArray = messageHistoryDictionary["0"] as? [[String: Any]] else {
+						throw MessageSummaryParseError.typeError(historyDict)
+					}
+					
+					//Parse items (skip the last item, since it matches the current message)
+					editHistory = try messageHistoryArray.compactMap { (entryDictionary) -> String? in
+						guard let data = entryDictionary["t"] as? Data else {
+							throw MessageSummaryParseError.typeError(historyDict)
+						}
+						
+						return try parseAttributedBody(withData: data)
+					}
+				} catch {
+					LogManager.log("Encountered an exception while decoding edit history summary for message \(logID ?? "unknown"): \(error)", level: .notice)
+					SentrySDK.capture(error: error)
+				}
+			}
 		} catch {
 			LogManager.log("Encountered an exception while decoding summary for message \(logID ?? "unknown"): \(error)", level: .notice)
-			editHistory = []
+			SentrySDK.capture(error: error)
 		}
 		
-		return EditedRemovedMessageStatus(
+		return EditedUnsentMessageStatus(
 			editHistory: editHistory,
 			isUnsent: isUnsent
 		)
@@ -627,7 +635,7 @@ enum DatabaseMessageRow {
 	case modifier(ModifierInfo)
 }
 
-struct EditedRemovedMessageStatus {
+struct EditedUnsentMessageStatus {
 	let editHistory: [String]
 	let isUnsent: Bool
 }

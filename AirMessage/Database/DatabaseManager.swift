@@ -297,10 +297,7 @@ class DatabaseManager {
 		
 		//Edits and deletes
 		if #available(macOS 13.0, *) {
-			rows += [
-				"message.part_count",
-				"message.message_summary_info"
-			]
+			rows.append("message.message_summary_info")
 		}
 		
 		var extraClauses: [String] = []
@@ -601,7 +598,7 @@ class DatabaseManager {
 			extraRows.append("message.expressive_send_style_id")
 		}
 		if #available(macOS 13.0, *) {
-			extraRows.append("message.part_count")
+			extraRows.append("message.message_summary_info")
 		}
 		
 		let template = try! String(contentsOf: Bundle.main.url(forResource: "QueryAllChatSummary", withExtension: "sql", subdirectory: "SQL")!)
