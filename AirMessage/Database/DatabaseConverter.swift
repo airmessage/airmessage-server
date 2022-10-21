@@ -582,8 +582,10 @@ class DatabaseConverter {
 	///Gets a message's edited and removed status
 	@available(macOS 13.0, *)
 	static func processEditedUnsentStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedRemovedMessageStatus {
-		let partCount = row[indices["message.part_count"]!] as! Int64
-		let summaryInfo = row[indices["message.message_summary_info"]!] as! SQLite.Blob
+		guard let partCount = row[indices["message.part_count"]!] as? Int64,
+			  let summaryInfo = row[indices["message.message_summary_info"]!] as? SQLite.Blob else {
+			return EditedRemovedMessageStatus(editHistory: [], isUnsent: false)
+		}
 		
 		//Unsent messages have a part count of 0
 		let isUnsent = partCount == 0
