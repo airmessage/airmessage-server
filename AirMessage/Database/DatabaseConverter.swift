@@ -172,14 +172,14 @@ class DatabaseConverter {
 			let attachments = try fetchAttachments(ofMessage: rowID, withChecksum: sender == nil, ofDB: db)
 			
 			let editHistory: [String]
-			let isRemoved: Bool
+			let isUnsent: Bool
 			if #available(macOS 13.0, *) {
-				let status = processEditedRemovedStatus(row, withIndices: indices, withLogID: guid)
+				let status = processEditedUnsentStatus(row, withIndices: indices, withLogID: guid)
 				editHistory = status.editHistory
-				isRemoved = status.isRemoved
+				isUnsent = status.isUnsent
 			} else {
 				editHistory = []
-				isRemoved = false
+				isUnsent = false
 			}
 			
 			return .message(MessageInfo(
@@ -198,7 +198,7 @@ class DatabaseConverter {
 					error: error,
 					dateRead: convertDBTime(fromDB: dateRead),
 					editHistory: editHistory,
-					isRemoved: isRemoved
+					isUnsent: isUnsent
 			))
 		} else if itemType == .groupAction {
 			let other = row[indices["other_handle.id"]!] as! String?
@@ -304,12 +304,12 @@ class DatabaseConverter {
 	static func processEditedStatusRow(_ row: Statement.Element, withIndices indices: [String: Int]) -> EditedStatusModifierInfo {
 		//Read the row data
 		let messageGUID = row[indices["message.guid"]!] as! String
-		let status = processEditedRemovedStatus(row, withIndices: indices, withLogID: messageGUID)
+		let status = processEditedUnsentStatus(row, withIndices: indices, withLogID: messageGUID)
 		
 		return EditedStatusModifierInfo(
 				messageGUID: messageGUID,
 				editHistory: status.editHistory,
-				isRemoved: status.isRemoved
+				isUnsent: status.isUnsent
 		)
 	}
 	
@@ -581,12 +581,12 @@ class DatabaseConverter {
 	
 	///Gets a message's edited and removed status
 	@available(macOS 13.0, *)
-	static func processEditedRemovedStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedRemovedMessageStatus {
+	static func processEditedUnsentStatus(_ row: Statement.Element, withIndices indices: [String: Int], withLogID logID: String? = nil) -> EditedRemovedMessageStatus {
 		let partCount = row[indices["message.part_count"]!] as! Int64
 		let summaryInfo = row[indices["message.message_summary_info"]!] as! SQLite.Blob
 		
-		//Removed messages have a part count of 0
-		let isRemoved = partCount == 0
+		//Unsent messages have a part count of 0
+		let isUnsent = partCount == 0
 		
 		//Parse the summary value
 		let editHistory: [String]
@@ -599,7 +599,7 @@ class DatabaseConverter {
 		
 		return EditedRemovedMessageStatus(
 			editHistory: editHistory,
-			isRemoved: isRemoved
+			isUnsent: isUnsent
 		)
 	}
 	
@@ -618,5 +618,5 @@ enum DatabaseMessageRow {
 
 struct EditedRemovedMessageStatus {
 	let editHistory: [String]
-	let isRemoved: Bool
+	let isUnsent: Bool
 }
